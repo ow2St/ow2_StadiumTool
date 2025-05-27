@@ -1,0 +1,55 @@
+header {
+    margin: 0;
+    padding: 0;
+    height: 250px;
+    background-color: lightblue;
+}
+
+.header-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 60px;
+    height: 130px;
+    position: absolute;
+}
+
+.ow2-icon{
+    position: absolute;
+    float: left;
+}
+
+.chat{
+    position: absolute;
+    float: left;
+    margin-left: 300px;
+    width: 200px;
+    height: 200px;
+    display: none;
+}
+
+.stadium-icon{
+    margin-top: 30px;
+    margin-right: 400px;
+    float: right;
+    width: 200px;
+    height: 200px;
+}
+
+main{
+    margin-top: 3px;
+    margin-left: 200px;
+    margin-right: 200px;
+    padding: 0;
+    height: 100vh;
+    border: 1px solid black;
+}
+
+.topPage-button{
+    margin-left: 40px;
+    margin-top: 30px;
+    width: 250px;
+    height:50px;
+    font-size: 20px;
+}

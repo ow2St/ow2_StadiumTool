@@ -1,14 +1,28 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-0">
+        <link rel="stylesheet" href="css/style.css">
         <title>OWスタジアム攻略</title>
     </head>
-    <body>
-        <a href ="checker.html">
-            <button>チェッカー</button>
+    <header>
+        <p class="header-title">OWスタジアム攻略</p>
+        <div onclick="ow2IconClick()">
+            <img src="assets/images/icons/genji.png" class="ow2-icon">
+        </div>
+        <script src="js/topPage.js"></script>
+        <img src="assets/images/chat.png" id="chat" class="chat">
+        <img src="assets/images/icons/stadium.png" class="stadium-icon">
+    </header>
+    <main>
+        <a href="itemAndPower.html">
+            <button class="topPage-button">アイテム/パワー一覧</button>
         </a>
-        <a href ="patchNote.html">
-            <button>パッチノート</button>
+        <a href="buildSimulator.html">
+            <button class="topPage-button">ビルドシミュレーター</button>
         </a>
-    </body>
+        <a href="patchNote.html">
+            <button class="topPage-button">パッチノート</button>
+        </a>
+    </main>
 </html>
