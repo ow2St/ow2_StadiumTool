@@ -14,6 +14,7 @@ header {
 .header-bottom{
     display: block;
     height: 40px;
+    white-space: nowrap;
 }
 
 .header-title {
@@ -24,6 +25,7 @@ header {
     font-size: 60px;
     height: 130px;
     position: absolute;
+    white-space: nowrap;
 }
 
 .ow2-icon{
@@ -44,7 +46,7 @@ header {
     margin-right: 40px;
     float: right;
     width: 200px;
-    height: 200px;
+    height: 170px;
 }
 
 main{
