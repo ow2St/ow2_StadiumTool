@@ -1,19 +1,31 @@
+/*
+====================================================================
+ヘッダー部関連（全画面共通）
+====================================================================
+*/
+
 header {
     margin: 0;
     padding: 0;
     height: 250px;
-    background-color: lightblue;
     display: block;
+    width: 100%;
+    min-width: 430px;
+    font-weight: 600;
 }
 
 .header-top{
     display: block;
     height: 200px;
+    background-color: lightblue;
+    white-space: nowrap;
 }
 
 .header-bottom{
+    border: 1px solid black;
     display: block;
-    height: 40px;
+    height: 50px;
+    font-size: 20px;
     white-space: nowrap;
 }
 
@@ -22,8 +34,9 @@ header {
     justify-content: center;
     align-items: center;
     width: 100%;
+    min-width: 430px;
     font-size: 60px;
-    height: 130px;
+    height: 80px;
     position: absolute;
     white-space: nowrap;
 }
@@ -42,25 +55,63 @@ header {
 }
 
 .stadium-icon{
-    margin-top: 30px;
+    margin-top: 15px;
     margin-right: 40px;
     float: right;
     width: 200px;
     height: 170px;
 }
 
-main{
-    margin-top: 3px;
-    margin-left: 200px;
-    margin-right: 200px;
-    padding: 0;
-    height: 100vh;
-    border: 1px solid black;
+.topPage-button{
+    color: black;
+    display: inline-flex;
+    width: 250px;
+    height:26px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    justify-content: center;
+    border-right: 1px solid lightgray;
+    text-decoration: none;
 }
 
-.topPage-button{
-    margin-top: 10px;
-    width: 250px;
-    height:40px;
-    font-size: 20px;
+.topPage-button:hover{
+    background-color: #eee;
+}
+
+/*
+====================================================================
+メイン部（トップページ）
+====================================================================
+*/
+
+main-toppage{
+    margin-top: 2px;
+    margin-left: 200px;
+    margin-right: 200px;
+    height: 100vh;
+    border: 1px solid black;
+    display: block;
+    min-width: 430px;
+    font-weight: 300;
+}
+
+.toppage-info-title {
+    display: flex;
+    margin-left: 20px;
+    min-width: 430px;
+    font-size: 25px;
+    height: 30px;
+    white-space: nowrap;
+}
+
+.toppage-info-content{
+    display: block;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 30px;
+    min-width: 430px;
+    border: 1px solid gray;
+    white-space: nowrap;
+    height: 600px;
+    overflow-y: scroll;
 }
