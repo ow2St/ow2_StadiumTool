@@ -1,5 +1,5 @@
 //サンプル（コピペしただけ）
-function IAPtab1(){
+/*function itemTab(){
     document.querySelectorAll('.tab-button').forEach(button => {
     button.addEventListener('click', () => {
         const tabId = button.getAttribute('data-tab');
@@ -13,5 +13,9 @@ function IAPtab1(){
         document.getElementById(tabId).classList.add('active');
     });
     });
-}
+}*/
 
+
+function IAPtab(){
+    console("ああああ")
+}
