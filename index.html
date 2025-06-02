@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html style="overflow: scroll; font-family: Meiryo, Hiragino Sans">
     <head>
         <meta charset="UTF-0">
         <link rel="stylesheet" href="css/style.css">
         <title>OWスタジアム攻略</title>
     </head>
+    <!--ヘッダー-->
     <header>
         <div class="header-top">
             <p class="header-title">OWスタジアム攻略</p>
@@ -16,17 +17,21 @@
             <img src="assets/images/icons/stadium.png" class="stadium-icon">
         </div>
         <div class="header-bottom">
-            <a href="itemAndPower.html">
-                <button class="topPage-button">アイテム/パワー一覧</button>
-            </a>
-            <a href="buildSimulator.html">
-                <button class="topPage-button">ビルドシミュレーター</button>
-            </a>
-            <a href="patchNote.html">
-                <button class="topPage-button">パッチノート</button>
-            </a>
+            <!--ボタン後ろに空白が入るため改行しない-->
+            <a href="itemAndPower.html" class="topPage-button">アイテム/パワー一覧</a><a href="buildSimulator.html" class="topPage-button">ビルドシミュレーター</a><a href="patchNote.html" class="topPage-button">パッチノート</a>
         </div>
     </header>
-    <main>
-    </main>
+    <!--メイン-->
+    <main-toppage>
+        <p class="toppage-info-title">お知らせ</p>
+        <div class="toppage-info-content">
+            <ul style="margin-bottom: 30px;">
+                <li><a href="patchNote.html">最新パッチノート</a><span>（〇〇〇〇年〇〇月〇〇日）</span></li>
+            </ul>
+            <p style="margin-left: 20px;">サイト更新情報</p>
+            <ul>
+                <li>まだ未公開だよ〜</li>
+            </ul>
+        </div>
+    </main-toppage>
 </html>
