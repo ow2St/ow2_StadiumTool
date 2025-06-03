@@ -12,7 +12,6 @@
         <div onclick="ow2IconClick()">
             <img src="assets/images/icons/genji.png" class="ow2-icon">
         </div>
-            <script src="js/toppage.js"></script>
             <img src="assets/images/chat.png" id="chat" class="chat">
             <img src="assets/images/icons/stadium.png" class="stadium-icon">
         </div>
@@ -23,15 +22,14 @@
     </header>
     <!--メイン-->
     <main-toppage>
-        <p class="toppage-info-title">お知らせ</p>
-        <div class="toppage-info-content">
-            <ul style="margin-bottom: 30px;">
-                <li><a href="patchNote.html">最新パッチノート</a><span>（〇〇〇〇年〇〇月〇〇日）</span></li>
-            </ul>
-            <p style="margin-left: 20px;">サイト更新情報</p>
-            <ul>
-                <li>まだ未公開だよ〜</li>
-            </ul>
+        <p id="tabcontrol">
+            <a id="a" onclick="changeTabA()">a</a>
+            <a id="b" onclick="changeTabB()">b</a>
+        </p>
+        <div id="tabbody">
+            <div id="aa">hoge</div>
+            <div id="bb">hogehoge</div>
         </div>
     </main-toppage>
+            <script src="js/topPage.js"></script>
 </html>
