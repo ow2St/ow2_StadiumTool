@@ -47,13 +47,6 @@ header {
     height: 200px;
 }
 
-.chat{
-    float: left;
-    width: 150px;
-    height: 150px;
-    display: none;
-}
-
 .stadium-icon{
     margin-top: 15px;
     margin-right: 40px;
@@ -62,7 +55,7 @@ header {
     height: 170px;
 }
 
-.topPage-button{
+.header-button{
     color: black;
     display: inline-flex;
     width: 250px;
@@ -74,8 +67,21 @@ header {
     text-decoration: none;
 }
 
-.topPage-button:hover{
+.header-button:hover{
     background-color: #eee;
+}
+
+.header-button-selected{
+    color: black;
+    display: inline-flex;
+    width: 250px;
+    height:26px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    justify-content: center;
+    background-color: lightgray;
+    border-right: 1px solid lightgray;
+    text-decoration: none;
 }
 
 /*
