@@ -28,35 +28,37 @@
         <div onclick="IAPtab()">
             <!--ここの内容進めたい、タブ分け-->
             <div class="tabs"></div>
-            <button class="tab-button active" data-tab="tab1">アイテム</button>
-            <button class="tab-button" data-tab="tab2">パワー</button>
+            <button class="tabButton active" data-tab="tab1">アイテム</button>
+            <button class="tabButton" data-tab="tab2">パワー</button>
             
         </div>
 
-        <main>
+        <main-IAP>
             <div class="tab-content active" id="tab1">
                 <!--タブ1の内容-->
-                <a>カテゴリー</a>
-                <a href="">
-                    <button class="itemandpower">武器</button>
-                </a>
-                <a href="">
-                    <button class="itemandpower">アビリティ</button>
-                </a>
-                <a href="itemandpower.html">
-                    <button class="itemandpower">サバイバル</button>
-                </a>
+                <div onclick="IAPbutton()">
+                    <a>カテゴリー</a>
+                    <a href="itemandpower.html">
+                        <button class="itemButton">武器</button>
+                    </a>
+                    <a href="">
+                        <button class="button">アビリティ</button>
+                    </a>
+                    <a href="">
+                        <button class="button">サバイバル</button>
+                    </a>
+                </div>
                 <p></p>
 
                 <a>レアリティ</a>
                 <a href="">
-                <button class="itemandpower">コモン</button>
+                <button class="button">コモン</button>
                 </a>
                 <a href="">
-                <button class="itemandpower">レア</button>
+                <button class="button">レア</button>
                 </a>
-                <a href="itemandpower.html">
-                <button class="itemandpower">エピック</button>
+                <a href="">
+                <button class="button">エピック</button>
                 <p></p>
 
                 <a>ステータス</a>
@@ -66,19 +68,60 @@
                 <a href="">
                 <button class="itemandpower">アーマー</button>
                 </a>
-                <a href="itemandpower.html">
+                <a href="">
                 <button class="itemandpower">シールド</button>
                 <a href="">
                 </a>
                 <p></p>
-
+                
+                <a href="">
                 <button class="itemandpower">武器パワー</button>
                 </a>
                 <a href="">
                 <button class="itemandpower">アビリティパワー</button>
                 </a>
-                <a href="itemandpower.html">
+                <a href="">
                 <button class="itemandpower">攻撃速度</button>
+                </a>
+                <a href="">
+                <button class="itemandpower">CT短縮</button>
+                </a>
+                <a href="">
+                <button class="itemandpower">弾薬数</button>
+                </a>
+                <a href="">
+                <button class="itemandpower">ライフ吸収</button>
+                </a>
+
+                <!--予備
+                <a href="">
+                <button class="itemandpower">ライフ吸収（武器）</button>
+                </a>
+                <a href="">
+                <button class="itemandpower">ライフ吸収（アビリティ）</button>
+                </a>
+                -->
+
+                <p></p>
+
+                <a href="">
+                <button class="itemandpower">移動速度</button>
+                </a>
+                <a href="">
+                <button class="itemandpower">リロード速度</button>
+                </a>
+                <a href="">
+                <button class="itemandpower">近接ダメージ</button>
+                </a>
+                <a href="">
+                <button class="itemandpower">クリティカルダメージ</button>
+                </a>
+                <a href="">
+                <button class="itemandpower">その他</button>
+                </a>
+                <p></p>
+
+                キャラ固有<input type="checkbox" name="IAPbox1" value="box1">
             </div>
 
             <div class="tab-content" id="tab2">

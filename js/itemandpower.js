@@ -15,7 +15,14 @@
     });
 }*/
 
-
-function IAPtab(){
-    console("ああああ")
+/*
+function ow2IconClick(){
+    const chat = document.getElementById("chat")
+    chat.style.display = (chat.style.display === "block") ? "none" : "block";
 }
+*/
+
+function IAPbutton(){
+    const itemButton = document.getElementById("itemButton")
+    button.style.backgroundColor = (button.style.backgroundColor === "#fff") ? "#ffffff80" : "#fff";
+}/*TODO:カラーが反映されない*/
