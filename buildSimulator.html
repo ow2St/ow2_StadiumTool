@@ -14,10 +14,17 @@
         </div>
         <div class="header-bottom">
             <!--ボタン後ろに空白が入るため改行しない-->
-            <a href="itemAndPower.html" class="header-button">アイテム/パワー一覧</a><a href="buildSimulator.html" class="header-button-selected">ビルドシミュレーター</a><a href="patchNote.html" class="header-button">パッチノート</a>
+            <a href="index.html" class="header-button">トップページ</a><a href="itemAndPower.html" class="header-button">アイテム/パワー一覧</a><a href="buildSimulator.html" class="header-button-selected">ビルドシミュレーター</a><a href="patchNote.html" class="header-button">パッチノート</a>
         </div>
     </header>
-    <main>
-        
-    </main>
+    <main-buildsimulator>
+        <p class="selectedhero-title">選択ヒーロー</p>
+        <img src="assets/images/icons/ow2.png" onclick="openHeroWindow()" class="hero-icon">
+        <div class="modal-overlay" id="hero-window">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeHeroWindow()">✖︎</span>
+            </div>
+        </div>
+    </main-buildsimulator>
+    <script src="js/buildsimulator.js"></script>
 </html>
