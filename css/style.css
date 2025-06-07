@@ -116,10 +116,11 @@ main-toppage {
     margin-right: 20px;
     margin-bottom: 30px;
     min-width: 430px;
-    border: 1px solid gray;
+    border: 2px solid gray;
     white-space: nowrap;
     height: 600px;
     overflow-y: scroll;
+    background-color: #FAFAFA;
 }
 
 /*
@@ -160,7 +161,7 @@ main-buildsimulator {
     /* TODO:RIN カーソルを合わせた際の色調整 */
 }
 
-.modal-overlay {
+.herowindow-overlay {
     display: none;
     position: fixed;
     top: 0;
@@ -172,9 +173,10 @@ main-buildsimulator {
     z-index: 999;
 }
 
-.modal-content {
+.herowindow-content {
     /* TODO:RIN アイコンが揃い次第再調整 */
     position: fixed;
+    display: inline-flex;
     top: 300px;
     left: 30%;
     right: 30%;
@@ -185,7 +187,19 @@ main-buildsimulator {
     border-radius: 8px;
 }
 
-.close-button {
+.herowindow-content-left {
+    width: 100%;
+}
+
+.herowindow-hero-icon {
+    cursor: pointer;
+    margin-left: 8px;
+    margin-bottom: 3px;
+    width: 70px;
+    height: 70px;
+}
+
+.herowindow-close-button {
     border: 1px solid gray;
     float: right;
     cursor: pointer;
@@ -193,6 +207,7 @@ main-buildsimulator {
     padding-right: 5px;
     font-size: 18px;
     color: #555;
+    height: 28px;
 }
 
 .selectedbuild-title {
@@ -206,13 +221,49 @@ main-buildsimulator {
 
 .selectedbuild-content {
     padding-top: 15px;
-    display: block;
+    display: inline-flex;
     margin-left: 20px;
-    width: 180px;
+    width: 195px;
     border: 2px solid gray;
     white-space: nowrap;
-    height: 350px;
+    height: 420px;
     background-color: #FAFAFA;
+}
+
+.selectedbuild-item {
+    padding-left: 10px;
+    width: 50%;
+}
+
+.selectedbuild-power {
+    width: 50%;
+}
+
+.selectedbuild-item-icon {
+    display: block;
+    margin-left: 8px;
+    margin-bottom: 8px;
+    width: 60px;
+    height: 60px;
+}
+
+.selectedbuild-power-icon {
+    display: block;
+    margin-left: 8px;
+    margin-bottom: 8px;
+    width: 60px;
+    height: 60px;
+}
+
+.selectedbuild-delete-button {
+    border: 1px solid gray;
+    float: right;
+    cursor: pointer;
+    padding-left: 3px;
+    padding-right: 3px;
+    font-size: 12px;
+    color: #555;
+    height: 18px;
 }
 
 .status-title {
@@ -232,8 +283,9 @@ main-buildsimulator {
     width: 430px;
     border: 2px solid gray;
     white-space: nowrap;
-    height: 350px;
+    height: 420px;
     background-color: #FAFAFA;
+    overflow-y: scroll;
 }
 
 .status {
