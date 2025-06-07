@@ -135,6 +135,7 @@ main-buildsimulator {
     height: 100vh;
     border: 1px solid black;
     display: block;
+    width: auto;
     min-width: 430px;
     font-weight: 300;
 }
@@ -197,18 +198,69 @@ main-buildsimulator {
 .selectedbuild-title {
     display: flex;
     margin-left: 20px;
-    min-width: 430px;
+    width: 200px;
     font-size: 25px;
     height: 30px;
     white-space: nowrap;
 }
 
 .selectedbuild-content {
+    padding-top: 15px;
     display: block;
     margin-left: 20px;
-    width: 250px;
+    width: 180px;
     border: 2px solid gray;
     white-space: nowrap;
     height: 350px;
     background-color: #FAFAFA;
+}
+
+.status-title {
+    display: flex;
+    margin-left: 20px;
+    width: 430px;
+    font-size: 25px;
+    height: 30px;
+    white-space: nowrap;
+}
+
+.status-content {
+    padding-top: 15px;
+    display: block;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 430px;
+    border: 2px solid gray;
+    white-space: nowrap;
+    height: 350px;
+    background-color: #FAFAFA;
+}
+
+.status {
+    text-indent: 1em;
+    font-weight: 550;
+    color: #555555;
+    margin: 0;
+}
+
+.itemlist-title {
+    width: 100%;
+    text-indent: 1em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 25px;
+    height: 30px;
+    white-space: nowrap;
+    background-color: #ffe6e6;
+}
+
+.powerlist-title {
+    width: 100%;
+    text-indent: 1em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 25px;
+    height: 30px;
+    white-space: nowrap;
+    background-color: #ccffcc;
 }
