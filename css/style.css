@@ -363,6 +363,10 @@ main-IAP{
     /*width: 75px;*/
     /*height: 30px;*/
     display: block;
-    background-color: #fff;
+    background-color: #D3D3D3;
 }
 
+.button-list{
+    display:flex;
+
+}

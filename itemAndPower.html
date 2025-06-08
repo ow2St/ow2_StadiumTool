@@ -7,131 +7,72 @@
         <link rel="stylesheet" href="css/style.css">
         <title>アイテム/パワー一覧</title>
     </head>
+    <!--ヘッダー-->
     <header>
         <div class="header-top">
             <p class="header-title">アイテム/パワー一覧</p>
+            <img src="assets/images/icons/ow2.png" class="ow2-icon">
+            <img src="assets/images/icons/stadium.png" class="stadium-icon">
         </div>
         <div class="header-bottom">
-            <a href="itemandpower.html">
-                <button class="topPage-button">アイテム/パワー一覧</button>
-            </a>
-            <a href="buildsimulator.html">
-                <button class="topPage-button">ビルドシミュレーター</button>
-            </a>
-            <a href="patchnote.html">
-                <button class="topPage-button">パッチノート</button>
-            </a>
+            <!--ボタン後ろに空白が入るため改行しない-->
+            <a href="index.html" class="header-button">トップページ</a><a href="itemAndPower.html" class="header-button-selected">アイテム/パワー一覧</a><a href="buildSimulator.html" class="header-button">ビルドシミュレーター</a><a href="patchNote.html" class="header-button">パッチノート</a>
         </div>
     </header>
     <body>
-        <p></p>
-        <div onclick="IAPtab()">
-            <!--ここの内容進めたい、タブ分け-->
-            <div class="tabs"></div>
-            <button class="tabButton active" data-tab="tab1">アイテム</button>
-            <button class="tabButton" data-tab="tab2">パワー</button>
-            
-        </div>
-
         <main-IAP>
-            <div class="tab-content active" id="tab1">
-                <!--タブ1の内容-->
-                <div onclick="IAPbutton()">
-                    <a>カテゴリー</a>
-                    <a href="itemandpower.html">
-                        <button class="itemButton">武器</button>
-                    </a>
-                    <a href="">
-                        <button class="button">アビリティ</button>
-                    </a>
-                    <a href="">
-                        <button class="button">サバイバル</button>
-                    </a>
+            <p id="tabcontrol">
+            <span id="a" onclick="changeTabA()">アイテム</span>
+            <span id="b" onclick="changeTabB()">パワー</span>
+            </p>
+            <div id="tabbody">
+                <div id="aa">
+                    <!--タブ1の内容-->
+                    <div class="button-list">
+                        <span>カテゴリー</span>
+                        <button class="button" id="itemButton" onclick="IAPbutton()">武器</button>
+                        <button class="button" id="itemButton" onclick="IAPbutton()">アビリティ</button>
+                        <button class="button" id="itemButton" onclick="IAPbutton()">サバイバル</button>
+                    </div>
+                    <div class="button-list">
+                        <span>レアリティ</span>
+                        <button class="button">コモン</button>
+                        <button class="button">レア</button>
+                        <button class="button">エピック</button>
+                    </div>
+                    <div class="button-list">
+                        <span>ステータス</span>
+                        <button class="itemandpower">ライフ</button>
+                        <button class="itemandpower">アーマー</button>
+                        <button class="itemandpower">シールド</button>
+                        <button class="itemandpower">武器パワー</button>
+                        <button class="itemandpower">アビリティパワー</button>
+                        <button class="itemandpower">攻撃速度</button>
+                        <button class="itemandpower">CT短縮</button>
+                        <button class="itemandpower">弾薬数</button>
+                        <button class="itemandpower">ライフ吸収</button>
+                        <!--予備
+                        <button class="itemandpower">ライフ吸収（武器）</button>
+                        <button class="itemandpower">ライフ吸収（アビリティ）</button>
+                        -->
+                        <button class="itemandpower">移動速度</button>
+                        <button class="itemandpower">リロード速度</button>
+                        <button class="itemandpower">近接ダメージ</button>
+                        <button class="itemandpower">クリティカルダメージ</button>
+                        <button class="itemandpower">その他</button>
+                    </div>
+                    <div class="button-list">
+                    キャラ固有<input type="checkbox" name="IAPbox1" value="box1">
                 </div>
-                <p></p>
+                <div id="bb">
+                    <!--タブ2の内容-->
 
-                <a>レアリティ</a>
-                <a href="">
-                <button class="button">コモン</button>
-                </a>
-                <a href="">
-                <button class="button">レア</button>
-                </a>
-                <a href="">
-                <button class="button">エピック</button>
-                <p></p>
-
-                <a>ステータス</a>
-                <a href="">
-                <button class="itemandpower">ライフ</button>
-                </a>
-                <a href="">
-                <button class="itemandpower">アーマー</button>
-                </a>
-                <a href="">
-                <button class="itemandpower">シールド</button>
-                <a href="">
-                </a>
-                <p></p>
-                
-                <a href="">
-                <button class="itemandpower">武器パワー</button>
-                </a>
-                <a href="">
-                <button class="itemandpower">アビリティパワー</button>
-                </a>
-                <a href="">
-                <button class="itemandpower">攻撃速度</button>
-                </a>
-                <a href="">
-                <button class="itemandpower">CT短縮</button>
-                </a>
-                <a href="">
-                <button class="itemandpower">弾薬数</button>
-                </a>
-                <a href="">
-                <button class="itemandpower">ライフ吸収</button>
-                </a>
-
-                <!--予備
-                <a href="">
-                <button class="itemandpower">ライフ吸収（武器）</button>
-                </a>
-                <a href="">
-                <button class="itemandpower">ライフ吸収（アビリティ）</button>
-                </a>
-                -->
-
-                <p></p>
-
-                <a href="">
-                <button class="itemandpower">移動速度</button>
-                </a>
-                <a href="">
-                <button class="itemandpower">リロード速度</button>
-                </a>
-                <a href="">
-                <button class="itemandpower">近接ダメージ</button>
-                </a>
-                <a href="">
-                <button class="itemandpower">クリティカルダメージ</button>
-                </a>
-                <a href="">
-                <button class="itemandpower">その他</button>
-                </a>
-                <p></p>
-
-                キャラ固有<input type="checkbox" name="IAPbox1" value="box1">
+                </div>
             </div>
-
-            <div class="tab-content" id="tab2">
-                <!--タブ2の内容-->
-
-            </div>
-
                 
-        </main>
+        </main-IAP>
 
 
     </body>
+    <script src="js/itemandpower.js"></script>
 </html>
