@@ -23,6 +23,6 @@ function ow2IconClick(){
 */
 
 function IAPbutton(){
-    const itemButton = document.getElementById("itemButton")
+    const Button = document.getElementById("itemButton")
     button.style.backgroundColor = (button.style.backgroundColor === "#fff") ? "#ffffff80" : "#fff";
 }/*TODO:カラーが反映されない*/
