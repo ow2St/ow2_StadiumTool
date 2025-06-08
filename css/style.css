@@ -47,25 +47,18 @@ header {
     height: 200px;
 }
 
-.chat{
-    float: left;
-    width: 150px;
-    height: 150px;
-    display: none;
-}
-
 .stadium-icon{
     margin-top: 15px;
-    margin-right: 40px;
+    margin-right: 35px;
     float: right;
     width: 200px;
     height: 170px;
 }
 
-.topPage-button{
+.header-button{
     color: black;
     display: inline-flex;
-    width: 250px;
+    width: 220px;
     height:26px;
     padding-top: 12px;
     padding-bottom: 12px;
@@ -74,8 +67,21 @@ header {
     text-decoration: none;
 }
 
-.topPage-button:hover{
+.header-button:hover{
     background-color: #eee;
+}
+
+.header-button-selected{
+    color: black;
+    display: inline-flex;
+    width: 220px;
+    height:26px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    justify-content: center;
+    background-color: lightgray;
+    border-right: 1px solid lightgray;
+    text-decoration: none;
 }
 
 /*
@@ -84,7 +90,7 @@ header {
 ====================================================================
 */
 
-main-toppage{
+main-toppage {
     margin-top: 2px;
     margin-left: 200px;
     margin-right: 200px;
@@ -95,7 +101,7 @@ main-toppage{
     font-weight: 300;
 }
 
-.toppage-info-title {
+.info-title {
     display: flex;
     margin-left: 20px;
     min-width: 430px;
@@ -104,16 +110,235 @@ main-toppage{
     white-space: nowrap;
 }
 
-.toppage-info-content{
+.info-content {
     display: block;
     margin-left: 20px;
     margin-right: 20px;
     margin-bottom: 30px;
     min-width: 430px;
-    border: 1px solid gray;
+    border: 2px solid gray;
     white-space: nowrap;
     height: 600px;
     overflow-y: scroll;
+    background-color: #FAFAFA;
+}
+
+/*
+====================================================================
+メイン部（ビルドシミュレーター）
+====================================================================
+*/
+
+main-buildsimulator {
+    margin-top: 2px;
+    margin-left: 200px;
+    margin-right: 200px;
+    height: 100vh;
+    border: 1px solid black;
+    display: block;
+    width: auto;
+    min-width: 430px;
+    font-weight: 300;
+}
+
+.selectedhero-title {
+    display: flex;
+    margin-left: 20px;
+    min-width: 430px;
+    font-size: 25px;
+    height: 30px;
+    white-space: nowrap;
+}
+
+.hero-icon {
+    cursor: pointer;
+    margin-left: 30px;
+    width: 120px;
+    height: 120px;
+}
+
+.hero-icon:hover {
+    /* TODO:RIN カーソルを合わせた際の色調整 */
+}
+
+.herowindow-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-width: 430px;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+.herowindow-content {
+    /* TODO:RIN アイコンが揃い次第再調整 */
+    position: fixed;
+    display: inline-flex;
+    top: 300px;
+    left: 20%;
+    right: 20%;
+    padding: 15px;
+    min-width: 580px;
+    height: 250px;
+    background: white;
+    border-radius: 8px;
+}
+
+.herowindow-content-left {
+    width: 100%;
+}
+
+.herowindow-hero-icon {
+    cursor: pointer;
+    margin-left: 8px;
+    margin-bottom: 3px;
+    width: 70px;
+    height: 70px;
+}
+
+.herowindow-close-button {
+    border: 1px solid gray;
+    float: right;
+    cursor: pointer;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 18px;
+    color: #555;
+    height: 28px;
+}
+
+.selectedbuild-title {
+    display: flex;
+    margin-left: 20px;
+    width: 200px;
+    font-size: 25px;
+    height: 30px;
+    white-space: nowrap;
+}
+
+.selectedbuild-content {
+    padding-top: 15px;
+    display: inline-flex;
+    margin-left: 20px;
+    width: 195px;
+    border: 2px solid gray;
+    white-space: nowrap;
+    height: 420px;
+    background-color: #FAFAFA;
+}
+
+.selectedbuild-item {
+    padding-left: 10px;
+    width: 50%;
+}
+
+.selectedbuild-power {
+    width: 50%;
+}
+
+.selectedbuild-item-icon {
+    display: block;
+    margin-left: 8px;
+    margin-bottom: 8px;
+    width: 60px;
+    height: 60px;
+}
+
+.selectedbuild-power-icon {
+    display: block;
+    margin-left: 8px;
+    margin-bottom: 8px;
+    width: 60px;
+    height: 60px;
+}
+
+.selectedbuild-delete-button {
+    border: 1px solid gray;
+    float: right;
+    cursor: pointer;
+    padding-left: 3px;
+    padding-right: 3px;
+    font-size: 12px;
+    color: #555;
+    height: 18px;
+}
+
+.status-title {
+    display: flex;
+    margin-left: 20px;
+    width: 430px;
+    font-size: 25px;
+    height: 30px;
+    white-space: nowrap;
+}
+
+.status-content {
+    padding-top: 15px;
+    display: block;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 430px;
+    border: 2px solid gray;
+    white-space: nowrap;
+    height: 420px;
+    background-color: #FAFAFA;
+    overflow-y: scroll;
+}
+
+.status {
+    text-indent: 1em;
+    font-weight: 550;
+    color: #555555;
+    margin: 0;
+}
+
+.itemlist-title {
+    width: 100%;
+    text-indent: 1em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 25px;
+    height: 30px;
+    white-space: nowrap;
+    background-color: #ffe6e6;
+}
+
+.powerlist-title {
+    width: 100%;
+    text-indent: 1em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 25px;
+    height: 30px;
+    white-space: nowrap;
+    background-color: #ccffcc;
+}
+
+.item-table {
+    border-collapse: collapse;
+    width: 90%;
+    margin: auto;
+}
+
+.item-thead {
+    background-color: #f2f2f2;
+}
+
+.item-tr {
+    border: 1px solid #999;
+    padding: 8px 12px;
+    text-align: center;
+}
+
+.item-th {
+    border-right: 1px solid lightgray;
+}
+
+.item-td {
+    border-right: 1px solid lightgray;
 }
 
 /*

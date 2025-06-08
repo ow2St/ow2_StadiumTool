@@ -9,22 +9,18 @@
     <header>
         <div class="header-top">
             <p class="header-title">OWスタジアム攻略</p>
-        <div onclick="ow2IconClick()">
-            <img src="assets/images/icons/genji.png" class="ow2-icon">
-        </div>
-            <script src="js/toppage.js"></script>
-            <img src="assets/images/chat.png" id="chat" class="chat">
+            <img src="assets/images/icons/ow2.png" class="ow2-icon">
             <img src="assets/images/icons/stadium.png" class="stadium-icon">
         </div>
         <div class="header-bottom">
             <!--ボタン後ろに空白が入るため改行しない-->
-            <a href="itemAndPower.html" class="topPage-button">アイテム/パワー一覧</a><a href="buildSimulator.html" class="topPage-button">ビルドシミュレーター</a><a href="patchNote.html" class="topPage-button">パッチノート</a>
+            <a href="index.html" class="header-button-selected">トップページ</a><a href="itemAndPower.html" class="header-button">アイテム/パワー一覧</a><a href="buildSimulator.html" class="header-button">ビルドシミュレーター</a><a href="patchNote.html" class="header-button">パッチノート</a>
         </div>
     </header>
     <!--メイン-->
     <main-toppage>
-        <p class="toppage-info-title">お知らせ</p>
-        <div class="toppage-info-content">
+        <p class="info-title">お知らせ</p>
+        <div class="info-content">
             <ul style="margin-bottom: 30px;">
                 <li><a href="patchNote.html">最新パッチノート</a><span>（〇〇〇〇年〇〇月〇〇日）</span></li>
             </ul>
@@ -34,4 +30,5 @@
             </ul>
         </div>
     </main-toppage>
+    <script src="js/toppage.js"></script>
 </html>

@@ -1,27 +1,137 @@
 <!DOCTYPE html>
-<html>
+<html style="overflow: scroll; font-family: Meiryo, Hiragino Sans">
     <head>
         <meta charset="UTF-0">
         <link rel="stylesheet" href="css/style.css">
         <title>ビルドシミュレーター</title>
     </head>
+    <!--ヘッダー-->
     <header>
         <div class="header-top">
-            <p class="header-title">アイテム/パワー一覧</p>
+            <p class="header-title">ビルドシミュレーター</p>
+            <img src="assets/images/icons/ow2.png" class="ow2-icon">
+            <img src="assets/images/icons/stadium.png" class="stadium-icon">
         </div>
         <div class="header-bottom">
-            <a href="itemandpower.html">
-                <button class="topPage-button">アイテム/パワー一覧</button>
-            </a>
-            <a href="buildsimulator.html">
-                <button class="topPage-button">ビルドシミュレーター</button>
-            </a>
-            <a href="patchnote.html">
-                <button class="topPage-button">パッチノート</button>
-            </a>
+            <!--ボタン後ろに空白が入るため改行しない-->
+            <a href="index.html" class="header-button">トップページ</a><a href="itemAndPower.html" class="header-button">アイテム/パワー一覧</a><a href="buildSimulator.html" class="header-button-selected">ビルドシミュレーター</a><a href="patchNote.html" class="header-button">パッチノート</a>
         </div>
     </header>
-    <main>
-        
-    </main>
+    <main-buildsimulator>
+        <p class="selectedhero-title">選択ヒーロー</p>
+        <img src="assets/images/icons/ow2.png" onclick="openHeroWindow()" class="hero-icon">
+        <div class="herowindow-overlay" id="herowindow">
+            <div class="herowindow-content">
+                <div class="herowindow-content-left">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                    <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                </div>
+                    <span class="herowindow-close-button" onclick="closeHeroWindow()">✖︎</span>
+            </div>
+        </div>
+        <div style="display: flex;">
+            <p class="selectedbuild-title">ビルド</p>
+            <p class="status-title">ステータス</p>
+        </div>
+        <div style="display: flex;">
+            <div class="selectedbuild-content">
+                <div class="selectedbuild-item">
+                    <div style="display: flex;">
+                        <img src="assets/images/icons/ow2.png" class="selectedbuild-item-icon">
+                        <span class="selectedbuild-delete-button">✖︎</span>
+                    </div>
+                    <div style="display: flex;">
+                        <img src="assets/images/icons/ow2.png" class="selectedbuild-item-icon">
+                        <span class="selectedbuild-delete-button">✖︎</span>
+                    </div>
+                    <div style="display: flex;">
+                        <img src="assets/images/icons/ow2.png" class="selectedbuild-item-icon">
+                        <span class="selectedbuild-delete-button">✖︎</span>
+                    </div>
+                    <div style="display: flex;">
+                        <img src="assets/images/icons/ow2.png" class="selectedbuild-item-icon">
+                        <span class="selectedbuild-delete-button">✖︎</span>
+                    </div>
+                    <div style="display: flex;">
+                        <img src="assets/images/icons/ow2.png" class="selectedbuild-item-icon">
+                        <span class="selectedbuild-delete-button">✖︎</span>
+                    </div>
+                    <div style="display: flex;">
+                        <img src="assets/images/icons/ow2.png" class="selectedbuild-item-icon">
+                        <span class="selectedbuild-delete-button">✖︎</span>
+                    </div>
+                </div>
+                <div class="selectedbuild-power">
+                    <div style="display: flex;">
+                        <img src="assets/images/icons/ow2.png" class="selectedbuild-item-icon">
+                        <span class="selectedbuild-delete-button">✖︎</span>
+                    </div>
+                    <div style="display: flex;">
+                        <img src="assets/images/icons/ow2.png" class="selectedbuild-item-icon">
+                        <span class="selectedbuild-delete-button">✖︎</span>
+                    </div>
+                    <div style="display: flex;">
+                        <img src="assets/images/icons/ow2.png" class="selectedbuild-item-icon">
+                        <span class="selectedbuild-delete-button">✖︎</span>
+                    </div>
+                    <div style="display: flex;">
+                        <img src="assets/images/icons/ow2.png" class="selectedbuild-item-icon">
+                        <span class="selectedbuild-delete-button">✖︎</span>
+                    </div>
+                </div>
+            </div>
+            <div class="status-content">
+                <p class="status">キャラ名</p>
+                <p class="status">ライフ：</p>
+                <p class="status">アーマー：</p>
+                <p class="status">シールド：</p>
+                <p class="status">メイン武器：</p>
+                <p class="status">サブ武器：</p>
+                <p class="status">アビリティ１：</p>
+                <p class="status">アビリティ２：</p>
+                <p class="status">アビリティ３：</p>
+                <p class="status">ULT：</p>
+                <p class="status">追加効果：</p>
+            </div>
+        </div>
+        <p class="itemlist-title">アイテム一覧</p>
+        <table class="item-table">
+            <thead class="item-thead">
+                <tr class="item-tr">
+                    <th class="item-th" style="width: 40px;">選択</th>
+                    <th class="item-th" style="width: 180px;">アイテム名</th>
+                    <th class="item-th" style="width: 80px;">アイコン</th>
+                    <th class="item-th" style="width: 140px;">ステータス</th>
+                    <th class="item-th" style="width: 300px;">テキスト</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="item-tr">
+                    <td class="item-td"><input type="checkbox" style="transform: scale(1.2)"></td>
+                    <td class="item-td">T</td>
+                    <td class="item-td">E</td>
+                    <td class="item-td">S</td>
+                    <td class="item-td">T</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="powerlist-title">パワー一覧</p>
+    </main-buildsimulator>
+    <script src="js/buildsimulator.js"></script>
 </html>
