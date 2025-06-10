@@ -319,7 +319,7 @@ main-buildsimulator {
 
 .item-table {
     border-collapse: collapse;
-    width: 90%;
+    width: 95%;
     margin: auto;
 }
 
@@ -338,6 +338,30 @@ main-buildsimulator {
 }
 
 .item-td {
+    border-right: 1px solid lightgray;
+}
+
+.power-table {
+    border-collapse: collapse;
+    width: 95%;
+    margin: auto;
+}
+
+.power-thead {
+    background-color: #f2f2f2;
+}
+
+.power-tr {
+    border: 1px solid #999;
+    padding: 8px 12px;
+    text-align: center;
+}
+
+.power-th {
+    border-right: 1px solid lightgray;
+}
+
+.power-td {
     border-right: 1px solid lightgray;
 }
 
