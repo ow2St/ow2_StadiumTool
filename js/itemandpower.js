@@ -1,19 +1,3 @@
-//サンプル（コピペしただけ）
-/*function itemTab(){
-    document.querySelectorAll('.tab-button').forEach(button => {
-    button.addEventListener('click', () => {
-        const tabId = button.getAttribute('data-tab');
-
-        // ボタンのアクティブ状態を切り替え
-        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-
-        // コンテンツのアクティブ状態を切り替え
-        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-    });
-    });
-}*/
 
 /*
 function ow2IconClick(){
@@ -29,9 +13,42 @@ const Button =
     b.style.backgroundColor = "lightgray";
         document.getElementById("itemButton").style.backgroundColor = "lightgray";
 } */
-/*TODO:カラーが反映されない*/
+let isCheckWeapon = true;
 
+//武器ボタン選択カラー変更
 function IAPbutton(){
-    const Button = document.getElementById("itemButton")
-    Button.style.backgroundColor = (Button.style.backgroundColor === "#D3D3D3") ? "FFFFFF" : "#D3D3D3";
+    var Button = document.getElementById("itemButtonWeapon");
+    if(isCheckWeapon){
+        Button.style.backgroundColor = "white";
+    }else{
+        Button.style.backgroundColor = "lightgray";
+    }
+    isCheckWeapon = !isCheckWeapon;
+    /* Button.style.backgroundColor = (Button.style.backgroundColor == "lightgray") ? "white" : "lightgray"; */
+}
+
+//タブ切り替え
+const a = document.getElementById('a');
+const aa = document.getElementById('aa');
+const b = document.getElementById('b');
+const bb = document.getElementById('bb');
+
+function changeTabA() {
+   // ▼B-2. 指定のタブページだけを表示する
+   aa.style.display = "block";
+   bb.style.display = "none";
+   aa.style.zIndex = "10";
+
+   // ▼B-4. ページ遷移しないようにfalseを返す
+   return false;
+}
+
+function changeTabB() {
+   // ▼B-2. 指定のタブページだけを表示する
+   bb.style.display = "block";
+   aa.style.display = "none";
+   bb.style.zIndex = "10";
+
+   // ▼B-4. ページ遷移しないようにfalseを返す
+   return false;
 }
