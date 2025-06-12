@@ -338,7 +338,7 @@ main-buildsimulator {
 }
 
 .item-td {
-    border-right: 1px solid lightgray;
+    border: 1px solid lightgray;
 }
 
 .power-table {

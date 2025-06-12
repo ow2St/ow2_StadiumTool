@@ -32,16 +32,11 @@ function linkItemList(itemList) {
     for(let i=0; i<itemList.length; i++) {
         var tr = document.createElement("tr");
 
-        // 必要な列ごとのフラグと変数を初期化 
-        let isCheck = false;
-        let checkText = false;  // 選択列はアイテム情報になく、初期時必ずfalseを入れる
-        let isItemName = false;
+        // 必要な列ごとの変数を初期化 
+        let isCheck = false;  // 選択列はアイテム情報になく、初期時必ずfalseを入れる
         let itemNameText = "";
-        let isIcon = false;
         let iconText = "-";  // アイコン列は現状アイテム情報にないため、とりあえずハイフンを入れる　TODO：RIN
-        let isStatus = false;
         let statusText = "";
-        let isText = false;
         let textText = "";
 
         // 各キーペアごとにループ
@@ -88,27 +83,35 @@ function linkItemList(itemList) {
         // 取得した各値をテーブルに紐付け
         // 選択列
         var td = document.createElement("td");
-        td.textContent = checkText;
+        td.classList.add("item-td");
+        var input = document.createElement("input");
+        input.type = "checkbox";
+        input.checked = isCheck;
+        td.appendChild(input);
         tr.appendChild(td);
 
         // アイテム名列
         var td = document.createElement("td");
         td.textContent = itemNameText;
+        td.classList.add("item-td");
         tr.appendChild(td);
 
         // アイコン列
         var td = document.createElement("td");
         td.textContent = iconText;
+        td.classList.add("item-td");
         tr.appendChild(td);
 
         // ステータス列
         var td = document.createElement("td");
         td.innerHTML = statusText.replace(/\n/g, "<br>");
+        td.classList.add("item-td");
         tr.appendChild(td);
 
         // テキスト列
         var td = document.createElement("td");
         td.textContent = textText;
+        td.classList.add("item-td");
         tr.appendChild(td);
 
         tbody.appendChild(tr);
