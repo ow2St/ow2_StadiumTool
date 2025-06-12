@@ -357,6 +357,32 @@ main-IAP{
     min-width: 430px;
     font-weight: 300;
 }
+/* TODO:06/13ここから */
+tab-frame{
+    margin-top: 2px;
+    margin-left: 200px;
+    margin-right: 200px;
+    /* border: 1px solid white; */
+
+    border-top: 1px solid black;
+    /* border-bottom: 1px solid black; */
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    /* border-style: dashed; */
+    display: block;
+    display: inline-block;
+    /* min-width: 430px; */
+    font-weight: 300;
+}
+tab-Powerframe{
+    margin-top: 2px;
+    margin-left: 200px;
+    margin-right: 200px;
+    border: 1px solid white;
+    display: block;
+    min-width: 430px;
+    font-weight: 300;
+}
 
 .button{
     float: left;
