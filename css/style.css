@@ -295,7 +295,8 @@ main-buildsimulator {
     margin: 0;
 }
 
-.itemlist-title {
+.itemlist-title-close {
+    display: block;
     width: 100%;
     text-indent: 1em;
     padding-top: 10px;
@@ -306,7 +307,82 @@ main-buildsimulator {
     background-color: #ffe6e6;
 }
 
-.powerlist-title {
+.itemlist-title-open {
+    display: none;
+    width: 100%;
+    text-indent: 1em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 25px;
+    height: 30px;
+    white-space: nowrap;
+    background-color: #ffe6e6;
+}
+
+.itemlist-title-close:hover{
+    cursor: pointer;
+}
+
+.itemlist-title-open:hover{
+    cursor: pointer;
+}
+
+.weapon-title-close {
+    display: block;
+    margin-bottom: 2px;
+}
+
+.weapon-title-open {
+    display: none;
+    margin-bottom: 2px;
+}
+
+.weapon-title-close:hover{
+    cursor: pointer;
+}
+
+.weapon-title-open:hover{
+    cursor: pointer;
+}
+
+.ability-title-close {
+    display: block;
+    margin-bottom: 2px;
+}
+
+.ability-title-open {
+    display: none;
+    margin-bottom: 2px;
+}
+
+.ability-title-close:hover{
+    cursor: pointer;
+}
+
+.ability-title-open:hover{
+    cursor: pointer;
+}
+
+.survival-title-close {
+    display: block;
+    margin-bottom: 2px;
+}
+
+.survival-title-open {
+    display: none;
+    margin-bottom: 2px;
+}
+
+.survival-title-close:hover{
+    cursor: pointer;
+}
+
+.survival-title-open:hover{
+    cursor: pointer;
+}
+
+.powerlist-title-close {
+    display: block;
     width: 100%;
     text-indent: 1em;
     padding-top: 10px;
@@ -315,6 +391,26 @@ main-buildsimulator {
     height: 30px;
     white-space: nowrap;
     background-color: #ccffcc;
+}
+
+.powerlist-title-open {
+    display: none;
+    width: 100%;
+    text-indent: 1em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 25px;
+    height: 30px;
+    white-space: nowrap;
+    background-color: #ccffcc;
+}
+
+.powerlist-title-close:hover{
+    cursor: pointer;
+}
+
+.powerlist-title-open:hover{
+    cursor: pointer;
 }
 
 .item-table {
@@ -362,7 +458,7 @@ main-buildsimulator {
 }
 
 .power-td {
-    border-right: 1px solid lightgray;
+    border: 1px solid lightgray;
 }
 
 /*
