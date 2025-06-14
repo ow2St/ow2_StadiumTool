@@ -240,6 +240,10 @@ function changeTabA() {
    bb.style.display = "none";
    aa.style.zIndex = "10";
 
+   /* a.style.border = "1px","solid","black";
+   b.style.border = "1px","dashed","black"; 
+   TODO:タブボタン点線切り替えしたい①*/
+
    // ▼B-4. ページ遷移しないようにfalseを返す
    return false;
 }
@@ -249,6 +253,10 @@ function changeTabB() {
    bb.style.display = "block";
    aa.style.display = "none";
    bb.style.zIndex = "10";
+
+   /* b.style.border = "1px","solid","black";
+   a.style.border = "1px","dashed","black"; 
+   TODO:タブボタン点線切り替えしたい②*/
 
    // ▼B-4. ページ遷移しないようにfalseを返す
    return false;

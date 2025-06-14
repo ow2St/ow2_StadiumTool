@@ -21,13 +21,12 @@
     </header>
     <body>
         <tab-frame>
-            <span id="tabcontrol">
-                    <span id="a" onclick="changeTabA()">アイテム</span>
-                    <span id="b" onclick="changeTabB()">パワー</span>
+            <span class="tabs">
+                    <span id="a" class="tabItem" onclick="changeTabA()">アイテム</span>
+                    <span id="b" class="tabPower" onclick="changeTabB()">パワー</span>
             </span>
         </tab-frame>
         <main-IAP>
-            <div id="tabbody">
                 <div id="aa">
                     <!--タブ1の内容-->
                     <div class="button-list">
@@ -48,17 +47,17 @@
                         <button class="button" id="itemButtonArmor" onclick="IAPbuttonArmor()">アーマー</button>
                         <button class="button" id="itemButtonShield" onclick="IAPbuttonShield()">シールド</button>
                         <button class="button" id="itemButtonWeaponPower" onclick="IAPbuttonWeaponPower()">武器パワー</button>
-                        <button class="button" id="itemButtonAbilityPower" onclick="IAPbuttonAbilityPower()">アビリティパワー</button>
+                        <button class="button" id="itemButtonAbilityPower" onclick="IAPbuttonAbilityPower()">アビリティ パワー</button>
                         <button class="button" id="itemButtonAttackSpeed" onclick="IAPbuttonAttackSpeed()">攻撃速度</button>
                         <button class="button" id="itemButtonCtReducation" onclick="IAPbuttonCtReducation()">CT短縮</button>
                         <button class="button" id="itemButtonAmmo" onclick="IAPbuttonAmmo()">弾薬</button>
                         <!-- <button class="button" id="itemButtonLifeSteal" onclick="IAPbuttonLifeSteal()">ライフ吸収</button> -->
-                        <button class="button" id="itemButtonWeapon_LifeSteal" onclick="IAPbuttonWeapon_LifeSteal()">ライフ吸収（武器）</button>
-                        <button class="button" id="itemButtonAbility_LifeSteal" onclick="IAPbuttonAbility_LifeSteal()">ライフ吸収（アビリティ）</button>
+                        <button class="button" id="itemButtonWeapon_LifeSteal" onclick="IAPbuttonWeapon_LifeSteal()">ライフ吸収 （武器）</button>
+                        <button class="button" id="itemButtonAbility_LifeSteal" onclick="IAPbuttonAbility_LifeSteal()">ライフ吸収 （アビリティ）</button>
                         <button class="button" id="itemButtonSpeed" onclick="IAPbuttonSpeed()">移動速度</button>
                         <button class="button" id="itemButtonReloadSpeed" onclick="IAPbuttonReloadSpeed()">リロード速度</button>
                         <button class="button" id="itemButtonMeleeDamage" onclick="IAPbuttonMeleeDamage()">近接ダメージ</button>
-                        <button class="button" id="itemButtonCritical" onclick="IAPbuttonCritical()">クリティカルダメージ</button>
+                        <button class="button" id="itemButtonCritical" onclick="IAPbuttonCritical()">クリティカル ダメージ</button>
                         <button class="button" id="itemButtonOthers" onclick="IAPbuttonOthers()">その他</button>
                     </div>
                     <div class="button-list">
@@ -67,12 +66,8 @@
                 <div id="bb">
                     <!--タブ2の内容-->
 
-                </div>
-            </div>
-                
+                </div>                
         </main-IAP>
-
-
     </body>
     <script src="js/itemandpower.js"></script>
 </html>
