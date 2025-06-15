@@ -229,35 +229,33 @@ function IAPbuttonOthers(){
 }
 
 //タブ切り替え
-const a = document.getElementById('a');
-const aa = document.getElementById('aa');
-const b = document.getElementById('b');
-const bb = document.getElementById('bb');
+const tabItem = document.getElementById('tabItem');
+const itemContent = document.getElementById('item-content');
+const tabPower = document.getElementById('tabPower');
+const powerContent = document.getElementById('power-content');
 
-function changeTabA() {
-   // ▼B-2. 指定のタブページだけを表示する
-   aa.style.display = "block";
-   bb.style.display = "none";
-   aa.style.zIndex = "10";
-
-   /* a.style.border = "1px","solid","black";
-   b.style.border = "1px","dashed","black"; 
-   TODO:タブボタン点線切り替えしたい①*/
-
-   // ▼B-4. ページ遷移しないようにfalseを返す
-   return false;
+// アイテムタブに遷移
+function changeTabItem() {
+   itemContent.style.display = "block";
+   powerContent.style.display = "none";
+   tabPower.style.backgroundColor = "white";
+   tabItem.style.backgroundColor = "lightgray";
+   tabPower.style.border = "1px dashed black";
+   tabPower.style.borderBottom = "none";
+   tabPower.style.borderLeft = "none";
+   tabItem.style.border = "1px solid black";
+   tabItem.style.borderBottom = "none";
 }
 
-function changeTabB() {
-   // ▼B-2. 指定のタブページだけを表示する
-   bb.style.display = "block";
-   aa.style.display = "none";
-   bb.style.zIndex = "10";
-
-   /* b.style.border = "1px","solid","black";
-   a.style.border = "1px","dashed","black"; 
-   TODO:タブボタン点線切り替えしたい②*/
-
-   // ▼B-4. ページ遷移しないようにfalseを返す
-   return false;
+// パワータブに遷移
+function changeTabPower() {
+   powerContent.style.display = "block";
+   itemContent.style.display = "none";
+   tabItem.style.backgroundColor = "white";
+   tabPower.style.backgroundColor = "lightgray";
+   tabItem.style.border = "1px dashed black";
+   tabItem.style.borderBottom = "none";
+   tabItem.style.borderRight = "none";
+   tabPower.style.border = "1px solid black";
+   tabPower.style.borderBottom = "none";
 }

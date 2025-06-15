@@ -20,51 +20,54 @@
         </div>
     </header>
     <body>
-        <tab-frame>
-            <span class="tabs">
-                    <span id="a" class="tabItem" onclick="changeTabA()">アイテム</span>
-                    <span id="b" class="tabPower" onclick="changeTabB()">パワー</span>
-            </span>
-        </tab-frame>
         <main-IAP>
-                <div id="aa">
-                    <!--タブ1の内容-->
+                <div class="tabs">
+                    <span id="tabItem" class="tabItem" onclick="changeTabItem()">アイテム</span>
+                    <span id="tabPower" class="tabPower" onclick="changeTabPower()">パワー</span>
+                </div>
+                <div id="item-content" class="item-content">
+                    <!--アイテムタブの内容-->
                     <div class="button-list">
-                        <span>カテゴリー</span>
-                        <button class="button" id="itemButtonWeapon" onclick="IAPbuttonWeapon()">武器</button>
-                        <button class="button" id="itemButtonAbility" onclick="IAPbuttonAbility()">アビリティ</button>
-                        <button class="button" id="itemButtonSurvival" onclick="IAPbuttonSurvival()">サバイバル</button>
+                        <span class="button-category">カテゴリー</span>
+                        <div class="button-only">
+                            <button class="button" id="itemButtonWeapon" onclick="IAPbuttonWeapon()">武器</button>
+                            <button class="button" id="itemButtonAbility" onclick="IAPbuttonAbility()">アビリティ</button>
+                            <button class="button" id="itemButtonSurvival" onclick="IAPbuttonSurvival()">サバイバル</button>
+                        </div>
                     </div>
                     <div class="button-list">
-                        <span>レアリティ</span>
-                        <button class="button" id="itemButtonCommon" onclick="IAPbuttonCommon()">コモン</button>
-                        <button class="button" id="itemButtonRare" onclick="IAPbuttonRare()">レア</button>
-                        <button class="button" id="itemButtonEpic" onclick="IAPbuttonEpic()">エピック</button>
+                        <span class="button-category">レアリティ</span>
+                        <div class="button-only">
+                            <button class="button" id="itemButtonCommon" onclick="IAPbuttonCommon()">コモン</button>
+                            <button class="button" id="itemButtonRare" onclick="IAPbuttonRare()">レア</button>
+                            <button class="button" id="itemButtonEpic" onclick="IAPbuttonEpic()">エピック</button>
+                        </div>
                     </div>
                     <div class="button-list">
-                        <span>ステータス</span>
-                        <button class="button" id="itemButtonLife" onclick="IAPbuttonLife()">ライフ</button>
-                        <button class="button" id="itemButtonArmor" onclick="IAPbuttonArmor()">アーマー</button>
-                        <button class="button" id="itemButtonShield" onclick="IAPbuttonShield()">シールド</button>
-                        <button class="button" id="itemButtonWeaponPower" onclick="IAPbuttonWeaponPower()">武器パワー</button>
-                        <button class="button" id="itemButtonAbilityPower" onclick="IAPbuttonAbilityPower()">アビリティ パワー</button>
-                        <button class="button" id="itemButtonAttackSpeed" onclick="IAPbuttonAttackSpeed()">攻撃速度</button>
-                        <button class="button" id="itemButtonCtReducation" onclick="IAPbuttonCtReducation()">CT短縮</button>
-                        <button class="button" id="itemButtonAmmo" onclick="IAPbuttonAmmo()">弾薬</button>
-                        <!-- <button class="button" id="itemButtonLifeSteal" onclick="IAPbuttonLifeSteal()">ライフ吸収</button> -->
-                        <button class="button" id="itemButtonWeapon_LifeSteal" onclick="IAPbuttonWeapon_LifeSteal()">ライフ吸収 （武器）</button>
-                        <button class="button" id="itemButtonAbility_LifeSteal" onclick="IAPbuttonAbility_LifeSteal()">ライフ吸収 （アビリティ）</button>
-                        <button class="button" id="itemButtonSpeed" onclick="IAPbuttonSpeed()">移動速度</button>
-                        <button class="button" id="itemButtonReloadSpeed" onclick="IAPbuttonReloadSpeed()">リロード速度</button>
-                        <button class="button" id="itemButtonMeleeDamage" onclick="IAPbuttonMeleeDamage()">近接ダメージ</button>
-                        <button class="button" id="itemButtonCritical" onclick="IAPbuttonCritical()">クリティカル ダメージ</button>
-                        <button class="button" id="itemButtonOthers" onclick="IAPbuttonOthers()">その他</button>
+                        <span class="button-category">ステータス</span>
+                        <div class="button-only">
+                            <button class="button" id="itemButtonLife" onclick="IAPbuttonLife()">ライフ</button>
+                            <button class="button" id="itemButtonArmor" onclick="IAPbuttonArmor()">アーマー</button>
+                            <button class="button" id="itemButtonShield" onclick="IAPbuttonShield()">シールド</button>
+                            <button class="button" id="itemButtonWeaponPower" onclick="IAPbuttonWeaponPower()">武器パワー</button>
+                            <button class="button" id="itemButtonAbilityPower" onclick="IAPbuttonAbilityPower()">アビリティ パワー</button>
+                            <button class="button" id="itemButtonAttackSpeed" onclick="IAPbuttonAttackSpeed()">攻撃速度</button>
+                            <button class="button" id="itemButtonCtReducation" onclick="IAPbuttonCtReducation()">CT短縮</button>
+                            <button class="button" id="itemButtonAmmo" onclick="IAPbuttonAmmo()">弾薬</button>
+                            <button class="button" id="itemButtonWeapon_LifeSteal" onclick="IAPbuttonWeapon_LifeSteal()">ライフ吸収 （武器）</button>
+                            <button class="button" id="itemButtonAbility_LifeSteal" onclick="IAPbuttonAbility_LifeSteal()">ライフ吸収 （アビリティ）</button>
+                            <button class="button" id="itemButtonSpeed" onclick="IAPbuttonSpeed()">移動速度</button>
+                            <button class="button" id="itemButtonReloadSpeed" onclick="IAPbuttonReloadSpeed()">リロード速度</button>
+                            <button class="button" id="itemButtonMeleeDamage" onclick="IAPbuttonMeleeDamage()">近接ダメージ</button>
+                            <button class="button" id="itemButtonCritical" onclick="IAPbuttonCritical()">クリティカル ダメージ</button>
+                            <button class="button" id="itemButtonOthers" onclick="IAPbuttonOthers()">その他</button>
+                        </div>
                     </div>
                     <div class="button-list">
                     キャラ固有<input type="checkbox" id="box1" checked>
                 </div>
-                <div id="bb">
-                    <!--タブ2の内容-->
+                <div id="power-content">
+                    <!--パワータブの内容-->
 
                 </div>                
         </main-IAP>
