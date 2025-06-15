@@ -8,6 +8,22 @@ linkItemList(itemList);
 // パワーリストをテーブルに紐付け
 linkPowerList(powerList);
 
+// 選択中ヒーロー変数
+var selectedHero = "DVA"  // 初期値はDVA
+var life = 0;
+var armor = 0;
+var shield = 0;
+var mainWeapon = 0;
+var subWeapon = 0;
+var ability1 = 0;
+var ability2 = 0;
+var ability3 = 0;
+var ult = 0;
+var addPower = ""; 
+
+// ステータスボックス設定
+setStatus(selectedHero);
+
 // ------------------------------
 // 関数部
 // ------------------------------
@@ -23,8 +39,44 @@ function closeHeroWindow(){
 }
 
 // ヒーロー選択
-function selectHero(){
+function selectHero(id){
+    
+    // 選択中ヒーローを設定
+    selectedHero = id;
+
+    // 選択中ヒーローアイコンを変更
+    let imgPath = id + ".png";
+    document.getElementById("selected-hero-icon").src = "assets/images/icons/hero/" + imgPath;
+
+    // ステータスボックス設定
+    setStatus(id);
+
+    // ヒーローウィンドウを消す
     document.getElementById("herowindow").style.display = "none";
+}
+
+// ステータスボックス設定
+function setStatus(selectedHero){
+    // 各ヒーローごとにループ
+    for(let i=0; i<statusList.length; i++) {
+
+        // 選択中のヒーローの場合
+        if (statusList[i][heroNameKey] == selectedHero){
+
+            // 選択中のヒーローのステータスを設定
+            document.getElementById("heroname").innerText = statusList[i][heroNameKey];
+            document.getElementById("life").innerText = lifeKey + ":" + statusList[i][lifeKey];
+            document.getElementById("armor").innerText = armorKey + ":" + statusList[i][armorKey] ;
+            document.getElementById("shield").innerText = shieldKey + ":" + statusList[i][shieldKey];
+            document.getElementById("mainweapon").innerText = mainWeaponKey + ":" + statusList[i][mainWeaponKey];
+            document.getElementById("subweapon").innerText = subWeaponKey + ":" + statusList[i][subWeaponKey];
+            document.getElementById("ability1").innerText = ability1Key + ":" + statusList[i][ability1Key];
+            document.getElementById("ability2").innerText = ability2Key + ":" + statusList[i][ability2Key];
+            document.getElementById("ability3").innerText = ability3Key + ":" + statusList[i][ability3Key];
+            document.getElementById("ult").innerText = ultKey + ":" + statusList[i][ultKey];
+            document.getElementById("addpower").innerText = addPowerKey + ":" + statusList[i][addPowerKey];
+        }
+    }
 }
 
 // アイテムリストを開く

@@ -22,28 +22,28 @@
 </header>
 <main-buildsimulator>
     <p class="selectedhero-title">選択ヒーロー</p>
-    <img src="assets/images/icons/ow2.png" onclick="openHeroWindow()" class="hero-icon">
+    <img src="assets/images/icons/hero/DVA.png" onclick="openHeroWindow()" class="hero-icon" id="selected-hero-icon">
     <div class="herowindow-overlay" id="herowindow">
         <div class="herowindow-content">
             <div class="herowindow-content-left">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
-                <img src="assets/images/icons/ow2.png" onclick="selectHero()" class="herowindow-hero-icon">
+                <img src="assets/images/icons/hero/DVA.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="DVA">
+                <img src="assets/images/icons/hero/オリーサ.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="オリーサ">
+                <img src="assets/images/icons/hero/ザリア.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="ザリア">
+                <img src="assets/images/icons/hero/ジャンカー・クイーン.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="ジャンカー・クイーン">
+                <img src="assets/images/icons/hero/ラインハルト.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="ラインハルト">
+                <img src="assets/images/icons/hero/アッシュ.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="アッシュ">
+                <img src="assets/images/icons/hero/キャスディ.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="キャスディ">
+                <img src="assets/images/icons/hero/ゲンジ.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="ゲンジ">
+                <img src="assets/images/icons/hero/ソルジャー76.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="ソルジャー76">
+                <img src="assets/images/icons/hero/フレイヤ.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="フレイヤ">
+                <img src="assets/images/icons/hero/メイ.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="メイ">
+                <img src="assets/images/icons/hero/リーパー.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="リーパー">
+                <img src="assets/images/icons/hero/アナ.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="アナ">
+                <img src="assets/images/icons/hero/キリコ.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="キリコ">
+                <img src="assets/images/icons/hero/ジュノ.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="ジュノ">
+                <img src="assets/images/icons/hero/マーシー.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="マーシー">
+                <img src="assets/images/icons/hero/モイラ.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="モイラ">
+                <img src="assets/images/icons/hero/ルシオ.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="ルシオ">
             </div>
             <span class="herowindow-close-button" onclick="closeHeroWindow()">✖︎</span>
         </div>
@@ -100,17 +100,17 @@
             </div>
         </div>
         <div class="status-content">
-            <p class="status">キャラ名</p>
-            <p class="status">ライフ：</p>
-            <p class="status">アーマー：</p>
-            <p class="status">シールド：</p>
-            <p class="status">メイン武器：</p>
-            <p class="status">サブ武器：</p>
-            <p class="status">アビリティ１：</p>
-            <p class="status">アビリティ２：</p>
-            <p class="status">アビリティ３：</p>
-            <p class="status">ULT：</p>
-            <p class="status">追加効果：</p>
+            <p class="status" id="heroname" style="font-weight: 600;"></p>
+            <p class="status" id="life"></p>
+            <p class="status" id="armor"></p>
+            <p class="status" id="shield"></p>
+            <p class="status" id="mainweapon"></p>
+            <p class="status" id="subweapon"></p>
+            <p class="status" id="ability1"></p>
+            <p class="status" id="ability2"></p>
+            <p class="status" id="ability3"></p>
+            <p class="status" id="ult"></p>
+            <p class="status" id="addpower"></p>
         </div>
     </div>
     <p class="itemlist-title-close" onclick="openItemList()" id="itemlist-title-close">▶︎アイテム一覧</p>
@@ -189,6 +189,7 @@
         </table>
     </div>
 </main-buildsimulator>
+<script src="js/statuslist.js"></script>
 <script src="js/itemlist.js"></script>
 <script src="js/powerlist.js"></script>
 <script src="js/buildsimulator.js"></script>
