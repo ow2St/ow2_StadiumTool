@@ -269,7 +269,7 @@ main-buildsimulator {
 .status-title {
     display: flex;
     margin-left: 20px;
-    width: 430px;
+    width: 150px;
     font-size: 25px;
     height: 30px;
     white-space: nowrap;
@@ -282,14 +282,33 @@ main-buildsimulator {
     margin-right: 20px;
     width: 430px;
     border: 2px solid gray;
-    white-space: nowrap;
     height: 420px;
     background-color: #FAFAFA;
     overflow-y: scroll;
 }
 
-.status {
+.heroname {
     text-indent: 1em;
+    font-weight: 550;
+    color: #555555;
+    margin: 0;
+}
+
+.dva-button {
+    display: none;
+    border: 1px solid black;
+    margin: 0 0 0 10px;
+    font-weight: 550;
+    color: #555555;
+    padding: 0 5px 0 5px;
+    cursor: pointer;
+}
+.dva-button:hover{
+    background-color: lightgray;
+}
+
+.status {
+    padding-left: 15px;
     font-weight: 550;
     color: #555555;
     margin: 0;

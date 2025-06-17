@@ -26,7 +26,7 @@
     <div class="herowindow-overlay" id="herowindow">
         <div class="herowindow-content">
             <div class="herowindow-content-left">
-                <img src="assets/images/icons/hero/DVA.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="DVA">
+                <img src="assets/images/icons/hero/DVA.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="DVA（メック）">
                 <img src="assets/images/icons/hero/オリーサ.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="オリーサ">
                 <img src="assets/images/icons/hero/ザリア.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="ザリア">
                 <img src="assets/images/icons/hero/ジャンカー・クイーン.png" onclick="selectHero(this.id)" class="herowindow-hero-icon" id="ジャンカー・クイーン">
@@ -100,7 +100,10 @@
             </div>
         </div>
         <div class="status-content">
-            <p class="status" id="heroname" style="font-weight: 600;"></p>
+            <div style="display: flex;">
+                <p class="heroname" id="heroname" style="font-weight: 600;"></p>
+                <p class="dva-button" id="dva-button" onclick="dvaButtonClick()">メック⇄人</p>
+            </div>
             <p class="status" id="life"></p>
             <p class="status" id="armor"></p>
             <p class="status" id="shield"></p>

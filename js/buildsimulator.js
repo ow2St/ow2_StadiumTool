@@ -9,7 +9,7 @@ linkItemList(itemList);
 linkPowerList(powerList);
 
 // 選択中ヒーロー変数
-var selectedHero = "DVA"  // 初期値はDVA
+var selectedHero = "DVA（メック）"  // 初期値はDVA
 var life = 0;
 var armor = 0;
 var shield = 0;
@@ -22,7 +22,7 @@ var ult = 0;
 var addPower = ""; 
 
 // ステータスボックス設定
-setStatus(selectedHero);
+updateStatus(selectedHero);
 
 // ------------------------------
 // 関数部
@@ -44,39 +44,131 @@ function selectHero(id){
     // 選択中ヒーローを設定
     selectedHero = id;
 
+    let imgPath = "";
     // 選択中ヒーローアイコンを変更
-    let imgPath = id + ".png";
+    // DVAチェック
+    if(id == "DVA（メック）" || id == "DVA（人）"){
+        imgPath = "DVA.png"
+    }else{
+        imgPath = id + ".png";
+    }
     document.getElementById("selected-hero-icon").src = "assets/images/icons/hero/" + imgPath;
 
-    // ステータスボックス設定
-    setStatus(id);
+    // ステータスボックス更新
+    updateStatus(id);
 
     // ヒーローウィンドウを消す
     document.getElementById("herowindow").style.display = "none";
 }
 
 // ステータスボックス設定
-function setStatus(selectedHero){
+function updateStatus(selectedHero){
     // 各ヒーローごとにループ
     for(let i=0; i<statusList.length; i++) {
 
         // 選択中のヒーローの場合
         if (statusList[i][heroNameKey] == selectedHero){
 
+            // DVAの場合
+            if(selectedHero == "DVA（メック）" || selectedHero == "DVA（人）"){
+                
+                // メック人切り替えボタンを表示
+                document.getElementById("dva-button").style.display = "flex";
+            }else{
+
+                // メック人切り替えボタンを非表示
+                document.getElementById("dva-button").style.display = "none";
+            }
+
             // 選択中のヒーローのステータスを設定
             document.getElementById("heroname").innerText = statusList[i][heroNameKey];
-            document.getElementById("life").innerText = lifeKey + ":" + statusList[i][lifeKey];
-            document.getElementById("armor").innerText = armorKey + ":" + statusList[i][armorKey] ;
-            document.getElementById("shield").innerText = shieldKey + ":" + statusList[i][shieldKey];
-            document.getElementById("mainweapon").innerText = mainWeaponKey + ":" + statusList[i][mainWeaponKey];
-            document.getElementById("subweapon").innerText = subWeaponKey + ":" + statusList[i][subWeaponKey];
-            document.getElementById("ability1").innerText = ability1Key + ":" + statusList[i][ability1Key];
-            document.getElementById("ability2").innerText = ability2Key + ":" + statusList[i][ability2Key];
-            document.getElementById("ability3").innerText = ability3Key + ":" + statusList[i][ability3Key];
-            document.getElementById("ult").innerText = ultKey + ":" + statusList[i][ultKey];
-            document.getElementById("addpower").innerText = addPowerKey + ":" + statusList[i][addPowerKey];
+            document.getElementById("life").innerText = lifeKey + " :" + statusList[i][lifeKey];
+            document.getElementById("armor").innerText = armorKey + " :" + statusList[i][armorKey] ;
+            document.getElementById("shield").innerText = shieldKey + " :" + statusList[i][shieldKey];
+            document.getElementById("mainweapon").innerText = mainWeaponKey + "(" + statusList[i][mainWeaponNameKey] + ")" + " :" + statusList[i][mainWeaponKey];
+            document.getElementById("subweapon").innerText = subWeaponKey + "(" + statusList[i][subWeaponNameKey] + ")" + " :" + statusList[i][subWeaponKey];
+            document.getElementById("ability1").innerText = ability1Key + "(" + statusList[i][ability1NameKey] + ")" + " :" + statusList[i][ability1Key];
+            document.getElementById("ability2").innerText = ability2Key + "(" + statusList[i][ability2NameKey] + ")" + " :" + statusList[i][ability2Key];
+            document.getElementById("ability3").innerText = ability3Key + "(" + statusList[i][ability3NameKey] + ")" + " :" + statusList[i][ability3Key];
+            document.getElementById("ult").innerText = ultKey + "(" + statusList[i][ultNameKey] + ")" + " :" + statusList[i][ultKey];
+            document.getElementById("addpower").innerText = addPowerKey + " :" + statusList[i][addPowerKey];
+
+            // 計算式がある場合は追加
+            if(statusList[i][mainCalculationKey] != "-"){
+                document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + "(" + statusList[i][mainCalculationKey] + ")";
+            }
+            if(statusList[i][subCalculationKey] != "-"){
+                document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + "(" + statusList[i][subCalculationKey] + ")";
+            }
+            if(statusList[i][ability1CalculationKey] != "-"){
+                document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + "(" + statusList[i][ability1CalculationKey] + ")";
+            }
+            if(statusList[i][ability2CalculationKey] != "-"){
+                document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + "(" + statusList[i][ability2CalculationKey] + ")";
+            }
+            if(statusList[i][ability3CalculationKey] != "-"){
+                document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + "(" + statusList[i][ability3CalculationKey] + ")";
+            }
+            if(statusList[i][ultCalculationKey] != "-"){
+                document.getElementById("ult").innerText = document.getElementById("ult").innerText + "(" + statusList[i][ultCalculationKey] + ")";
+            }
+
+            // リロード速度がある場合は追加
+            if(statusList[i][mainReloadKey] != 0){
+                document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (リロード" + statusList[i][mainReloadKey] + "秒)";
+            }
+            if(statusList[i][subReloadKey] != 0){
+                document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (リロード" + statusList[i][subReloadKey] + "秒)";
+            }
+
+            // 弾薬数がある場合は追加
+            if(statusList[i][mainAmmoKey] != 0){
+                document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (" + statusList[i][mainAmmoKey] + "弾)";
+            }
+            if(statusList[i][subAmmoKey] != 0){
+                document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (" + statusList[i][subReloadKey] + "弾)";
+            }
+
+            // 継続時間がある場合は追加
+            if(statusList[i][ability1DurationKey] != 0){
+                document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + " (" + statusList[i][ability1DurationKey] + "秒継続)";
+            }
+            if(statusList[i][ability2DurationKey] != 0){
+                document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + " (" + statusList[i][ability2DurationKey] + "秒継続)";
+            }
+            if(statusList[i][ability3DurationKey] != 0){
+                document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (" + statusList[i][ability3DurationKey] + "秒継続)";
+            }
+            if(statusList[i][ultDurationKey] != 0){
+                document.getElementById("ult").innerText = document.getElementById("ult").innerText + " (" + statusList[i][ultDurationKey] + "秒継続)";
+            }
+
+            // CT時間がある場合は追加
+            if(statusList[i][ability1CTKey] != 0){
+                document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + " (CT" + statusList[i][ability1DurationKey] + "秒)";
+            }
+            if(statusList[i][ability2CTKey] != 0){
+                document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + " (CT" + statusList[i][ability2DurationKey] + "秒)";
+            }
+            if(statusList[i][ability3CTKey] != 0){
+                document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (CT" + statusList[i][ability3DurationKey] + "秒)";
+            }
         }
     }
+}
+
+// メック人切り替え
+function dvaButtonClick(){
+
+    // 選択ヒーロー切り替え
+    if(selectedHero == "DVA（メック）"){
+        selectedHero = "DVA（人）";
+    }else if(selectedHero == "DVA（人）"){
+        selectedHero = "DVA（メック）";
+    }
+
+    // ステータスボックス更新
+    updateStatus(selectedHero);
 }
 
 // アイテムリストを開く
