@@ -461,6 +461,10 @@ main-buildsimulator {
     border: 1px solid lightgray;
 }
 
+.hidden-column {
+    display: none;
+}
+
 /*
 ====================================================================
 メイン部（アイテム/パワー一覧）
