@@ -93,26 +93,6 @@ function updateStatus(selectedHero){
             document.getElementById("ult").innerText = ultKey + "(" + statusList[i][ultNameKey] + ")" + " :" + statusList[i][ultKey];
             document.getElementById("addpower").innerText = addPowerKey + " :" + statusList[i][addPowerKey];
 
-            // 計算式がある場合は追加
-            if(statusList[i][mainCalculationKey] != "-"){
-                document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + "(" + statusList[i][mainCalculationKey] + ")";
-            }
-            if(statusList[i][subCalculationKey] != "-"){
-                document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + "(" + statusList[i][subCalculationKey] + ")";
-            }
-            if(statusList[i][ability1CalculationKey] != "-"){
-                document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + "(" + statusList[i][ability1CalculationKey] + ")";
-            }
-            if(statusList[i][ability2CalculationKey] != "-"){
-                document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + "(" + statusList[i][ability2CalculationKey] + ")";
-            }
-            if(statusList[i][ability3CalculationKey] != "-"){
-                document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + "(" + statusList[i][ability3CalculationKey] + ")";
-            }
-            if(statusList[i][ultCalculationKey] != "-"){
-                document.getElementById("ult").innerText = document.getElementById("ult").innerText + "(" + statusList[i][ultCalculationKey] + ")";
-            }
-
             // リロード速度がある場合は追加
             if(statusList[i][mainReloadKey] != 0){
                 document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (リロード" + statusList[i][mainReloadKey] + "秒)";
@@ -145,13 +125,13 @@ function updateStatus(selectedHero){
 
             // CT時間がある場合は追加
             if(statusList[i][ability1CTKey] != 0){
-                document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + " (CT" + statusList[i][ability1DurationKey] + "秒)";
+                document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + " (CT" + statusList[i][ability1CTKey] + "秒)";
             }
             if(statusList[i][ability2CTKey] != 0){
-                document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + " (CT" + statusList[i][ability2DurationKey] + "秒)";
+                document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + " (CT" + statusList[i][ability2CTKey] + "秒)";
             }
             if(statusList[i][ability3CTKey] != 0){
-                document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (CT" + statusList[i][ability3DurationKey] + "秒)";
+                document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (CT" + statusList[i][ability3CTKey] + "秒)";
             }
         }
     }
