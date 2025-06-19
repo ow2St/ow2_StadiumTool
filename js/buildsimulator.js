@@ -247,6 +247,11 @@ function linkItemList(itemList) {
     let tbody_ability = document.getElementById("item-table-ability").querySelector("tbody");
     let tbody_survival = document.getElementById("item-table-survival").querySelector("tbody");
 
+    //各テーブルのヘッダー情報を取得
+    let headers_weapon = document.getElementById("item-table-weapon").querySelectorAll("th");
+    let headers_ability = document.getElementById("item-table-ability").querySelectorAll("th");
+    let headers_survival = document.getElementById("item-table-survival").querySelectorAll("th");
+
     // 各アイテムごとにループ
     for(let i=0; i<itemList.length; i++) {
         var tr = document.createElement("tr");
@@ -257,6 +262,8 @@ function linkItemList(itemList) {
         let iconText = "-";  // アイコン列は現状アイテム情報にないため、とりあえずハイフンを入れる　TODO：RIN
         let statusText = "";
         let textText = "";
+        let rarityText = "";
+        let costText = "";
 
         // カテゴリー判定用変数
         let categoryCheck = "";
@@ -306,23 +313,49 @@ function linkItemList(itemList) {
                 // カテゴリー判定用変数に値を代入
                 categoryCheck = itemList[i][key];
             }
+            
+            // キー名がレア度キーの場合
+            if(rarityKey == key) {
+
+                // レア度用変数に値を代入
+                rarityText = itemList[i][key];
+            }
+
+            // キー名がコストキーの場合
+            if(costKey == key) {
+
+                //コスト用変数に値を代入
+                costText = itemList[i][key];
+            }
 
         })
 
         // 取得した各値をテーブルに紐付け
         // カテゴリー別に紐付け先のテーブルを分ける
         if(categoryCheck == "武器"){
-            tbody_weapon.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, iconText));
+            tbody_weapon.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, iconText, rarityText, costText));
         }else if(categoryCheck == "アビリティ"){
-            tbody_ability.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, iconText));
+            tbody_ability.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, iconText, rarityText, costText));
         }else if(categoryCheck == "サバイバル"){
-            tbody_survival.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, iconText));
+            tbody_survival.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, iconText, rarityText, costText));
         }
     }
+
+    const sortingCriteria = [
+        { column: "rarity", order: "asc", type: "string" },
+        { column: "cost", order: "asc", type: "number" }
+    ]
+
+    // 各テーブルをソート
+    TableSort(headers_weapon,tbody_weapon, sortingCriteria);
+    TableSort(headers_ability,tbody_ability, sortingCriteria);
+    TableSort(headers_survival,tbody_survival, sortingCriteria);
+       
+    
 }
 
 // アイテムリスト用子要素作成関数（※カテゴリー別に分けているため関数化）
-function appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText){
+function appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText){
     // 選択列
     var td = document.createElement("td");
     td.classList.add("item-td");
@@ -354,6 +387,18 @@ function appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, te
     var td = document.createElement("td");
     td.textContent = textText;
     td.classList.add("item-td");
+    tr.appendChild(td);
+
+    // レア度列（非表示）
+    var td = document.createElement("td");
+    td.textContent = rarityText;
+    td.classList.add("hidden-column");
+    tr.appendChild(td);
+    
+    // コスト列（非表示）
+    var td = document.createElement("td");
+    td.textContent = costText;
+    td.classList.add("hidden-column");
     tr.appendChild(td);
 
     return tr;
@@ -422,4 +467,70 @@ function linkPowerList(powerList) {
 
         tbody.appendChild(tr);
     }
+}
+
+// テーブルをソートする関数
+function TableSort(headers, tbody, sortingCriteria) {
+
+    //レア度の並び替えの基準を設定
+    const rarityOrder = ['コモン', 'レア', 'エピック']
+
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    rows.shift();
+
+    // 比較
+    const comparator = (rowA, rowB) => {
+        for (const criteria of sortingCriteria) {
+            const { column, order, type } = criteria;
+
+            // data-column属性に対応する<td>要素のインデックスを検索
+            const columnIndex = Array.from(headers).findIndex(th => th.dataset.column == column);
+            // カラムが見つからない場合は次の基準へ
+            if (columnIndex == -1) continue;
+
+            const cellA = rowA.children[columnIndex].textContent.trim();
+            const cellB = rowB.children[columnIndex].textContent.trim();
+
+            let valA, valB;
+
+            // データの型に応じて比較対象の値を変換（デフォルトはString型）
+            if (type == "number") {
+                valA = parseFloat(cellA);
+                valB = parseFloat(cellB);
+            } else {
+                valA = cellA;
+                valB = cellB;
+            }
+
+            // レア度を比較用に数値変換
+            if (column == "rarity") {
+                valA = rarityOrder.indexOf(valA);
+                valB = rarityOrder.indexOf(valB);
+            }
+
+            let comparison = 0;
+            if (valA < valB) {
+                comparison = -1;
+            } else if (valA > valB) {
+                comparison = 1;
+            }
+
+            if (comparison !== 0) {
+                // ソート順序を適用し、結果が0でない場合はここで終了
+                return order == "desc" ? -comparison : comparison;
+            }
+        }
+        // 全てのキーが同じ場合
+        return 0; 
+    };
+
+    // 配列のソート
+    rows.sort(comparator);
+
+    // 既存の行をすべて削除
+    while (tbody.firstChild) {
+        tbody.removeChild(tbody.firstChild);
+    }
+    // ソートされた順序で行を追加
+    rows.forEach(row => tbody.appendChild(row));
 }
