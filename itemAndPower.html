@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<html style="overflow: scroll; font-family: Meiryo, Hiragino Sans">
+
 <html>
     <head>
         <meta charset="UTF-0">
@@ -64,12 +66,85 @@
                         </div>
                     </div>
                     <div class="button-list">
-                    キャラ固有<input type="checkbox" id="box1" checked>
-                </div>
-                <div id="power-content">
-                    <!--パワータブの内容-->
+                    ヒーロー固有<input type="checkbox" id="box1" checked>
+                    </div>
 
-                </div>                
+                    <!--アイテム一覧（テーブル）-->
+                    <div class="itemlist-title">アイテム一覧</div>
+                    <table class="item-table" id="item-table">
+                        <thead class="item-thead">
+                            <tr class="item-tr">
+                                <th class="item-th" style="width: 180px;">アイテム名</th>
+                                <th class="item-th" style="width: 60px;">アイコン</th>
+                                <th class="item-th" style="width: 60px;">カテゴリー</th>
+                                <th class="item-th" style="width: 60px;">レアリティ</th>
+                                <th class="item-th" style="width: 60px;">コスト</th>
+                                <th class="item-th" style="width: 100px;">固有ヒーロー</th>
+                                <th class="item-th" style="width: 140px;">ステータス</th>
+                                <th class="item-th" style="width: 300px;">テキスト</th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size:12px";>
+                            <tr class="item-tr"></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="power-content" class="power-content">
+                    <!--パワータブの内容-->
+                    <div class="button-list">
+                        <span class="button-category">タンク</span>
+                        <div class="button-only">
+                            <img src="assets/images/icons/hero/DVA.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="DVA"><!-- D.VA -->
+                            <img src="assets/images/icons/hero/オリーサ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="オリーサ"><!-- オリーサ -->
+                            <img src="assets/images/icons/hero/ザリア.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="ザリア"><!-- ザリア -->
+                            <img src="assets/images/icons/hero/ジャンカー・クイーン.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="ジャンカー・クイーン"><!-- ジャンカー・クイーン -->
+                            <img src="assets/images/icons/hero/ラインハルト.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="ラインハルト"><!-- ラインハルト -->
+                            <img src="" onclick="selectHero(this.id)" class="power-hero-icon-off" id=""><!-- シグマ -->
+                        </div>
+                    </div>
+                    <div class="button-list">
+                        <span class="button-category">ダメージ</span>
+                        <div class="button-only">
+                            <img src="assets/images/icons/hero/アッシュ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="アッシュ"><!-- アッシュ -->
+                            <img src="assets/images/icons/hero/キャスディ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="キャスディ"><!-- キャスディ -->
+                            <img src="assets/images/icons/hero/ゲンジ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="ゲンジ"><!-- ゲンジ -->
+                            <img src="assets/images/icons/hero/ソルジャー76.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="ソルジャー76"><!-- ソルジャー76 -->
+                            <img src="assets/images/icons/hero/メイ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="メイ"><!-- メイ -->
+                            <img src="assets/images/icons/hero/リーパー.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="リーパー"><!-- リーパー -->
+                            <img src="assets/images/icons/hero/フレイヤ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="フレイヤ"><!-- フレイヤ -->
+                            <img src="" onclick="selectHero(this.id)" class="power-hero-icon-off" id=""><!-- ジャンクラット -->
+                        </div>
+                    </div>
+                    <div class="button-list">
+                        <span class="button-category">サポート</span>
+                        <div class="button-only">
+                            <img src="assets/images/icons/hero/アナ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="アナ"><!-- アナ -->
+                            <img src="assets/images/icons/hero/キリコ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="キリコ"><!-- キリコ -->
+                            <img src="assets/images/icons/hero/ジュノ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="ジュノ"><!-- ジュノ -->
+                            <img src="assets/images/icons/hero/マーシー.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="マーシー"><!-- マーシー -->
+                            <img src="assets/images/icons/hero/モイラ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="モイラ"><!-- モイラ -->
+                            <img src="assets/images/icons/hero/ルシオ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="ルシオ"><!-- ルシオ -->
+                            <img src="" onclick="selectHero(this.id)" class="power-hero-icon-off" id=""><!-- ゼニヤッタ -->
+                        </div>
+                    </div>
+
+                    <!--パワー一覧（テーブル）-->
+                    <div class="power-title">パワー一覧</div>
+                    <table class="power-table" id="power-table">
+                        <thead class="power-thead">
+                            <tr class="power-tr">
+                                <th class="power-th" style="width: 120px;">パワー名</th>
+                                <th class="power-th" style="width: 60px;">アイコン</th>
+                                <th class="power-th" style="width: 60px;">ヒーロー</th>
+                                <th class="power-th" style="width: 300px;">テキスト</th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size:12px";>
+                            <tr class="power-tr"></tr>
+                        </tbody>
+                    </table>
+                </div>
         </main-IAP>
     </body>
     <script src="js/itemlist.js"></script>

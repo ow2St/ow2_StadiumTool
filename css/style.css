@@ -468,21 +468,24 @@ main-buildsimulator {
 */
 
 main-IAP{
-    margin-top: 2px;
+    margin-top: 50px;
     margin-left: 200px;
     margin-right: 200px;
-    height: 100vh;
+    height: auto;
     border: 1px solid black;
+    border-top: none;
     display: block;
     min-width: 430px;
     font-weight: 300;
+    position: relative; /* タブボタン部にmainのボーダーがかからないように */
 }
 
 .tabs {
     margin-top: 20px;
     margin-left: 30px;
     display: flex;
-    /*border-bottom: 2px solid #ccc; /* 全体のボーダー */
+    position: absolute; /* タブボタン部にmainのボーダーがかからないように */
+    top: -44px; /* タブボタン部にmainのボーダーがかからないように */
 }
 .tabItem {
   padding-left: 20px;
@@ -510,6 +513,11 @@ main-IAP{
 }
 
 .item-content{
+    display: block;
+    border-top: 1px solid black;
+}
+.power-content{
+    display: none;
     border-top: 1px solid black;
 }
 
@@ -535,6 +543,7 @@ main-IAP{
     margin-left: 5px;
     margin-bottom: 5px;
     background-color: lightgray;
+    cursor: pointer;
 }
 
 .button-list{
@@ -544,34 +553,54 @@ main-IAP{
     margin: 10px 0px 0px 25px;
 }
 
-
- #tabcontrol span1 {
-   display: inline-block;            /* インラインブロック化 */
-   border-width: 1px 1px 0px 1px;    /* 下以外の枠線を引く */
-   border-style: solid;              /* 枠線の種類：実線 */
-   border-color: black;              /* 枠線の色：黒色 */
-   border-radius: 0.75em 0.75em 0 0; /* 枠線の左上角と右上角だけを丸く */
-   padding: 0.75em 1em;              /* 内側の余白 */
-   text-decoration: none;            /* リンクの下線を消す */
-   color: black;                     /* 文字色：黒色 */
-   background-color: white;          /* 背景色：白色 */
-   font-weight: bold;                /* 太字 */
-   position: relative;               /* JavaScriptでz-indexを調整するために必要 */
+.itemlist-title {
+    display: block;
+    width: 100%;
+    text-indent: 1em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 25px;
+    height: 30px;
+    white-space: nowrap;
+    background-color: #ffe6e6;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+.power-title {
+    display: block;
+    width: 100%;
+    text-indent: 1em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 25px;
+    height: 30px;
+    white-space: nowrap;
+    background-color: #ffe6e6;
+    margin-top: 30px;
+    margin-bottom: 20px;
 }
 
-#tabbody div1 {
-   border: 1px solid black; /* 枠線：黒色の実線を1pxの太さで引く */
-   margin-top: -1px;        /* 上側にあるタブと1pxだけ重ねるために「-1px」を指定 */
-   padding: 1em;            /* 内側の余白量 */
-   background-color: white; /* 背景色：白色 */
-   position: relative;      /* z-indexを調整するために必要 */
-   z-index: 0;              /* 重なり順序を「最も背面」にするため */
+.power-hero-icon-off {
+    cursor: pointer;
+    margin-left: 8px;
+    margin-bottom: 3px;
+    width: 70px;
+    height: 70px;
+    filter: saturate(0%); /*アイコンを白黒にする*/
+    border: 5px solid transparent;
+
 }
 
-#tabcontrol a:nth-child(1), #tabbody div1:nth-child(1) { background-color: #ffffdd; }/* 1つ目のタブとその中身用の配色 */
-#tabcontrol a:nth-child(2), #tabbody div1:nth-child(2) { background-color: #ddffdd; }/* 2つ目のタブとその中身用の配色 */
-#tabcontrol a:nth-child(3), #tabbody div1:nth-child(3) { background-color: #ddddff; }/* 3つ目のタブとその中身用の配色 */
+.power-hero-icon-on {
+    cursor: pointer;
+    margin-left: 8px;
+    margin-bottom: 3px;
+    width: 70px;
+    height: 70px;
+    filter: saturate(100%); /*アイコンをカラーにする*/
+    border: 5px solid rgba(182, 187, 255, 0.5);
+}
 
-#tabcontrol a1:hover {
-   text-decoration: underline;   /* リンクの下線を引く */
+.power-table {
+    margin-bottom: 30px;
 }
