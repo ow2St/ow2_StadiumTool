@@ -24,6 +24,77 @@ var addPower = "";
 // ステータスボックス設定
 updateStatus(selectedHero);
 
+// チェックされた行のデータを格納する配列
+var selectedItemRowsData = [];
+var selectedPowerRowsData = [];
+
+// 各イベント発生対象取得
+const itemCheckboxes = document.querySelectorAll(".item-checkbox");
+const powerCheckboxes = document.querySelectorAll(".power-checkbox");
+
+// 初期表示のために一度実行
+updateSelectedItemsList();
+updateSelectedPowerList()
+
+// 各アイテムのチェックボックスにイベントリスナーを追加
+itemCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener("change", () => {
+        const selectedItemRowsDataBeforeLength = selectedItemRowsData.length;
+
+        // チェックボックスの状態が変わる毎に選択リスト、ビルド欄を更新
+        selectedItemRowsData = updateSelectedItemsList();
+        updateBuild_Item(selectedItemRowsData);
+
+        const selectedItemRowsDataAfterLength = selectedItemRowsData.length;
+
+        if(selectedItemRowsDataBeforeLength == 6 && selectedItemRowsDataAfterLength < 6){
+            // 選択できないようにしたチェックボックスを入力可に戻す
+            disableItemTableCheckbox(false);
+        }else if(selectedItemRowsDataAfterLength == 6){
+            //　選択済みのアイテムが6個になった場合、未選択チェックボックスを入力不可にする
+            disableItemTableCheckbox(true);
+        }
+    });
+});
+
+// 各パワーのチェックボックスにイベントリスナーを追加
+powerCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener("change", () => {
+        const selectedPowerRowsDataBeforeLength = selectedPowerRowsData.length;
+
+        // チェックボックスの状態が変わる毎に選択リスト、ビルド欄を更新
+        selectedPowerRowsData = updateSelectedPowerList();
+        updateBuild_power(selectedPowerRowsData);
+
+        const selectedPowerRowsDataAfterLength = selectedPowerRowsData.length;
+
+        if(selectedPowerRowsDataBeforeLength == 4 && selectedPowerRowsDataAfterLength < 4){
+            // 選択できないようにしたチェックボックスを入力可に戻す
+            disablePowerTableCheckbox(false);
+        }else if(selectedPowerRowsDataAfterLength == 4){
+            //　選択済みのパワーが4個になった場合、未選択チェックボックスを入力不可にする
+            disablePowerTableCheckbox(true);
+        }
+    });
+});
+
+const selectedBuildItem = document.querySelector(".selectedbuild-item");
+const selectedBuildpower = document.querySelector(".selectedbuild-power");
+
+selectedBuildItem.addEventListener("click", (event) =>{
+    if(event.target.classList.contains("selectedbuild-delete-button") && event.target.tagName =="SPAN"){
+        // クリックされた場合に、アイコンを削除するイベント追加
+        selectedItemRowsData = clickDeleteButton(event.target.id,selectedItemRowsData);
+    }
+});
+
+selectedBuildpower.addEventListener("click", (event) =>{
+    if(event.target.classList.contains("selectedbuild-delete-button") && event.target.tagName =="SPAN"){
+        // クリックされた場合に、アイコンを削除するイベント追加
+        selectedPowerRowsData = clickDeleteButton(event.target.id,selectedPowerRowsData);
+    }
+});
+
 // ------------------------------
 // 関数部
 // ------------------------------
@@ -239,7 +310,7 @@ function linkItemList(itemList) {
         // 必要な列ごとの変数を初期化 
         let isCheck = false;  // 選択列はアイテム情報になく、初期時必ずfalseを入れる
         let itemNameText = "";
-        let iconText = "-";  // アイコン列は現状アイテム情報にないため、とりあえずハイフンを入れる　TODO：RIN
+        let iconText = "-";
         let statusText = "";
         let textText = "";
         let rarityText = "";
@@ -280,6 +351,13 @@ function linkItemList(itemList) {
                 }
             }
 
+            // キー名がアイコンキーの場合
+            if(iconKey == key) {
+
+                // アイコン用変数に値を代入
+                iconText = itemList[i][key];
+            }
+
             // キー名がテキストキーの場合
             if(textKey == key) {
 
@@ -313,11 +391,11 @@ function linkItemList(itemList) {
         // 取得した各値をテーブルに紐付け
         // カテゴリー別に紐付け先のテーブルを分ける
         if(categoryCheck == "武器"){
-            tbody_weapon.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, iconText, rarityText, costText));
+            tbody_weapon.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText));
         }else if(categoryCheck == "アビリティ"){
-            tbody_ability.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, iconText, rarityText, costText));
+            tbody_ability.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText));
         }else if(categoryCheck == "サバイバル"){
-            tbody_survival.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, iconText, rarityText, costText));
+            tbody_survival.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText));
         }
     }
 
@@ -342,6 +420,7 @@ function appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, te
     var input = document.createElement("input");
     input.type = "checkbox";
     input.checked = isCheck;
+    input.classList.add("item-checkbox");
     td.appendChild(input);
     tr.appendChild(td);
 
@@ -353,8 +432,10 @@ function appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, te
 
     // アイコン列
     var td = document.createElement("td");
-    td.textContent = iconText;
     td.classList.add("item-td");
+    var iconImg = document.createElement("img");
+    iconImg.src = "assets/images/icons/item/" + iconText;
+    td.appendChild(iconImg);
     tr.appendChild(td);
 
     // ステータス列
@@ -408,6 +489,13 @@ function linkPowerList(powerList) {
                 powerNameText = powerList[i][key];
             }
 
+            // キー名がアイコンキーの場合
+            if(iconKey == key) {
+
+                // アイコン用変数に値を代入
+                iconText = powerList[i][key];
+            }
+
             // キー名がテキストキーの場合
             if(textKey == key) {
 
@@ -424,6 +512,7 @@ function linkPowerList(powerList) {
         var input = document.createElement("input");
         input.type = "checkbox";
         input.checked = isCheck;
+        input.classList.add("power-checkbox");
         td.appendChild(input);
         tr.appendChild(td);
 
@@ -435,7 +524,9 @@ function linkPowerList(powerList) {
 
         // アイコン列
         var td = document.createElement("td");
-        td.textContent = iconText;
+        var iconImg = document.createElement("img");
+        iconImg.src = "assets/images/icons/power/" + iconText;
+        td.appendChild(iconImg);
         td.classList.add("power-td");
         tr.appendChild(td);
 
@@ -513,4 +604,233 @@ function TableSort(headers, tbody, sortingCriteria) {
     }
     // ソートされた順序で行を追加
     rows.forEach(row => tbody.appendChild(row));
+}
+
+
+// チェックされたアイテム名をもとに、アイテムリストの情報を配列に格納する関数
+function updateSelectedItemsList() {
+
+    var selectedItemRows = [];
+
+    itemCheckboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            const row = checkbox.closest('tr');
+            const cells = row.querySelectorAll('td');
+            
+            //選択されたアイテム名
+            const itemName = cells[1].textContent;
+            for(let i=0; i<itemList.length; i++) {
+                
+                if(itemList[i][itemNameKey] == itemName){
+                    selectedItemRows.push(itemList[i]);
+                }
+            }
+        }
+    });
+    return selectedItemRows;
+}
+
+// チェックされたパワー名をもとに、パワーリストの情報を配列に格納する関数
+function updateSelectedPowerList() {
+
+    var selectedPowerRows = [];
+
+    powerCheckboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            const row = checkbox.closest('tr');
+            const cells = row.querySelectorAll('td');
+            
+            //選択されたパワー名
+            const powerName = cells[1].textContent;
+            for(let i=0; i<powerList.length; i++) {
+                
+                if(powerList[i][powerNameKey] == powerName){
+                    selectedPowerRows.push(powerList[i]);
+                }
+            }
+        }
+    });
+    return selectedPowerRows;
+}
+
+//ビルド欄のアイテムを更新する関数
+function updateBuild_Item(selectedItemRows){
+
+    for(let i=0; i<6; i++) {
+        // 親要素を指定
+        const targetDiv = document.getElementById("item" + String(i + 1))
+
+        // 指定した要素内に子要素がある場合は削除する
+        if(targetDiv.children.length != 0){
+            const image = document.getElementById("item-image" + String(i + 1));
+            const span = document.getElementById("delete-item" + String(i + 1));
+            targetDiv.removeChild(image);
+            targetDiv.removeChild(span);
+        }
+        
+        // 選択されたアイテムのアイコンと✖ボタンを追加する
+        if(i < selectedItemRows.length){
+            // アイコン追加部分
+            var iconImg = document.createElement("img");
+            iconImg.src = "assets/images/icons/item/" + selectedItemRows[i][iconKey];
+            iconImg.classList.add("selectedbuild-item-icon");
+            iconImg.id = "item-image" + String(i + 1)
+            targetDiv.appendChild(iconImg);
+            
+            // ✖ボタン追加部分
+            var span = document.createElement("span");
+            span.textContent = "✖︎";
+            span.classList.add("selectedbuild-delete-button");
+            span.id = "delete-item" + String(i + 1);
+            targetDiv.appendChild(span);
+        }
+    }
+}
+
+//ビルド欄のパワーを更新する関数
+function updateBuild_power(selectedPowerRows){
+
+    for(let i=0; i<4; i++) {
+        // 親要素を指定
+        const targetDiv = document.getElementById("power" + String(i + 1))
+
+        // 指定した要素内に子要素がある場合は削除する
+        if(targetDiv.children.length != 0){
+            const image = document.getElementById("power-image" + String(i + 1));
+            const span = document.getElementById("delete-power" + String(i + 1));
+            targetDiv.removeChild(image);
+            targetDiv.removeChild(span);
+        }
+        
+        // 選択されたアイテムのアイコンと✖ボタンを追加する
+        if(i < selectedPowerRows.length){
+            // アイコン追加部分
+            var iconImg = document.createElement("img");
+            iconImg.src = "assets/images/icons/power/" + selectedPowerRows[i][iconKey];
+            iconImg.classList.add("selectedbuild-item-icon");
+            iconImg.id = "power-image" + String(i + 1)
+            targetDiv.appendChild(iconImg);
+            
+            // ✖ボタン追加部分
+            var span = document.createElement("span");
+            span.textContent = "✖︎";
+            span.classList.add("selectedbuild-delete-button");
+            span.id = "delete-power" + String(i + 1);
+            targetDiv.appendChild(span);
+        }
+    }
+}
+
+// ✖ボタンクリック時にアイコンを削除する関数
+function clickDeleteButton(spanId,selectedRows) {
+
+    let index = Number(spanId.slice(-1)) - 1;
+    const selectedRowsBeforeLength = selectedRows.length
+
+    // IDに「item」が含まれる場合
+    if(spanId.includes("item")){
+        
+        const itemName = selectedRows[index][itemNameKey];
+        const category = selectedRows[index][categoryKey];
+        //初期値は武器カテゴリを設定
+        var tbody = document.getElementById("item-table-weapon").querySelector("tbody");;
+
+        // 武器以外のカテゴリの場合検索範囲を設定
+        if(category == "アビリティ"){
+            tbody = document.getElementById("item-table-ability").querySelector("tbody");
+        }else if(category == "サバイバル"){
+            tbody = document.getElementById("item-table-survival").querySelector("tbody");
+        }
+
+        const rows = tbody.querySelectorAll("tr");
+        // アイテム名のインデックス
+        const targetColumnIndex = 1;
+        // 変更する列のインデックス
+        const changeColumnIndex = 0;
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll("td");
+            const cellText = cells[targetColumnIndex].textContent;
+
+            if(cellText == itemName){
+                // 選択したアイテムのチェックボックスのチェックを解除
+                const checkbox =  cells[changeColumnIndex].querySelector(".item-checkbox");
+                checkbox.checked = false;
+            }
+        });
+
+        // アイテムリスト、ビルド欄を更新
+        selectedRows = updateSelectedItemsList();
+        updateBuild_Item(selectedRows);
+
+        if(selectedRowsBeforeLength == 6){
+            //元々アイテムが6個選ばれていた場合、選択されていないアイテムのチェックボックスを入力可
+            disableItemTableCheckbox(false);
+        }
+
+        return selectedRows;
+
+    }else if(spanId.includes("power")){
+
+        const powerName = selectedRows[index][powerNameKey];
+        const tbody = document.getElementById("power-table").querySelector("tbody");
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+        rows.shift();
+        // パワー名のインデックス
+        const targetColumnIndex = 1;
+        // 変更する列のインデックス
+        const changeColumnIndex = 0;
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll("td");
+            const cellText = cells[targetColumnIndex].textContent;
+
+            if(cellText == powerName){
+                // 選択したパワーのチェックボックスのチェックを解除
+                const checkbox =  cells[changeColumnIndex].querySelector(".power-checkbox");
+                checkbox.checked = false;
+            }
+        });
+
+        // パワーリスト、ビルド欄を更新
+        selectedRows = updateSelectedPowerList();
+        updateBuild_power(selectedRows);
+
+        if(selectedRowsBeforeLength == 4){
+            //元々パワーが4個選ばれていた場合、選択されていないパワーのチェックボックスを入力可
+            disablePowerTableCheckbox(false);
+        }
+
+        return selectedRows;
+    }
+}
+
+// アイテムテーブルのチェックボックス管理の関数
+function disableItemTableCheckbox(flag){
+    const checkboxes = document.querySelectorAll(".item-checkbox");
+
+    checkboxes.forEach(checkbox =>{
+        if(!checkbox.checked){
+            if(flag){
+                checkbox.disabled = true;    
+            }else{
+                checkbox.disabled = false;
+            }           
+        }
+    });
+}
+
+// パワーテーブルのチェックボックス管理の関数
+function disablePowerTableCheckbox(flag){
+    const checkboxes = document.querySelectorAll(".power-checkbox");
+
+    checkboxes.forEach(checkbox =>{
+        if(!checkbox.checked){
+            if(flag){
+                checkbox.disabled = true;    
+            }else{
+                checkbox.disabled = false;
+            }           
+        }
+    });
 }
