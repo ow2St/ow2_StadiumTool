@@ -92,8 +92,6 @@ header {
 
 main-toppage {
     margin-top: 2px;
-    margin-left: 200px;
-    margin-right: 200px;
     height: 100vh;
     border: 1px solid black;
     display: block;
@@ -131,8 +129,6 @@ main-toppage {
 
 main-buildsimulator {
     margin-top: 2px;
-    margin-left: 200px;
-    margin-right: 200px;
     height: 100%;
     border: 1px solid black;
     display: block;
@@ -493,8 +489,6 @@ main-buildsimulator {
 
 main-IAP{
     margin-top: 50px;
-    margin-left: 200px;
-    margin-right: 200px;
     height: auto;
     border: 1px solid black;
     border-top: none;
