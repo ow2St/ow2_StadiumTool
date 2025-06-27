@@ -1,20 +1,50 @@
+// ------------------------------
+// 処理部
+// ------------------------------
 
-/*
-function ow2IconClick(){
-    const chat = document.getElementById("chat")
-    chat.style.display = (chat.style.display === "block") ? "none" : "block";
-}
-*/
+// アイテム・パワーリストをテーブルに紐付け
+linkItemList(itemList);
+linkPowerList(powerList);
 
-/* function IAPbutton(){
-    const b=document.getElementById("itemButton");
-    b.style.backgroundColor = "lightgray";
-        document.getElementById("itemButton").style.backgroundColor = "lightgray";
-} */
+//パワー一覧　DVAアイコンをONにする
+let startCheckIcon = "DVA";
+selectHero(startCheckIcon);
+
+//アイテムボタン用フラグ初期化
+let isCheckWeapon = true;
+let isCheckAbility = true;
+let isCheckSurvival = true;
+let isCheckCommon = true;
+let isCheckRare = true;
+let isCheckEpic = true;
+let isCheckLife = true;
+let isCheckArmor = true;
+let isCheckShield = true;
+let isCheckWeaponPower = true;
+let isCheckAbilityPower = true;
+let isCheckAttackSpeed = true;
+let isCheckCtReducation = true;
+let isCheckAmmo = true;
+let isCheckWeapon_LifeSteal = true;
+let isCheckSpeed = true;
+let isCheckAbility_LifeSteal = true;
+let isCheckReloadSpeed = true;
+let isCheckMeleeDamage = true;
+let isCheckCritical = true;
+let isCheckOthers = true;
+
+//タブ切り替え初期化
+const tabItem = document.getElementById('tabItem');
+const itemContent = document.getElementById('item-content');
+const tabPower = document.getElementById('tabPower');
+const powerContent = document.getElementById('power-content');
+
+// ------------------------------
+// 関数部
+// ------------------------------
 
 //ボタン選択カラー変更
 //武器
-let isCheckWeapon = true;
 function IAPbuttonWeapon(){
     var Button = document.getElementById("itemButtonWeapon");
     if(isCheckWeapon){
@@ -24,10 +54,7 @@ function IAPbuttonWeapon(){
     }
     isCheckWeapon = !isCheckWeapon;
 }
-/* Button.style.backgroundColor = (Button.style.backgroundColor == "lightgray") ? "white" : "lightgray"; */
-
 //アビリティ
-let isCheckAbility = true;
 function IAPbuttonAbility(){
     var Button = document.getElementById("itemButtonAbility");
     if(isCheckAbility){
@@ -37,7 +64,6 @@ function IAPbuttonAbility(){
     }
     isCheckAbility = !isCheckAbility;
 }
-let isCheckSurvival = true;
 function IAPbuttonSurvival(){
     var Button = document.getElementById("itemButtonSurvival");
     if(isCheckSurvival){
@@ -47,7 +73,6 @@ function IAPbuttonSurvival(){
     }
     isCheckSurvival = !isCheckSurvival;
 }
-let isCheckCommon = true;
 function IAPbuttonCommon(){
     var Button = document.getElementById("itemButtonCommon");
     if(isCheckCommon){
@@ -57,7 +82,6 @@ function IAPbuttonCommon(){
     }
     isCheckCommon = !isCheckCommon;
 }
-let isCheckRare = true;
 function IAPbuttonRare(){
     var Button = document.getElementById("itemButtonRare");
     if(isCheckRare){
@@ -67,7 +91,6 @@ function IAPbuttonRare(){
     }
     isCheckRare = !isCheckRare;
 }
-let isCheckEpic = true;
 function IAPbuttonEpic(){
     var Button = document.getElementById("itemButtonEpic");
     if(isCheckEpic){
@@ -77,7 +100,6 @@ function IAPbuttonEpic(){
     }
     isCheckEpic = !isCheckEpic;
 }
-let isCheckLife = true;
 function IAPbuttonLife(){
     var Button = document.getElementById("itemButtonLife");
     if(isCheckLife){
@@ -87,7 +109,6 @@ function IAPbuttonLife(){
     }
     isCheckLife = !isCheckLife;
 }
-let isCheckArmor = true;
 function IAPbuttonArmor(){
     var Button = document.getElementById("itemButtonArmor");
     if(isCheckArmor){
@@ -97,7 +118,6 @@ function IAPbuttonArmor(){
     }
     isCheckArmor = !isCheckArmor;
 }
-let isCheckShield = true;
 function IAPbuttonShield(){
     var Button = document.getElementById("itemButtonShield");
     if(isCheckShield){
@@ -107,7 +127,6 @@ function IAPbuttonShield(){
     }
     isCheckShield = !isCheckShield;
 }
-let isCheckWeaponPower = true;
 function IAPbuttonWeaponPower(){
     var Button = document.getElementById("itemButtonWeaponPower");
     if(isCheckWeaponPower){
@@ -117,7 +136,6 @@ function IAPbuttonWeaponPower(){
     }
     isCheckWeaponPower = !isCheckWeaponPower;
 }
-let isCheckAbilityPower = true;
 function IAPbuttonAbilityPower(){
     var Button = document.getElementById("itemButtonAbilityPower");
     if(isCheckAbilityPower){
@@ -127,7 +145,6 @@ function IAPbuttonAbilityPower(){
     }
     isCheckAbilityPower = !isCheckAbilityPower;
 }
-let isCheckAttackSpeed = true;
 function IAPbuttonAttackSpeed(){
     var Button = document.getElementById("itemButtonAttackSpeed");
     if(isCheckAttackSpeed){
@@ -137,7 +154,6 @@ function IAPbuttonAttackSpeed(){
     }
     isCheckAttackSpeed = !isCheckAttackSpeed;
 }
-let isCheckCtReducation = true;
 function IAPbuttonCtReducation(){
     var Button = document.getElementById("itemButtonCtReducation");
     if(isCheckCtReducation){
@@ -147,7 +163,6 @@ function IAPbuttonCtReducation(){
     }
     isCheckCtReducation = !isCheckCtReducation;
 }
-let isCheckAmmo = true;
 function IAPbuttonAmmo(){
     var Button = document.getElementById("itemButtonAmmo");
     if(isCheckAmmo){
@@ -157,7 +172,6 @@ function IAPbuttonAmmo(){
     }
     isCheckAmmo = !isCheckAmmo;
 }
-let isCheckWeapon_LifeSteal = true;
 function IAPbuttonWeapon_LifeSteal(){
     var Button = document.getElementById("itemButtonWeapon_LifeSteal");
     if(isCheckWeapon_LifeSteal){
@@ -167,7 +181,6 @@ function IAPbuttonWeapon_LifeSteal(){
     }
     isCheckWeapon_LifeSteal = !isCheckWeapon_LifeSteal;
 }
-let isCheckAbility_LifeSteal = true;
 function IAPbuttonAbility_LifeSteal(){
     var Button = document.getElementById("itemButtonAbility_LifeSteal");
     if(isCheckAbility_LifeSteal){
@@ -177,7 +190,6 @@ function IAPbuttonAbility_LifeSteal(){
     }
     isCheckAbility_LifeSteal = !isCheckAbility_LifeSteal;
 }
-let isCheckSpeed = true;
 function IAPbuttonSpeed(){
     var Button = document.getElementById("itemButtonSpeed");
     if(isCheckSpeed){
@@ -187,7 +199,6 @@ function IAPbuttonSpeed(){
     }
     isCheckSpeed = !isCheckSpeed;
 }
-let isCheckReloadSpeed = true;
 function IAPbuttonReloadSpeed(){
     var Button = document.getElementById("itemButtonReloadSpeed");
     if(isCheckReloadSpeed){
@@ -197,7 +208,6 @@ function IAPbuttonReloadSpeed(){
     }
     isCheckReloadSpeed = !isCheckReloadSpeed;
 }
-let isCheckMeleeDamage = true;
 function IAPbuttonMeleeDamage(){
     var Button = document.getElementById("itemButtonMeleeDamage");
     if(isCheckMeleeDamage){
@@ -207,7 +217,6 @@ function IAPbuttonMeleeDamage(){
     }
     isCheckMeleeDamage = !isCheckMeleeDamage;
 }
-let isCheckCritical = true;
 function IAPbuttonCritical(){
     var Button = document.getElementById("itemButtonCritical");
     if(isCheckCritical){
@@ -217,7 +226,6 @@ function IAPbuttonCritical(){
     }
     isCheckCritical = !isCheckCritical;
 }
-let isCheckOthers = true;
 function IAPbuttonOthers(){
     var Button = document.getElementById("itemButtonOthers");
     if(isCheckOthers){
@@ -228,12 +236,18 @@ function IAPbuttonOthers(){
     isCheckOthers = !isCheckOthers;
 }
 
-//タブ切り替え
-const tabItem = document.getElementById('tabItem');
-const itemContent = document.getElementById('item-content');
-const tabPower = document.getElementById('tabPower');
-const powerContent = document.getElementById('power-content');
 
+//ヒーローアイコン選択変更
+function selectHero(heroIconId){
+    let heroIcon = document.getElementById(heroIconId);
+    if(heroIcon.className == "power-hero-icon-off"){
+        heroIcon.className = "power-hero-icon-on";
+    }else{
+        heroIcon.className = "power-hero-icon-off";
+    }
+}
+
+//タブ切り替え
 // アイテムタブに遷移
 function changeTabItem() {
    itemContent.style.display = "block";
@@ -246,7 +260,6 @@ function changeTabItem() {
    tabItem.style.border = "1px solid black";
    tabItem.style.borderBottom = "none";
 }
-
 // パワータブに遷移
 function changeTabPower() {
    powerContent.style.display = "block";
@@ -258,4 +271,223 @@ function changeTabPower() {
    tabItem.style.borderRight = "none";
    tabPower.style.border = "1px solid black";
    tabPower.style.borderBottom = "none";
+}
+
+// アイテムリストをテーブルに紐づける関数
+function linkItemList(itemList) {
+    let tbody = document.getElementById("item-table").querySelector("tbody");
+
+    // 各アイテムごとにループ
+    for(let i=0; i<itemList.length; i++) {
+        var tr = document.createElement("tr");
+
+        // 必要な列ごとの変数を初期化 
+        let itemNameText = "";
+        let iconText = "-";  // アイコン列は現状アイテム情報にないため、とりあえずハイフンを入れる　TODO：RIN
+        let categoryText = "";
+        let rarityText = "";
+        let costText = "";
+        let uniqueHeroText = "";
+        let statusText = "";
+        let textText = "";
+
+        // 各キーペアごとにループ
+        Object.keys(itemList[i]).forEach(key => {
+
+            // キー名がアイテム名キーの場合
+            if(itemNameKey == key) {
+
+                // アイテム名用変数に値を代入
+                itemNameText = itemList[i][key];
+            }
+
+            // キー名がカテゴリーキーの場合
+            if(categoryKey == key) {
+
+                // カテゴリー用変数に値を代入
+                categoryText = itemList[i][key];
+            }
+
+            // キー名がレアリティキーの場合
+            if(rarityKey == key) {
+
+                // レアリティ用変数に値を代入
+                rarityText = itemList[i][key];
+            }
+
+             // キー名がコストキーの場合
+            if(costKey == key) {
+
+                // コスト用変数に値を代入
+                costText = itemList[i][key];
+            }
+
+             // キー名が固有ヒーローキーの場合
+            if(uniqueHeroKey == key) {
+
+                // 固有ヒーロー用変数に値を代入
+                uniqueHeroText = itemList[i][key];
+            }
+
+            // キー名がステータス関連のキーの場合
+            if([lifeKey, armorKey, shieldKey, weaponPowerKey, abilityPowerKey, 
+                attackSpeedKey, ctReducationKey, ammoKey, weapon_LifeStealKey, 
+                ability_LifeStealKey, speedKey, reloadSpeedKey, meleeDamageKey, 
+                criticalKey].includes(key)) {
+
+                // 値が0でない場合
+                if(itemList[i][key] != 0) {
+                    statusText = statusText + key + "+" + String(itemList[i][key]) + "\n";
+                }
+            }
+
+            // キー名がその他キーの場合
+            if(othersKey == key) {
+
+                // 値が"-"でない場合
+                if(itemList[i][key] != "-") {
+                    statusText = statusText + String(itemList[i][key]);
+                    statusText = statusText.replaceAll(",", "\n");
+                }
+            }
+
+            // キー名がテキストキーの場合
+            if(textKey == key) {
+
+                // テキスト用変数に値を代入
+                textText = itemList[i][key];
+            }
+        })
+    
+        tbody.appendChild(appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, statusText, textText));
+    
+    }
+}
+
+// アイテムリスト用子要素作成関数
+function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, statusText, textText){
+
+    // アイテム名列
+    var td = document.createElement("td");
+    td.textContent = itemNameText;
+    td.classList.add("item-td");
+    tr.appendChild(td);
+
+    // アイコン列
+    var td = document.createElement("td");
+    td.textContent = iconText;
+    td.classList.add("item-td");
+    tr.appendChild(td);
+
+    // カテゴリー列
+    var td = document.createElement("td");
+    td.textContent = categoryText;
+    td.classList.add("item-td");
+    tr.appendChild(td);
+
+    // レアリティ列
+    var td = document.createElement("td");
+    td.textContent = rarityText;
+    td.classList.add("item-td");
+    tr.appendChild(td);
+
+    // コスト列
+    var td = document.createElement("td");
+    td.textContent = costText;
+    td.classList.add("item-td");
+    tr.appendChild(td);
+
+    // 固有ヒーロー列
+    var td = document.createElement("td");
+    td.textContent = uniqueHeroText;
+    td.classList.add("item-td");
+    tr.appendChild(td);
+
+    // ステータス列
+    var td = document.createElement("td");
+    td.innerHTML = statusText.replace(/\n/g, "<br>");
+    td.classList.add("item-td");
+    tr.appendChild(td);
+
+    // テキスト列
+    var td = document.createElement("td");
+    td.textContent = textText;
+    td.classList.add("item-td");
+    tr.appendChild(td);
+
+    return tr;
+}
+
+
+// パワーリストをテーブルに紐づける関数
+function linkPowerList(powerList) {
+    let tbody = document.getElementById("power-table").querySelector("tbody");
+
+    // 各アイテムごとにループ
+    for(let i=0; i<powerList.length; i++) {
+        var tr = document.createElement("tr");
+
+        // 必要な列ごとの変数を初期化 TODO:ここから下をパワー用に変える　6/21
+        let powerNameText = "";
+        let iconText = "-";  // アイコン列は現状アイテム情報にないため、とりあえずハイフンを入れる　TODO：RIN
+        let heroText = "";
+        let textText = "";
+
+        // 各キーペアごとにループ
+        Object.keys(powerList[i]).forEach(key => {
+
+            // キー名がパワー名キーの場合
+            if(powerNameKey == key) {
+
+                // アイテム名用変数に値を代入
+                powerNameText = powerList[i][key];
+            }
+
+            // キー名がヒーローキーの場合
+            if(heroKey == key) {
+
+                // ヒーロー用変数に値を代入
+                heroText = powerList[i][key];
+            }
+            // キー名がテキストキーの場合
+            if(textKey == key) {
+
+                // テキスト用変数に値を代入
+                textText = itemList[i][key];
+            }
+        })
+    
+        tbody.appendChild(appendChildPowerList(tr, powerNameText, iconText, heroText, textText));
+    
+    }
+}
+
+// パワーリスト用子要素作成関数
+function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
+
+    // パワー名列
+    var td = document.createElement("td");
+    td.textContent = powerNameText;
+    td.classList.add("item-td");
+    tr.appendChild(td);
+
+    // アイコン列
+    var td = document.createElement("td");
+    td.textContent = iconText;
+    td.classList.add("item-td");
+    tr.appendChild(td);
+
+    // ヒーロー列
+    var td = document.createElement("td");
+    td.textContent = heroText;
+    td.classList.add("item-td");
+    tr.appendChild(td);
+
+    // テキスト列
+    var td = document.createElement("td");
+    td.textContent = textText;
+    td.classList.add("item-td");
+    tr.appendChild(td);
+
+    return tr;
 }
