@@ -2,12 +2,6 @@
 // 処理部
 // ------------------------------
 
-// アイテムリストをテーブルに紐付け
-linkItemList(itemList);
-
-// パワーリストをテーブルに紐付け
-linkPowerList(powerList);
-
 // 選択中ヒーロー変数
 var selectedHero = "DVA（メック）"  // 初期値はDVA
 var life = 0;
@@ -20,6 +14,12 @@ var ability2 = 0;
 var ability3 = 0;
 var ult = 0;
 var addPower = ""; 
+
+// アイテムリストをテーブルに紐付け
+linkItemList(itemList, selectedHero);
+
+// パワーリストをテーブルに紐付け
+linkPowerList(powerList, selectedHero);
 
 // ステータスボックス設定
 updateStatus(selectedHero);
@@ -34,7 +34,7 @@ const powerCheckboxes = document.querySelectorAll(".power-checkbox");
 
 // 初期表示のために一度実行
 updateSelectedItemsList();
-updateSelectedPowerList()
+updateSelectedPowerList();
 
 // 各アイテムのチェックボックスにイベントリスナーを追加
 itemCheckboxes.forEach(checkbox => {
@@ -43,7 +43,7 @@ itemCheckboxes.forEach(checkbox => {
 
         // チェックボックスの状態が変わる毎に選択リスト、ビルド欄を更新
         selectedItemRowsData = updateSelectedItemsList();
-        updateBuild_Item(selectedItemRowsData);
+        updateBuild_item(selectedItemRowsData);
 
         const selectedItemRowsDataAfterLength = selectedItemRowsData.length;
 
@@ -127,6 +127,18 @@ function selectHero(id){
 
     // ステータスボックス更新
     updateStatus(id);
+
+    // アイテムリスト、パワーリストの初期化や絞り込み
+    disableItemTableCheckbox(false);
+    disablePowerTableCheckbox(false);
+    filterTable(id);
+
+    // 選択済みアイテム、選択済みパワーについて初期化
+    selectedItemRowsData = updateSelectedItemsList();
+    selectedPowerRowsData = updateSelectedPowerList();
+
+    updateBuild_item(selectedItemRowsData);
+    updateBuild_power(selectedPowerRowsData);
 
     // ヒーローウィンドウを消す
     document.getElementById("herowindow").style.display = "none";
@@ -293,7 +305,7 @@ function closePowerList(){
 }
 
 // アイテムリストをテーブルに紐づける関数
-function linkItemList(itemList) {
+function linkItemList(itemList, id) {
     let tbody_weapon = document.getElementById("item-table-weapon").querySelector("tbody");
     let tbody_ability = document.getElementById("item-table-ability").querySelector("tbody");
     let tbody_survival = document.getElementById("item-table-survival").querySelector("tbody");
@@ -302,6 +314,11 @@ function linkItemList(itemList) {
     let headers_weapon = document.getElementById("item-table-weapon").querySelectorAll("th");
     let headers_ability = document.getElementById("item-table-ability").querySelectorAll("th");
     let headers_survival = document.getElementById("item-table-survival").querySelectorAll("th");
+
+    // 選択ヒーローがDVAの場合、絞り込み条件と合致させるために値を変更
+    if(id == "DVA（メック）" || id == "DVA（人）"){
+        id = "D.VA";
+    }
 
     // 各アイテムごとにループ
     for(let i=0; i<itemList.length; i++) {
@@ -315,6 +332,7 @@ function linkItemList(itemList) {
         let textText = "";
         let rarityText = "";
         let costText = "";
+        let uniqueHeroText = "";
 
         // カテゴリー判定用変数
         let categoryCheck = "";
@@ -386,16 +404,23 @@ function linkItemList(itemList) {
                 costText = itemList[i][key];
             }
 
+            // キー名が固有ヒーローキーの場合
+            if(uniqueHeroKey == key){
+
+                // 固有ヒーロー用変数に値を代入
+                uniqueHeroText = itemList[i][key];
+            }
+
         })
 
         // 取得した各値をテーブルに紐付け
         // カテゴリー別に紐付け先のテーブルを分ける
         if(categoryCheck == "武器"){
-            tbody_weapon.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText));
+            tbody_weapon.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText, uniqueHeroText, id));
         }else if(categoryCheck == "アビリティ"){
-            tbody_ability.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText));
+            tbody_ability.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText, uniqueHeroText, id));
         }else if(categoryCheck == "サバイバル"){
-            tbody_survival.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText));
+            tbody_survival.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText, uniqueHeroText, id));
         }
     }
 
@@ -408,12 +433,11 @@ function linkItemList(itemList) {
     TableSort(headers_weapon,tbody_weapon, sortingCriteria);
     TableSort(headers_ability,tbody_ability, sortingCriteria);
     TableSort(headers_survival,tbody_survival, sortingCriteria);
-       
     
 }
 
 // アイテムリスト用子要素作成関数（※カテゴリー別に分けているため関数化）
-function appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText){
+function appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText, uniqueHeroText, id){
     // 選択列
     var td = document.createElement("td");
     td.classList.add("item-td");
@@ -462,12 +486,30 @@ function appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, te
     td.classList.add("hidden-column");
     tr.appendChild(td);
 
+    // 固有ヒーロー列（非表示）
+    var td = document.createElement("td");
+    td.textContent = uniqueHeroText;
+    td.classList.add("hidden-column");
+    td.id = "filter-target";
+    tr.appendChild(td);
+
+    if(uniqueHeroText == "-" || uniqueHeroText == id){
+        tr.classList.remove("hidden-column");
+    }else if(uniqueHeroText != "-" && uniqueHeroText != id){
+        tr.classList.add("hidden-column");
+    }
+
     return tr;
 }
 
 // パワーリストをテーブルに紐づける関数
-function linkPowerList(powerList) {
+function linkPowerList(powerList, id) {
     let tbody = document.getElementById("power-table").querySelector("tbody");
+
+    // 選択ヒーローがDVAの場合、絞り込み条件と合致させるために値を変更
+    if(id == "DVA（メック）" || id == "DVA（人）"){
+        id = "D.VA";
+    }
 
     // 各パワーごとにループ
     for(let i=0; i<powerList.length; i++) {
@@ -476,8 +518,9 @@ function linkPowerList(powerList) {
         // 必要な列ごとの変数を初期化 
         let isCheck = false;  // 選択列はパワー情報になく、初期時必ずfalseを入れる
         let powerNameText = "";
-        let iconText = "-";  // アイコン列は現状パワー情報にないため、とりあえずハイフンを入れる　TODO：RIN
+        let iconText = "-";
         let textText = "";
+        let heroText = "";
 
         // 各キーペアごとにループ
         Object.keys(powerList[i]).forEach(key => {
@@ -501,6 +544,13 @@ function linkPowerList(powerList) {
 
                 // テキスト用変数に値を代入
                 textText = powerList[i][key];
+            }
+
+            // キー名が固有ヒーローキーの場合
+            if(heroKey == key){
+
+                // 固有ヒーロー用変数に値を代入
+                heroText = powerList[i][key];
             }
 
         })
@@ -535,6 +585,19 @@ function linkPowerList(powerList) {
         td.textContent = textText;
         td.classList.add("power-td");
         tr.appendChild(td);
+
+        // 固有ヒーロー列（非表示）
+        var td = document.createElement("td");
+        td.textContent = heroText;
+        td.classList.add("hidden-column");
+        td.id = "filter-target";
+        tr.appendChild(td);
+
+        if(heroText == "-" || heroText == id){
+            tr.classList.remove("hidden-column");
+        }else if(heroText != "-" && heroText != id){
+            tr.classList.add("hidden-column");
+        }
 
         tbody.appendChild(tr);
     }
@@ -654,7 +717,7 @@ function updateSelectedPowerList() {
 }
 
 //ビルド欄のアイテムを更新する関数
-function updateBuild_Item(selectedItemRows){
+function updateBuild_item(selectedItemRows){
 
     for(let i=0; i<6; i++) {
         // 親要素を指定
@@ -733,7 +796,7 @@ function clickDeleteButton(spanId,selectedRows) {
         const itemName = selectedRows[index][itemNameKey];
         const category = selectedRows[index][categoryKey];
         //初期値は武器カテゴリを設定
-        var tbody = document.getElementById("item-table-weapon").querySelector("tbody");;
+        var tbody = document.getElementById("item-table-weapon").querySelector("tbody");
 
         // 武器以外のカテゴリの場合検索範囲を設定
         if(category == "アビリティ"){
@@ -761,7 +824,7 @@ function clickDeleteButton(spanId,selectedRows) {
 
         // アイテムリスト、ビルド欄を更新
         selectedRows = updateSelectedItemsList();
-        updateBuild_Item(selectedRows);
+        updateBuild_item(selectedRows);
 
         if(selectedRowsBeforeLength == 6){
             //元々アイテムが6個選ばれていた場合、選択されていないアイテムのチェックボックスを入力可
@@ -831,6 +894,63 @@ function disablePowerTableCheckbox(flag){
             }else{
                 checkbox.disabled = false;
             }           
+        }
+    });
+}
+
+// 選択ヒーローに応じてテーブルを絞り込む関数
+function filterTable(id){
+
+    // 選択ヒーローがDVAの場合、絞り込み条件と合致させるために値を変更
+    if(id == "DVA（メック）" || id == "DVA（人）"){
+        id = "D.VA";
+    }
+
+    // アイテムテーブルのカテゴリ
+    const tableCategory = ["weapon","ability","survival"];
+
+    for(let i=0; i<tableCategory.length; i++){
+        var tbody_item = document.getElementById("item-table-" + tableCategory[i]).querySelector("tbody");
+        var rows_item = tbody_item.querySelectorAll("tr");
+
+        rows_item.forEach(row =>{
+            const cells = row.querySelectorAll("td");
+            const checkbox =  cells[0].querySelector(".item-checkbox");
+            const target = row.querySelector("td#filter-target").textContent;
+
+            // チェックボックスを未選択状態にする
+            if(checkbox.checked){
+                checkbox.checked = false;
+            }
+
+            // 選択ヒーローに応じてアイテムテーブル絞り込み実施
+            if(target == "-" || target == id){
+                row.classList.remove("hidden-column");
+            }else if(target != "-" && target != id){
+                row.classList.add("hidden-column");
+            }
+        });
+    }
+
+    var tbody_power = document.getElementById("power-table").querySelector("tbody");
+    var rows_power = Array.from(tbody_power.querySelectorAll("tr"));
+    rows_power.shift();
+
+    rows_power.forEach(row =>{
+        const cells = row.querySelectorAll("td");
+        const checkbox =  cells[0].querySelector(".power-checkbox");
+        const target = row.querySelector("td#filter-target").textContent
+
+        // チェックボックスを未選択状態にする
+        if(checkbox.checked){
+            checkbox.checked = false;
+        }
+
+        // 選択ヒーローに応じてパワーテーブル絞り込み実施
+        if(target == "-" || target == id){
+            row.classList.remove("hidden-column");
+        }else if(target != "-" && target != id){
+            row.classList.add("hidden-column");
         }
     });
 }
