@@ -154,10 +154,6 @@ main-buildsimulator {
     border: 2px solid dodgerblue;
 }
 
-.hero-icon:hover {
-    /* TODO:RIN カーソルを合わせた際の色調整 */
-}
-
 .herowindow-overlay {
     display: none;
     position: fixed;
@@ -242,6 +238,7 @@ main-buildsimulator {
     margin-bottom: 8px;
     width: 60px;
     height: 60px;
+    border-radius: 50%;
 }
 
 .selectedbuild-power-icon {
@@ -250,6 +247,7 @@ main-buildsimulator {
     margin-bottom: 8px;
     width: 60px;
     height: 60px;
+    border-radius: 10px;
 }
 
 .selectedbuild-delete-button {
@@ -277,7 +275,7 @@ main-buildsimulator {
     display: block;
     margin-left: 20px;
     margin-right: 20px;
-    width: 430px;
+    width: 630px;
     border: 2px solid gray;
     height: 420px;
     background-color: #FAFAFA;
@@ -479,6 +477,22 @@ main-buildsimulator {
 
 .hidden-column {
     display: none;
+}
+
+.buildsimulator-itemicon {
+    margin-left: 8px;
+    margin-top: 5px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.buildsimulator-powericon {
+    margin-left: 8px;
+    margin-top: 5px;
+    width: 100px;
+    height: 100px;
+    border-radius: 15px;
 }
 
 /*

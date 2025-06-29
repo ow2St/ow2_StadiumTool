@@ -38,10 +38,9 @@ var ultNameKey = "ULT名";
 var ultKey = "ULT";
 var ultCalculationKey = "ULT計算式";
 var ultDurationKey = "ULT継続時間";
-var addPowerKey = "追加効果";
 
-// ステータスリスト定義（初期化）
-var statusList = [];
+// ステータスリスト定義（初期値）
+var initStatusList = [];
 
 addStatusList("DVA（メック）",375,0,325,"フュージョンキャノン",22,"2*11",0,0,"なし",0,"-",0,0,"ブースター",0,"-",2,3.5,"ディフェンスマトリックス",0,"-",3,6,"マイクロミサイル",153,"8.5*18",1.6,7,"自爆",1000,"-",3);
 addStatusList("DVA（人）",175,0,0,"ライトガン",14,"-",1.4,20,"なし",0,"-",0,0,"なし",0,"-",0,0,"なし",0,"-",0,0,"なし",0,"-",0,0,"メック召喚",250,"-",0);
@@ -113,8 +112,7 @@ function addStatusList(heroName, life, armor, shield,
     statusData[ultKey] = ult;
     statusData[ultCalculationKey] = ultCalculation;
     statusData[ultDurationKey] = ultDuration;
-    statusData[addPowerKey] = "";  // 追加効果は初期値はないので空文字
 
     // ステータス情報をステータスリストに追加
-    statusList.push(statusData);
+    initStatusList.push(statusData);
 }
