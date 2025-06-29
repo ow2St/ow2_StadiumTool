@@ -13,7 +13,10 @@ var ability1 = 0;
 var ability2 = 0;
 var ability3 = 0;
 var ult = 0;
-var addPower = ""; 
+var addPower = "";
+
+// 表示用のステータスリストを初期化
+var showStatusList = {};
 
 // アイテムリストをテーブルに紐付け
 linkItemList(itemList, selectedHero);
@@ -22,7 +25,7 @@ linkItemList(itemList, selectedHero);
 linkPowerList(powerList, selectedHero);
 
 // ステータスボックス設定
-updateStatus(selectedHero);
+initStatus(selectedHero);
 
 // チェックされた行のデータを格納する配列
 var selectedItemRowsData = [];
@@ -41,9 +44,13 @@ itemCheckboxes.forEach(checkbox => {
     checkbox.addEventListener("change", () => {
         const selectedItemRowsDataBeforeLength = selectedItemRowsData.length;
 
-        // チェックボックスの状態が変わる毎に選択リスト、ビルド欄を更新
+        // チェックボックスの状態が変わる毎に選択リストを更新
         selectedItemRowsData = updateSelectedItemsList();
-        updateBuild_item(selectedItemRowsData);
+
+        // ビルド欄の表示を更新
+        updateBuild_Item(selectedItemRowsData);
+        // ステータスに反映
+        updateStatus_Item(selectedItemRowsData);
 
         const selectedItemRowsDataAfterLength = selectedItemRowsData.length;
 
@@ -62,9 +69,12 @@ powerCheckboxes.forEach(checkbox => {
     checkbox.addEventListener("change", () => {
         const selectedPowerRowsDataBeforeLength = selectedPowerRowsData.length;
 
-        // チェックボックスの状態が変わる毎に選択リスト、ビルド欄を更新
+        // チェックボックスの状態が変わる毎に選択リストを更新
         selectedPowerRowsData = updateSelectedPowerList();
-        updateBuild_power(selectedPowerRowsData);
+        // ビルド欄の表示を更新 
+        updateBuild_Power(selectedPowerRowsData);
+        // ステータスに反映
+        updateStatus_Power(selectedPowerRowsData);
 
         const selectedPowerRowsDataAfterLength = selectedPowerRowsData.length;
 
@@ -81,17 +91,23 @@ powerCheckboxes.forEach(checkbox => {
 const selectedBuildItem = document.querySelector(".selectedbuild-item");
 const selectedBuildpower = document.querySelector(".selectedbuild-power");
 
+// ビルド欄の各アイテムにイベントリスナーを追加
 selectedBuildItem.addEventListener("click", (event) =>{
+    // 削除ボタンをクリックされた場合
     if(event.target.classList.contains("selectedbuild-delete-button") && event.target.tagName =="SPAN"){
-        // クリックされた場合に、アイコンを削除するイベント追加
+        // アイコンを削除する
         selectedItemRowsData = clickDeleteButton(event.target.id,selectedItemRowsData);
+        // ステータスに反映　TODO：RIN
     }
 });
 
+// ビルド欄の各パワーにイベントリスナーを追加
 selectedBuildpower.addEventListener("click", (event) =>{
+    // 削除ボタンをクリックされた場合
     if(event.target.classList.contains("selectedbuild-delete-button") && event.target.tagName =="SPAN"){
-        // クリックされた場合に、アイコンを削除するイベント追加
+        // アイコンを削除する
         selectedPowerRowsData = clickDeleteButton(event.target.id,selectedPowerRowsData);
+        // ステータスに反映　TODO：RIN
     }
 });
 
@@ -125,8 +141,8 @@ function selectHero(id){
     }
     document.getElementById("selected-hero-icon").src = "assets/images/icons/hero/" + imgPath;
 
-    // ステータスボックス更新
-    updateStatus(id);
+    // ステータスボックス初期化
+    initStatus(id);
 
     // アイテムリスト、パワーリストの初期化や絞り込み
     disableItemTableCheckbox(false);
@@ -137,20 +153,22 @@ function selectHero(id){
     selectedItemRowsData = updateSelectedItemsList();
     selectedPowerRowsData = updateSelectedPowerList();
 
-    updateBuild_item(selectedItemRowsData);
-    updateBuild_power(selectedPowerRowsData);
+    
+    updateBuild_Item(selectedItemRowsData);
+    updateBuild_Power(selectedPowerRowsData);
 
     // ヒーローウィンドウを消す
     document.getElementById("herowindow").style.display = "none";
 }
 
-// ステータスボックス設定
-function updateStatus(selectedHero){
+// ステータスボックス初期化
+function initStatus(selectedHero){
+
     // 各ヒーローごとにループ
-    for(let i=0; i<statusList.length; i++) {
+    for(let i=0; i<initStatusList.length; i++) {
 
         // 選択中のヒーローの場合
-        if (statusList[i][heroNameKey] == selectedHero){
+        if (initStatusList[i][heroNameKey] == selectedHero){
 
             // DVAの場合
             if(selectedHero == "DVA（メック）" || selectedHero == "DVA（人）"){
@@ -164,58 +182,62 @@ function updateStatus(selectedHero){
             }
 
             // 選択中のヒーローのステータスを設定
-            document.getElementById("heroname").innerText = statusList[i][heroNameKey];
-            document.getElementById("life").innerText = lifeKey + " :" + statusList[i][lifeKey];
-            document.getElementById("armor").innerText = armorKey + " :" + statusList[i][armorKey] ;
-            document.getElementById("shield").innerText = shieldKey + " :" + statusList[i][shieldKey];
-            document.getElementById("mainweapon").innerText = mainWeaponKey + "(" + statusList[i][mainWeaponNameKey] + ")" + " :" + statusList[i][mainWeaponKey];
-            document.getElementById("subweapon").innerText = subWeaponKey + "(" + statusList[i][subWeaponNameKey] + ")" + " :" + statusList[i][subWeaponKey];
-            document.getElementById("ability1").innerText = ability1Key + "(" + statusList[i][ability1NameKey] + ")" + " :" + statusList[i][ability1Key];
-            document.getElementById("ability2").innerText = ability2Key + "(" + statusList[i][ability2NameKey] + ")" + " :" + statusList[i][ability2Key];
-            document.getElementById("ability3").innerText = ability3Key + "(" + statusList[i][ability3NameKey] + ")" + " :" + statusList[i][ability3Key];
-            document.getElementById("ult").innerText = ultKey + "(" + statusList[i][ultNameKey] + ")" + " :" + statusList[i][ultKey];
-            document.getElementById("addpower").innerText = addPowerKey + " :" + statusList[i][addPowerKey];
+            document.getElementById("heroname").innerText = initStatusList[i][heroNameKey];
+            document.getElementById("life").innerText = lifeKey + " :" + initStatusList[i][lifeKey];
+            document.getElementById("armor").innerText = armorKey + " :" + initStatusList[i][armorKey] ;
+            document.getElementById("shield").innerText = shieldKey + " :" + initStatusList[i][shieldKey];
+            document.getElementById("mainweapon").innerText = mainWeaponKey + "(" + initStatusList[i][mainWeaponNameKey] + ")" + " :" + initStatusList[i][mainWeaponKey];
+            document.getElementById("subweapon").innerText = subWeaponKey + "(" + initStatusList[i][subWeaponNameKey] + ")" + " :" + initStatusList[i][subWeaponKey];
+            document.getElementById("ability1").innerText = ability1Key + "(" + initStatusList[i][ability1NameKey] + ")" + " :" + initStatusList[i][ability1Key];
+            document.getElementById("ability2").innerText = ability2Key + "(" + initStatusList[i][ability2NameKey] + ")" + " :" + initStatusList[i][ability2Key];
+            document.getElementById("ability3").innerText = ability3Key + "(" + initStatusList[i][ability3NameKey] + ")" + " :" + initStatusList[i][ability3Key];
+            document.getElementById("ult").innerText = ultKey + "(" + initStatusList[i][ultNameKey] + ")" + " :" + initStatusList[i][ultKey];
+            document.getElementById("additem").innerText = "追加効果(アイテム):";
+            document.getElementById("addpower").innerText = "追加効果(パワー):";
 
             // リロード速度がある場合は追加
-            if(statusList[i][mainReloadKey] != 0){
-                document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (リロード" + statusList[i][mainReloadKey] + "秒)";
+            if(initStatusList[i][mainReloadKey] != 0){
+                document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (リロード" + initStatusList[i][mainReloadKey] + "秒)";
             }
-            if(statusList[i][subReloadKey] != 0){
-                document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (リロード" + statusList[i][subReloadKey] + "秒)";
+            if(initStatusList[i][subReloadKey] != 0){
+                document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (リロード" + initStatusList[i][subReloadKey] + "秒)";
             }
 
             // 弾薬数がある場合は追加
-            if(statusList[i][mainAmmoKey] != 0){
-                document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (" + statusList[i][mainAmmoKey] + "弾)";
+            if(initStatusList[i][mainAmmoKey] != 0){
+                document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (" + initStatusList[i][mainAmmoKey] + "弾)";
             }
-            if(statusList[i][subAmmoKey] != 0){
-                document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (" + statusList[i][subReloadKey] + "弾)";
+            if(initStatusList[i][subAmmoKey] != 0){
+                document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (" + initStatusList[i][subReloadKey] + "弾)";
             }
 
             // 継続時間がある場合は追加
-            if(statusList[i][ability1DurationKey] != 0){
-                document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + " (" + statusList[i][ability1DurationKey] + "秒継続)";
+            if(initStatusList[i][ability1DurationKey] != 0){
+                document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + " (" + initStatusList[i][ability1DurationKey] + "秒継続)";
             }
-            if(statusList[i][ability2DurationKey] != 0){
-                document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + " (" + statusList[i][ability2DurationKey] + "秒継続)";
+            if(initStatusList[i][ability2DurationKey] != 0){
+                document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + " (" + initStatusList[i][ability2DurationKey] + "秒継続)";
             }
-            if(statusList[i][ability3DurationKey] != 0){
-                document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (" + statusList[i][ability3DurationKey] + "秒継続)";
+            if(initStatusList[i][ability3DurationKey] != 0){
+                document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (" + initStatusList[i][ability3DurationKey] + "秒継続)";
             }
-            if(statusList[i][ultDurationKey] != 0){
-                document.getElementById("ult").innerText = document.getElementById("ult").innerText + " (" + statusList[i][ultDurationKey] + "秒継続)";
+            if(initStatusList[i][ultDurationKey] != 0){
+                document.getElementById("ult").innerText = document.getElementById("ult").innerText + " (" + initStatusList[i][ultDurationKey] + "秒継続)";
             }
 
             // CT時間がある場合は追加
-            if(statusList[i][ability1CTKey] != 0){
-                document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + " (CT" + statusList[i][ability1CTKey] + "秒)";
+            if(initStatusList[i][ability1CTKey] != 0){
+                document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + " (CT" + initStatusList[i][ability1CTKey] + "秒)";
             }
-            if(statusList[i][ability2CTKey] != 0){
-                document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + " (CT" + statusList[i][ability2CTKey] + "秒)";
+            if(initStatusList[i][ability2CTKey] != 0){
+                document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + " (CT" + initStatusList[i][ability2CTKey] + "秒)";
             }
-            if(statusList[i][ability3CTKey] != 0){
-                document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (CT" + statusList[i][ability3CTKey] + "秒)";
+            if(initStatusList[i][ability3CTKey] != 0){
+                document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (CT" + initStatusList[i][ability3CTKey] + "秒)";
             }
+            
+            // 表示用のステータスリストを初期化
+            showStatusList = JSON.parse(JSON.stringify(initStatusList[i]));
         }
     }
 }
@@ -230,8 +252,8 @@ function dvaButtonClick(){
         selectedHero = "DVA（メック）";
     }
 
-    // ステータスボックス更新
-    updateStatus(selectedHero);
+    // ステータスボックス初期化
+    initStatus(selectedHero);
 }
 
 // アイテムリストを開く
@@ -459,6 +481,7 @@ function appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, te
     td.classList.add("item-td");
     var iconImg = document.createElement("img");
     iconImg.src = "assets/images/icons/item/" + iconText;
+    iconImg.classList.add("buildsimulator-itemicon");
     td.appendChild(iconImg);
     tr.appendChild(td);
 
@@ -576,6 +599,7 @@ function linkPowerList(powerList, id) {
         var td = document.createElement("td");
         var iconImg = document.createElement("img");
         iconImg.src = "assets/images/icons/power/" + iconText;
+        iconImg.classList.add("buildsimulator-powericon");
         td.appendChild(iconImg);
         td.classList.add("power-td");
         tr.appendChild(td);
@@ -717,7 +741,7 @@ function updateSelectedPowerList() {
 }
 
 //ビルド欄のアイテムを更新する関数
-function updateBuild_item(selectedItemRows){
+function updateBuild_Item(selectedItemRows){
 
     for(let i=0; i<6; i++) {
         // 親要素を指定
@@ -750,12 +774,106 @@ function updateBuild_item(selectedItemRows){
     }
 }
 
+//ステータスにアイテムの内容を反映する関数
+function updateStatus_Item(selectedItemRows){
+
+    // 選択中のヒーローのステータスを初期化
+    const showStatusListTmp = initStatusList.filter(heroStatus => heroStatus[heroNameKey] === selectedHero);
+    showStatusList = JSON.parse(JSON.stringify(showStatusListTmp[0]));
+    document.getElementById("life").innerText = lifeKey + " :" + showStatusList[lifeKey];
+    document.getElementById("armor").innerText = armorKey + " :" + showStatusList[armorKey] ;
+    document.getElementById("shield").innerText = shieldKey + " :" + showStatusList[shieldKey];
+    document.getElementById("mainweapon").innerText = mainWeaponKey + "(" + showStatusList[mainWeaponNameKey] + ")" + " :" + showStatusList[mainWeaponKey];
+    document.getElementById("subweapon").innerText = subWeaponKey + "(" + showStatusList[subWeaponNameKey] + ")" + " :" + showStatusList[subWeaponKey];
+    document.getElementById("ability1").innerText = ability1Key + "(" + showStatusList[ability1NameKey] + ")" + " :" + showStatusList[ability1Key];
+    document.getElementById("ability2").innerText = ability2Key + "(" + showStatusList[ability2NameKey] + ")" + " :" + showStatusList[ability2Key];
+    document.getElementById("ability3").innerText = ability3Key + "(" + showStatusList[ability3NameKey] + ")" + " :" + showStatusList[ability3Key];
+    document.getElementById("ult").innerText = ultKey + "(" + showStatusList[ultNameKey] + ")" + " :" + showStatusList[ultKey];
+    document.getElementById("additem").innerText = "追加効果(アイテム):";
+    document.getElementById("addpower").innerText = "追加効果(パワー):";
+    
+    for(let i=0; i<selectedItemRows.length; i++) {
+
+        // 各パラメータを抽出
+        const lifeTmp = selectedItemRows[i][lifeKey];
+        const armorTmp = selectedItemRows[i][armorKey];
+        const shieldTmp = selectedItemRows[i][shieldKey];
+        const weaponPowerTmp = selectedItemRows[i][weaponPowerKey];
+        const abilityPowerTmp = selectedItemRows[i][abilityPowerKey];
+        const attackSpeedTmp = selectedItemRows[i][attackSpeedKey];
+        const ctReducationTmp = selectedItemRows[i][ctReducationKey];
+        const ammoTmp = selectedItemRows[i][ammoKey];
+        const weapon_LifeStealTmp = selectedItemRows[i][weapon_LifeStealKey];
+        const ability_LifeStealTmp = selectedItemRows[i][ability_LifeStealKey];
+        const speedTmp = selectedItemRows[i][speedKey];
+        const reloadSpeedTmp = selectedItemRows[i][reloadSpeedKey];
+        const meleeDamageTmp = selectedItemRows[i][meleeDamageKey];
+        const criticalTmp = selectedItemRows[i][criticalKey];
+        const othersTmp = selectedItemRows[i][othersKey];
+        const textTmp = selectedItemRows[i][textKey];
+
+        // ライフに記載がある場合
+        if(lifeTmp != 0){
+
+            // 表示用ステータスリストに反映
+            showStatusList[lifeKey] = showStatusList[lifeKey] + lifeTmp;
+
+            // ステータス欄を更新
+            document.getElementById("life").innerText = lifeKey + " :" + showStatusList[lifeKey];
+        }
+
+        // アーマーに記載がある場合
+        if(armorTmp != 0){
+
+            // 表示用ステータスリストに反映
+            showStatusList[armorKey] = showStatusList[armorKey] + armorTmp;
+
+            // ステータス欄を更新
+            document.getElementById("armor").innerText = armorKey + " :" + showStatusList[armorKey];
+        }
+
+        // シールドに記載がある場合
+        if(shieldTmp != 0){
+
+            // 表示用ステータスリストに反映
+            showStatusList[shieldKey] = showStatusList[shieldKey] + shieldTmp;
+
+            // ステータス欄を更新
+            document.getElementById("shield").innerText = shieldKey + " :" + showStatusList[shieldKey];
+        }
+
+        // 武器パワーに記載がある場合
+        if(weaponPowerTmp != 0){
+
+            // 表示用ステータスリストに反映
+            showStatusList[mainWeaponKey] = showStatusList[mainWeaponKey] * (weaponPowerTmp/100 + 1);
+
+            // ステータス欄を更新
+            document.getElementById("mainweapon").innerText = mainWeaponKey + "(" + showStatusList[mainWeaponNameKey] + ")" + " :" + showStatusList[mainWeaponKey];
+        }
+
+        // テキストに記載がある場合
+        if(textTmp != "-"){
+
+            // 追加効果欄に羅列
+            document.getElementById("additem").innerText = document.getElementById("additem").innerText + textTmp + "\n";
+        }
+
+        // その他に記載がある場合
+        if(othersTmp != "-"){
+
+            // 追加効果欄に羅列
+            document.getElementById("additem").innerText = document.getElementById("additem").innerText + textTmp + "\n";
+        }
+    }
+}
+
 //ビルド欄のパワーを更新する関数
-function updateBuild_power(selectedPowerRows){
+function updateBuild_Power(selectedPowerRows){
 
     for(let i=0; i<4; i++) {
         // 親要素を指定
-        const targetDiv = document.getElementById("power" + String(i + 1))
+        let targetDiv = document.getElementById("power" + String(i + 1));
 
         // 指定した要素内に子要素がある場合は削除する
         if(targetDiv.children.length != 0){
@@ -770,7 +888,7 @@ function updateBuild_power(selectedPowerRows){
             // アイコン追加部分
             var iconImg = document.createElement("img");
             iconImg.src = "assets/images/icons/power/" + selectedPowerRows[i][iconKey];
-            iconImg.classList.add("selectedbuild-item-icon");
+            iconImg.classList.add("selectedbuild-power-icon");
             iconImg.id = "power-image" + String(i + 1)
             targetDiv.appendChild(iconImg);
             
@@ -781,6 +899,22 @@ function updateBuild_power(selectedPowerRows){
             span.id = "delete-power" + String(i + 1);
             targetDiv.appendChild(span);
         }
+    }
+}
+
+//ステータスにパワーの内容を反映する関数
+function updateStatus_Power(selectedPowerRows){
+
+    // 追加効果欄を初期化
+    document.getElementById("addpower").innerText = "追加効果(パワー):";
+    
+    for(let i=0; i<4; i++) {
+
+        // テキストを抽出
+        const textTmp = selectedPowerRows[i][textKey];
+
+        // 追加効果欄に羅列(パワーは必ずテキストがあるため空チェックはしない)
+        document.getElementById("addpower").innerText = document.getElementById("addpower").innerText + textTmp + "\n";
     }
 }
 
@@ -824,7 +958,7 @@ function clickDeleteButton(spanId,selectedRows) {
 
         // アイテムリスト、ビルド欄を更新
         selectedRows = updateSelectedItemsList();
-        updateBuild_item(selectedRows);
+        updateBuild_Item(selectedRows);
 
         if(selectedRowsBeforeLength == 6){
             //元々アイテムが6個選ばれていた場合、選択されていないアイテムのチェックボックスを入力可
@@ -857,7 +991,7 @@ function clickDeleteButton(spanId,selectedRows) {
 
         // パワーリスト、ビルド欄を更新
         selectedRows = updateSelectedPowerList();
-        updateBuild_power(selectedRows);
+        updateBuild_Power(selectedRows);
 
         if(selectedRowsBeforeLength == 4){
             //元々パワーが4個選ばれていた場合、選択されていないパワーのチェックボックスを入力可
