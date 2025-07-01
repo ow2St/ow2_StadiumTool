@@ -92,8 +92,6 @@ header {
 
 main-toppage {
     margin-top: 2px;
-    margin-left: 200px;
-    margin-right: 200px;
     height: 100vh;
     border: 1px solid black;
     display: block;
@@ -131,8 +129,6 @@ main-toppage {
 
 main-buildsimulator {
     margin-top: 2px;
-    margin-left: 200px;
-    margin-right: 200px;
     height: 100%;
     border: 1px solid black;
     display: block;
@@ -155,10 +151,7 @@ main-buildsimulator {
     margin-left: 30px;
     width: 120px;
     height: 120px;
-}
-
-.hero-icon:hover {
-    /* TODO:RIN カーソルを合わせた際の色調整 */
+    border: 2px solid dodgerblue;
 }
 
 .herowindow-overlay {
@@ -174,7 +167,6 @@ main-buildsimulator {
 }
 
 .herowindow-content {
-    /* TODO:RIN アイコンが揃い次第再調整 */
     position: fixed;
     display: inline-flex;
     top: 300px;
@@ -197,6 +189,7 @@ main-buildsimulator {
     margin-bottom: 3px;
     width: 70px;
     height: 70px;
+    border: 1px solid black;
 }
 
 .herowindow-close-button {
@@ -245,6 +238,7 @@ main-buildsimulator {
     margin-bottom: 8px;
     width: 60px;
     height: 60px;
+    border-radius: 50%;
 }
 
 .selectedbuild-power-icon {
@@ -253,6 +247,7 @@ main-buildsimulator {
     margin-bottom: 8px;
     width: 60px;
     height: 60px;
+    border-radius: 10px;
 }
 
 .selectedbuild-delete-button {
@@ -269,7 +264,7 @@ main-buildsimulator {
 .status-title {
     display: flex;
     margin-left: 20px;
-    width: 430px;
+    width: 150px;
     font-size: 25px;
     height: 30px;
     white-space: nowrap;
@@ -280,16 +275,35 @@ main-buildsimulator {
     display: block;
     margin-left: 20px;
     margin-right: 20px;
-    width: 430px;
+    width: 630px;
     border: 2px solid gray;
-    white-space: nowrap;
     height: 420px;
     background-color: #FAFAFA;
     overflow-y: scroll;
 }
 
-.status {
+.heroname {
     text-indent: 1em;
+    font-weight: 550;
+    color: #555555;
+    margin: 0;
+}
+
+.dva-button {
+    display: none;
+    border: 1px solid black;
+    margin: 0 0 0 10px;
+    font-weight: 550;
+    color: #555555;
+    padding: 0 5px 0 5px;
+    cursor: pointer;
+}
+.dva-button:hover{
+    background-color: lightgray;
+}
+
+.status {
+    padding-left: 15px;
     font-weight: 550;
     color: #555555;
     margin: 0;
@@ -461,6 +475,26 @@ main-buildsimulator {
     border: 1px solid lightgray;
 }
 
+.hidden-column {
+    display: none;
+}
+
+.buildsimulator-itemicon {
+    margin-left: 8px;
+    margin-top: 5px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.buildsimulator-powericon {
+    margin-left: 8px;
+    margin-top: 5px;
+    width: 100px;
+    height: 100px;
+    border-radius: 15px;
+}
+
 /*
 ====================================================================
 メイン部（アイテム/パワー一覧）
@@ -469,6 +503,7 @@ main-buildsimulator {
 
 main-IAP{
     margin-top: 2px;
+    /* margin-top: 50px; */
     margin-left: 200px;
     margin-right: 200px;
     height: auto;
