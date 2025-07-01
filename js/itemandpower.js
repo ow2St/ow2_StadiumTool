@@ -277,6 +277,9 @@ function changeTabPower() {
 function linkItemList(itemList) {
     let tbody = document.getElementById("item-table").querySelector("tbody");
 
+    // テーブルのヘッダー情報を取得
+    let header = document.getElementById("item-table").querySelectorAll("th");
+
     // 各アイテムごとにループ
     for(let i=0; i<itemList.length; i++) {
         var tr = document.createElement("tr");
@@ -418,6 +421,82 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
     return tr;
 }
 
+const sortingCriteria = [
+        /* { column: "itemName", order: "asc", type: "string" }, */
+        { column: "rarity", order: "asc", type: "string" },
+        { column: "cost", order: "asc", type: "number" }
+    ]
+
+    // テーブルをソート
+    /* TableSort(header,tbody, sortingCriteria); */
+
+
+
+// テーブルをソートする関数
+function TableSort(header, tbody, sortingCriteria) {
+
+    //レア度の並び替えの基準を設定
+    const rarityOrder = ['コモン', 'レア', 'エピック']
+
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    rows.shift();
+
+    // 比較
+    const comparator = (rowA, rowB) => {
+        for (const criteria of sortingCriteria) {
+            const { column, order, type } = criteria;
+
+            // data-column属性に対応する<td>要素のインデックスを検索
+            const columnIndex = Array.from(header).findIndex(th => th.dataset.column == column);
+            // カラムが見つからない場合は次の基準へ
+            if (columnIndex == -1) continue;
+
+            const cellA = rowA.children[columnIndex].textContent.trim();
+            const cellB = rowB.children[columnIndex].textContent.trim();
+
+            let valA, valB;
+
+            // データの型に応じて比較対象の値を変換（デフォルトはString型）
+            if (type == "number") {
+                valA = parseFloat(cellA);
+                valB = parseFloat(cellB);
+            } else {
+                valA = cellA;
+                valB = cellB;
+            }
+
+            // レア度を比較用に数値変換
+            if (column == "rarity") {
+                valA = rarityOrder.indexOf(valA);
+                valB = rarityOrder.indexOf(valB);
+            }
+
+            let comparison = 0;
+            if (valA < valB) {
+                comparison = -1;
+            } else if (valA > valB) {
+                comparison = 1;
+            }
+
+            if (comparison !== 0) {
+                // ソート順序を適用し、結果が0でない場合はここで終了
+                return order == "desc" ? -comparison : comparison;
+            }
+        }
+        // 全てのキーが同じ場合
+        return 0; 
+    };
+
+    // 配列のソート
+    rows.sort(comparator);
+    // 既存の行をすべて削除
+    while (tbody.firstChild) {
+        tbody.removeChild(tbody.firstChild);
+    }
+    // ソートされた順序で行を追加
+    rows.forEach(row => tbody.appendChild(row));
+}
+
 
 // パワーリストをテーブルに紐づける関数
 function linkPowerList(powerList) {
@@ -427,9 +506,9 @@ function linkPowerList(powerList) {
     for(let i=0; i<powerList.length; i++) {
         var tr = document.createElement("tr");
 
-        // 必要な列ごとの変数を初期化 TODO:ここから下をパワー用に変える　6/21
+        // 必要な列ごとの変数を初期化
         let powerNameText = "";
-        let iconText = "-";  // アイコン列は現状アイテム情報にないため、とりあえずハイフンを入れる　TODO：RIN
+        let iconText = "-";  // アイコン列は現状アイテム情報にないため、とりあえずハイフンを入れる
         let heroText = "";
         let textText = "";
 
@@ -439,7 +518,7 @@ function linkPowerList(powerList) {
             // キー名がパワー名キーの場合
             if(powerNameKey == key) {
 
-                // アイテム名用変数に値を代入
+                // パワー名用変数に値を代入
                 powerNameText = powerList[i][key];
             }
 
@@ -453,7 +532,7 @@ function linkPowerList(powerList) {
             if(textKey == key) {
 
                 // テキスト用変数に値を代入
-                textText = itemList[i][key];
+                textText = powerList[i][key];
             }
         })
     
@@ -468,7 +547,7 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
     // パワー名列
     var td = document.createElement("td");
     td.textContent = powerNameText;
-    td.classList.add("item-td");
+    td.classList.add("item-td");    //TODO:"item-td"を"power-td"に直す？（このままでも機能してる）
     tr.appendChild(td);
 
     // アイコン列
