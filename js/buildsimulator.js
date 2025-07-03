@@ -1015,22 +1015,24 @@ function updateStatus_Item(selectedItemRows){
         }
 
         // 最後に計算するものがある場合 TODO:RIN QA9
-        if(lifeRate != 0){
+        if(i + 1 == selectedItemRows.length){
+            if(lifeRate != 0){
 
-            // 表示用ステータスリストに反映
-            showStatusList[lifeKey] = Math.round(showStatusList[lifeKey] * lifeRate);
-        }
+                // 表示用ステータスリストに反映
+                showStatusList[lifeKey] = Math.round(showStatusList[lifeKey] * lifeRate);
+            }
 
-        if(armorRate != 0){
+            if(armorRate != 0){
 
-            // 表示用ステータスリストに反映
-            showStatusList[armorKey] = Math.round(showStatusList[armorKey] * armorRate);
-        }
+                // 表示用ステータスリストに反映
+                showStatusList[armorKey] = Math.round(showStatusList[armorKey] * armorRate);
+            }
 
-        if(shieldRate != 0){
+            if(shieldRate != 0){
 
-            // 表示用ステータスリストに反映
-            showStatusList[shieldKey] = Math.round(showStatusList[shieldKey] * shieldRate);
+                // 表示用ステータスリストに反映
+                showStatusList[shieldKey] = Math.round(showStatusList[shieldKey] * shieldRate);
+            }   
         }
 
         // ステータス表に反映
