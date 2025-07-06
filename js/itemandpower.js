@@ -39,6 +39,14 @@ const itemContent = document.getElementById('item-content');
 const tabPower = document.getElementById('tabPower');
 const powerContent = document.getElementById('power-content');
 
+const sortingCriteria = [//TODO:アイテムパワー一覧の場合は初期でソートしないので、order:unsorted（ソートなし）でok?
+        { column: "itemName", type: "string" }, //TODO:このままこれ起動するとアイテム名のソートのみ動くことになる
+        { column: "rarity", type: "string" },
+        { column: "cost", type: "number" }
+    ]
+
+let sortDirection = new Array(8).fill(null);
+
 // ------------------------------
 // 関数部
 // ------------------------------
@@ -277,9 +285,6 @@ function changeTabPower() {
 function linkItemList(itemList) {
     let tbody = document.getElementById("item-table").querySelector("tbody");
 
-    // テーブルのヘッダー情報を取得
-    let header = document.getElementById("item-table").querySelectorAll("th");
-
     // 各アイテムごとにループ
     for(let i=0; i<itemList.length; i++) {
         var tr = document.createElement("tr");
@@ -421,71 +426,96 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
     return tr;
 }
 
-const sortingCriteria = [
-        /* { column: "itemName", order: "asc", type: "string" }, */
-        { column: "rarity", order: "asc", type: "string" },
-        { column: "cost", order: "asc", type: "number" }
-    ]
-
-    // テーブルをソート
-    /* TableSort(header,tbody, sortingCriteria); */
 
 
+function sortClick(id){
+    const tHeader=document.getElementById("item-table").querySelectorAll("th");
+    const tBody = document.getElementById("item-table").querySelector("tbody");
+    const criteria = Array.from(sortingCriteria.entries()).find(([key,row]) => row.column === id);
+    const columnIndex = Array.from(tHeader).findIndex(th => th.dataset.column == id);
+    const currentDirection = sortDirection[columnIndex] == true ? false:true;
+    sortDirection = new Array(8).fill(null);
+    sortDirection[columnIndex] = currentDirection
+
+    TableSort(tHeader,tBody,criteria[1],columnIndex,currentDirection);
+
+    // 表示テキスト更新
+    const labelMap = {
+        itemName: "アイテム名",
+        rarity: "レアリティ",
+        cost: "コスト"
+    };
+
+    // テーブル列名初期化
+    sortingCriteria.forEach(row => {
+        document.getElementById(row.column).innerText = labelMap[row.column];
+    });
+    
+    let arrows = "";
+    
+    if(sortDirection[columnIndex]){
+        arrows = "▲"
+    }else if(!sortDirection[columnIndex]){
+        arrows = "▼"
+    }
+
+    // ソート結果に応じた列名に更新
+    document.getElementById(id).innerText = labelMap[id] + arrows;
+
+}
 
 // テーブルをソートする関数
-function TableSort(header, tbody, sortingCriteria) {
+function TableSort(headers, tbody, sortingCriteria,index,sorting) {
 
     //レア度の並び替えの基準を設定
     const rarityOrder = ['コモン', 'レア', 'エピック']
 
     const rows = Array.from(tbody.querySelectorAll("tr"));
-    rows.shift();
+
+    // 日本語ロケールに基づいた比較器（五十音順）
+    const collator = new Intl.Collator('ja', { sensitivity: 'base' });
 
     // 比較
     const comparator = (rowA, rowB) => {
-        for (const criteria of sortingCriteria) {
-            const { column, order, type } = criteria;
+        const { column, type } = sortingCriteria;
 
-            // data-column属性に対応する<td>要素のインデックスを検索
-            const columnIndex = Array.from(header).findIndex(th => th.dataset.column == column);
-            // カラムが見つからない場合は次の基準へ
-            if (columnIndex == -1) continue;
+        const cellA = rowA.children[index].textContent.trim();
+        const cellB = rowB.children[index].textContent.trim();
 
-            const cellA = rowA.children[columnIndex].textContent.trim();
-            const cellB = rowB.children[columnIndex].textContent.trim();
+        let valA, valB;
 
-            let valA, valB;
-
-            // データの型に応じて比較対象の値を変換（デフォルトはString型）
-            if (type == "number") {
-                valA = parseFloat(cellA);
-                valB = parseFloat(cellB);
-            } else {
-                valA = cellA;
-                valB = cellB;
-            }
-
-            // レア度を比較用に数値変換
-            if (column == "rarity") {
-                valA = rarityOrder.indexOf(valA);
-                valB = rarityOrder.indexOf(valB);
-            }
-
-            let comparison = 0;
-            if (valA < valB) {
-                comparison = -1;
-            } else if (valA > valB) {
-                comparison = 1;
-            }
-
-            if (comparison !== 0) {
-                // ソート順序を適用し、結果が0でない場合はここで終了
-                return order == "desc" ? -comparison : comparison;
-            }
+        // データの型に応じて比較対象の値を変換（デフォルトはString型）
+        if (type == "number") {
+            valA = parseFloat(cellA);
+            valB = parseFloat(cellB);
+        } else {
+            valA = cellA;
+            valB = cellB;
         }
+
+        // レア度を比較用に数値変換
+        if (column == "rarity") {
+            valA = rarityOrder.indexOf(valA);
+            valB = rarityOrder.indexOf(valB);
+        }
+
+        let comparison = 0;
+
+        // 文字列は日本語ロケールで比較
+        if (type === "string" && column !== "rarity") {
+            comparison = collator.compare(valA, valB);
+        } else {
+            if (valA < valB) comparison = -1;
+            else if (valA > valB) comparison = 1;
+        }
+        
+        // ソート順序を適用し、結果が0でない場合はここで終了
+        return sorting ? comparison : -comparison;
+
         // 全てのキーが同じ場合
         return 0; 
     };
+        
 
     // 配列のソート
     rows.sort(comparator);
@@ -495,6 +525,8 @@ function TableSort(header, tbody, sortingCriteria) {
     }
     // ソートされた順序で行を追加
     rows.forEach(row => tbody.appendChild(row));
+
+    //TODO:sortingCriteriaのorderを反転
 }
 
 
