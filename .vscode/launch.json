@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "chrome",
+            "type": "pwa-msedge",
             "request": "launch",
             "name": "localhost に対して Chrome を起動する",
-            "url": "http://127.0.0.1:5500/buildSimulator.html",
+            "url": "http://127.0.0.1:5500/itemAndPower.html",
             "webRoot": "${workspaceFolder}"
         }
     ]
