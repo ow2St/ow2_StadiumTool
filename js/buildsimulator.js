@@ -15,6 +15,8 @@ var ability3 = 0;
 var ult = 0;
 var addPower = "";
 
+var junoFlg = "ダメージ"  // ジュノ計算用フラグ
+
 // 表示用のステータスリストを初期化
 var showStatusList = {};
 
@@ -133,6 +135,9 @@ function selectHero(id){
     // 選択中ヒーローを設定
     selectedHero = id;
 
+    // ジュノ計算用フラグ初期化
+    junoFlg = "ダメージ";
+
     let imgPath = "";
     // 選択中ヒーローアイコンを変更
     // DVAチェック
@@ -183,6 +188,39 @@ function initStatus(selectedHero){
                 document.getElementById("dva-button").style.display = "none";
             }
 
+            // ザリアの場合
+            if(selectedHero == "ザリア"){
+                
+                // エネルギーボタンを表示
+                document.getElementById("zaria-button").style.display = "flex";
+            }else{
+
+                // エネルギーボタンを非表示
+                document.getElementById("zaria-button").style.display = "none";
+            }
+
+            // ジュノの場合
+            if(selectedHero == "ジュノ"){
+                
+                // ダメージボタンを表示
+                document.getElementById("juno-button").style.display = "flex";
+            }else{
+
+                // ダメージボタンを非表示
+                document.getElementById("juno-button").style.display = "none";
+            }
+
+            // モイラの場合
+            if(selectedHero == "モイラ"){
+                
+                // エネルギーボタンを表示
+                document.getElementById("moira-button").style.display = "flex";
+            }else{
+
+                // エネルギーボタンを非表示
+                document.getElementById("moira-button").style.display = "none";
+            }
+
             // 選択中のヒーローのステータスを設定
             initStatusValue(initStatusList[i],"init","-");
             
@@ -202,7 +240,13 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
     document.getElementById("mainweapon").innerText = mainWeaponKey + "(" + statuslist[mainWeaponNameKey] + ")" + " :" + statuslist[mainWeaponKey];
     document.getElementById("subweapon").innerText = subWeaponKey + "(" + statuslist[subWeaponNameKey] + ")" + " :" + statuslist[subWeaponKey];
     document.getElementById("meleedamage").innerText = meleeDamageKey + " :" + statuslist[meleeDamageKey];
-    document.getElementById("ability1").innerText = ability1Key + "(" + statuslist[ability1NameKey] + ")" + " :" + statuslist[ability1Key];
+    
+    // ジュノのヒール時だけアビリティ１を＋５０する
+    if(junoFlg == "ヒール"){
+        document.getElementById("ability1").innerText = ability1Key + "(" + statuslist[ability1NameKey] + ")" + " :" + (statuslist[ability1Key] + 50);
+    }else{
+        document.getElementById("ability1").innerText = ability1Key + "(" + statuslist[ability1NameKey] + ")" + " :" + statuslist[ability1Key];
+    }
     document.getElementById("ability2").innerText = ability2Key + "(" + statuslist[ability2NameKey] + ")" + " :" + statuslist[ability2Key];
     document.getElementById("ability3").innerText = ability3Key + "(" + statuslist[ability3NameKey] + ")" + " :" + statuslist[ability3Key];
     document.getElementById("ult").innerText = ultKey + "(" + statuslist[ultNameKey] + ")" + " :" + statuslist[ultKey];
@@ -225,7 +269,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
         document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (" + statuslist[mainAmmoKey] + "弾)";
     }
     if(statuslist[subAmmoKey] != 0){
-        document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (" + statuslist[subReloadKey] + "弾)";
+        document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (" + statuslist[subAmmoKey] + "弾)";
     }
 
     // HS倍率がある場合は追加
@@ -310,6 +354,79 @@ function dvaButtonClick(){
 
     // ステータスボックス初期化
     initStatus(selectedHero);
+}
+
+// ザリアエネルギー切り替え
+function zariaButtonClick(){
+
+    const zariaButton = document.getElementById("zaria-button");
+
+    // エネルギー表示を入れ替える
+    if(zariaButton.innerText == "エネルギー0%"){
+        zariaButton.innerText = "エネルギー100%";
+
+        // メインとサブの火力を２倍にする
+        showStatusList[mainWeaponKey] = Math.round(showStatusList[mainWeaponKey] * 2 * 10 ** 2) / 10 ** 2;
+        showStatusList[subWeaponKey] = Math.round(showStatusList[subWeaponKey] * 2 * 10 ** 2) / 10 ** 2;
+    }else if(zariaButton.innerText == "エネルギー100%"){
+        zariaButton.innerText = "エネルギー0%";
+
+        // メインとサブの火力を半分にする
+        showStatusList[mainWeaponKey] = Math.round(showStatusList[mainWeaponKey] / 2 * 10 ** 2) / 10 ** 2;
+        showStatusList[subWeaponKey] = Math.round(showStatusList[subWeaponKey] / 2 * 10 ** 2) / 10 ** 2;
+    }
+    // ステータスボックス初期化
+    initStatusValue(showStatusList,"-","-");
+}
+
+// ジュノダメージ/ヒール切り替え
+function junoButtonClick(){
+
+    const junoButton = document.getElementById("juno-button");
+
+    // ダメージ/ヒール表示を入れ替える
+    if(junoButton.innerText == "ダメージ"){
+        junoFlg = "ヒール";
+        junoButton.innerText = junoFlg;
+
+        // メインの火力を0.8倍にする
+        showStatusList[mainWeaponKey] = Math.round(showStatusList[mainWeaponKey] * 0.8 * 10 ** 2) / 10 ** 2;
+    }else if(junoButton.innerText == "ヒール"){
+        junoFlg = "ダメージ";
+        junoButton.innerText = junoFlg;
+
+        // メインの火力を1.25倍にする
+        showStatusList[mainWeaponKey] = Math.round(showStatusList[mainWeaponKey] * 1.25 * 10 ** 2) / 10 ** 2;
+    }
+    // ステータスボックス初期化
+    initStatusValue(showStatusList,"-","-");
+}
+
+// モイラダメージ/ヒール切り替え
+function moiraButtonClick(){
+
+    const moiraButton = document.getElementById("moira-button");
+
+    // ダメージ/ヒール表示を入れ替える
+    if(moiraButton.innerText == "ダメージ"){
+        moiraButton.innerText = "ヒール";
+
+        // アビリティ1の火力を1.5倍にする
+        showStatusList[ability1Key] = Math.round(showStatusList[ability1Key] * 1.5 * 10 ** 2) / 10 ** 2;
+
+        // ULTの火力を28/17倍にする
+        showStatusList[ultKey] = Math.round(showStatusList[ultKey] / 17 * 28 * 10 ** 2) / 10 ** 2;
+    }else if(moiraButton.innerText == "ヒール"){
+        moiraButton.innerText = "ダメージ";
+
+        // アビリティ1の火力を2/3倍にする
+        showStatusList[ability1Key] = Math.round(showStatusList[ability1Key] / 3 * 2 * 10 ** 2) / 10 ** 2;
+
+        // ULTの火力を17/28倍にする
+        showStatusList[ultKey] = Math.round(showStatusList[ultKey] / 28 * 17 * 10 ** 2) / 10 ** 2;
+    }
+    // ステータスボックス初期化
+    initStatusValue(showStatusList,"-","-");
 }
 
 // アイテムリストを開く
