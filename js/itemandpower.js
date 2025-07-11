@@ -39,8 +39,8 @@ const itemContent = document.getElementById('item-content');
 const tabPower = document.getElementById('tabPower');
 const powerContent = document.getElementById('power-content');
 
-const sortingCriteria = [//TODO:アイテムパワー一覧の場合は初期でソートしないので、order:unsorted（ソートなし）でok?
-        { column: "itemName", type: "string" }, //TODO:このままこれ起動するとアイテム名のソートのみ動くことになる
+const sortingCriteria = [
+        { column: "itemName", type: "string" },
         { column: "rarity", type: "string" },
         { column: "cost", type: "number" }
     ]
@@ -291,7 +291,7 @@ function linkItemList(itemList) {
 
         // 必要な列ごとの変数を初期化 
         let itemNameText = "";
-        let iconText = "-";  // アイコン列は現状アイテム情報にないため、とりあえずハイフンを入れる　TODO：RIN
+        let iconText = "";
         let categoryText = "";
         let rarityText = "";
         let costText = "";
@@ -307,6 +307,13 @@ function linkItemList(itemList) {
 
                 // アイテム名用変数に値を代入
                 itemNameText = itemList[i][key];
+            }
+
+            // キー名がアイコンキーの場合
+            if(iconKey == key) {
+
+                // アイコン用変数に値を代入
+                iconText = itemList[i][key];
             }
 
             // キー名がカテゴリーキーの場合
@@ -382,10 +389,13 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
     tr.appendChild(td);
 
     // アイコン列
-    var td = document.createElement("td");
-    td.textContent = iconText;
-    td.classList.add("item-td");
-    tr.appendChild(td);
+        var td = document.createElement("td");
+        var iconImg = document.createElement("img");
+        iconImg.src = "assets/images/icons/item/" + iconText;
+        iconImg.classList.add("itemandpower-itemicon");
+        td.appendChild(iconImg);
+        td.classList.add("item-td");
+        tr.appendChild(td);
 
     // カテゴリー列
     var td = document.createElement("td");
@@ -601,4 +611,62 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
     tr.appendChild(td);
 
     return tr;
+}
+
+// 選択⇔未選択に応じてアイテムテーブルを絞り込む関数
+function filterItemTable(id){
+
+    var tbody_item = document.getElementById("item-table").querySelector("tbody");//TODO:下の行と同じ構造にする？
+    var rows_item = tbody_item.querySelectorAll("tr");
+
+    rows_item.forEach(row =>{
+        const cells = row.querySelectorAll("td");
+        const checkbox =  cells[0].querySelector(".item-checkbox");
+
+        //固有ヒーローアイテムかどうかの読み取り
+        const target = row.querySelector("td#filter-target").textContent;
+        
+        let uniqueHero = document.getElementById(id);
+
+        //固有ヒーローアイテムON/OFF
+        if(checkbox.checked && target !== "-"){
+            uniqueHero.className = "table-on";
+        }else{
+            uniqueHero.className = "table-off";
+        }
+
+        // 選択ヒーローに応じてアイテムテーブル絞り込み実施
+        if(target == "-" || target == id){
+            row.classList.remove("hidden-column");
+        }else if(target != "-" && target != id){
+            row.classList.add("hidden-column");
+        }
+    });
+}
+
+// 選択⇔未選択に応じてパワーテーブルを絞り込む関数
+function filterPowerTable(id){
+    var tbody_power = document.getElementById("power-table").querySelector("tbody");
+    var rows_power = Array.from(tbody_power.querySelectorAll("tr"));
+    rows_power.shift();
+
+    rows_power.forEach(row =>{
+        const cells = row.querySelectorAll("td");
+        const checkbox =  cells[0].querySelector(".power-checkbox");
+
+        //固有ヒーローアイテムかどうかの読み取り
+        const target = row.querySelector("td#filter-target").textContent
+
+        // チェックボックスを未選択状態にする
+        if(checkbox.checked){
+            checkbox.checked = false;
+        }
+
+        // 選択ヒーローに応じてパワーテーブル絞り込み実施
+        if(target == "-" || target == id){
+            row.classList.remove("hidden-column");
+        }else if(target != "-" && target != id){
+            row.classList.add("hidden-column");
+        }
+    });
 }

@@ -625,9 +625,7 @@ main-IAP{
     height: 70px;
     filter: saturate(0%); /*アイコンを白黒にする*/
     border: 5px solid transparent;
-
 }
-
 .power-hero-icon-on {
     cursor: pointer;
     margin-left: 8px;
@@ -640,4 +638,29 @@ main-IAP{
 
 .power-table {
     margin-bottom: 30px;
+}
+
+.itemandpower-itemicon {
+    margin-left: 8px;
+    margin-top: 5px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+
+}
+
+.itemandpower-powericon {
+    margin-left: 8px;
+    margin-top: 5px;
+    width: 100px;
+    height: 100px;
+    border-radius: 15px;
+}
+
+.table-on{
+    display: block;
+}
+
+.table-off{
+    display: none;
 }

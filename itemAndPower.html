@@ -32,7 +32,7 @@
                     <div class="button-list">
                         <span class="button-category">カテゴリー</span>
                         <div class="button-only">
-                            <button class="button" id="itemButtonWeapon" onclick="IAPbuttonWeapon()">武器</button>
+                            <button class="button" id="" onclick="filterItemTable(this.id)">武器</button>
                             <button class="button" id="itemButtonAbility" onclick="IAPbuttonAbility()">アビリティ</button>
                             <button class="button" id="itemButtonSurvival" onclick="IAPbuttonSurvival()">サバイバル</button>
                         </div>
@@ -48,7 +48,7 @@
                     <div class="button-list">
                         <span class="button-category">ステータス</span>
                         <div class="button-only">
-                            <button class="button" id="itemButtonLife" onclick="IAPbuttonLife()">ライフ</button>
+                            <button class="button" id="Life" onclick="filterItemTable(this.id)">ライフ</button>
                             <button class="button" id="itemButtonArmor" onclick="IAPbuttonArmor()">アーマー</button>
                             <button class="button" id="itemButtonShield" onclick="IAPbuttonShield()">シールド</button>
                             <button class="button" id="itemButtonWeaponPower" onclick="IAPbuttonWeaponPower()">武器パワー</button>
@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <div class="button-list">
-                    ヒーロー固有<input type="checkbox" id="box1" checked>
+                    ヒーロー固有アイテム表示<input type="checkbox" id="box1" onclick="filterItemTable(this.id)" checked>
                     </div>
 
                     <!--アイテム一覧（テーブル）-->
