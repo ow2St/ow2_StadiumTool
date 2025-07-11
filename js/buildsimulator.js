@@ -15,6 +15,8 @@ var ability3 = 0;
 var ult = 0;
 var addPower = "";
 
+var junoFlg = "ダメージ"  // ジュノ計算用フラグ
+
 // 表示用のステータスリストを初期化
 var showStatusList = {};
 
@@ -97,7 +99,8 @@ selectedBuildItem.addEventListener("click", (event) =>{
     if(event.target.classList.contains("selectedbuild-delete-button") && event.target.tagName =="SPAN"){
         // アイコンを削除する
         selectedItemRowsData = clickDeleteButton(event.target.id,selectedItemRowsData);
-        // ステータスに反映　TODO：RIN
+        // ステータスに反映
+        updateStatus_Item(selectedItemRowsData);
     }
 });
 
@@ -107,7 +110,8 @@ selectedBuildpower.addEventListener("click", (event) =>{
     if(event.target.classList.contains("selectedbuild-delete-button") && event.target.tagName =="SPAN"){
         // アイコンを削除する
         selectedPowerRowsData = clickDeleteButton(event.target.id,selectedPowerRowsData);
-        // ステータスに反映　TODO：RIN
+        // ステータスに反映
+        updateStatus_Power(selectedPowerRowsData);
     }
 });
 
@@ -130,6 +134,9 @@ function selectHero(id){
     
     // 選択中ヒーローを設定
     selectedHero = id;
+
+    // ジュノ計算用フラグ初期化
+    junoFlg = "ダメージ";
 
     let imgPath = "";
     // 選択中ヒーローアイコンを変更
@@ -181,6 +188,39 @@ function initStatus(selectedHero){
                 document.getElementById("dva-button").style.display = "none";
             }
 
+            // ザリアの場合
+            if(selectedHero == "ザリア"){
+                
+                // エネルギーボタンを表示
+                document.getElementById("zaria-button").style.display = "flex";
+            }else{
+
+                // エネルギーボタンを非表示
+                document.getElementById("zaria-button").style.display = "none";
+            }
+
+            // ジュノの場合
+            if(selectedHero == "ジュノ"){
+                
+                // ダメージボタンを表示
+                document.getElementById("juno-button").style.display = "flex";
+            }else{
+
+                // ダメージボタンを非表示
+                document.getElementById("juno-button").style.display = "none";
+            }
+
+            // モイラの場合
+            if(selectedHero == "モイラ"){
+                
+                // エネルギーボタンを表示
+                document.getElementById("moira-button").style.display = "flex";
+            }else{
+
+                // エネルギーボタンを非表示
+                document.getElementById("moira-button").style.display = "none";
+            }
+
             // 選択中のヒーローのステータスを設定
             initStatusValue(initStatusList[i],"init","-");
             
@@ -199,7 +239,14 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
     document.getElementById("shield").innerText = shieldKey + " :" + statuslist[shieldKey];
     document.getElementById("mainweapon").innerText = mainWeaponKey + "(" + statuslist[mainWeaponNameKey] + ")" + " :" + statuslist[mainWeaponKey];
     document.getElementById("subweapon").innerText = subWeaponKey + "(" + statuslist[subWeaponNameKey] + ")" + " :" + statuslist[subWeaponKey];
-    document.getElementById("ability1").innerText = ability1Key + "(" + statuslist[ability1NameKey] + ")" + " :" + statuslist[ability1Key];
+    document.getElementById("meleedamage").innerText = meleeDamageKey + " :" + statuslist[meleeDamageKey];
+    
+    // ジュノのヒール時だけアビリティ１を＋５０する
+    if(junoFlg == "ヒール"){
+        document.getElementById("ability1").innerText = ability1Key + "(" + statuslist[ability1NameKey] + ")" + " :" + (statuslist[ability1Key] + 50);
+    }else{
+        document.getElementById("ability1").innerText = ability1Key + "(" + statuslist[ability1NameKey] + ")" + " :" + statuslist[ability1Key];
+    }
     document.getElementById("ability2").innerText = ability2Key + "(" + statuslist[ability2NameKey] + ")" + " :" + statuslist[ability2Key];
     document.getElementById("ability3").innerText = ability3Key + "(" + statuslist[ability3NameKey] + ")" + " :" + statuslist[ability3Key];
     document.getElementById("ult").innerText = ultKey + "(" + statuslist[ultNameKey] + ")" + " :" + statuslist[ultKey];
@@ -222,7 +269,23 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
         document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (" + statuslist[mainAmmoKey] + "弾)";
     }
     if(statuslist[subAmmoKey] != 0){
-        document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (" + statuslist[subReloadKey] + "弾)";
+        document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (" + statuslist[subAmmoKey] + "弾)";
+    }
+
+    // HS倍率がある場合は追加
+    if(statuslist[mainHSRateKey] != 1){
+        document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (HS" + Math.round(statuslist[mainWeaponKey] * statuslist[mainHSRateKey]) + ")";
+    }
+    if(statuslist[subHSRateKey] != 1){
+        document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (HS" + Math.round(statuslist[subWeaponKey] * statuslist[subHSRateKey]) + ")";
+    }
+
+    // ライフ吸収がある場合は追加
+    if(statuslist[mainLifeStealRateKey] != 0){
+        document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (" + Math.round(statuslist[mainWeaponKey] * statuslist[mainLifeStealRateKey]) + "吸収)";
+    }
+    if(statuslist[subLifeStealRateKey] != 0){
+        document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (" + Math.round(statuslist[subWeaponKey] * statuslist[subLifeStealRateKey]) + "吸収)";
     }
 
     // 継続時間がある場合は追加
@@ -248,6 +311,20 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
     }
     if(statuslist[ability3CTKey] != 0){
         document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (CT" + statuslist[ability3CTKey] + "秒)";
+    }
+
+    // ライフ吸収がある場合は追加
+    if(statuslist[ability1LifeStealRateKey] != 0){
+        document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + " (" + Math.round(statuslist[ability1Key] * statuslist[ability1LifeStealRateKey]) + "吸収)";
+    }
+    if(statuslist[ability2LifeStealRateKey] != 0){
+        document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + " (" + Math.round(statuslist[ability2Key] * statuslist[ability2LifeStealRateKey]) + "吸収)";
+    }
+    if(statuslist[ability3LifeStealRateKey] != 0){
+        document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (" + Math.round(statuslist[ability3Key] * statuslist[ability3LifeStealRateKey]) + "吸収)";
+    }
+    if(statuslist[ultLifeStealRateKey] != 0){
+        document.getElementById("ult").innerText = document.getElementById("ult").innerText + " (" + Math.round(statuslist[ultKey] * statuslist[ultLifeStealRateKey]) + "吸収)";
     }
 
     // テキストに記載がある場合
@@ -277,6 +354,79 @@ function dvaButtonClick(){
 
     // ステータスボックス初期化
     initStatus(selectedHero);
+}
+
+// ザリアエネルギー切り替え
+function zariaButtonClick(){
+
+    const zariaButton = document.getElementById("zaria-button");
+
+    // エネルギー表示を入れ替える
+    if(zariaButton.innerText == "エネルギー0%"){
+        zariaButton.innerText = "エネルギー100%";
+
+        // メインとサブの火力を２倍にする
+        showStatusList[mainWeaponKey] = Math.round(showStatusList[mainWeaponKey] * 2 * 10 ** 2) / 10 ** 2;
+        showStatusList[subWeaponKey] = Math.round(showStatusList[subWeaponKey] * 2 * 10 ** 2) / 10 ** 2;
+    }else if(zariaButton.innerText == "エネルギー100%"){
+        zariaButton.innerText = "エネルギー0%";
+
+        // メインとサブの火力を半分にする
+        showStatusList[mainWeaponKey] = Math.round(showStatusList[mainWeaponKey] / 2 * 10 ** 2) / 10 ** 2;
+        showStatusList[subWeaponKey] = Math.round(showStatusList[subWeaponKey] / 2 * 10 ** 2) / 10 ** 2;
+    }
+    // ステータスボックス初期化
+    initStatusValue(showStatusList,"-","-");
+}
+
+// ジュノダメージ/ヒール切り替え
+function junoButtonClick(){
+
+    const junoButton = document.getElementById("juno-button");
+
+    // ダメージ/ヒール表示を入れ替える
+    if(junoButton.innerText == "ダメージ"){
+        junoFlg = "ヒール";
+        junoButton.innerText = junoFlg;
+
+        // メインの火力を0.8倍にする
+        showStatusList[mainWeaponKey] = Math.round(showStatusList[mainWeaponKey] * 0.8 * 10 ** 2) / 10 ** 2;
+    }else if(junoButton.innerText == "ヒール"){
+        junoFlg = "ダメージ";
+        junoButton.innerText = junoFlg;
+
+        // メインの火力を1.25倍にする
+        showStatusList[mainWeaponKey] = Math.round(showStatusList[mainWeaponKey] * 1.25 * 10 ** 2) / 10 ** 2;
+    }
+    // ステータスボックス初期化
+    initStatusValue(showStatusList,"-","-");
+}
+
+// モイラダメージ/ヒール切り替え
+function moiraButtonClick(){
+
+    const moiraButton = document.getElementById("moira-button");
+
+    // ダメージ/ヒール表示を入れ替える
+    if(moiraButton.innerText == "ダメージ"){
+        moiraButton.innerText = "ヒール";
+
+        // アビリティ1の火力を1.5倍にする
+        showStatusList[ability1Key] = Math.round(showStatusList[ability1Key] * 1.5 * 10 ** 2) / 10 ** 2;
+
+        // ULTの火力を28/17倍にする
+        showStatusList[ultKey] = Math.round(showStatusList[ultKey] / 17 * 28 * 10 ** 2) / 10 ** 2;
+    }else if(moiraButton.innerText == "ヒール"){
+        moiraButton.innerText = "ダメージ";
+
+        // アビリティ1の火力を2/3倍にする
+        showStatusList[ability1Key] = Math.round(showStatusList[ability1Key] / 3 * 2 * 10 ** 2) / 10 ** 2;
+
+        // ULTの火力を17/28倍にする
+        showStatusList[ultKey] = Math.round(showStatusList[ultKey] / 28 * 17 * 10 ** 2) / 10 ** 2;
+    }
+    // ステータスボックス初期化
+    initStatusValue(showStatusList,"-","-");
 }
 
 // アイテムリストを開く
@@ -805,9 +955,16 @@ function updateStatus_Item(selectedItemRows){
     showStatusList = JSON.parse(JSON.stringify(showStatusListTmp[0]));
     initStatusValue(showStatusList,"init","-");
 
+    // 最後に計算する倍率変数
+    let lifeRate = 1;
+    let armorRate = 1;
+    let shieldRate = 1;
+    let ammoRate = 1;
+
     for(let i=0; i<selectedItemRows.length; i++) {
 
         // 各パラメータを抽出
+        const nameTmp = selectedItemRows[i][itemNameKey];
         const lifeTmp = selectedItemRows[i][lifeKey];
         const armorTmp = selectedItemRows[i][armorKey];
         const shieldTmp = selectedItemRows[i][shieldKey];
@@ -822,14 +979,27 @@ function updateStatus_Item(selectedItemRows){
         const reloadSpeedTmp = selectedItemRows[i][reloadSpeedKey];
         const meleeDamageTmp = selectedItemRows[i][meleeDamageKey];
         const criticalTmp = selectedItemRows[i][criticalKey];
-        const othersTmp = selectedItemRows[i][othersKey];
-        const textTmp = selectedItemRows[i][textKey];
+        let othersTmp = selectedItemRows[i][othersKey];
+        let textTmp = selectedItemRows[i][textKey];
 
         // ライフに記載がある場合
         if(lifeTmp != 0){
 
             // 表示用ステータスリストに反映
             showStatusList[lifeKey] = showStatusList[lifeKey] + lifeTmp;
+        }
+
+        // ライフ割合上昇アイテムの場合は倍率変数に保管後、追加効果に乗らないようハイフンにする
+        if(nameTmp == "MEKA Zシリーズ"){
+            lifeRate = lifeRate * 1.08;
+            armorRate = armorRate * 1.08;
+            shieldRate = shieldRate * 1.08;
+            othersTmp = "-";
+        }else if(nameTmp == "不屈の獅子"){
+            lifeRate = lifeRate * 1.15;
+            armorRate = armorRate * 1.15;
+            shieldRate = shieldRate * 1.15;
+            othersTmp = "-";
         }
 
         // アーマーに記載がある場合
@@ -852,6 +1022,11 @@ function updateStatus_Item(selectedItemRows){
             // 表示用ステータスリストに反映
             showStatusList[mainWeaponKey] = Math.round(showStatusList[mainWeaponKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
             showStatusList[subWeaponKey] = Math.round(showStatusList[subWeaponKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+            
+            // ラインハルトは近接ダメージにも武器パワーが乗るので対応
+            if(showStatusList[heroNameKey] == "ラインハルト"){
+                showStatusList[meleeDamageKey] = Math.round(showStatusList[meleeDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+            }
 
             // ゲンジ・ソルジャーの場合はULTにも武器パワーが乗るので対応
             if(showStatusList[heroNameKey] == "ゲンジ" || showStatusList[heroNameKey] == "ソルジャー76"){
@@ -859,7 +1034,7 @@ function updateStatus_Item(selectedItemRows){
             }
         }
 
-        // アビリティパワーに記載がある場合
+        // アビリティパワーに記載がある場合 TODO:RIN クイーンの近接
         if(abilityPowerTmp != 0){
 
             // 表示用ステータスリストに反映
@@ -891,13 +1066,56 @@ function updateStatus_Item(selectedItemRows){
         // 弾薬に記載がある場合
         if(ammoTmp != 0){
 
-            // 表示用ステータスリストに反映
-            showStatusList[mainAmmoKey] = Math.round(showStatusList[mainAmmoKey] * (ammoTmp/100 + 1));
-            showStatusList[subAmmoKey] = Math.round(showStatusList[subAmmoKey] * (ammoTmp/100 + 1));
+            // 固定値計算アイテムを先に表示用ステータスリストに反映し、追加効果に乗らないようハイフンにする
+            if(nameTmp == "リソース・マネジメント"){
+                showStatusList[mainAmmoKey] += 4;
+                othersTmp = "-";
+            }
+            ammoRate = ammoRate * ammoTmp;
         }
 
-        // TODO:RIN 武器ライフ吸収に記載がある場合
-        // TODO:RIN アビリティライフ吸収に記載がある場合
+        // 武器ライフ吸収に記載がある場合
+        if(weapon_LifeStealTmp != 0){
+
+            // 表示用ステータスリストに反映
+            if(showStatusList[mainWeaponKey] != 0){
+                showStatusList[mainLifeStealRateKey] = showStatusList[mainLifeStealRateKey] + weapon_LifeStealTmp / 100;
+            }
+            if(showStatusList[subWeaponKey] != 0){
+                showStatusList[subLifeStealRateKey] = showStatusList[subLifeStealRateKey] + weapon_LifeStealTmp / 100;
+            }
+
+            // ゲンジ・ソルジャーの場合はULTにも武器パワーが乗るので対応
+            if(showStatusList[heroNameKey] == "ゲンジ" || showStatusList[heroNameKey] == "ソルジャー76"){
+                showStatusList[ultLifeStealRateKey] = showStatusList[ultLifeStealRateKey] + weapon_LifeStealTmp / 100;
+            }
+        }
+
+        // アビリティライフ吸収に記載がある場合
+        if(ability_LifeStealTmp != 0){
+
+            // 表示用ステータスリストに反映
+            if(showStatusList[ability1Key] != 0){
+                showStatusList[ability1LifeStealRateKey] = showStatusList[ability1LifeStealRateKey] + ability_LifeStealTmp / 100;
+            }
+            if(showStatusList[ability2Key] != 0){
+                showStatusList[ability2LifeStealRateKey] = showStatusList[ability2LifeStealRateKey] + ability_LifeStealTmp / 100;
+            }
+
+            // ラインハルトとシグマの盾は除外
+            if(showStatusList[heroNameKey] != "ラインハルト" && showStatusList[heroNameKey] != "シグマ"){
+                if(showStatusList[ability3Key] != 0){
+                    showStatusList[ability3LifeStealRateKey] = showStatusList[ability3LifeStealRateKey] + ability_LifeStealTmp / 100;
+                }
+            }
+
+            // ゲンジとソルジャーのULTは除外
+            if(showStatusList[heroNameKey] != "ゲンジ" && showStatusList[heroNameKey] != "ソルジャー76"){
+                if(showStatusList[ultKey] != 0){
+                    showStatusList[ultLifeStealRateKey] = showStatusList[ultLifeStealRateKey] + ability_LifeStealTmp / 100;
+                }
+            }
+        }
 
         // TODO:RIN 移動速度に記載がある場合
 
@@ -909,9 +1127,137 @@ function updateStatus_Item(selectedItemRows){
             showStatusList[subReloadKey] = Math.round(showStatusList[subReloadKey] * ((100 - reloadSpeedTmp) / 100) * 10 ** 2) / 10 ** 2;
         }
 
-        // TODO:RIN 近接ダメージに記載がある場合
+        // 近接ダメージに記載がある場合
+        if(meleeDamageTmp != 0){
 
-        // TODO:RIN クリティカルに記載がある場合
+            // 表示用ステータスリストに反映
+            showStatusList[meleeDamageKey] = Math.round(showStatusList[meleeDamageKey] * (meleeDamageTmp / 100 + 1) * 10 ** 2) / 10 ** 2;
+
+            // ラインハルトはメイン武器にも近接ダメージが乗るので対応
+            if(showStatusList[heroNameKey] == "ラインハルト"){
+                showStatusList[mainWeaponKey] = Math.round(showStatusList[mainWeaponKey] * (meleeDamageTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+            }
+        }
+
+        // クリティカルに記載がある場合
+        if(criticalTmp != 0){
+
+            // HS倍率があるなら表示用ステータスリストに反映
+            if(showStatusList[mainHSRateKey] != 1){
+                showStatusList[mainHSRateKey] = showStatusList[mainHSRateKey] * (criticalTmp/100 + 1);
+            }
+            if(showStatusList[subHSRateKey] != 1){
+                showStatusList[subHSRateKey] = showStatusList[subHSRateKey] * (criticalTmp / 100 + 1);   
+            }
+        }
+
+        // 持続時間上昇アイテム
+        if(nameTmp == "不滅の刃"){
+            showStatusList[ultDurationKey] = showStatusList[ultDurationKey] + 4;
+            othersTmp = "-";
+        }
+        else if(nameTmp == "ターゲット・トラッカー"){
+            showStatusList[ability2DurationKey] = Math.round(showStatusList[ability2DurationKey] * 1.15 * 10 ** 2) / 10 ** 2;
+            othersTmp = "-";
+        }
+        else if(nameTmp == "次世代手首ユニット"){
+            showStatusList[ability3DurationKey] = Math.round(showStatusList[ability3DurationKey] * 1.35 * 10 ** 2) / 10 ** 2;
+            othersTmp = "-";
+        }
+        else if(nameTmp == "エフィの法則"){
+            showStatusList[ability2DurationKey] = Math.round(showStatusList[ability2DurationKey] * 1.5 * 10 ** 2) / 10 ** 2;
+            othersTmp = "-";
+        }
+        else if(nameTmp == "超電導ユニット"){
+            showStatusList[ability1DurationKey] = Math.round(showStatusList[ability1DurationKey] * 1.4 * 10 ** 2) / 10 ** 2;
+            showStatusList[ability2DurationKey] = Math.round(showStatusList[ability2DurationKey] * 1.4 * 10 ** 2) / 10 ** 2;
+            othersTmp = "-";
+        }
+        else if(nameTmp == "バッテリー・パック"){
+            showStatusList[ability2DurationKey] = Math.round(showStatusList[ability2DurationKey] * 1.4 * 10 ** 2) / 10 ** 2;
+            othersTmp = "-";
+        }
+        else if(nameTmp == "コーカイの目"){
+            showStatusList[ultDurationKey] = Math.round(showStatusList[ultDurationKey] * 1.35 * 10 ** 2) / 10 ** 2;
+            othersTmp = "-";
+        }
+        else if(nameTmp == "ルクス・ループ"){
+            showStatusList[ability3DurationKey] = Math.round(showStatusList[ability3DurationKey] * 1.25 * 10 ** 2) / 10 ** 2;
+            othersTmp = "-";
+        }
+        else if(nameTmp == "エクステンデッド・プレイ"){
+            showStatusList[ability2DurationKey] = Math.round(showStatusList[ability2DurationKey] * 1.25 * 10 ** 2) / 10 ** 2;
+            othersTmp = "-";
+        }
+        else if(nameTmp == "導電コア"){
+            showStatusList[ability1DurationKey] = Math.round(showStatusList[ability1DurationKey] * 1.25 * 10 ** 2) / 10 ** 2;
+            othersTmp = "-";
+        }
+        else if(nameTmp == "スライシー・クーラント"){
+            showStatusList[ability1DurationKey] = Math.round(showStatusList[ability1DurationKey] + 1);
+            othersTmp = "-";
+        }
+        else if(nameTmp == "不屈の亡霊"){
+            showStatusList[ability2DurationKey] = Math.round(showStatusList[ability2DurationKey] * 1.15 * 10 ** 2) / 10 ** 2;
+            othersTmp = "15%[レイス・フォーム]移動速度";
+        }
+        else if(nameTmp == "パーフェクト・フォーミュラ"){
+            showStatusList[ultDurationKey] = Math.round(showStatusList[ultDurationKey] * 1.33 * 10 ** 2) / 10 ** 2;
+            othersTmp = "-";
+        }
+        else if(nameTmp == "補助ブースター"){
+            showStatusList[ability2DurationKey] = Math.round(showStatusList[ability2DurationKey] * 1.25 * 10 ** 2) / 10 ** 2;
+            othersTmp = "-";
+        }
+
+        // ラインハルトの盾増強
+        if(nameTmp == "オーバークロック・バリア"){
+            showStatusList[ability3Key] = Math.round(showStatusList[ability3Key] * 1.2 * 10 ** 2) / 10 ** 2;
+            othersTmp = "20%[バリア・フィールド]サイズ";
+        }
+        
+
+        // 最後に計算するものがある場合
+        if(i + 1 == selectedItemRows.length){
+
+            // ライフ
+            if(lifeRate != 1){
+
+                // 表示用ステータスリストに反映
+                showStatusList[lifeKey] = Math.round(showStatusList[lifeKey] * lifeRate);
+            }
+
+            // アーマー
+            if(armorRate != 1){
+
+                // 表示用ステータスリストに反映
+                showStatusList[armorKey] = Math.round(showStatusList[armorKey] * armorRate);
+            }
+
+            // シールド
+            if(shieldRate != 1){
+
+                // 表示用ステータスリストに反映
+                showStatusList[shieldKey] = Math.round(showStatusList[shieldKey] * shieldRate);
+            }   
+
+            // 弾薬
+            if(ammoRate != 1){
+
+                // 表示用ステータスリストに反映
+                if(showStatusList[heroNameKey] != "キリコ"){
+
+                    // キリコのメイン弾薬は増えないので除外
+                    showStatusList[mainAmmoKey] = Math.round(showStatusList[mainAmmoKey] * ammoRate);
+                }
+                
+                if(showStatusList[heroNameKey] != "フレイヤ"){
+
+                    // フレイヤのサブ弾薬は増えないので除外
+                    showStatusList[subAmmoKey] = Math.round(showStatusList[subAmmoKey] * ammoRate);
+                }
+            }   
+        }
 
         // ステータス表に反映
         initStatusValue(showStatusList, textTmp, othersTmp);

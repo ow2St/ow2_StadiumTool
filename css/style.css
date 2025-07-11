@@ -302,6 +302,45 @@ main-buildsimulator {
     background-color: lightgray;
 }
 
+.zaria-button {
+    display: none;
+    border: 1px solid black;
+    margin: 0 0 0 10px;
+    font-weight: 550;
+    color: #555555;
+    padding: 0 5px 0 5px;
+    cursor: pointer;
+}
+.zaria-button:hover{
+    background-color: lightgray;
+}
+
+.juno-button {
+    display: none;
+    border: 1px solid black;
+    margin: 0 0 0 10px;
+    font-weight: 550;
+    color: #555555;
+    padding: 0 5px 0 5px;
+    cursor: pointer;
+}
+.juno-button:hover{
+    background-color: lightgray;
+}
+
+.moira-button {
+    display: none;
+    border: 1px solid black;
+    margin: 0 0 0 10px;
+    font-weight: 550;
+    color: #555555;
+    padding: 0 5px 0 5px;
+    cursor: pointer;
+}
+.moira-button:hover{
+    background-color: lightgray;
+}
+
 .status {
     padding-left: 15px;
     font-weight: 550;
@@ -493,6 +532,13 @@ main-buildsimulator {
     width: 100px;
     height: 100px;
     border-radius: 15px;
+}
+
+.buildlist{
+    margin-top: 20px;
+    border-top: 1px solid black;
+    overflow-y: scroll;
+    height: 1200px;
 }
 
 /*
