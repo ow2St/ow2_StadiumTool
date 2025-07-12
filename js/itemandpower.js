@@ -374,8 +374,9 @@ function linkItemList(itemList) {
             }
         })
     
-        tbody.appendChild(appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, statusText, textText));
+    tbody.appendChild(appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, statusText, textText));
     
+    tr.classList.add("table-on");//TODO:アイテムテーブル絞り込みにて仮使用中
     }
 }
 
@@ -389,13 +390,13 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
     tr.appendChild(td);
 
     // アイコン列
-        var td = document.createElement("td");
-        var iconImg = document.createElement("img");
-        iconImg.src = "assets/images/icons/item/" + iconText;
-        iconImg.classList.add("itemandpower-itemicon");
-        td.appendChild(iconImg);
-        td.classList.add("item-td");
-        tr.appendChild(td);
+    var td = document.createElement("td");
+    var iconImg = document.createElement("img");
+    iconImg.src = "assets/images/icons/item/" + iconText;
+    iconImg.classList.add("itemandpower-itemicon");
+    td.appendChild(iconImg);
+    td.classList.add("item-td");
+    tr.appendChild(td);
 
     // カテゴリー列
     var td = document.createElement("td");
@@ -535,8 +536,6 @@ function TableSort(headers, tbody, sortingCriteria,index,sorting) {
     }
     // ソートされた順序で行を追加
     rows.forEach(row => tbody.appendChild(row));
-
-    //TODO:sortingCriteriaのorderを反転
 }
 
 
@@ -550,7 +549,7 @@ function linkPowerList(powerList) {
 
         // 必要な列ごとの変数を初期化
         let powerNameText = "";
-        let iconText = "-";  // アイコン列は現状アイテム情報にないため、とりあえずハイフンを入れる
+        let iconText = "";
         let heroText = "";
         let textText = "";
 
@@ -562,6 +561,13 @@ function linkPowerList(powerList) {
 
                 // パワー名用変数に値を代入
                 powerNameText = powerList[i][key];
+            }
+
+            // キー名がアイコンキーの場合
+            if(iconKey == key) {
+
+                // アイコン用変数に値を代入
+                iconText = powerList[i][key];
             }
 
             // キー名がヒーローキーの場合
@@ -589,12 +595,15 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
     // パワー名列
     var td = document.createElement("td");
     td.textContent = powerNameText;
-    td.classList.add("item-td");    //TODO:"item-td"を"power-td"に直す？（このままでも機能してる）
+    td.classList.add("item-td");
     tr.appendChild(td);
 
     // アイコン列
     var td = document.createElement("td");
-    td.textContent = iconText;
+    var iconImg = document.createElement("img");
+    iconImg.src = "assets/images/icons/power/" + iconText;
+    iconImg.classList.add("itemandpower-powericon");
+    td.appendChild(iconImg);
     td.classList.add("item-td");
     tr.appendChild(td);
 
@@ -614,32 +623,85 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
 }
 
 // 選択⇔未選択に応じてアイテムテーブルを絞り込む関数
-function filterItemTable(id){
+function filterItemTable(elem){
+    const id = elem.id;
+    const tag = elem.tagName.toLowerCase();
 
-    var tbody_item = document.getElementById("item-table").querySelector("tbody");//TODO:下の行と同じ構造にする？
+    //onclick元から読み込んだidを種類分けする
+    switch (id) {
+        case "weapon":
+        case "ability":
+        case "survival":
+            judgementFactor = "カテゴリー";
+            break;
+        case "common":
+        case "rare":
+        case "epic":
+            judgementFactor = "レアリティ";
+            break;
+        case "life":
+        case "armor":
+        case "shield":
+        case "weaponPower":
+        case "abilityPower":
+        case "atackSpeed":
+        case "ctReducation":
+        case "ammo":
+        case "weapon_LifeSteal":
+        case "ability_LifeSteal":
+        case "speed":
+        case "reloadSpeed":
+        case "meleeDamage":
+        case "critical":
+        case "others":
+            judgementFactor = "ステータス";
+            break;
+        default:
+            judgementFactor = "固有ヒーロー";
+    }
+
+    // テーブルのヘッダー行（<tr>）を取得
+    const headerRow = document.querySelector("#item-table thead tr");
+
+    // 各 <th> 要素を配列として取得
+    const headers = Array.from(headerRow.querySelectorAll("th"));
+
+    //  judgementFactor が何番目かを探す
+    const judgeNumber = headers.findIndex(th => th.textContent.trim() === judgementFactor);
+
+    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_item に配列のように格納。各行を1つのアイテムとする。
+    var tbody_item = document.getElementById("item-table").querySelector("tbody");
     var rows_item = tbody_item.querySelectorAll("tr");
 
-    rows_item.forEach(row =>{
-        const cells = row.querySelectorAll("td");
-        const checkbox =  cells[0].querySelector(".item-checkbox");
+    // class切り替え & ON状態判定
+    let isNowOn;
+    let targetText;
 
-        //固有ヒーローアイテムかどうかの読み取り
-        const target = row.querySelector("td#filter-target").textContent;
-        
-        let uniqueHero = document.getElementById(id);
+    if (tag === "button") {
+        isNowOn = elem.classList.contains("button-on");
+        elem.classList.toggle("button-on", !isNowOn);
+        elem.classList.toggle("button-off", isNowOn);
+        targetText = elem.innerText.trim();
+    } else if (tag === "input" && elem.type === "checkbox") {
+        isNowOn = elem.checked;
+        elem.classList.toggle("checkbox-on", isNowOn);
+        elem.classList.toggle("checkbox-off", !isNowOn);
+        targetText = elem.value.trim();
+    }
 
-        //固有ヒーローアイテムON/OFF
-        if(checkbox.checked && target !== "-"){
-            uniqueHero.className = "table-on";
-        }else{
-            uniqueHero.className = "table-off";
-        }
+    // 行ごとの絞り込み
+    rows_item.forEach(tr => {
+        const cells = tr.querySelectorAll("td");
+        const cellValue = cells[judgeNumber]?.textContent.trim();
 
-        // 選択ヒーローに応じてアイテムテーブル絞り込み実施
-        if(target == "-" || target == id){
-            row.classList.remove("hidden-column");
-        }else if(target != "-" && target != id){
-            row.classList.add("hidden-column");
+        if (cellValue === targetText) {
+            if (isNowOn) {
+                tr.classList.remove("table-on");
+                tr.classList.add("table-off");
+            } else {
+                tr.classList.remove("table-off");
+                tr.classList.add("table-on");
+            }
         }
     });
 }

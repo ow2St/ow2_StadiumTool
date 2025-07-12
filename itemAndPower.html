@@ -32,41 +32,41 @@
                     <div class="button-list">
                         <span class="button-category">カテゴリー</span>
                         <div class="button-only">
-                            <button class="button" id="" onclick="filterItemTable(this.id)">武器</button>
-                            <button class="button" id="itemButtonAbility" onclick="IAPbuttonAbility()">アビリティ</button>
-                            <button class="button" id="itemButtonSurvival" onclick="IAPbuttonSurvival()">サバイバル</button>
+                            <button class="button-on" id="weapon" onclick="filterItemTable(this)">武器</button>
+                            <button class="button-on" id="ability" onclick="filterItemTable(this)">アビリティ</button>
+                            <button class="button-on" id="survival" onclick="filterItemTable(this)">サバイバル</button>
                         </div>
                     </div>
                     <div class="button-list">
                         <span class="button-category">レアリティ</span>
                         <div class="button-only">
-                            <button class="button" id="itemButtonCommon" onclick="IAPbuttonCommon()">コモン</button>
-                            <button class="button" id="itemButtonRare" onclick="IAPbuttonRare()">レア</button>
-                            <button class="button" id="itemButtonEpic" onclick="IAPbuttonEpic()">エピック</button>
+                            <button class="button-on" id="common" onclick="filterItemTable(this)">コモン</button>
+                            <button class="button-on" id="rare" onclick="filterItemTable(this)">レア</button>
+                            <button class="button-on" id="epic" onclick="filterItemTable(this)">エピック</button>
                         </div>
                     </div>
                     <div class="button-list">
                         <span class="button-category">ステータス</span>
                         <div class="button-only">
-                            <button class="button" id="Life" onclick="filterItemTable(this.id)">ライフ</button>
-                            <button class="button" id="itemButtonArmor" onclick="IAPbuttonArmor()">アーマー</button>
-                            <button class="button" id="itemButtonShield" onclick="IAPbuttonShield()">シールド</button>
-                            <button class="button" id="itemButtonWeaponPower" onclick="IAPbuttonWeaponPower()">武器パワー</button>
-                            <button class="button" id="itemButtonAbilityPower" onclick="IAPbuttonAbilityPower()">アビリティ パワー</button>
-                            <button class="button" id="itemButtonAttackSpeed" onclick="IAPbuttonAttackSpeed()">攻撃速度</button>
-                            <button class="button" id="itemButtonCtReducation" onclick="IAPbuttonCtReducation()">CT短縮</button>
-                            <button class="button" id="itemButtonAmmo" onclick="IAPbuttonAmmo()">弾薬</button>
-                            <button class="button" id="itemButtonWeapon_LifeSteal" onclick="IAPbuttonWeapon_LifeSteal()">ライフ吸収 （武器）</button>
-                            <button class="button" id="itemButtonAbility_LifeSteal" onclick="IAPbuttonAbility_LifeSteal()">ライフ吸収 （アビリティ）</button>
-                            <button class="button" id="itemButtonSpeed" onclick="IAPbuttonSpeed()">移動速度</button>
-                            <button class="button" id="itemButtonReloadSpeed" onclick="IAPbuttonReloadSpeed()">リロード速度</button>
-                            <button class="button" id="itemButtonMeleeDamage" onclick="IAPbuttonMeleeDamage()">近接ダメージ</button>
-                            <button class="button" id="itemButtonCritical" onclick="IAPbuttonCritical()">クリティカル ダメージ</button>
-                            <button class="button" id="itemButtonOthers" onclick="IAPbuttonOthers()">その他</button>
+                            <button class="button-on" id="life" onclick="filterItemTable(this)">ライフ</button>
+                            <button class="button-on" id="itemButtonArmor" onclick="filterItemTable(this)">アーマー</button>
+                            <button class="button-on" id="itemButtonShield" onclick="filterItemTable(this)">シールド</button>
+                            <button class="button-on" id="itemButtonWeaponPower" onclick="filterItemTable(this)">武器パワー</button>
+                            <button class="button-on" id="itemButtonAbilityPower" onclick="filterItemTable(this)">アビリティ パワー</button>
+                            <button class="button-on" id="itemButtonAttackSpeed" onclick="filterItemTable(this)">攻撃速度</button>
+                            <button class="button-on" id="itemButtonCtReducation" onclick="filterItemTable(this)">CT短縮</button>
+                            <button class="button-on" id="itemButtonAmmo" onclick="filterItemTable(this)">弾薬</button>
+                            <button class="button-on" id="itemButtonWeapon_LifeSteal" onclick="filterItemTable(this)">ライフ吸収 （武器）</button>
+                            <button class="button-on" id="itemButtonAbility_LifeSteal" onclick="filterItemTable(this)">ライフ吸収 （アビリティ）</button>
+                            <button class="button-on" id="itemButtonSpeed" onclick="filterItemTable(this)">移動速度</button>
+                            <button class="button-on" id="itemButtonReloadSpeed" onclick="filterItemTable(this)">リロード速度</button>
+                            <button class="button-on" id="itemButtonMeleeDamage" onclick="filterItemTable(this)">近接ダメージ</button>
+                            <button class="button-on" id="itemButtonCritical" onclick="filterItemTable(this)">クリティカル ダメージ</button>
+                            <button class="button-on" id="itemButtonOthers" onclick="filterItemTable(this)">その他</button>
                         </div>
                     </div>
                     <div class="button-list">
-                    ヒーロー固有アイテム表示<input type="checkbox" id="box1" onclick="filterItemTable(this.id)" checked>
+                    ヒーロー固有アイテム表示<input class="checkbox-on" type="checkbox" id="uniqueHero" value="固有ヒーロー" onclick="filterItemTable(this)" checked>
                     </div>
 
                     <!--アイテム一覧（テーブル）-->

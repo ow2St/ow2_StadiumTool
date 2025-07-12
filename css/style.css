@@ -549,7 +549,6 @@ main-buildsimulator {
 
 main-IAP{
     margin-top: 2px;
-    /* margin-top: 50px; */
     margin-left: 200px;
     margin-right: 200px;
     height: auto;
@@ -613,7 +612,7 @@ main-IAP{
     width: 79%;
 }
 
-.button{
+.button-on{
     height: 45px;
     display: block;
     width: 105px;
@@ -621,6 +620,17 @@ main-IAP{
     margin-left: 5px;
     margin-bottom: 5px;
     background-color: lightgray;
+    cursor: pointer;
+}
+
+.button-off{
+    height: 45px;
+    display: block;
+    width: 105px;
+    border-width: 1px 1px 1px 1px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    background-color: white;
     cursor: pointer;
 }
 
@@ -704,7 +714,10 @@ main-IAP{
 }
 
 .table-on{
-    display: block;
+    display: table-row;
+    vertical-align: inherit;
+    unicode-bidi: isolate;
+    border-color: inherit;
 }
 
 .table-off{
