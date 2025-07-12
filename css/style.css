@@ -636,3 +636,94 @@ main-IAP{
 .power-table {
     margin-bottom: 30px;
 }
+
+/*
+====================================================================
+メイン部（パッチノート）
+====================================================================
+*/
+
+.year-header, .month-header, .day-header, .character-name {
+    padding: 8px 0;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+.year-header {
+    cursor: pointer;
+    background-color: #f0f0f0;
+    padding-left: 10px;
+}
+
+.month-header {
+    cursor: pointer;
+    background-color: #f8f8f8;
+    padding-left: 30px;
+}
+
+.day-header {
+    cursor: pointer;
+    background-color: #ffffff;
+    padding-left: 50px;
+}
+
+.character-name {
+    background-color: #e0f7fa;
+    padding-left: 70px;
+    color: #00796b;
+    border-bottom: none;
+    margin-bottom: 5px;
+}
+
+.year-content, .month-content, .day-content {
+    display: none;
+    padding-bottom: 10px;
+}
+
+.month-content {
+    padding-left: 20px;
+}
+
+.day-content {
+    padding-left: 40px;
+    padding-top: 10px;
+}
+
+.character-data-container {
+    padding-left: 80px;
+    padding-top: 5px;
+}
+
+.item-details {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.item-details:last-child {
+    margin-bottom: 0;
+}
+
+.item-details p {
+    margin: 5px 0;
+}
+
+.item-details strong {
+    display: inline-block;
+    width: 100px;
+    font-weight: normal;
+    color: #555;
+}
+
+.item-details ul {
+    list-style-type: disc;
+    padding-left: 30px;
+    margin: 5px 0 0 0;
+}
+
+.item-details ul li {
+    margin-bottom: 3px;
+}
