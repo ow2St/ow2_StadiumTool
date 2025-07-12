@@ -302,6 +302,45 @@ main-buildsimulator {
     background-color: lightgray;
 }
 
+.zaria-button {
+    display: none;
+    border: 1px solid black;
+    margin: 0 0 0 10px;
+    font-weight: 550;
+    color: #555555;
+    padding: 0 5px 0 5px;
+    cursor: pointer;
+}
+.zaria-button:hover{
+    background-color: lightgray;
+}
+
+.juno-button {
+    display: none;
+    border: 1px solid black;
+    margin: 0 0 0 10px;
+    font-weight: 550;
+    color: #555555;
+    padding: 0 5px 0 5px;
+    cursor: pointer;
+}
+.juno-button:hover{
+    background-color: lightgray;
+}
+
+.moira-button {
+    display: none;
+    border: 1px solid black;
+    margin: 0 0 0 10px;
+    font-weight: 550;
+    color: #555555;
+    padding: 0 5px 0 5px;
+    cursor: pointer;
+}
+.moira-button:hover{
+    background-color: lightgray;
+}
+
 .status {
     padding-left: 15px;
     font-weight: 550;
@@ -495,6 +534,13 @@ main-buildsimulator {
     border-radius: 15px;
 }
 
+.buildlist{
+    margin-top: 20px;
+    border-top: 1px solid black;
+    overflow-y: scroll;
+    height: 1200px;
+}
+
 /*
 ====================================================================
 メイン部（アイテム/パワー一覧）
@@ -502,22 +548,22 @@ main-buildsimulator {
 */
 
 main-IAP{
-    margin-top: 50px;
+    margin-top: 2px;
+    /* margin-top: 50px; */
+    margin-left: 200px;
+    margin-right: 200px;
     height: auto;
     border: 1px solid black;
     border-top: none;
     display: block;
     min-width: 430px;
     font-weight: 300;
-    position: relative; /* タブボタン部にmainのボーダーがかからないように */
 }
 
 .tabs {
-    margin-top: 20px;
+    padding-top: 20px;
     margin-left: 30px;
     display: flex;
-    position: absolute; /* タブボタン部にmainのボーダーがかからないように */
-    top: -44px; /* タブボタン部にmainのボーダーがかからないように */
 }
 .tabItem {
   padding-left: 20px;
@@ -597,6 +643,7 @@ main-IAP{
     background-color: #ffe6e6;
     margin-top: 30px;
     margin-bottom: 20px;
+
 }
 .power-title {
     display: block;
@@ -610,6 +657,10 @@ main-IAP{
     background-color: #ffe6e6;
     margin-top: 30px;
     margin-bottom: 20px;
+}
+
+.sort-down{
+    cursor: pointer;
 }
 
 .power-hero-icon-off {
@@ -636,6 +687,7 @@ main-IAP{
 .power-table {
     margin-bottom: 30px;
 }
+
 
 /*
 ====================================================================

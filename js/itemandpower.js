@@ -39,6 +39,14 @@ const itemContent = document.getElementById('item-content');
 const tabPower = document.getElementById('tabPower');
 const powerContent = document.getElementById('power-content');
 
+const sortingCriteria = [//TODO:アイテムパワー一覧の場合は初期でソートしないので、order:unsorted（ソートなし）でok?
+        { column: "itemName", type: "string" }, //TODO:このままこれ起動するとアイテム名のソートのみ動くことになる
+        { column: "rarity", type: "string" },
+        { column: "cost", type: "number" }
+    ]
+
+let sortDirection = new Array(8).fill(null);
+
 // ------------------------------
 // 関数部
 // ------------------------------
@@ -419,6 +427,109 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
 }
 
 
+
+function sortClick(id){
+    const tHeader=document.getElementById("item-table").querySelectorAll("th");
+    const tBody = document.getElementById("item-table").querySelector("tbody");
+    const criteria = Array.from(sortingCriteria.entries()).find(([key,row]) => row.column === id);
+    const columnIndex = Array.from(tHeader).findIndex(th => th.dataset.column == id);
+    const currentDirection = sortDirection[columnIndex] == true ? false:true;
+    sortDirection = new Array(8).fill(null);
+    sortDirection[columnIndex] = currentDirection
+
+    TableSort(tHeader,tBody,criteria[1],columnIndex,currentDirection);
+
+    // 表示テキスト更新
+    const labelMap = {
+        itemName: "アイテム名",
+        rarity: "レアリティ",
+        cost: "コスト"
+    };
+
+    // テーブル列名初期化
+    sortingCriteria.forEach(row => {
+        document.getElementById(row.column).innerText = labelMap[row.column];
+    });
+    
+    let arrows = "";
+    
+    if(sortDirection[columnIndex]){
+        arrows = "▲"
+    }else if(!sortDirection[columnIndex]){
+        arrows = "▼"
+    }
+
+    // ソート結果に応じた列名に更新
+    document.getElementById(id).innerText = labelMap[id] + arrows;
+
+}
+
+// テーブルをソートする関数
+function TableSort(headers, tbody, sortingCriteria,index,sorting) {
+
+    //レア度の並び替えの基準を設定
+    const rarityOrder = ['コモン', 'レア', 'エピック']
+
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    // 日本語ロケールに基づいた比較器（五十音順）
+    const collator = new Intl.Collator('ja', { sensitivity: 'base' });
+
+    // 比較
+    const comparator = (rowA, rowB) => {
+        const { column, type } = sortingCriteria;
+
+        const cellA = rowA.children[index].textContent.trim();
+        const cellB = rowB.children[index].textContent.trim();
+
+        let valA, valB;
+
+        // データの型に応じて比較対象の値を変換（デフォルトはString型）
+        if (type == "number") {
+            valA = parseFloat(cellA);
+            valB = parseFloat(cellB);
+        } else {
+            valA = cellA;
+            valB = cellB;
+        }
+
+        // レア度を比較用に数値変換
+        if (column == "rarity") {
+            valA = rarityOrder.indexOf(valA);
+            valB = rarityOrder.indexOf(valB);
+        }
+
+        let comparison = 0;
+
+        // 文字列は日本語ロケールで比較
+        if (type === "string" && column !== "rarity") {
+            comparison = collator.compare(valA, valB);
+        } else {
+            if (valA < valB) comparison = -1;
+            else if (valA > valB) comparison = 1;
+        }
+        
+        // ソート順序を適用し、結果が0でない場合はここで終了
+        return sorting ? comparison : -comparison;
+
+        // 全てのキーが同じ場合
+        return 0; 
+    };
+        
+
+    // 配列のソート
+    rows.sort(comparator);
+    // 既存の行をすべて削除
+    while (tbody.firstChild) {
+        tbody.removeChild(tbody.firstChild);
+    }
+    // ソートされた順序で行を追加
+    rows.forEach(row => tbody.appendChild(row));
+
+    //TODO:sortingCriteriaのorderを反転
+}
+
+
 // パワーリストをテーブルに紐づける関数
 function linkPowerList(powerList) {
     let tbody = document.getElementById("power-table").querySelector("tbody");
@@ -427,9 +538,9 @@ function linkPowerList(powerList) {
     for(let i=0; i<powerList.length; i++) {
         var tr = document.createElement("tr");
 
-        // 必要な列ごとの変数を初期化 TODO:ここから下をパワー用に変える　6/21
+        // 必要な列ごとの変数を初期化
         let powerNameText = "";
-        let iconText = "-";  // アイコン列は現状アイテム情報にないため、とりあえずハイフンを入れる　TODO：RIN
+        let iconText = "-";  // アイコン列は現状アイテム情報にないため、とりあえずハイフンを入れる
         let heroText = "";
         let textText = "";
 
@@ -439,7 +550,7 @@ function linkPowerList(powerList) {
             // キー名がパワー名キーの場合
             if(powerNameKey == key) {
 
-                // アイテム名用変数に値を代入
+                // パワー名用変数に値を代入
                 powerNameText = powerList[i][key];
             }
 
@@ -453,7 +564,7 @@ function linkPowerList(powerList) {
             if(textKey == key) {
 
                 // テキスト用変数に値を代入
-                textText = itemList[i][key];
+                textText = powerList[i][key];
             }
         })
     
@@ -468,7 +579,7 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
     // パワー名列
     var td = document.createElement("td");
     td.textContent = powerNameText;
-    td.classList.add("item-td");
+    td.classList.add("item-td");    //TODO:"item-td"を"power-td"に直す？（このままでも機能してる）
     tr.appendChild(td);
 
     // アイコン列
