@@ -680,7 +680,8 @@ main-IAP{
     width: 70px;
     height: 70px;
     filter: saturate(0%); /*アイコンを白黒にする*/
-    border: 5px solid transparent;
+    border: 2px solid transparent;
+    opacity: 0.5;
 }
 .power-hero-icon-on {
     cursor: pointer;
@@ -688,8 +689,8 @@ main-IAP{
     margin-bottom: 3px;
     width: 70px;
     height: 70px;
-    filter: saturate(100%); /*アイコンをカラーにする*/
-    border: 5px solid rgba(182, 187, 255, 0.5);
+    filter: saturate(100%); /* アイコンをカラーにする */
+    border: 2px solid yellow;
 }
 
 .power-table {
