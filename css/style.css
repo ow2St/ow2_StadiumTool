@@ -549,8 +549,6 @@ main-buildsimulator {
 
 main-IAP{
     margin-top: 2px;
-    margin-left: 200px;
-    margin-right: 200px;
     height: auto;
     border: 1px solid black;
     border-top: none;
@@ -724,3 +722,8 @@ main-IAP{
 .table-off{
     display: none;
 }
+
+.tr.table-off{
+    display: none;
+}
+

@@ -240,6 +240,8 @@ function filterItemTable(elem){
     const id = elem.id;
     const tag = elem.tagName.toLowerCase();
 
+    var judgementFactor;
+
     //onclick元から読み込んだidを種類分けする
     switch (id) {
         case "weapon":
@@ -303,18 +305,49 @@ function filterItemTable(elem){
     }
 
     // 行ごとの絞り込み
+    // アイテム行をループ
     rows_item.forEach(tr => {
         const cells = tr.querySelectorAll("td");
-        const cellValue = cells[judgeNumber]?.textContent.trim();
+        let cellValue = null;
+        if(judgementFactor === "ステータス"){
+            cellValue = cells[judgeNumber]?.textContent;
+        }else{
+            cellValue = cells[judgeNumber]?.textContent.trim();
+    
+        }
+        // 毎回クラスを初期化
+        tr.classList.remove("table-on");
+        tr.classList.remove("table-off");
 
-        if (cellValue === targetText) {
-            if (isNowOn) {
-                tr.classList.remove("table-on");
-                tr.classList.add("table-off");
+        let shouldShow = false;
+
+        if (judgementFactor === "ステータス" && cellValue) {
+            const statusList = cellValue.split("\n").map(s => s.trim());
+
+            const knownStatuses = [
+                "ライフ", "アーマー", "シールド", "武器パワー", "アビリティパワー", "攻撃速度",
+                "クールダウン短縮", "弾薬", "ライフ吸収（武器）", "ライフ吸収（アビリティ）",
+                "移動速度", "リロード速度", "近接ダメージ", "クリティカルダメージ"
+            ];
+
+            if (targetText === "その他") {
+                shouldShow = statusList.some(status => !knownStatuses.includes(status));
             } else {
-                tr.classList.remove("table-off");
-                tr.classList.add("table-on");
+                shouldShow = statusList.includes(targetText);
             }
+        }
+        else if (judgementFactor === "固有ヒーロー") {
+            shouldShow = (cellValue !== "-");
+        }
+        else {
+            shouldShow = (cellValue === targetText);
+        }
+
+        // 表示 / 非表示の切り替え
+        if (shouldShow) {
+            tr.classList.add(isNowOn ? "table-off" : "table-on");
+        } else {
+            tr.classList.add("table-on"); // 常に表示を維持
         }
     });
 }
