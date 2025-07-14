@@ -235,45 +235,27 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
     return tr;
 }
 
-// 選択⇔未選択に応じてアイテムテーブルを絞り込む関数
+// 絞り込み条件を更新する関数
 function filterItemTable(elem){
-    const id = elem.id;
+
+    // 絞り込みボタンのON/OFF切り替え
     const tag = elem.tagName.toLowerCase();
-
-    var judgementFactor;
-
-    //onclick元から読み込んだidを種類分けする
-    switch (id) {
-        case "weapon":
-        case "ability":
-        case "survival":
-            judgementFactor = "カテゴリー";
-            break;
-        case "common":
-        case "rare":
-        case "epic":
-            judgementFactor = "レアリティ";
-            break;
-        case "life":
-        case "armor":
-        case "shield":
-        case "weaponPower":
-        case "abilityPower":
-        case "atackSpeed":
-        case "ctReducation":
-        case "ammo":
-        case "weapon_LifeSteal":
-        case "ability_LifeSteal":
-        case "speed":
-        case "reloadSpeed":
-        case "meleeDamage":
-        case "critical":
-        case "others":
-            judgementFactor = "ステータス";
-            break;
-        default:
-            judgementFactor = "固有ヒーロー";
+    let isNowOn;
+    if (tag === "button") {
+        isNowOn = elem.classList.contains("button-on");
+        elem.classList.toggle("button-on", !isNowOn);
+        elem.classList.toggle("button-off", isNowOn);
+    } else if (tag === "input" && elem.type === "checkbox") {
+        isNowOn = elem.checked;
+        elem.classList.toggle("checkbox-on", isNowOn);
+        elem.classList.toggle("checkbox-off", !isNowOn);
     }
+
+    // 各絞り込み一覧を取得
+    const buttons_category = document.querySelectorAll("#button-category button");
+    const buttons_rarity = document.querySelectorAll("#button-rarity button");
+    const buttons_status = document.querySelectorAll("#button-status button");
+    const uniqueHero = document.getElementById("uniqueHero");
 
     // テーブルのヘッダー行（<tr>）を取得
     const headerRow = document.querySelector("#item-table thead tr");
@@ -281,73 +263,73 @@ function filterItemTable(elem){
     // 各 <th> 要素を配列として取得
     const headers = Array.from(headerRow.querySelectorAll("th"));
 
-    //  judgementFactor が何番目かを探す
-    const judgeNumber = headers.findIndex(th => th.textContent.trim() === judgementFactor);
+    // 各絞り込み要素が何番目かを取得
+    const categoryNumber = headers.findIndex(th => th.textContent == "カテゴリー");
+    const rarityNumber = headers.findIndex(th => th.textContent == "レアリティ");
+    const statusNumber = headers.findIndex(th => th.textContent == "ステータス");
+    const uniqueHeroNumber = headers.findIndex(th => th.textContent == "固有ヒーロー");
 
     //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_item に配列のように格納。各行を1つのアイテムとする。
     var tbody_item = document.getElementById("item-table").querySelector("tbody");
     var rows_item = tbody_item.querySelectorAll("tr");
 
-    // class切り替え & ON状態判定
-    let isNowOn;
-    let targetText;
-
-    if (tag === "button") {
-        isNowOn = elem.classList.contains("button-on");
-        elem.classList.toggle("button-on", !isNowOn);
-        elem.classList.toggle("button-off", isNowOn);
-        targetText = elem.innerText.trim();
-    } else if (tag === "input" && elem.type === "checkbox") {
-        isNowOn = elem.checked;
-        elem.classList.toggle("checkbox-on", isNowOn);
-        elem.classList.toggle("checkbox-off", !isNowOn);
-        targetText = elem.value.trim();
-    }
-
     // 行ごとの絞り込み
     // アイテム行をループ
     rows_item.forEach(tr => {
         const cells = tr.querySelectorAll("td");
-        let cellValue = null;
-        if(judgementFactor === "ステータス"){
-            cellValue = cells[judgeNumber]?.textContent;
-        }else{
-            cellValue = cells[judgeNumber]?.textContent.trim();
-    
-        }
+
         // 毎回クラスを初期化
         tr.classList.remove("table-on");
         tr.classList.remove("table-off");
 
-        let shouldShow = false;
+        let shouldShow = true;  // 表示判定フラグ
+        let shouldShowStatus = false;  // ステータス判定用フラグ
 
-        if (judgementFactor === "ステータス" && cellValue) {
-            const statusList = cellValue.split("\n").map(s => s.trim());
-
-            const knownStatuses = [
-                "ライフ", "アーマー", "シールド", "武器パワー", "アビリティパワー", "攻撃速度",
-                "クールダウン短縮", "弾薬", "ライフ吸収（武器）", "ライフ吸収（アビリティ）",
-                "移動速度", "リロード速度", "近接ダメージ", "クリティカルダメージ"
-            ];
-
-            if (targetText === "その他") {
-                shouldShow = statusList.some(status => !knownStatuses.includes(status));
-            } else {
-                shouldShow = statusList.includes(targetText);
+        // 非表示にするアイテムを探す
+        // カテゴリー関連
+        buttons_category.forEach(button =>{
+            
+            // ボタンがOFFの場合
+            if(button.className == "button-off" && shouldShow){
+                shouldShow = !(cells[categoryNumber]?.innerText == button.innerText);
             }
-        }
-        else if (judgementFactor === "固有ヒーロー") {
-            shouldShow = (cellValue !== "-");
-        }
-        else {
-            shouldShow = (cellValue === targetText);
+        });
+
+        // レアリティ関連
+        buttons_rarity.forEach(button =>{
+
+            // ボタンがOFFの場合
+            if(button.className == "button-off" && shouldShow){
+                shouldShow = !(cells[rarityNumber]?.innerText == button.innerText);
+            }
+        });
+
+        // ステータス関連
+        buttons_status.forEach(button => {
+            const statusList = cells[statusNumber]?.innerText.split("\n").map(s => s.trim());
+
+            // ボタンがONの場合
+            if(button.className == "button-on" && !shouldShowStatus){
+                // ライフはライフ吸収と重複するので専用処理
+                if(button.innerText == "ライフ"){
+                    shouldShowStatus = statusList.some(status => status.includes("ライフ+"));
+                }else{
+                    shouldShowStatus = statusList.some(status => status.includes(button.innerText));
+                }
+                
+            }
+        });
+
+        // 固有ヒーロー関連
+        if (!uniqueHero.checked) {
+            shouldShow = !(cells[uniqueHeroNumber]?.innerText != "-");
         }
 
-        // 表示 / 非表示の切り替え
-        if (shouldShow) {
-            tr.classList.add(isNowOn ? "table-off" : "table-on");
-        } else {
-            tr.classList.add("table-on"); // 常に表示を維持
+        // 非表示対応
+        if(shouldShow && shouldShowStatus){
+            tr.classList.add("table-on");
+        }else{
+            tr.classList.add("table-off");
         }
     });
 }

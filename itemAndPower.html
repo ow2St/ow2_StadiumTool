@@ -31,7 +31,7 @@
                     <!--アイテムタブの内容-->
                     <div class="button-list">
                         <span class="button-category">カテゴリー</span>
-                        <div class="button-only">
+                        <div class="button-only" id="button-category">
                             <button class="button-on" id="weapon" onclick="filterItemTable(this)">武器</button>
                             <button class="button-on" id="ability" onclick="filterItemTable(this)">アビリティ</button>
                             <button class="button-on" id="survival" onclick="filterItemTable(this)">サバイバル</button>
@@ -39,7 +39,7 @@
                     </div>
                     <div class="button-list">
                         <span class="button-category">レアリティ</span>
-                        <div class="button-only">
+                        <div class="button-only" id="button-rarity">
                             <button class="button-on" id="common" onclick="filterItemTable(this)">コモン</button>
                             <button class="button-on" id="rare" onclick="filterItemTable(this)">レア</button>
                             <button class="button-on" id="epic" onclick="filterItemTable(this)">エピック</button>
@@ -47,7 +47,7 @@
                     </div>
                     <div class="button-list">
                         <span class="button-category">ステータス</span>
-                        <div class="button-only">
+                        <div class="button-only" id="button-status">
                             <button class="button-on" id="life" onclick="filterItemTable(this)">ライフ</button>
                             <button class="button-on" id="armor" onclick="filterItemTable(this)">アーマー</button>
                             <button class="button-on" id="shield" onclick="filterItemTable(this)">シールド</button>
@@ -65,8 +65,8 @@
                             <button class="button-on" id="others" onclick="filterItemTable(this)">その他</button>
                         </div>
                     </div>
-                    <div class="button-list">
-                    ヒーロー固有アイテム表示<input class="checkbox-on" type="checkbox" id="uniqueHero" value="固有ヒーロー" onclick="filterItemTable(this)" checked>
+                    <div class="button-list">ヒーロー固有アイテム表示
+                        <input class="checkbox-on" type="checkbox" id="uniqueHero" value="固有ヒーロー" onclick="filterItemTable(this)" checked>
                     </div>
 
                     <!--アイテム一覧（テーブル）-->
