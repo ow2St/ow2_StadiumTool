@@ -6,9 +6,11 @@
 linkItemList(itemList);
 linkPowerList(powerList);
 
-//パワー一覧　DVAアイコンをONにする
-let startCheckIcon = "DVA";
-selectHero(startCheckIcon);
+//パワー一覧　D.VAアイコンをONにする
+window.onload = function() {
+    const defaultHero = document.getElementById("D.VA");
+    filterPowerTable(defaultHero);
+};
 
 //アイテムボタン用フラグ初期化
 let isCheckWeapon = true;
@@ -39,8 +41,8 @@ const itemContent = document.getElementById('item-content');
 const tabPower = document.getElementById('tabPower');
 const powerContent = document.getElementById('power-content');
 
-const sortingCriteria = [//TODO:アイテムパワー一覧の場合は初期でソートしないので、order:unsorted（ソートなし）でok?
-        { column: "itemName", type: "string" }, //TODO:このままこれ起動するとアイテム名のソートのみ動くことになる
+const sortingCriteria = [
+        { column: "itemName", type: "string" },
         { column: "rarity", type: "string" },
         { column: "cost", type: "number" }
     ]
@@ -50,210 +52,6 @@ let sortDirection = new Array(8).fill(null);
 // ------------------------------
 // 関数部
 // ------------------------------
-
-//ボタン選択カラー変更
-//武器
-function IAPbuttonWeapon(){
-    var Button = document.getElementById("itemButtonWeapon");
-    if(isCheckWeapon){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckWeapon = !isCheckWeapon;
-}
-//アビリティ
-function IAPbuttonAbility(){
-    var Button = document.getElementById("itemButtonAbility");
-    if(isCheckAbility){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckAbility = !isCheckAbility;
-}
-function IAPbuttonSurvival(){
-    var Button = document.getElementById("itemButtonSurvival");
-    if(isCheckSurvival){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckSurvival = !isCheckSurvival;
-}
-function IAPbuttonCommon(){
-    var Button = document.getElementById("itemButtonCommon");
-    if(isCheckCommon){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckCommon = !isCheckCommon;
-}
-function IAPbuttonRare(){
-    var Button = document.getElementById("itemButtonRare");
-    if(isCheckRare){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckRare = !isCheckRare;
-}
-function IAPbuttonEpic(){
-    var Button = document.getElementById("itemButtonEpic");
-    if(isCheckEpic){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckEpic = !isCheckEpic;
-}
-function IAPbuttonLife(){
-    var Button = document.getElementById("itemButtonLife");
-    if(isCheckLife){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckLife = !isCheckLife;
-}
-function IAPbuttonArmor(){
-    var Button = document.getElementById("itemButtonArmor");
-    if(isCheckArmor){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckArmor = !isCheckArmor;
-}
-function IAPbuttonShield(){
-    var Button = document.getElementById("itemButtonShield");
-    if(isCheckShield){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckShield = !isCheckShield;
-}
-function IAPbuttonWeaponPower(){
-    var Button = document.getElementById("itemButtonWeaponPower");
-    if(isCheckWeaponPower){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckWeaponPower = !isCheckWeaponPower;
-}
-function IAPbuttonAbilityPower(){
-    var Button = document.getElementById("itemButtonAbilityPower");
-    if(isCheckAbilityPower){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckAbilityPower = !isCheckAbilityPower;
-}
-function IAPbuttonAttackSpeed(){
-    var Button = document.getElementById("itemButtonAttackSpeed");
-    if(isCheckAttackSpeed){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckAttackSpeed = !isCheckAttackSpeed;
-}
-function IAPbuttonCtReducation(){
-    var Button = document.getElementById("itemButtonCtReducation");
-    if(isCheckCtReducation){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckCtReducation = !isCheckCtReducation;
-}
-function IAPbuttonAmmo(){
-    var Button = document.getElementById("itemButtonAmmo");
-    if(isCheckAmmo){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckAmmo = !isCheckAmmo;
-}
-function IAPbuttonWeapon_LifeSteal(){
-    var Button = document.getElementById("itemButtonWeapon_LifeSteal");
-    if(isCheckWeapon_LifeSteal){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckWeapon_LifeSteal = !isCheckWeapon_LifeSteal;
-}
-function IAPbuttonAbility_LifeSteal(){
-    var Button = document.getElementById("itemButtonAbility_LifeSteal");
-    if(isCheckAbility_LifeSteal){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckAbility_LifeSteal = !isCheckAbility_LifeSteal;
-}
-function IAPbuttonSpeed(){
-    var Button = document.getElementById("itemButtonSpeed");
-    if(isCheckSpeed){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckSpeed = !isCheckSpeed;
-}
-function IAPbuttonReloadSpeed(){
-    var Button = document.getElementById("itemButtonReloadSpeed");
-    if(isCheckReloadSpeed){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckReloadSpeed = !isCheckReloadSpeed;
-}
-function IAPbuttonMeleeDamage(){
-    var Button = document.getElementById("itemButtonMeleeDamage");
-    if(isCheckMeleeDamage){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckMeleeDamage = !isCheckMeleeDamage;
-}
-function IAPbuttonCritical(){
-    var Button = document.getElementById("itemButtonCritical");
-    if(isCheckCritical){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckCritical = !isCheckCritical;
-}
-function IAPbuttonOthers(){
-    var Button = document.getElementById("itemButtonOthers");
-    if(isCheckOthers){
-        Button.style.backgroundColor = "white";
-    }else{
-        Button.style.backgroundColor = "lightgray";
-    }
-    isCheckOthers = !isCheckOthers;
-}
-
-
-//ヒーローアイコン選択変更
-function selectHero(heroIconId){
-    let heroIcon = document.getElementById(heroIconId);
-    if(heroIcon.className == "power-hero-icon-off"){
-        heroIcon.className = "power-hero-icon-on";
-    }else{
-        heroIcon.className = "power-hero-icon-off";
-    }
-}
 
 //タブ切り替え
 // アイテムタブに遷移
@@ -291,7 +89,7 @@ function linkItemList(itemList) {
 
         // 必要な列ごとの変数を初期化 
         let itemNameText = "";
-        let iconText = "-";  // アイコン列は現状アイテム情報にないため、とりあえずハイフンを入れる　TODO：RIN
+        let iconText = "";
         let categoryText = "";
         let rarityText = "";
         let costText = "";
@@ -307,6 +105,13 @@ function linkItemList(itemList) {
 
                 // アイテム名用変数に値を代入
                 itemNameText = itemList[i][key];
+            }
+
+            // キー名がアイコンキーの場合
+            if(iconKey == key) {
+
+                // アイコン用変数に値を代入
+                iconText = itemList[i][key];
             }
 
             // キー名がカテゴリーキーの場合
@@ -367,8 +172,9 @@ function linkItemList(itemList) {
             }
         })
     
-        tbody.appendChild(appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, statusText, textText));
+    tbody.appendChild(appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, statusText, textText));
     
+    tr.classList.add("table-on");
     }
 }
 
@@ -383,7 +189,10 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
 
     // アイコン列
     var td = document.createElement("td");
-    td.textContent = iconText;
+    var iconImg = document.createElement("img");
+    iconImg.src = "assets/images/icons/item/" + iconText;
+    iconImg.classList.add("itemandpower-itemicon");
+    td.appendChild(iconImg);
     td.classList.add("item-td");
     tr.appendChild(td);
 
@@ -426,8 +235,124 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
     return tr;
 }
 
+// 選択⇔未選択に応じてアイテムテーブルを絞り込む関数
+function filterItemTable(elem){
+    const id = elem.id;
+    const tag = elem.tagName.toLowerCase();
 
+    var judgementFactor;
 
+    //onclick元から読み込んだidを種類分けする
+    switch (id) {
+        case "weapon":
+        case "ability":
+        case "survival":
+            judgementFactor = "カテゴリー";
+            break;
+        case "common":
+        case "rare":
+        case "epic":
+            judgementFactor = "レアリティ";
+            break;
+        case "life":
+        case "armor":
+        case "shield":
+        case "weaponPower":
+        case "abilityPower":
+        case "atackSpeed":
+        case "ctReducation":
+        case "ammo":
+        case "weapon_LifeSteal":
+        case "ability_LifeSteal":
+        case "speed":
+        case "reloadSpeed":
+        case "meleeDamage":
+        case "critical":
+        case "others":
+            judgementFactor = "ステータス";
+            break;
+        default:
+            judgementFactor = "固有ヒーロー";
+    }
+
+    // テーブルのヘッダー行（<tr>）を取得
+    const headerRow = document.querySelector("#item-table thead tr");
+
+    // 各 <th> 要素を配列として取得
+    const headers = Array.from(headerRow.querySelectorAll("th"));
+
+    //  judgementFactor が何番目かを探す
+    const judgeNumber = headers.findIndex(th => th.textContent.trim() === judgementFactor);
+
+    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_item に配列のように格納。各行を1つのアイテムとする。
+    var tbody_item = document.getElementById("item-table").querySelector("tbody");
+    var rows_item = tbody_item.querySelectorAll("tr");
+
+    // class切り替え & ON状態判定
+    let isNowOn;
+    let targetText;
+
+    if (tag === "button") {
+        isNowOn = elem.classList.contains("button-on");
+        elem.classList.toggle("button-on", !isNowOn);
+        elem.classList.toggle("button-off", isNowOn);
+        targetText = elem.innerText.trim();
+    } else if (tag === "input" && elem.type === "checkbox") {
+        isNowOn = elem.checked;
+        elem.classList.toggle("checkbox-on", isNowOn);
+        elem.classList.toggle("checkbox-off", !isNowOn);
+        targetText = elem.value.trim();
+    }
+
+    // 行ごとの絞り込み
+    // アイテム行をループ
+    rows_item.forEach(tr => {
+        const cells = tr.querySelectorAll("td");
+        let cellValue = null;
+        if(judgementFactor === "ステータス"){
+            cellValue = cells[judgeNumber]?.textContent;
+        }else{
+            cellValue = cells[judgeNumber]?.textContent.trim();
+    
+        }
+        // 毎回クラスを初期化
+        tr.classList.remove("table-on");
+        tr.classList.remove("table-off");
+
+        let shouldShow = false;
+
+        if (judgementFactor === "ステータス" && cellValue) {
+            const statusList = cellValue.split("\n").map(s => s.trim());
+
+            const knownStatuses = [
+                "ライフ", "アーマー", "シールド", "武器パワー", "アビリティパワー", "攻撃速度",
+                "クールダウン短縮", "弾薬", "ライフ吸収（武器）", "ライフ吸収（アビリティ）",
+                "移動速度", "リロード速度", "近接ダメージ", "クリティカルダメージ"
+            ];
+
+            if (targetText === "その他") {
+                shouldShow = statusList.some(status => !knownStatuses.includes(status));
+            } else {
+                shouldShow = statusList.includes(targetText);
+            }
+        }
+        else if (judgementFactor === "固有ヒーロー") {
+            shouldShow = (cellValue !== "-");
+        }
+        else {
+            shouldShow = (cellValue === targetText);
+        }
+
+        // 表示 / 非表示の切り替え
+        if (shouldShow) {
+            tr.classList.add(isNowOn ? "table-off" : "table-on");
+        } else {
+            tr.classList.add("table-on"); // 常に表示を維持
+        }
+    });
+}
+
+//アイテムテーブルソートの前提準備
 function sortClick(id){
     const tHeader=document.getElementById("item-table").querySelectorAll("th");
     const tBody = document.getElementById("item-table").querySelector("tbody");
@@ -464,7 +389,7 @@ function sortClick(id){
 
 }
 
-// テーブルをソートする関数
+// アイテムテーブルをソートする関数
 function TableSort(headers, tbody, sortingCriteria,index,sorting) {
 
     //レア度の並び替えの基準を設定
@@ -525,8 +450,6 @@ function TableSort(headers, tbody, sortingCriteria,index,sorting) {
     }
     // ソートされた順序で行を追加
     rows.forEach(row => tbody.appendChild(row));
-
-    //TODO:sortingCriteriaのorderを反転
 }
 
 
@@ -540,7 +463,7 @@ function linkPowerList(powerList) {
 
         // 必要な列ごとの変数を初期化
         let powerNameText = "";
-        let iconText = "-";  // アイコン列は現状アイテム情報にないため、とりあえずハイフンを入れる
+        let iconText = "";
         let heroText = "";
         let textText = "";
 
@@ -552,6 +475,13 @@ function linkPowerList(powerList) {
 
                 // パワー名用変数に値を代入
                 powerNameText = powerList[i][key];
+            }
+
+            // キー名がアイコンキーの場合
+            if(iconKey == key) {
+
+                // アイコン用変数に値を代入
+                iconText = powerList[i][key];
             }
 
             // キー名がヒーローキーの場合
@@ -568,8 +498,8 @@ function linkPowerList(powerList) {
             }
         })
     
-        tbody.appendChild(appendChildPowerList(tr, powerNameText, iconText, heroText, textText));
-    
+    tbody.appendChild(appendChildPowerList(tr, powerNameText, iconText, heroText, textText));
+    tr.classList.add("table-off"); //アイテムテーブルと違い、パワーテーブルは初期表示が非表示の為（D.VA以外）
     }
 }
 
@@ -579,12 +509,15 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
     // パワー名列
     var td = document.createElement("td");
     td.textContent = powerNameText;
-    td.classList.add("item-td");    //TODO:"item-td"を"power-td"に直す？（このままでも機能してる）
+    td.classList.add("item-td");
     tr.appendChild(td);
 
     // アイコン列
     var td = document.createElement("td");
-    td.textContent = iconText;
+    var iconImg = document.createElement("img");
+    iconImg.src = "assets/images/icons/power/" + iconText;
+    iconImg.classList.add("itemandpower-powericon");
+    td.appendChild(iconImg);
     td.classList.add("item-td");
     tr.appendChild(td);
 
@@ -601,4 +534,40 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
     tr.appendChild(td);
 
     return tr;
+}
+
+// 選択⇔未選択に応じてパワーテーブルを絞り込む関数
+function filterPowerTable(elem) {
+    const id = elem.id;
+    const targetText = id;
+
+    // まず画像のON/OFF切り替え（クラス切り替え）
+    const isNowOn = elem.classList.contains("power-hero-icon-on");
+    if (isNowOn) {
+        elem.classList.remove("power-hero-icon-on");
+        elem.classList.add("power-hero-icon-off");
+    } else {
+        elem.classList.remove("power-hero-icon-off");
+        elem.classList.add("power-hero-icon-on");
+    }
+
+    // パワーテーブルを取得
+    const tbody_power = document.getElementById("power-table").querySelector("tbody");
+    const rows_power = tbody_power.querySelectorAll("tr");
+
+    // 各行に対してヒーロー一致判定し、表示/非表示を切り替える
+    rows_power.forEach(tr => {
+        const cells = tr.querySelectorAll("td");
+        const cellValue = cells[2]?.textContent.trim(); //cells[2] は各パワーの左から3つ目（ヒーロー列位置）を示す
+
+        if (cellValue === targetText) {
+            if (isNowOn) {
+                tr.classList.remove("table-on");
+                tr.classList.add("table-off");
+            } else {
+                tr.classList.remove("table-off");
+                tr.classList.add("table-on");
+            }
+        }
+    });
 }
