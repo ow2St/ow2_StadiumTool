@@ -12,29 +12,6 @@ window.onload = function() {
     filterPowerTable(defaultHero);
 };
 
-//アイテムボタン用フラグ初期化
-let isCheckWeapon = true;
-let isCheckAbility = true;
-let isCheckSurvival = true;
-let isCheckCommon = true;
-let isCheckRare = true;
-let isCheckEpic = true;
-let isCheckLife = true;
-let isCheckArmor = true;
-let isCheckShield = true;
-let isCheckWeaponPower = true;
-let isCheckAbilityPower = true;
-let isCheckAttackSpeed = true;
-let isCheckCtReducation = true;
-let isCheckAmmo = true;
-let isCheckWeapon_LifeSteal = true;
-let isCheckSpeed = true;
-let isCheckAbility_LifeSteal = true;
-let isCheckReloadSpeed = true;
-let isCheckMeleeDamage = true;
-let isCheckCritical = true;
-let isCheckOthers = true;
-
 //タブ切り替え初期化
 const tabItem = document.getElementById('tabItem');
 const itemContent = document.getElementById('item-content');
@@ -43,6 +20,7 @@ const powerContent = document.getElementById('power-content');
 
 const sortingCriteria = [
         { column: "itemName", type: "string" },
+        { column: "powerName", type: "string" },
         { column: "rarity", type: "string" },
         { column: "cost", type: "number" }
     ]
@@ -337,7 +315,7 @@ function filterItemTable(elem){
 }
 
 //アイテムテーブルソートの前提準備
-function sortClick(id){
+function itemSortClick(id){
     const tHeader=document.getElementById("item-table").querySelectorAll("th");
     const tBody = document.getElementById("item-table").querySelector("tbody");
     const criteria = Array.from(sortingCriteria.entries()).find(([key,row]) => row.column === id);
@@ -346,7 +324,7 @@ function sortClick(id){
     sortDirection = new Array(8).fill(null);
     sortDirection[columnIndex] = currentDirection
 
-    TableSort(tHeader,tBody,criteria[1],columnIndex,currentDirection);
+    itemTableSort(tHeader,tBody,criteria[1],columnIndex,currentDirection);
 
     // 表示テキスト更新
     const labelMap = {
@@ -374,7 +352,7 @@ function sortClick(id){
 }
 
 // アイテムテーブルをソートする関数
-function TableSort(headers, tbody, sortingCriteria,index,sorting) {
+function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
 
     //レア度の並び替えの基準を設定
     const rarityOrder = ['コモン', 'レア', 'エピック']
@@ -554,4 +532,102 @@ function filterPowerTable(elem) {
             }
         }
     });
+}
+
+//パワーテーブルソートの前提準備
+function powerSortClick(id){
+    const tHeader=document.getElementById("power-table").querySelectorAll("th");
+    const tBody = document.getElementById("power-table").querySelector("tbody");
+    const criteria = Array.from(sortingCriteria.entries()).find(([key,row]) => row.column === id);
+    const columnIndex = Array.from(tHeader).findIndex(th => th.dataset.column == id);
+    const currentDirection = sortDirection[columnIndex] == true ? false:true;
+    sortDirection = new Array(4).fill(null);
+    sortDirection[columnIndex] = currentDirection
+
+    powerTableSort(tHeader,tBody,criteria[1],columnIndex,currentDirection);
+
+    // 表示テキスト更新
+    const labelMap = {
+        powerName: "パワー名",
+    };
+
+    // テーブル列名初期化
+    sortingCriteria.forEach(row => {
+        document.getElementById(row.column).innerText = labelMap[row.column];
+    });
+    
+    let arrows = "";
+    
+    if(sortDirection[columnIndex]){
+        arrows = "▲"
+    }else if(!sortDirection[columnIndex]){
+        arrows = "▼"
+    }
+
+    // ソート結果に応じた列名に更新
+    document.getElementById(id).innerText = labelMap[id] + arrows;
+
+}
+
+// パワーテーブルをソートする関数
+function powerTableSort(headers, tbody, sortingCriteria,index,sorting) {
+
+    //レア度の並び替えの基準を設定
+    const rarityOrder = ['コモン', 'レア', 'エピック']
+
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    // 日本語ロケールに基づいた比較器（五十音順）
+    const collator = new Intl.Collator('ja', { sensitivity: 'base' });
+
+    // 比較
+    const comparator = (rowA, rowB) => {
+        const { column, type } = sortingCriteria;
+
+        const cellA = rowA.children[index].textContent.trim();
+        const cellB = rowB.children[index].textContent.trim();
+
+        let valA, valB;
+
+        // データの型に応じて比較対象の値を変換（デフォルトはString型）
+        if (type == "number") {
+            valA = parseFloat(cellA);
+            valB = parseFloat(cellB);
+        } else {
+            valA = cellA;
+            valB = cellB;
+        }
+
+        // レア度を比較用に数値変換
+        if (column == "rarity") {
+            valA = rarityOrder.indexOf(valA);
+            valB = rarityOrder.indexOf(valB);
+        }
+
+        let comparison = 0;
+
+        // 文字列は日本語ロケールで比較
+        if (type === "string" && column !== "rarity") {
+            comparison = collator.compare(valA, valB);
+        } else {
+            if (valA < valB) comparison = -1;
+            else if (valA > valB) comparison = 1;
+        }
+        
+        // ソート順序を適用し、結果が0でない場合はここで終了
+        return sorting ? comparison : -comparison;
+
+        // 全てのキーが同じ場合
+        return 0; 
+    };
+        
+
+    // 配列のソート
+    rows.sort(comparator);
+    // 既存の行をすべて削除
+    while (tbody.firstChild) {
+        tbody.removeChild(tbody.firstChild);
+    }
+    // ソートされた順序で行を追加
+    rows.forEach(row => tbody.appendChild(row));
 }
