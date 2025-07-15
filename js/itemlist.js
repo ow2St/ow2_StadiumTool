@@ -366,7 +366,11 @@ function addItemList(itemName, category, rarity, cost, icon, uniqueHero,
     itemData[reloadSpeedKey] = reloadSpeed;
     itemData[meleeDamageKey] = meleeDamage;
     itemData[criticalKey] = critical;
-    itemData[othersKey] = others;
+    if(others == "-"){
+        itemData[othersKey] = others;
+    }else{
+        itemData[othersKey] = "※" + others;
+    }
 
     // アイテム情報をアイテムリストに追加
     itemList.push(itemData);

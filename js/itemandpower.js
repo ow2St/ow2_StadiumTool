@@ -313,6 +313,8 @@ function filterItemTable(elem){
                 // ライフはライフ吸収と重複するので専用処理
                 if(button.innerText == "ライフ"){
                     shouldShowStatus = statusList.some(status => status.includes("ライフ+"));
+                }else if(button.innerText == "その他"){
+                    shouldShowStatus = statusList.some(status => status.includes("※"));
                 }else{
                     shouldShowStatus = statusList.some(status => status.includes(button.innerText));
                 }
