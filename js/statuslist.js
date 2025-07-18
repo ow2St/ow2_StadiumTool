@@ -77,7 +77,7 @@ addStatusList("ゼニヤッタ",75,175,0,"破滅のオーブ・単発",50,"-",1.
 // ------------------------------
 
 // ステータスリストに各ヒーローの情報を追加する関数　TODO:RIN 攻撃速度
-function addStatusList(heroName, life, armor, shield, 
+function addStatusList(heroName, life, shield, armor, 
                        mainWeaponName, mainWeapon, mainCalculation, mainReload, mainAmmo, mainHSRate,
                        subWeaponName, subWeapon, subCalculation, subReload, subAmmo, subHSRate,
                        ability1Name, ability1, ability1Calculation, ability1Duration, ability1CT,
