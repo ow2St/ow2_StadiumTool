@@ -362,6 +362,8 @@ function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
     // 日本語ロケールに基づいた比較器（五十音順）
     const collator = new Intl.Collator('ja', { sensitivity: 'base' });
 
+    // kuroshiroの初期化
+    //const kuroshiro = new Kuroshiro();
     // 比較
     const comparator = (rowA, rowB) => {
         const { column, type } = sortingCriteria;
@@ -369,6 +371,12 @@ function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
         const cellA = rowA.children[index].textContent.trim();
         const cellB = rowB.children[index].textContent.trim();
 
+        // 初期化と変換
+/*         kuroshiro.init(new KuromojiAnalyzer()).then(() => {
+            cellA = kuroshiro.convert(cellA, { to: "hiragana" });
+            cellB = kuroshiro.convert(cellB, { to: "hiragana" });
+        })
+ */
         let valA, valB;
 
         // データの型に応じて比較対象の値を変換（デフォルトはString型）

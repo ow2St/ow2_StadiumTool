@@ -619,6 +619,7 @@ main-IAP{
     margin-bottom: 5px;
     background-color: lightgray;
     cursor: pointer;
+    color: black;/* TODO:携帯から見るときのボタンカラー検証用 */
 }
 
 .button-off{
@@ -630,6 +631,7 @@ main-IAP{
     margin-bottom: 5px;
     background-color: white;
     cursor: pointer;
+    color: red;/* TODO:携帯から見るときのボタンカラー検証用 */
 }
 
 .button-list{
