@@ -19,6 +19,8 @@ var zariaFlg = "エネルギー0%"  // ザリア計算用フラグ
 var junoFlg = "ダメージ"  // ジュノ計算用フラグ
 var moiraFlg = "ダメージ"  // モイラ計算用フラグ
 
+var queenScratch = 15;  // クイーン傷ダメージ用変数
+
 // 表示用のステータスリストを初期化
 var showStatusList = {};
 
@@ -150,6 +152,9 @@ function selectHero(id){
     }
     document.getElementById("selected-hero-icon").src = "assets/images/icons/hero/" + imgPath;
 
+    // 傷ダメージ初期化
+    queenScratch = 15;
+    
     // ステータスボックス初期化
     initStatus(id);
 
@@ -237,7 +242,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
     // 選択中のヒーローのステータスを設定
     document.getElementById("heroname").innerText = statuslist[heroNameKey];
     document.getElementById("life").innerText = lifeKey + " :" + statuslist[lifeKey];
-    document.getElementById("armor").innerText = armorKey + " :" + statuslist[armorKey] ;
+    document.getElementById("armor").innerText = armorKey + " :" + statuslist[armorKey];
     document.getElementById("shield").innerText = shieldKey + " :" + statuslist[shieldKey];
     
     if(selectedHero == "ジュノ" && junoFlg == "ヒール"){
@@ -253,7 +258,12 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
     }else {
         document.getElementById("subweapon").innerText = subWeaponKey + "(" + statuslist[subWeaponNameKey] + ")" + " :" + statuslist[subWeaponKey];
     }
-    document.getElementById("meleedamage").innerText = meleeDamageKey + " :" + statuslist[meleeDamageKey];
+
+    if(selectedHero == "ジャンカー・クイーン"){
+        document.getElementById("meleedamage").innerText = meleeDamageKey + " :" + (statuslist[meleeDamageKey] + queenScratch);
+    }else {
+        document.getElementById("meleedamage").innerText = meleeDamageKey + " :" + statuslist[meleeDamageKey];
+    }
     
     if(selectedHero == "ジュノ" && junoFlg == "ヒール"){
         document.getElementById("ability1").innerText = ability1Key + "(" + statuslist[ability1NameKey] + ")" + " :" + (statuslist[ability1Key] + 50);
@@ -983,6 +993,10 @@ function updateStatus_Item(selectedItemRows){
     // 選択中のヒーローのステータスを初期化
     const showStatusListTmp = initStatusList.filter(heroStatus => heroStatus[heroNameKey] === selectedHero);
     showStatusList = JSON.parse(JSON.stringify(showStatusListTmp[0]));
+    
+    // 傷ダメージも初期化
+    queenScratch = 15;
+
     initStatusValue(showStatusList,"init","-");
 
     // 最後に計算する倍率変数
@@ -1064,7 +1078,7 @@ function updateStatus_Item(selectedItemRows){
             }
         }
 
-        // アビリティパワーに記載がある場合 TODO:RIN クイーンの近接
+        // アビリティパワーに記載がある場合
         if(abilityPowerTmp != 0){
 
             // 表示用ステータスリストに反映
@@ -1080,6 +1094,9 @@ function updateStatus_Item(selectedItemRows){
             if(showStatusList[heroNameKey] != "ゲンジ" && showStatusList[heroNameKey] != "ソルジャー76"){
                 showStatusList[ultKey] = Math.round(showStatusList[ultKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
             }
+
+            // クイーンの場合は傷ダメージにも乗算
+            queenScratch = Math.round(queenScratch * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         }
 
         // TODO:RIN 攻撃速度に記載がある場合
