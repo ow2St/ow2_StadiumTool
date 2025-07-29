@@ -641,18 +641,6 @@ main-IAP{
     margin: 10px 0px 0px 25px;
 }
 
-.searchPart{
-    margin: 20px;
-
-}
-
-.searchText{
-    width: 400px;
-    height: 40px;
-    font-size: 15px;
-
-}
-
 .itemlist-title {
     display: block;
     width: 100%;
