@@ -614,24 +614,24 @@ main-IAP{
     height: 45px;
     display: block;
     width: 105px;
-    border-width: 1px 1px 1px 1px;
+    border: 2px solid black; /* TODO:線を太く、実線にしてみる */
     margin-left: 5px;
     margin-bottom: 5px;
     background-color: lightgray;
     cursor: pointer;
-    color: black;/* TODO:携帯から見るときのボタンカラー検証用 */
+    color: black;
 }
 
 .button-off{
     height: 45px;
     display: block;
     width: 105px;
-    border-width: 1px 1px 1px 1px;
+    border: 2px solid black; /* TODO:線を太く、実線にしてみる */
     margin-left: 5px;
     margin-bottom: 5px;
     background-color: white;
     cursor: pointer;
-    color: red;/* TODO:携帯から見るときのボタンカラー検証用 */
+    color: black;
 }
 
 .button-list{
@@ -639,6 +639,18 @@ main-IAP{
     flex-wrap: wrap;
     word-break: keep-all;
     margin: 10px 0px 0px 25px;
+}
+
+.searchPart{
+    margin: 20px;
+
+}
+
+.searchText{
+    width: 400px;
+    height: 40px;
+    font-size: 15px;
+
 }
 
 .itemlist-title {
@@ -651,7 +663,6 @@ main-IAP{
     height: 30px;
     white-space: nowrap;
     background-color: #ffe6e6;
-    margin-top: 30px;
     margin-bottom: 20px;
 
 }

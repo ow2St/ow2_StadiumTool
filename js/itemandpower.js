@@ -314,6 +314,32 @@ function filterItemTable(elem){
     });
 }
 
+function resetFilters() {
+    // --- ボタンのON/OFF状態をリセット ---
+    const allButtons = document.querySelectorAll("button");
+    allButtons.forEach(btn => {
+        if (btn.classList.contains("button-off")) {
+            btn.classList.remove("button-off");
+            btn.classList.add("button-on");
+        }
+    });
+
+    // --- テーブルの全行を表示状態にする ---
+    const rows = document.querySelectorAll("#item-table tbody tr");
+    rows.forEach(row => {
+        row.classList.remove("table-off");
+        row.classList.add("table-on");
+    });
+}
+
+    // --- チェックボックスがある場合 ---
+    const checkboxes = document.querySelectorAll("input[type='checkbox']");
+    checkboxes.forEach(cb => {
+        cb.checked = false;
+        cb.classList.remove("checkbox-on");
+        cb.classList.add("checkbox-off");
+    });
+
 //アイテムテーブルソートの前提準備
 function itemSortClick(id){
     const tHeader=document.getElementById("item-table").querySelectorAll("th");

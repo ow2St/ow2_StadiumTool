@@ -64,7 +64,11 @@
                         </div>
                     </div>
                     <div class="button-list">ヒーロー固有アイテム表示
-                        <input class="checkbox-on" type="checkbox" id="uniqueHero" value="固有ヒーロー" onclick="filterItemTable(this)" checked>
+                        <input type="checkbox" class="checkbox-on" id="uniqueHero" value="固有ヒーロー" onclick="filterItemTable(this)" checked>
+                    </div>
+                    <div style="margin: 20px;">
+                        <input type="search" style="width:400px; height:55px; font-size:15px;" placeholder="アイテム名・テキストで検索…">
+                        <button style="width:80px; height:45px; font-size:15px;" onclick="resetFilters()">検索</button>
                     </div>
 
                     <!--アイテム一覧（テーブル）-->
