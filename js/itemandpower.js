@@ -264,6 +264,11 @@ function filterItemTable(elem){
         let shouldShowStatus = false;  // ステータス判定用フラグ
 
         // 非表示にするアイテムを探す
+        // 固有ヒーロー関連
+        if (!uniqueHero.checked) {
+            shouldShow = !(cells[uniqueHeroNumber]?.innerText != "-");
+        }
+
         // カテゴリー関連
         buttons_category.forEach(button =>{
             
@@ -288,6 +293,7 @@ function filterItemTable(elem){
 
             // ボタンがONの場合
             if(button.className == "button-on" && !shouldShowStatus){
+                
                 // ライフはライフ吸収と重複するので専用処理
                 if(button.innerText == "ライフ"){
                     shouldShowStatus = statusList.some(status => status.includes("ライフ+"));
@@ -296,14 +302,8 @@ function filterItemTable(elem){
                 }else{
                     shouldShowStatus = statusList.some(status => status.includes(button.innerText));
                 }
-                
             }
         });
-
-        // 固有ヒーロー関連
-        if (!uniqueHero.checked) {
-            shouldShow = !(cells[uniqueHeroNumber]?.innerText != "-");
-        }
 
         // 非表示対応
         if(shouldShow && shouldShowStatus){

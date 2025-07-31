@@ -154,7 +154,7 @@ function selectHero(id){
 
     // 傷ダメージ初期化
     queenScratch = 15;
-    
+
     // ステータスボックス初期化
     initStatus(id);
 
@@ -310,12 +310,15 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
         document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (HS" + Math.round(statuslist[subWeaponKey] * statuslist[subHSRateKey]) + ")";
     }
 
-    // ライフ吸収がある場合は追加
-    if(statuslist[mainLifeStealRateKey] != 0){
-        document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (" + Math.round(statuslist[mainWeaponKey] * statuslist[mainLifeStealRateKey]) + "吸収)";
+    // ライフ吸収がある場合は追加（リーパーの場合は固定30%の吸収量がある）
+    if(selectedHero == "リーパー"){
+        document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (" + Math.ceil(statuslist[mainWeaponKey] * (statuslist[mainLifeStealRateKey] + 0.3)) + "吸収)";
+    }
+    else if(statuslist[mainLifeStealRateKey] != 0){
+        document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (" + Math.ceil(statuslist[mainWeaponKey] * statuslist[mainLifeStealRateKey]) + "吸収)";
     }
     if(statuslist[subLifeStealRateKey] != 0){
-        document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (" + Math.round(statuslist[subWeaponKey] * statuslist[subLifeStealRateKey]) + "吸収)";
+        document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (" + Math.ceil(statuslist[subWeaponKey] * statuslist[subLifeStealRateKey]) + "吸収)";
     }
 
     // 継続時間がある場合は追加
@@ -343,18 +346,21 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
         document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (CT" + statuslist[ability3CTKey] + "秒)";
     }
 
-    // ライフ吸収がある場合は追加
+    // ライフ吸収がある場合は追加（リーパーの場合は固定30%の吸収量がある）
     if(statuslist[ability1LifeStealRateKey] != 0){
-        document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + " (" + Math.round(statuslist[ability1Key] * statuslist[ability1LifeStealRateKey]) + "吸収)";
+        document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + " (" + Math.ceil(statuslist[ability1Key] * statuslist[ability1LifeStealRateKey]) + "吸収)";
     }
     if(statuslist[ability2LifeStealRateKey] != 0){
-        document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + " (" + Math.round(statuslist[ability2Key] * statuslist[ability2LifeStealRateKey]) + "吸収)";
+        document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + " (" + Math.ceil(statuslist[ability2Key] * statuslist[ability2LifeStealRateKey]) + "吸収)";
     }
     if(statuslist[ability3LifeStealRateKey] != 0){
-        document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (" + Math.round(statuslist[ability3Key] * statuslist[ability3LifeStealRateKey]) + "吸収)";
+        document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (" + Math.ceil(statuslist[ability3Key] * statuslist[ability3LifeStealRateKey]) + "吸収)";
     }
-    if(statuslist[ultLifeStealRateKey] != 0){
-        document.getElementById("ult").innerText = document.getElementById("ult").innerText + " (" + Math.round(statuslist[ultKey] * statuslist[ultLifeStealRateKey]) + "吸収)";
+    if(selectedHero == "リーパー"){
+        document.getElementById("ult").innerText = document.getElementById("ult").innerText + " (" + Math.ceil(statuslist[ultKey] * (statuslist[ultLifeStealRateKey] + 0.3)) + "吸収)";
+    }
+    else if(statuslist[ultLifeStealRateKey] != 0){
+        document.getElementById("ult").innerText = document.getElementById("ult").innerText + " (" + Math.ceil(statuslist[ultKey] * statuslist[ultLifeStealRateKey]) + "吸収)";
     }
 
     // テキストに記載がある場合
