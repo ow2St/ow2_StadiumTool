@@ -150,6 +150,9 @@ function selectHero(id){
     }
     document.getElementById("selected-hero-icon").src = "assets/images/icons/hero/" + imgPath;
 
+    // 選択ヒーロー名変更
+    changeSelectedHeroTitle(id);
+
     // ステータスボックス初期化
     initStatus(id);
 
@@ -168,6 +171,21 @@ function selectHero(id){
 
     // ヒーローウィンドウを消す
     document.getElementById("herowindow").style.display = "none";
+}
+
+// 選択ヒーロー名切り替え
+function changeSelectedHeroTitle(id){
+
+    const selectedHeroTitle = document.querySelector('.selectedhero-title');
+    let heroName = "";
+
+    if(id == "DVA（メック）" || id == "DVA（人）"){
+        heroName = "DVA";
+    }else{
+        heroName = id;
+    }
+
+    selectedHeroTitle.textContent = heroName;
 }
 
 // ステータスボックス初期化
@@ -235,116 +253,94 @@ function initStatus(selectedHero){
 // ステータス値初期化
 function initStatusValue(statuslist, addItemText, addItemOthers){
     // 選択中のヒーローのステータスを設定
-    document.getElementById("heroname").innerText = statuslist[heroNameKey];
     document.getElementById("life").innerText = lifeKey + " :" + statuslist[lifeKey];
     document.getElementById("armor").innerText = armorKey + " :" + statuslist[armorKey] ;
     document.getElementById("shield").innerText = shieldKey + " :" + statuslist[shieldKey];
     
-    if(selectedHero == "ジュノ" && junoFlg == "ヒール"){
-        document.getElementById("mainweapon").innerText = mainWeaponKey + "(" + statuslist[mainWeaponNameKey] + ")" + " :" + Math.round((statuslist[mainWeaponKey] * 0.8 * 10 ** 2) / 10 ** 2);
-    }else if(selectedHero == "ザリア" && zariaFlg == "エネルギー100%"){
-        document.getElementById("mainweapon").innerText = mainWeaponKey + "(" + statuslist[mainWeaponNameKey] + ")" + " :" + Math.round(statuslist[mainWeaponKey] * 2 * 10 ** 2) / 10 ** 2;
-    }else {
-        document.getElementById("mainweapon").innerText = mainWeaponKey + "(" + statuslist[mainWeaponNameKey] + ")" + " :" + statuslist[mainWeaponKey];
-    }
+    const container = document.getElementById('status-container');
+    container.innerHTML = '';
 
-    if(selectedHero == "ザリア" && zariaFlg == "エネルギー100%"){
-        document.getElementById("subweapon").innerText = subWeaponKey + "(" + statuslist[subWeaponNameKey] + ")" + " :" + Math.round(statuslist[subWeaponKey] * 2 * 10 ** 2) / 10 ** 2;
-    }else {
-        document.getElementById("subweapon").innerText = subWeaponKey + "(" + statuslist[subWeaponNameKey] + ")" + " :" + statuslist[subWeaponKey];
-    }
-    document.getElementById("meleedamage").innerText = meleeDamageKey + " :" + statuslist[meleeDamageKey];
-    
-    if(selectedHero == "ジュノ" && junoFlg == "ヒール"){
-        document.getElementById("ability1").innerText = ability1Key + "(" + statuslist[ability1NameKey] + ")" + " :" + (statuslist[ability1Key] + 50);
-    }else if(selectedHero == "モイラ" && moiraFlg == 'ヒール'){
-        document.getElementById("ability1").innerText = ability1Key + "(" + statuslist[ability1NameKey] + ")" + " :" + Math.round((statuslist[ability1Key] * 1.5 * 10 ** 2) / 10 ** 2);
-    }else{
-        document.getElementById("ability1").innerText = ability1Key + "(" + statuslist[ability1NameKey] + ")" + " :" + statuslist[ability1Key];
-    }
-    document.getElementById("ability2").innerText = ability2Key + "(" + statuslist[ability2NameKey] + ")" + " :" + statuslist[ability2Key];
-    document.getElementById("ability3").innerText = ability3Key + "(" + statuslist[ability3NameKey] + ")" + " :" + statuslist[ability3Key];
-    
-    if(selectedHero == "モイラ" && moiraFlg == 'ヒール'){
-        document.getElementById("ult").innerText = ultKey + "(" + statuslist[ultNameKey] + ")" + " :" + Math.round((statuslist[ultKey] / 18 * 27 * 10 ** 2) / 10 ** 2);
-    }else{
-        document.getElementById("ult").innerText = ultKey + "(" + statuslist[ultNameKey] + ")" + " :" + statuslist[ultKey];
-    }
+    // 武器キーをまとめておく配列
+    const weapons = [
+        {
+            nameKey: mainWeaponNameKey,
+            attackPointKey: mainWeaponKey,
+            HSRateKey: mainHSRateKey,
+            reloadKey: mainReloadKey,
+            ammoKey: mainAmmoKey,
+            lifeStealRateKey: mainLifeStealRateKey
+        },
+        {
+            nameKey: subWeaponNameKey,
+            attackPointKey: subWeaponKey,
+            HSRateKey: subHSRateKey,
+            reloadKey: subReloadKey,
+            ammoKey: subAmmoKey,
+            lifeStealRateKey: subLifeStealRateKey
+        }
+    ];
+
+    // アビリティ、ウルトキーをまとめておく配列
+    const anothers = [
+        {
+            nameKey: ability1NameKey,
+            attackPointKey: ability1Key,
+            CTKey: ability1CTKey,
+            durationKey: ability1DurationKey,
+            lifeStealRateKey: ability1LifeStealRateKey
+        },
+        {
+            nameKey: ability2NameKey,
+            attackPointKey: ability2Key,
+            CTKey: ability2CTKey,
+            durationKey: ability2DurationKey,
+            lifeStealRateKey: ability2LifeStealRateKey
+        },
+        {
+            nameKey: ability3NameKey,
+            attackPointKey: ability3Key,
+            CTKey: ability3CTKey,
+            durationKey: ability3DurationKey,
+            lifeStealRateKey: ability3LifeStealRateKey
+        },
+        {
+            nameKey: ultNameKey,
+            attackPointKey: ultKey,
+            CTKey: "",
+            durationKey: ultDurationKey,
+            lifeStealRateKey: ultLifeStealRateKey
+        },
+    ];
+
+    // ループで各武器の処理を実行
+    weapons.forEach(weapon => {
+        processWeapon(
+            statuslist,
+            weapon.nameKey,
+            weapon.attackPointKey,
+            weapon.HSRateKey,
+            weapon.reloadKey,
+            weapon.ammoKey,
+            weapon.lifeStealRateKey
+        );
+    });
+
+    // ループで各アビリティ、ウルトの処理を実行
+    anothers.forEach(another => {
+        processAnother(
+            statuslist,
+            another.nameKey,
+            another.attackPointKey,
+            another.CTKey,
+            another.durationKey,
+            another.lifeStealRateKey
+        );
+    });
+
     document.getElementById("addpower").innerText = "追加効果(パワー):";
     // 羅列するため初期設定時のみ走るようinit判定をする
     if(addItemText == "init"){
         document.getElementById("additem").innerText = "追加効果(アイテム):";
-    }
-
-    // リロード速度がある場合は追加
-    if(statuslist[mainReloadKey] != 0){
-        document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (リロード" + statuslist[mainReloadKey] + "秒)";
-    }
-    if(statuslist[subReloadKey] != 0){
-        document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (リロード" + statuslist[subReloadKey] + "秒)";
-    }
-
-    // 弾薬数がある場合は追加
-    if(statuslist[mainAmmoKey] != 0){
-        document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (" + statuslist[mainAmmoKey] + "弾)";
-    }
-    if(statuslist[subAmmoKey] != 0){
-        document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (" + statuslist[subAmmoKey] + "弾)";
-    }
-
-    // HS倍率がある場合は追加
-    if(statuslist[mainHSRateKey] != 1){
-        document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (HS" + Math.round(statuslist[mainWeaponKey] * statuslist[mainHSRateKey]) + ")";
-    }
-    if(statuslist[subHSRateKey] != 1){
-        document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (HS" + Math.round(statuslist[subWeaponKey] * statuslist[subHSRateKey]) + ")";
-    }
-
-    // ライフ吸収がある場合は追加
-    if(statuslist[mainLifeStealRateKey] != 0){
-        document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (" + Math.round(statuslist[mainWeaponKey] * statuslist[mainLifeStealRateKey]) + "吸収)";
-    }
-    if(statuslist[subLifeStealRateKey] != 0){
-        document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (" + Math.round(statuslist[subWeaponKey] * statuslist[subLifeStealRateKey]) + "吸収)";
-    }
-
-    // 継続時間がある場合は追加
-    if(statuslist[ability1DurationKey] != 0){
-        document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + " (" + statuslist[ability1DurationKey] + "秒継続)";
-    }
-    if(statuslist[ability2DurationKey] != 0){
-        document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + " (" + statuslist[ability2DurationKey] + "秒継続)";
-    }
-    if(statuslist[ability3DurationKey] != 0){
-        document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (" + statuslist[ability3DurationKey] + "秒継続)";
-    }
-    if(statuslist[ultDurationKey] != 0){
-        document.getElementById("ult").innerText = document.getElementById("ult").innerText + " (" + statuslist[ultDurationKey] + "秒継続)";
-    }
-
-    // CT時間がある場合は追加
-    if(statuslist[ability1CTKey] != 0){
-        document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + " (CT" + statuslist[ability1CTKey] + "秒)";
-    }
-    if(statuslist[ability2CTKey] != 0){
-        document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + " (CT" + statuslist[ability2CTKey] + "秒)";
-    }
-    if(statuslist[ability3CTKey] != 0){
-        document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (CT" + statuslist[ability3CTKey] + "秒)";
-    }
-
-    // ライフ吸収がある場合は追加
-    if(statuslist[ability1LifeStealRateKey] != 0){
-        document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + " (" + Math.round(statuslist[ability1Key] * statuslist[ability1LifeStealRateKey]) + "吸収)";
-    }
-    if(statuslist[ability2LifeStealRateKey] != 0){
-        document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + " (" + Math.round(statuslist[ability2Key] * statuslist[ability2LifeStealRateKey]) + "吸収)";
-    }
-    if(statuslist[ability3LifeStealRateKey] != 0){
-        document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (" + Math.round(statuslist[ability3Key] * statuslist[ability3LifeStealRateKey]) + "吸収)";
-    }
-    if(statuslist[ultLifeStealRateKey] != 0){
-        document.getElementById("ult").innerText = document.getElementById("ult").innerText + " (" + Math.round(statuslist[ultKey] * statuslist[ultLifeStealRateKey]) + "吸収)";
     }
 
     // テキストに記載がある場合
@@ -360,6 +356,154 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
         // 追加効果欄に羅列
         document.getElementById("additem").innerText = document.getElementById("additem").innerText + addItemOthers + "\n";
     }
+}
+
+function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadKey,ammoKey,lifeStealRateKey){
+    // 武器が存在しない場合は何もしない
+    if (statuslist[weaponNameKey] == "なし") {
+        return;
+    }
+
+    let weaponValue = statuslist[attackPointKey];
+    let HSValue = 0;
+    let reloadValue = 0;
+    let ammoValue = 0;
+    let lifeStealValue = 0;
+    
+    if (selectedHero == "ジュノ" && junoFlg == "ヒール") {
+        weaponValue = Math.round((statuslist[attackPointKey] * 0.8 * 10 ** 2) / 10 ** 2);
+    } else if (selectedHero == "ザリア" && zariaFlg == "エネルギー100%") {
+        weaponValue = Math.round(statuslist[attackPointKey] * 2 * 10 ** 2) / 10 ** 2;
+    }
+
+    // HS倍率
+    if(statuslist[HSRateKey] != 1){
+        HSValue = Math.round(statuslist[attackPointKey] * statuslist[HSRateKey]);
+    }
+
+    // リロード速度
+    if(statuslist[reloadKey] != 0){
+        reloadValue = statuslist[reloadKey];
+    }
+
+    // 弾薬数
+    if(statuslist[ammoKey] != 0){
+        ammoValue = statuslist[ammoKey];
+    }
+
+    // ライフ吸収
+    if(statuslist[lifeStealRateKey] != 0){
+        lifeStealValue = Math.round(statuslist[attackPointKey] * statuslist[lifeStealRateKey]);
+    }
+
+    // 武器の情報を追加
+    addStatusDiv_Weapon(statuslist[weaponNameKey],weaponValue,HSValue,reloadValue,ammoValue,lifeStealValue);
+};
+
+function addStatusDiv_Weapon(name,value,hsValue,reload,ammo,lifeSteal){
+    const container = document.getElementById('status-container');
+    const div = document.createElement('div');
+    div.classList.add('status-div');
+
+    // HS表示用文字列を生成
+    const hsView = hsValue > 0 ? "（HS" + hsValue + "）" : "";
+    // リロード、弾薬、L吸収の表示用文字列を生成
+    let detailParts = [];
+
+    if (reload != 0) {
+        detailParts.push(`<span><strong>リロード</strong>：${reload}秒</span>`);
+    }
+    if (ammo != 0) {
+        detailParts.push(`<span><strong>弾薬</strong>：${ammo}発</span>`);
+    }
+    if (lifeSteal != 0) {
+        detailParts.push(`<span><strong>L吸収</strong>：${lifeSteal}</span>`);
+    }
+
+    // 詳細部分を結合（項目がない場合は空文字）
+    const detailsHtml = detailParts.length > 0 ? `<p class="status-detail">${detailParts.join("　")}</p>` : "";
+
+    // 内容を生成
+    div.innerHTML = `
+        <p><strong>${name}</strong>：${value}${hsView}</p>
+        ${detailsHtml}
+    `;
+
+    container.appendChild(div);
+}
+
+function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,lifeStealRateKey){
+    // アビリティが存在しない場合は何もしない
+    if (statuslist[nameKey] == "なし") {
+        return;
+    }
+
+    let attackValue = statuslist[attackPointKey];
+    let durationValue = 0;
+    let CTValue = 0;
+    let lifeStealValue = 0;
+    
+    if(attackPointKey == "ability1Key"){
+         if(selectedHero == "ジュノ" && junoFlg == "ヒール"){
+            attackValue = statuslist[attackPointKey] + 50;
+        }else if(selectedHero == "モイラ" && moiraFlg == 'ヒール'){
+            attackValue = Math.round((statuslist[attackPointKey] * 1.5 * 10 ** 2) / 10 ** 2);
+        }
+    }
+
+    if(attackPointKey == "ultKey"){
+        if(selectedHero == "モイラ" && moiraFlg == 'ヒール'){
+            attackValue = Math.round((statuslist[ultKey] / 18 * 27 * 10 ** 2) / 10 ** 2);
+        }
+    }
+
+    // 継続時間
+    if(statuslist[durationKey] != 0){
+        durationValue = statuslist[durationKey];
+    }
+
+    // CT
+    if(CTKey != "" && statuslist[CTKey] != 0){
+        CTValue = statuslist[CTKey];
+    }
+
+    // ライフ吸収
+    if(statuslist[lifeStealRateKey] != 0){
+        lifeStealValue = Math.round(statuslist[attackPointKey] * statuslist[lifeStealRateKey]);
+    }
+
+    // アビリティ、ウルトの情報を追加
+    addStatusDiv_AbilityOrULT(statuslist[nameKey],attackValue,CTValue,durationValue,lifeStealValue);
+};
+
+function addStatusDiv_AbilityOrULT(name,value,ct,duration,lifeSteal){
+    const container = document.getElementById('status-container');
+    const div = document.createElement('div');
+    div.classList.add('status-div');
+
+    // CT、継続時間、L吸収の表示用文字列を生成
+    let detailParts = [];
+
+    if (ct != 0) {
+        detailParts.push(`<span><strong>CT</strong>：${ct}秒</span>`);
+    }
+    if (duration != 0) {
+        detailParts.push(`<span><strong>継続時間</strong>：${duration}秒</span>`);
+    }
+    if (lifeSteal != 0) {
+        detailParts.push(`<span><strong>L吸収</strong>：${lifeSteal}</span>`);
+    }
+
+    // 詳細部分を結合（項目がない場合は空文字）
+    const detailsHtml = detailParts.length > 0 ? `<p class="status-detail">${detailParts.join("　")}</p>` : "";
+
+    // 内容を生成
+    div.innerHTML = `
+        <p><strong>${name}</strong>：${value}</p>
+        ${detailsHtml}
+    `;
+
+    container.appendChild(div);
 }
 
 // メック人切り替え
