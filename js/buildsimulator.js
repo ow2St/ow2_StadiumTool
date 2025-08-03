@@ -19,6 +19,8 @@ var zariaFlg = "エネルギー0%"  // ザリア計算用フラグ
 var junoFlg = "ダメージ"  // ジュノ計算用フラグ
 var moiraFlg = "ダメージ"  // モイラ計算用フラグ
 
+var queenScratch = 15;  // クイーン傷ダメージ用変数
+
 // 表示用のステータスリストを初期化
 var showStatusList = {};
 
@@ -153,6 +155,9 @@ function selectHero(id){
     // 選択ヒーロー名変更
     changeSelectedHeroTitle(id);
 
+    // 傷ダメージ初期化
+    queenScratch = 15;
+
     // ステータスボックス初期化
     initStatus(id);
 
@@ -254,7 +259,7 @@ function initStatus(selectedHero){
 function initStatusValue(statuslist, addItemText, addItemOthers){
     // 選択中のヒーローのステータスを設定
     document.getElementById("life").innerText = lifeKey + " :" + statuslist[lifeKey];
-    document.getElementById("armor").innerText = armorKey + " :" + statuslist[armorKey] ;
+    document.getElementById("armor").innerText = armorKey + " :" + statuslist[armorKey];
     document.getElementById("shield").innerText = shieldKey + " :" + statuslist[shieldKey];
     
     const container = document.getElementById('status-container');
@@ -277,6 +282,14 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
             reloadKey: subReloadKey,
             ammoKey: subAmmoKey,
             lifeStealRateKey: subLifeStealRateKey
+        },
+        {
+            nameKey: meleeDamageKey,
+            attackPointKey: meleeDamageKey,
+            HSRateKey: "",
+            reloadKey: "",
+            ammoKey: "",
+            lifeStealRateKey: ""
         }
     ];
 
@@ -374,30 +387,39 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadK
         weaponValue = Math.round((statuslist[attackPointKey] * 0.8 * 10 ** 2) / 10 ** 2);
     } else if (selectedHero == "ザリア" && zariaFlg == "エネルギー100%") {
         weaponValue = Math.round(statuslist[attackPointKey] * 2 * 10 ** 2) / 10 ** 2;
+    } else if (selectedHero == "ジャンカー・クイーン" && weaponNameKey == meleeDamageKey){
+        weaponValue =  statuslist[attackPointKey] + queenScratch;
     }
 
     // HS倍率
-    if(statuslist[HSRateKey] != 1){
+    if(HSRateKey != "" && statuslist[HSRateKey] != 1){
         HSValue = Math.round(statuslist[attackPointKey] * statuslist[HSRateKey]);
     }
 
     // リロード速度
-    if(statuslist[reloadKey] != 0){
+    if(reloadKey != "" && statuslist[reloadKey] != 0){
         reloadValue = statuslist[reloadKey];
     }
 
     // 弾薬数
-    if(statuslist[ammoKey] != 0){
+    if(ammoKey != "" && statuslist[ammoKey] != 0){
         ammoValue = statuslist[ammoKey];
     }
 
     // ライフ吸収
-    if(statuslist[lifeStealRateKey] != 0){
+    if(lifeStealRateKey != "" &&  selectedHero == "リーパー"){
+        lifeStealValue = Math.round(statuslist[attackPointKey] * (statuslist[lifeStealRateKey] + 0.3));
+    }else if(lifeStealRateKey != "" &&  statuslist[lifeStealRateKey] != 0){
         lifeStealValue = Math.round(statuslist[attackPointKey] * statuslist[lifeStealRateKey]);
     }
 
     // 武器の情報を追加
-    addStatusDiv_Weapon(statuslist[weaponNameKey],weaponValue,HSValue,reloadValue,ammoValue,lifeStealValue);
+    if(weaponNameKey == meleeDamageKey){
+        addStatusDiv_Weapon(weaponNameKey,weaponValue,HSValue,reloadValue,ammoValue,lifeStealValue);
+    }else{
+        addStatusDiv_Weapon(statuslist[weaponNameKey],weaponValue,HSValue,reloadValue,ammoValue,lifeStealValue);
+    }
+    
 };
 
 function addStatusDiv_Weapon(name,value,hsValue,reload,ammo,lifeSteal){
@@ -468,7 +490,9 @@ function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,life
     }
 
     // ライフ吸収
-    if(statuslist[lifeStealRateKey] != 0){
+    if(selectedHero == "リーパー"){
+        lifeStealValue = Math.round(statuslist[attackPointKey] * (statuslist[lifeStealRateKey] + 0.3));
+    }else if(statuslist[lifeStealRateKey] != 0){
         lifeStealValue = Math.round(statuslist[attackPointKey] * statuslist[lifeStealRateKey]);
     }
 
@@ -1127,6 +1151,10 @@ function updateStatus_Item(selectedItemRows){
     // 選択中のヒーローのステータスを初期化
     const showStatusListTmp = initStatusList.filter(heroStatus => heroStatus[heroNameKey] === selectedHero);
     showStatusList = JSON.parse(JSON.stringify(showStatusListTmp[0]));
+    
+    // 傷ダメージも初期化
+    queenScratch = 15;
+
     initStatusValue(showStatusList,"init","-");
 
     // 最後に計算する倍率変数
@@ -1208,7 +1236,7 @@ function updateStatus_Item(selectedItemRows){
             }
         }
 
-        // アビリティパワーに記載がある場合 TODO:RIN クイーンの近接
+        // アビリティパワーに記載がある場合
         if(abilityPowerTmp != 0){
 
             // 表示用ステータスリストに反映
@@ -1224,6 +1252,9 @@ function updateStatus_Item(selectedItemRows){
             if(showStatusList[heroNameKey] != "ゲンジ" && showStatusList[heroNameKey] != "ソルジャー76"){
                 showStatusList[ultKey] = Math.round(showStatusList[ultKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
             }
+
+            // クイーンの場合は傷ダメージにも乗算
+            queenScratch = Math.round(queenScratch * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         }
 
         // TODO:RIN 攻撃速度に記載がある場合
