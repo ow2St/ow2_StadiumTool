@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html style="overflow: scroll; font-family: Meiryo, Hiragino Sans">
+<html style="overflow: scroll; font-family: Meiryo, Hiragino Sans" lang = "ja">
 
 <html>
     <head>
-        <meta charset="UTF-0">
-        <link rel="stylesheet" href="css/style.css">
-         <meta charset="UTF-0">
+        <meta charset="UTF-8">
         <link rel="stylesheet" href="css/style.css">
         <title>アイテム/パワー一覧</title>
     </head>
@@ -31,42 +29,46 @@
                     <!--アイテムタブの内容-->
                     <div class="button-list">
                         <span class="button-category">カテゴリー</span>
-                        <div class="button-only">
-                            <button class="button" id="itemButtonWeapon" onclick="IAPbuttonWeapon()">武器</button>
-                            <button class="button" id="itemButtonAbility" onclick="IAPbuttonAbility()">アビリティ</button>
-                            <button class="button" id="itemButtonSurvival" onclick="IAPbuttonSurvival()">サバイバル</button>
+                        <div class="button-only" id="button-category">
+                            <button class="button-on" id="weapon" onclick="filterItemTable(this)">武器</button>
+                            <button class="button-on" id="ability" onclick="filterItemTable(this)">アビリティ</button>
+                            <button class="button-on" id="survival" onclick="filterItemTable(this)">サバイバル</button>
                         </div>
                     </div>
                     <div class="button-list">
                         <span class="button-category">レアリティ</span>
-                        <div class="button-only">
-                            <button class="button" id="itemButtonCommon" onclick="IAPbuttonCommon()">コモン</button>
-                            <button class="button" id="itemButtonRare" onclick="IAPbuttonRare()">レア</button>
-                            <button class="button" id="itemButtonEpic" onclick="IAPbuttonEpic()">エピック</button>
+                        <div class="button-only" id="button-rarity">
+                            <button class="button-on" id="common" onclick="filterItemTable(this)">コモン</button>
+                            <button class="button-on" id="rare" onclick="filterItemTable(this)">レア</button>
+                            <button class="button-on" id="epic" onclick="filterItemTable(this)">エピック</button>
                         </div>
                     </div>
                     <div class="button-list">
                         <span class="button-category">ステータス</span>
-                        <div class="button-only">
-                            <button class="button" id="itemButtonLife" onclick="IAPbuttonLife()">ライフ</button>
-                            <button class="button" id="itemButtonArmor" onclick="IAPbuttonArmor()">アーマー</button>
-                            <button class="button" id="itemButtonShield" onclick="IAPbuttonShield()">シールド</button>
-                            <button class="button" id="itemButtonWeaponPower" onclick="IAPbuttonWeaponPower()">武器パワー</button>
-                            <button class="button" id="itemButtonAbilityPower" onclick="IAPbuttonAbilityPower()">アビリティ パワー</button>
-                            <button class="button" id="itemButtonAttackSpeed" onclick="IAPbuttonAttackSpeed()">攻撃速度</button>
-                            <button class="button" id="itemButtonCtReducation" onclick="IAPbuttonCtReducation()">CT短縮</button>
-                            <button class="button" id="itemButtonAmmo" onclick="IAPbuttonAmmo()">弾薬</button>
-                            <button class="button" id="itemButtonWeapon_LifeSteal" onclick="IAPbuttonWeapon_LifeSteal()">ライフ吸収 （武器）</button>
-                            <button class="button" id="itemButtonAbility_LifeSteal" onclick="IAPbuttonAbility_LifeSteal()">ライフ吸収 （アビリティ）</button>
-                            <button class="button" id="itemButtonSpeed" onclick="IAPbuttonSpeed()">移動速度</button>
-                            <button class="button" id="itemButtonReloadSpeed" onclick="IAPbuttonReloadSpeed()">リロード速度</button>
-                            <button class="button" id="itemButtonMeleeDamage" onclick="IAPbuttonMeleeDamage()">近接ダメージ</button>
-                            <button class="button" id="itemButtonCritical" onclick="IAPbuttonCritical()">クリティカル ダメージ</button>
-                            <button class="button" id="itemButtonOthers" onclick="IAPbuttonOthers()">その他</button>
+                        <div class="button-only" id="button-status">
+                            <button class="button-on" id="life" onclick="filterItemTable(this)">ライフ</button>
+                            <button class="button-on" id="armor" onclick="filterItemTable(this)">アーマー</button>
+                            <button class="button-on" id="shield" onclick="filterItemTable(this)">シールド</button>
+                            <button class="button-on" id="weaponPower" onclick="filterItemTable(this)">武器パワー</button>
+                            <button class="button-on" id="abilityPower" onclick="filterItemTable(this)">アビリティパワー</button>
+                            <button class="button-on" id="attackSpeed" onclick="filterItemTable(this)">攻撃速度</button>
+                            <button class="button-on" id="ctReducation" onclick="filterItemTable(this)">CT短縮</button>
+                            <button class="button-on" id="ammo" onclick="filterItemTable(this)">弾薬</button>
+                            <button class="button-on" id="weapon_LifeSteal" onclick="filterItemTable(this)">ライフ吸収（武器）</button>
+                            <button class="button-on" id="ability_LifeSteal" onclick="filterItemTable(this)">ライフ吸収（アビリティ）</button>
+                            <button class="button-on" id="speed" onclick="filterItemTable(this)">移動速度</button>
+                            <button class="button-on" id="reloadSpeed" onclick="filterItemTable(this)">リロード速度</button>
+                            <button class="button-on" id="meleeDamage" onclick="filterItemTable(this)">近接ダメージ</button>
+                            <button class="button-on" id="critical" onclick="filterItemTable(this)">クリティカル</button>
+                            <button class="button-on" id="others" onclick="filterItemTable(this)">その他</button>
                         </div>
                     </div>
-                    <div class="button-list">
-                    ヒーロー固有<input type="checkbox" id="box1" checked>
+                    <div class="button-list">ヒーロー固有アイテム表示
+                        <input type="checkbox" class="checkbox-on" id="uniqueHero" value="固有ヒーロー" onclick="filterItemTable(this)" checked>
+                    </div>
+                    <div style="margin: 20px;">
+                        <input type="search" style="width:400px; height:55px; font-size:15px;" placeholder="アイテム名・テキストで検索…">
+                        <button style="width:80px; height:45px; font-size:15px;" onclick="resetFilters()">検索</button>
                     </div>
 
                     <!--アイテム一覧（テーブル）-->
@@ -74,13 +76,13 @@
                     <table class="item-table" id="item-table">
                         <thead class="item-thead">
                             <tr class="item-tr" style="font-size:12px";>
-                                <th class="item-th" style="cursor: pointer;" data-column="itemName" onclick="sortClick(this.id)" id="itemName">アイテム名</th>
+                                <th class="item-th" style="width: 200px; cursor: pointer;" data-column="itemName" onclick="itemSortClick(this.id)" id="itemName">アイテム名</th>
                                 <th class="item-th" style="width: 60px;">アイコン</th>
-                                <th class="item-th" style="width: 60px;">カテゴリー</th>
-                                <th class="item-th" style="cursor: pointer;" data-column="rarity" onclick="sortClick(this.id)" id="rarity">レアリティ</th>
-                                <th class="item-th" style="cursor: pointer;" data-column="cost" onclick="sortClick(this.id)" id="cost">コスト</th>
+                                <th class="item-th" style="width: 80px;">カテゴリー</th>
+                                <th class="item-th" style="width: 80px; cursor: pointer;" data-column="rarity" onclick="itemSortClick(this.id)" id="rarity">レアリティ</th>
+                                <th class="item-th" style="width: 60px; cursor: pointer;" data-column="cost" onclick="itemSortClick(this.id)" id="cost">コスト</th>
                                 <th class="item-th" style="width: 100px;">固有ヒーロー</th>
-                                <th class="item-th" style="width: 140px;">ステータス</th>
+                                <th class="item-th" style="width: 160px;">ステータス</th>
                                 <th class="item-th" style="width: 300px;">テキスト</th>
                             </tr>
                         </thead>
@@ -95,37 +97,37 @@
                     <div class="button-list">
                         <span class="button-category">タンク</span>
                         <div class="button-only">
-                            <img src="assets/images/icons/hero/DVA.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="DVA"><!-- D.VA -->
-                            <img src="assets/images/icons/hero/オリーサ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="オリーサ"><!-- オリーサ -->
-                            <img src="assets/images/icons/hero/ザリア.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="ザリア"><!-- ザリア -->
-                            <img src="assets/images/icons/hero/ジャンカー・クイーン.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="ジャンカー・クイーン"><!-- ジャンカー・クイーン -->
-                            <img src="assets/images/icons/hero/ラインハルト.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="ラインハルト"><!-- ラインハルト -->
-                            <img src="assets/images/icons/hero/シグマ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="シグマ"><!-- シグマ -->
+                            <img src="assets/images/icons/hero/DVA.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="D.VA">
+                            <img src="assets/images/icons/hero/オリーサ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="オリーサ">
+                            <img src="assets/images/icons/hero/ザリア.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ザリア">
+                            <img src="assets/images/icons/hero/ジャンカー・クイーン.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ジャンカー・クイーン">
+                            <img src="assets/images/icons/hero/ラインハルト.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ラインハルト">
+                            <img src="assets/images/icons/hero/シグマ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="シグマ">
                         </div>
                     </div>
                     <div class="button-list">
                         <span class="button-category">ダメージ</span>
                         <div class="button-only">
-                            <img src="assets/images/icons/hero/アッシュ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="アッシュ"><!-- アッシュ -->
-                            <img src="assets/images/icons/hero/キャスディ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="キャスディ"><!-- キャスディ -->
-                            <img src="assets/images/icons/hero/ゲンジ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="ゲンジ"><!-- ゲンジ -->
-                            <img src="assets/images/icons/hero/ソルジャー76.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="ソルジャー76"><!-- ソルジャー76 -->
-                            <img src="assets/images/icons/hero/メイ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="メイ"><!-- メイ -->
-                            <img src="assets/images/icons/hero/リーパー.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="リーパー"><!-- リーパー -->
-                            <img src="assets/images/icons/hero/フレイヤ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="フレイヤ"><!-- フレイヤ -->
-                            <img src="assets/images/icons/hero/ジャンクラット.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="ジャンクラット"><!-- ジャンクラット -->
+                            <img src="assets/images/icons/hero/アッシュ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="アッシュ">
+                            <img src="assets/images/icons/hero/キャスディ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="キャスディ">
+                            <img src="assets/images/icons/hero/ゲンジ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ゲンジ">
+                            <img src="assets/images/icons/hero/ソルジャー76.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ソルジャー76">
+                            <img src="assets/images/icons/hero/メイ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="メイ">
+                            <img src="assets/images/icons/hero/リーパー.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="リーパー">
+                            <img src="assets/images/icons/hero/フレイヤ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="フレイヤ">
+                            <img src="assets/images/icons/hero/ジャンクラット.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ジャンクラット">
                         </div>
                     </div>
                     <div class="button-list">
                         <span class="button-category">サポート</span>
                         <div class="button-only">
-                            <img src="assets/images/icons/hero/アナ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="アナ"><!-- アナ -->
-                            <img src="assets/images/icons/hero/キリコ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="キリコ"><!-- キリコ -->
-                            <img src="assets/images/icons/hero/ジュノ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="ジュノ"><!-- ジュノ -->
-                            <img src="assets/images/icons/hero/マーシー.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="マーシー"><!-- マーシー -->
-                            <img src="assets/images/icons/hero/モイラ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="モイラ"><!-- モイラ -->
-                            <img src="assets/images/icons/hero/ルシオ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="ルシオ"><!-- ルシオ -->
-                            <img src="assets/images/icons/hero/ゼニヤッタ.png" onclick="selectHero(this.id)" class="power-hero-icon-off" id="ゼニヤッタ"><!-- ゼニヤッタ -->
+                            <img src="assets/images/icons/hero/アナ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="アナ">
+                            <img src="assets/images/icons/hero/キリコ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="キリコ">
+                            <img src="assets/images/icons/hero/ジュノ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ジュノ">
+                            <img src="assets/images/icons/hero/マーシー.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="マーシー">
+                            <img src="assets/images/icons/hero/モイラ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="モイラ">
+                            <img src="assets/images/icons/hero/ルシオ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ルシオ">
+                            <img src="assets/images/icons/hero/ゼニヤッタ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ゼニヤッタ">
                         </div>
                     </div>
 
@@ -134,14 +136,13 @@
                     <table class="power-table" id="power-table">
                         <thead class="power-thead">
                             <tr class="power-tr">
-                                <th class="power-th" style="width: 120px;">パワー名</th>
+                                <th class="power-th" style="width: 120px; cursor: pointer;" data-column="powerName" onclick="powerSortClick(this.id)" id="powerName">パワー名</th>
                                 <th class="power-th" style="width: 60px;">アイコン</th>
                                 <th class="power-th" style="width: 60px;">ヒーロー</th>
-                                <th class="power-th" style="width: 300px;">テキスト</th>
+                                <th class="power-th" style="width: 400px;">テキスト</th>
                             </tr>
                         </thead>
                         <tbody style="font-size:12px";>
-                            <tr class="power-tr"></tr>
                         </tbody>
                     </table>
                 </div>
@@ -150,4 +151,7 @@
     <script src="js/itemlist.js"></script>
     <script src="js/powerlist.js"></script>
     <script src="js/itemandpower.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/kuroshiro@1.1.0/dist/kuroshiro.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/kuroshiro-analyzer-kuromoji@1.1.0/dist/kuroshiro-analyzer-kuromoji.min.js"></script>
+
 </html>
