@@ -442,7 +442,8 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadK
 
     // 武器の情報を追加
     addStatusDiv_Weapon(statuslist[weaponNameKey],weaponValue,HSValue,reloadValue,ammoValue,lifeStealValue);
-};
+}
+}
 
 function addStatusDiv_Weapon(name,value,hsValue,reload,ammo,lifeSteal){
     const container = document.getElementById('status-container');
@@ -535,7 +536,8 @@ function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,life
 
     // アビリティ、ウルトの情報を追加
     addStatusDiv_AbilityOrULT(statuslist[nameKey],attackValue,CTValue,durationValue,lifeStealValue);
-};
+}
+}
 
 function addStatusDiv_AbilityOrULT(name,value,ct,duration,lifeSteal){
     const container = document.getElementById('status-container');
