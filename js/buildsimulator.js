@@ -420,7 +420,7 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadK
         addStatusDiv_Weapon(statuslist[weaponNameKey],weaponValue,HSValue,reloadValue,ammoValue,lifeStealValue);
     }
     
-};
+}
 
 function addStatusDiv_Weapon(name,value,hsValue,reload,ammo,lifeSteal){
     const container = document.getElementById('status-container');
