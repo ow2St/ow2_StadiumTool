@@ -533,12 +533,41 @@ main-buildsimulator {
     height: 100px;
     border-radius: 15px;
 }
-
+ 
 .buildlist{
     margin-top: 20px;
     border-top: 1px solid black;
     overflow-y: scroll;
     height: 1200px;
+}
+
+.selectedbuild-content{
+    background-color: #f2f2f2;
+}
+
+.status-content{
+    background-color: #f2f2f2;
+}
+
+.status-content p[id*="button"]{
+    background-color: #FAFAFA;
+}
+
+.status-div{
+    margin: 10px;
+    padding-left: 10px;
+    border: 1px solid black;
+    background-color: #FAFAFA;
+
+}
+
+.status-div p{
+  margin-top: 0%;
+  margin-bottom: 0%;
+}
+
+.status-div strong{
+  font-weight: bold;
 }
 
 /*
@@ -818,3 +847,18 @@ main-IAP{
 .item-details ul li {
     margin-bottom: 3px;
 }
+
+.item-checkbox {
+    display: block; 
+    width: 20px;
+    margin: 0 auto;
+    transform: scale(2.5);
+}
+
+.power-checkbox {
+    display: block; 
+    width: 20px;
+    margin: 0 auto;
+    transform: scale(2.5);
+}
+
