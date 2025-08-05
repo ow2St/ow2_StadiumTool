@@ -498,7 +498,7 @@ function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,life
 
     // アビリティ、ウルトの情報を追加
     addStatusDiv_AbilityOrULT(statuslist[nameKey],attackValue,CTValue,durationValue,lifeStealValue);
-};
+}
 
 function addStatusDiv_AbilityOrULT(name,value,ct,duration,lifeSteal){
     const container = document.getElementById('status-container');
