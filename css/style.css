@@ -626,7 +626,7 @@ main-IAP{
     height: 45px;
     display: block;
     width: 105px;
-    border: 2px solid black; /* TODO:線を太く、実線にしてみる */
+    border: 1px solid black; /* TODO:線を2→1pxに*/
     margin-left: 5px;
     margin-bottom: 5px;
     background-color: white;
