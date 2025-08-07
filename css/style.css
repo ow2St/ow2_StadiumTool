@@ -549,10 +549,6 @@ main-buildsimulator {
     background-color: #f2f2f2;
 }
 
-.status-content p[id*="button"]{
-    background-color: #FAFAFA;
-}
-
 .status-div{
     margin: 10px;
     padding-left: 10px;
@@ -861,4 +857,3 @@ main-IAP{
     margin: 0 auto;
     transform: scale(2.5);
 }
-

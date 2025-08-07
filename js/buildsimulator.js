@@ -282,6 +282,14 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
             reloadKey: subReloadKey,
             ammoKey: subAmmoKey,
             lifeStealRateKey: subLifeStealRateKey
+        },
+        {
+            nameKey: meleeDamageKey,
+            attackPointKey: meleeDamageKey,
+            HSRateKey: "",
+            reloadKey: "",
+            ammoKey: "",
+            lifeStealRateKey: ""
         }
     ];
 
@@ -342,34 +350,6 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
         );
     });
 
-    if(selectedHero == "ザリア" && zariaFlg == "エネルギー100%"){
-        document.getElementById("subweapon").innerText = subWeaponKey + "(" + statuslist[subWeaponNameKey] + ")" + " :" + Math.round(statuslist[subWeaponKey] * 2 * 10 ** 2) / 10 ** 2;
-    }else {
-        document.getElementById("subweapon").innerText = subWeaponKey + "(" + statuslist[subWeaponNameKey] + ")" + " :" + statuslist[subWeaponKey];
-    }
-
-    if(selectedHero == "ジャンカー・クイーン"){
-        document.getElementById("meleedamage").innerText = meleeDamageKey + " :" + (statuslist[meleeDamageKey] + queenScratch);
-    }else {
-        document.getElementById("meleedamage").innerText = meleeDamageKey + " :" + statuslist[meleeDamageKey];
-    }
-    
-    if(selectedHero == "ジュノ" && junoFlg == "ヒール"){
-        document.getElementById("ability1").innerText = ability1Key + "(" + statuslist[ability1NameKey] + ")" + " :" + (statuslist[ability1Key] + 50);
-    }else if(selectedHero == "モイラ" && moiraFlg == 'ヒール'){
-        document.getElementById("ability1").innerText = ability1Key + "(" + statuslist[ability1NameKey] + ")" + " :" + Math.round((statuslist[ability1Key] * 1.5 * 10 ** 2) / 10 ** 2);
-    }else{
-        document.getElementById("ability1").innerText = ability1Key + "(" + statuslist[ability1NameKey] + ")" + " :" + statuslist[ability1Key];
-    }
-    document.getElementById("ability2").innerText = ability2Key + "(" + statuslist[ability2NameKey] + ")" + " :" + statuslist[ability2Key];
-    document.getElementById("ability3").innerText = ability3Key + "(" + statuslist[ability3NameKey] + ")" + " :" + statuslist[ability3Key];
-    
-    if(selectedHero == "モイラ" && moiraFlg == 'ヒール'){
-        document.getElementById("ult").innerText = ultKey + "(" + statuslist[ultNameKey] + ")" + " :" + Math.round((statuslist[ultKey] / 18 * 27 * 10 ** 2) / 10 ** 2);
-    }else{
-        document.getElementById("ult").innerText = ultKey + "(" + statuslist[ultNameKey] + ")" + " :" + statuslist[ultKey];
-    }
-
     document.getElementById("addpower").innerText = "追加効果(パワー):";
     // 羅列するため初期設定時のみ走るようinit判定をする
     if(addItemText == "init"){
@@ -407,42 +387,39 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadK
         weaponValue = Math.round((statuslist[attackPointKey] * 0.8 * 10 ** 2) / 10 ** 2);
     } else if (selectedHero == "ザリア" && zariaFlg == "エネルギー100%") {
         weaponValue = Math.round(statuslist[attackPointKey] * 2 * 10 ** 2) / 10 ** 2;
+    } else if (selectedHero == "ジャンカー・クイーン" && weaponNameKey == meleeDamageKey){
+        weaponValue =  statuslist[attackPointKey] + queenScratch;
     }
 
     // HS倍率
-    if(statuslist[HSRateKey] != 1){
+    if(HSRateKey != "" && statuslist[HSRateKey] != 1){
         HSValue = Math.round(statuslist[attackPointKey] * statuslist[HSRateKey]);
     }
 
     // リロード速度
-    if(statuslist[reloadKey] != 0){
+    if(reloadKey != "" && statuslist[reloadKey] != 0){
         reloadValue = statuslist[reloadKey];
     }
 
     // 弾薬数
-    if(statuslist[ammoKey] != 0){
+    if(ammoKey != "" && statuslist[ammoKey] != 0){
         ammoValue = statuslist[ammoKey];
-
-    // ライフ吸収がある場合は追加（リーパーの場合は固定30%の吸収量がある）
-    if(selectedHero == "リーパー"){
-        document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (" + Math.ceil(statuslist[mainWeaponKey] * (statuslist[mainLifeStealRateKey] + 0.3)) + "吸収)";
-    }
-    else if(statuslist[mainLifeStealRateKey] != 0){
-        document.getElementById("mainweapon").innerText = document.getElementById("mainweapon").innerText + " (" + Math.ceil(statuslist[mainWeaponKey] * statuslist[mainLifeStealRateKey]) + "吸収)";
-    }
-    if(statuslist[subLifeStealRateKey] != 0){
-        document.getElementById("subweapon").innerText = document.getElementById("subweapon").innerText + " (" + Math.ceil(statuslist[subWeaponKey] * statuslist[subLifeStealRateKey]) + "吸収)";
-
     }
 
     // ライフ吸収
-    if(statuslist[lifeStealRateKey] != 0){
+    if(lifeStealRateKey != "" &&  selectedHero == "リーパー"){
+        lifeStealValue = Math.round(statuslist[attackPointKey] * (statuslist[lifeStealRateKey] + 0.3));
+    }else if(lifeStealRateKey != "" &&  statuslist[lifeStealRateKey] != 0){
         lifeStealValue = Math.round(statuslist[attackPointKey] * statuslist[lifeStealRateKey]);
     }
 
     // 武器の情報を追加
-    addStatusDiv_Weapon(statuslist[weaponNameKey],weaponValue,HSValue,reloadValue,ammoValue,lifeStealValue);
-}
+    if(weaponNameKey == meleeDamageKey){
+        addStatusDiv_Weapon(weaponNameKey,weaponValue,HSValue,reloadValue,ammoValue,lifeStealValue);
+    }else{
+        addStatusDiv_Weapon(statuslist[weaponNameKey],weaponValue,HSValue,reloadValue,ammoValue,lifeStealValue);
+    }
+    
 }
 
 function addStatusDiv_Weapon(name,value,hsValue,reload,ammo,lifeSteal){
@@ -513,30 +490,14 @@ function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,life
     }
 
     // ライフ吸収
-    if(statuslist[lifeStealRateKey] != 0){
-        lifeStealValue = Math.round(statuslist[attackPointKey] * statuslist[lifeStealRateKey]);
-
-    // ライフ吸収がある場合は追加（リーパーの場合は固定30%の吸収量がある）
-    if(statuslist[ability1LifeStealRateKey] != 0){
-        document.getElementById("ability1").innerText = document.getElementById("ability1").innerText + " (" + Math.ceil(statuslist[ability1Key] * statuslist[ability1LifeStealRateKey]) + "吸収)";
-    }
-    if(statuslist[ability2LifeStealRateKey] != 0){
-        document.getElementById("ability2").innerText = document.getElementById("ability2").innerText + " (" + Math.ceil(statuslist[ability2Key] * statuslist[ability2LifeStealRateKey]) + "吸収)";
-    }
-    if(statuslist[ability3LifeStealRateKey] != 0){
-        document.getElementById("ability3").innerText = document.getElementById("ability3").innerText + " (" + Math.ceil(statuslist[ability3Key] * statuslist[ability3LifeStealRateKey]) + "吸収)";
-    }
     if(selectedHero == "リーパー"){
-        document.getElementById("ult").innerText = document.getElementById("ult").innerText + " (" + Math.ceil(statuslist[ultKey] * (statuslist[ultLifeStealRateKey] + 0.3)) + "吸収)";
-    }
-    else if(statuslist[ultLifeStealRateKey] != 0){
-        document.getElementById("ult").innerText = document.getElementById("ult").innerText + " (" + Math.ceil(statuslist[ultKey] * statuslist[ultLifeStealRateKey]) + "吸収)";
-
+        lifeStealValue = Math.round(statuslist[attackPointKey] * (statuslist[lifeStealRateKey] + 0.3));
+    }else if(statuslist[lifeStealRateKey] != 0){
+        lifeStealValue = Math.round(statuslist[attackPointKey] * statuslist[lifeStealRateKey]);
     }
 
     // アビリティ、ウルトの情報を追加
     addStatusDiv_AbilityOrULT(statuslist[nameKey],attackValue,CTValue,durationValue,lifeStealValue);
-}
 }
 
 function addStatusDiv_AbilityOrULT(name,value,ct,duration,lifeSteal){
