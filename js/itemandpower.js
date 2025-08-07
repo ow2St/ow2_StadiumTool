@@ -213,7 +213,7 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
     return tr;
 }
 
-// 絞り込み条件を更新する関数
+// 絞り込み条件を更新する関数（アイテム）
 function filterItemTable(elem){
 
     // 絞り込みボタンのON/OFF切り替え
@@ -314,31 +314,49 @@ function filterItemTable(elem){
     });
 }
 
-function resetFilters() {
-    // --- ボタンのON/OFF状態をリセット ---
-    const allButtons = document.querySelectorAll("button");
-    allButtons.forEach(btn => {
-        if (btn.classList.contains("button-off")) {
-            btn.classList.remove("button-off");
-            btn.classList.add("button-on");
+//　検索ボックスで絞り込み（アイテム）
+function item_searchWords() {
+
+    //ボタンを全てOFFにした状態に
+    let activeButtons = document.querySelectorAll("button.button-on");
+    activeButtons.forEach(btn => filterItemTable(btn));
+
+    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_item に配列のように格納。各行を1つのアイテムとする。
+    var tbody_item = document.getElementById("item-table").querySelector("tbody");
+    var rows_item = tbody_item.querySelectorAll("tr");
+
+    // 行ごとの絞り込み
+    // アイテム行をループ
+    rows_item.forEach(tr => {
+        const cells = tr.querySelectorAll("td");
+
+        // 毎回クラスを初期化
+        tr.classList.remove("table-on");
+        tr.classList.remove("table-off");
+
+        // 非表示にするアイテムを探す
+
+        const itemName = cells[0]?.textContent.trim() || "";
+        const textColumn = cells[7]?.textContent.trim() || "";
+
+        // 検索ワードを取得
+        const keyword = document.getElementById("search-input").value.trim();
+
+        // 非表示フラグ　keywordが空の場合は全て非表示、
+        const shouldShow = keyword !== "" && (itemName.includes(keyword) || textColumn.includes(keyword));
+
+        // 非表示対応
+        if(shouldShow){
+            tr.classList.add("table-on");
+        }else{
+            tr.classList.add("table-off");
         }
     });
 
-    // --- テーブルの全行を表示状態にする ---
-    const rows = document.querySelectorAll("#item-table tbody tr");
-    rows.forEach(row => {
-        row.classList.remove("table-off");
-        row.classList.add("table-on");
-    });
 }
 
-    // --- チェックボックスがある場合 ---
-    const checkboxes = document.querySelectorAll("input[type='checkbox']");
-    checkboxes.forEach(cb => {
-        cb.checked = false;
-        cb.classList.remove("checkbox-on");
-        cb.classList.add("checkbox-off");
-    });
+
+
 
 //アイテムテーブルソートの前提準備
 function itemSortClick(id){
@@ -532,7 +550,7 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
     return tr;
 }
 
-// 選択⇔未選択に応じてパワーテーブルを絞り込む関数
+// 絞り込み条件を更新する関数（パワー）
 function filterPowerTable(elem) {
     const id = elem.id;
     const targetText = id;
@@ -567,6 +585,54 @@ function filterPowerTable(elem) {
         }
     });
 }
+
+//　検索ボックスで絞り込み（アイテム）
+function power_searchWords() {
+
+    //ボタンを全てOFFにした状態に
+    let activeButtons = document.querySelectorAll("button.button-on");
+    activeButtons.forEach(btn => filterItemTable(btn));
+
+    // テーブルのヘッダー行（<tr>）を取得
+    const headerRow = document.querySelector("#item-table thead tr");
+
+    // 各 <th> 要素を配列として取得
+    const headers = Array.from(headerRow.querySelectorAll("th"));
+
+    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_item に配列のように格納。各行を1つのアイテムとする。
+    var tbody_item = document.getElementById("item-table").querySelector("tbody");
+    var rows_item = tbody_item.querySelectorAll("tr");
+
+    // 行ごとの絞り込み
+    // アイテム行をループ
+    rows_item.forEach(tr => {
+        const cells = tr.querySelectorAll("td");
+
+        // 毎回クラスを初期化
+        tr.classList.remove("table-on");
+        tr.classList.remove("table-off");
+
+        // 非表示にするアイテムを探す
+
+        const itemName = cells[0]?.textContent.trim() || "";
+        const textColumn = cells[7]?.textContent.trim() || "";
+
+        // 検索ワードを取得
+        const keyword = document.getElementById("search-input").value.trim();
+
+        // 非表示フラグ　keywordが空の場合は全て非表示、
+        const shouldShow = keyword !== "" && (itemName.includes(keyword) || textColumn.includes(keyword));
+
+        // 非表示対応
+        if(shouldShow){
+            tr.classList.add("table-on");
+        }else{
+            tr.classList.add("table-off");
+        }
+    });
+
+}
+
 
 //パワーテーブルソートの前提準備
 function powerSortClick(id){
