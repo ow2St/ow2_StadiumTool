@@ -321,12 +321,6 @@ function item_searchWords() {
     let activeButtons = document.querySelectorAll("button.button-on");
     activeButtons.forEach(btn => filterItemTable(btn));
 
-    // テーブルのヘッダー行（<tr>）を取得
-    const headerRow = document.querySelector("#item-table thead tr");
-
-    // 各 <th> 要素を配列として取得
-    const headers = Array.from(headerRow.querySelectorAll("th"));
-
     //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_item に配列のように格納。各行を1つのアイテムとする。
     var tbody_item = document.getElementById("item-table").querySelector("tbody");
     var rows_item = tbody_item.querySelectorAll("tr");
