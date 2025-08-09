@@ -373,7 +373,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
 
 function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadKey,ammoKey,lifeStealRateKey){
     // 武器が存在しない場合は何もしない
-    if (statuslist[weaponNameKey] == "なし") {
+    if(statuslist[weaponNameKey] == "なし") {
         return;
     }
 
@@ -383,12 +383,16 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadK
     let ammoValue = 0;
     let lifeStealValue = 0;
     
-    if (selectedHero == "ジュノ" && junoFlg == "ヒール") {
-        weaponValue = Math.round((statuslist[attackPointKey] * 0.8 * 10 ** 2) / 10 ** 2);
-    } else if (selectedHero == "ザリア" && zariaFlg == "エネルギー100%") {
-        weaponValue = Math.round(statuslist[attackPointKey] * 2 * 10 ** 2) / 10 ** 2;
-    } else if (selectedHero == "ジャンカー・クイーン" && weaponNameKey == meleeDamageKey){
-        weaponValue =  statuslist[attackPointKey] + queenScratch;
+    if(weaponNameKey == meleeDamageKey){
+        if(selectedHero == "ジャンカー・クイーン"){
+            weaponValue =  statuslist[attackPointKey] + queenScratch;
+        }
+    }else{
+        if(selectedHero == "ジュノ" && junoFlg == "ヒール") {
+            weaponValue = Math.round((statuslist[attackPointKey] * 0.8 * 10 ** 2) / 10 ** 2);
+        }else if(selectedHero == "ザリア" && zariaFlg == "エネルギー100%") {
+            weaponValue = Math.round(statuslist[attackPointKey] * 2 * 10 ** 2) / 10 ** 2;
+        }
     }
 
     // HS倍率
@@ -432,13 +436,13 @@ function addStatusDiv_Weapon(name,value,hsValue,reload,ammo,lifeSteal){
     // リロード、弾薬、L吸収の表示用文字列を生成
     let detailParts = [];
 
-    if (reload != 0) {
+    if(reload != 0) {
         detailParts.push(`<span><strong>リロード</strong>：${reload}秒</span>`);
     }
-    if (ammo != 0) {
+    if(ammo != 0) {
         detailParts.push(`<span><strong>弾薬</strong>：${ammo}発</span>`);
     }
-    if (lifeSteal != 0) {
+    if(lifeSteal != 0) {
         detailParts.push(`<span><strong>L吸収</strong>：${lifeSteal}</span>`);
     }
 
@@ -456,7 +460,7 @@ function addStatusDiv_Weapon(name,value,hsValue,reload,ammo,lifeSteal){
 
 function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,lifeStealRateKey){
     // アビリティが存在しない場合は何もしない
-    if (statuslist[nameKey] == "なし") {
+    if(statuslist[nameKey] == "なし") {
         return;
     }
 
@@ -465,15 +469,15 @@ function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,life
     let CTValue = 0;
     let lifeStealValue = 0;
     
-    if(attackPointKey == "ability1Key"){
-         if(selectedHero == "ジュノ" && junoFlg == "ヒール"){
+    if(attackPointKey == ability1Key){
+        if(selectedHero == "ジュノ" && junoFlg == "ヒール"){
             attackValue = statuslist[attackPointKey] + 50;
         }else if(selectedHero == "モイラ" && moiraFlg == 'ヒール'){
             attackValue = Math.round((statuslist[attackPointKey] * 1.5 * 10 ** 2) / 10 ** 2);
         }
     }
 
-    if(attackPointKey == "ultKey"){
+    if(attackPointKey == ultKey){
         if(selectedHero == "モイラ" && moiraFlg == 'ヒール'){
             attackValue = Math.round((statuslist[ultKey] / 18 * 27 * 10 ** 2) / 10 ** 2);
         }
@@ -508,13 +512,13 @@ function addStatusDiv_AbilityOrULT(name,value,ct,duration,lifeSteal){
     // CT、継続時間、L吸収の表示用文字列を生成
     let detailParts = [];
 
-    if (ct != 0) {
+    if(ct != 0) {
         detailParts.push(`<span><strong>CT</strong>：${ct}秒</span>`);
     }
-    if (duration != 0) {
+    if(duration != 0) {
         detailParts.push(`<span><strong>継続時間</strong>：${duration}秒</span>`);
     }
-    if (lifeSteal != 0) {
+    if(lifeSteal != 0) {
         detailParts.push(`<span><strong>L吸収</strong>：${lifeSteal}</span>`);
     }
 
