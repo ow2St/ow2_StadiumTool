@@ -1693,3 +1693,15 @@ function filterTable(id){
         }
     });
 }
+
+// 理論値ON/OFF切り替え
+function theoreticalValueClick(){
+    const theoreticalValueButton = document.getElementById("theoreticalvalue-button");
+
+    // エネルギー表示を入れ替える
+    if(theoreticalValueButton.innerText == "理論値OFF"){
+        theoreticalValueButton.innerText = "理論値ON";
+    }else if(theoreticalValueButton.innerText == "理論値ON"){
+        theoreticalValueButton.innerText = "理論値OFF";
+    }
+}
