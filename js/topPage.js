@@ -17,9 +17,9 @@ fetch("patchNoteData.json")
             const dates = [];
 
             data.forEach(item => {
-                if (item.datetime) {
+                if (item.date) {
                     // date型に変換して配列に格納
-                    dates.push(new Date(item.datetime));
+                    dates.push(new Date(item.date));
                 }
             });
 
