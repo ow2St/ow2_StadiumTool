@@ -40,8 +40,8 @@ fetch("patchNoteData.json")
 function organizeData(data) {
     const organized = {};
     data.forEach(item => {
-        const [year, month, day] = item.datetime.split("/");
-        const character = item.character || "不明なキャラクター";
+        const [year, month, day] = item.date.split("/");
+        const character = item.hero || "不明なキャラクター";
 
         if (!organized[year]) {
             organized[year] = {};
