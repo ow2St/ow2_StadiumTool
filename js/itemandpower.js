@@ -340,7 +340,7 @@ function item_searchWords() {
         const textColumn = cells[7]?.textContent.trim() || "";
 
         // 検索ワードを取得
-        const keyword = document.getElementById("search-input").value.trim();
+        const keyword = document.getElementById("item_search-input").value.trim();
 
         // 非表示フラグ　keywordが空の場合は全て非表示、
         const shouldShow = keyword !== "" && (itemName.includes(keyword) || textColumn.includes(keyword));
@@ -354,9 +354,6 @@ function item_searchWords() {
     });
 
 }
-
-
-
 
 //アイテムテーブルソートの前提準備
 function itemSortClick(id){
@@ -466,7 +463,6 @@ function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
     rows.forEach(row => tbody.appendChild(row));
 }
 
-
 // パワーリストをテーブルに紐づける関数
 function linkPowerList(powerList) {
     let tbody = document.getElementById("power-table").querySelector("tbody");
@@ -519,6 +515,7 @@ function linkPowerList(powerList) {
 
 // パワーリスト用子要素作成関数
 function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
+    
 
     // パワー名列
     var td = document.createElement("td");
@@ -586,26 +583,20 @@ function filterPowerTable(elem) {
     });
 }
 
-//　検索ボックスで絞り込み（アイテム）
+//　検索ボックスで絞り込み（パワー）
 function power_searchWords() {
 
-    //ボタンを全てOFFにした状態に
-    let activeButtons = document.querySelectorAll("button.button-on");
-    activeButtons.forEach(btn => filterItemTable(btn));
+    //アイコンを全てOFFにした状態に
+    let activeIcons = document.querySelectorAll("img.power-hero-icon-on");
+    activeIcons.forEach(img => filterPowerTable(img));
 
-    // テーブルのヘッダー行（<tr>）を取得
-    const headerRow = document.querySelector("#item-table thead tr");
-
-    // 各 <th> 要素を配列として取得
-    const headers = Array.from(headerRow.querySelectorAll("th"));
-
-    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_item に配列のように格納。各行を1つのアイテムとする。
-    var tbody_item = document.getElementById("item-table").querySelector("tbody");
-    var rows_item = tbody_item.querySelectorAll("tr");
+    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_power に配列のように格納。各行を1つのアイテムとする。
+    var tbody_power = document.getElementById("power-table").querySelector("tbody");
+    var rows_power = tbody_power.querySelectorAll("tr");
 
     // 行ごとの絞り込み
     // アイテム行をループ
-    rows_item.forEach(tr => {
+    rows_power.forEach(tr => {
         const cells = tr.querySelectorAll("td");
 
         // 毎回クラスを初期化
@@ -614,14 +605,14 @@ function power_searchWords() {
 
         // 非表示にするアイテムを探す
 
-        const itemName = cells[0]?.textContent.trim() || "";
-        const textColumn = cells[7]?.textContent.trim() || "";
+        const powerName = cells[0]?.textContent.trim() || "";
+        const textColumn = cells[3]?.textContent.trim() || "";
 
         // 検索ワードを取得
-        const keyword = document.getElementById("search-input").value.trim();
+        const keyword = document.getElementById("power_search-input").value.trim();
 
         // 非表示フラグ　keywordが空の場合は全て非表示、
-        const shouldShow = keyword !== "" && (itemName.includes(keyword) || textColumn.includes(keyword));
+        const shouldShow = keyword !== "" && (powerName.includes(keyword) || textColumn.includes(keyword));
 
         // 非表示対応
         if(shouldShow){
@@ -632,7 +623,6 @@ function power_searchWords() {
     });
 
 }
-
 
 //パワーテーブルソートの前提準備
 function powerSortClick(id){

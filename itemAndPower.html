@@ -67,7 +67,7 @@
                         <input type="checkbox" class="checkbox-on" id="uniqueHero" value="固有ヒーロー" onclick="filterItemTable(this)" checked>
                     </div>
                     <div style="margin: 20px;">
-                        <input type="search" style="width:400px; height:55px; font-size:15px;" id="search-input" placeholder="アイテム名・テキストで検索…">
+                        <input type="search" style="width:400px; height:55px; font-size:15px;" id="item_search-input" placeholder="アイテム名・テキストで検索…">
                         <button style="width:80px; height:45px; font-size:15px;" onclick="item_searchWords()">検索</button>
                     </div>
 
@@ -129,6 +129,11 @@
                             <img src="assets/images/icons/hero/ルシオ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ルシオ">
                             <img src="assets/images/icons/hero/ゼニヤッタ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ゼニヤッタ">
                         </div>
+                    </div>
+
+                    <div style="margin: 20px;">
+                        <input type="search" style="width:400px; height:55px; font-size:15px;" id="power_search-input" placeholder="パワー名・テキストで検索…">
+                        <button style="width:80px; height:45px; font-size:15px;" onclick="power_searchWords()">検索</button>
                     </div>
 
                     <!--パワー一覧（テーブル）-->
