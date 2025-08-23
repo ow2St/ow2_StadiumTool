@@ -504,19 +504,19 @@ function linkPowerList(powerList) {
     }
 }
 
-//　検索ボックスで絞り込み（アイテム）
+//　検索ボックスで絞り込み（パワー）
 function power_searchWords() {
 
     //ボタンを全てOFFにした状態に
     let activeImages = document.querySelectorAll("img.power-hero-icon-on");
     activeImages.forEach(img => filterPowerTable(img));
 
-    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_power に配列のように格納。各行を1つのアイテムとする。
+    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_power に配列のように格納。各行を1つのパワーとする。
     var tbody_power = document.getElementById("power-table").querySelector("tbody");
     var rows_power = tbody_power.querySelectorAll("tr");
 
     // 行ごとの絞り込み
-    // アイテム行をループ
+    // パワー行をループ
     rows_power.forEach(tr => {
         const cells = tr.querySelectorAll("td");
 
@@ -524,7 +524,7 @@ function power_searchWords() {
         tr.classList.remove("table-on");
         tr.classList.remove("table-off");
 
-        // 非表示にするアイテムを探す
+        // 非表示にするパワーを探す
 
         const powerName = cells[0]?.textContent.trim() || "";
         const textColumn = cells[3]?.textContent.trim() || "";
@@ -597,9 +597,9 @@ function filterPowerTable(elem){
     }
 
     // 各絞り込み一覧を取得
-    const buttons_tank = document.querySelectorAll("#button-tank img");
-    const buttons_damage = document.querySelectorAll("#button-damage img");
-    const buttons_support = document.querySelectorAll("#button-support img");
+    const heroes_tank = document.querySelectorAll("#button-tank img");
+    const heroes_damage = document.querySelectorAll("#button-damage img");
+    const heroes_support = document.querySelectorAll("#button-support img");
 
     // テーブルのヘッダー行（<tr>）を取得
     const headerRow = document.querySelector("#power-table thead tr");
@@ -610,12 +610,12 @@ function filterPowerTable(elem){
     // 各絞り込み要素が何番目かを取得
     const heroNumber = headers.findIndex(th => th.textContent == "ヒーロー");
 
-    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_power に配列のように格納。各行を1つのアイテムとする。
+    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_power に配列のように格納。各行を1つのパワーとする。
     var tbody_power = document.getElementById("power-table").querySelector("tbody");
     var rows_power = tbody_power.querySelectorAll("tr");
 
     // 行ごとの絞り込み
-    // アイテム行をループ
+    // パワー行をループ
     rows_power.forEach(tr => {
         const cells = tr.querySelectorAll("td");
 
@@ -626,12 +626,12 @@ function filterPowerTable(elem){
 
         let shouldShow = true;  // 表示判定フラグ
 
-        // 非表示にするアイテムを探す
+        // 非表示にするパワーを探す
 
         // ヒーロー関連
 
         //タンク
-        buttons_tank.forEach(img =>{
+        heroes_tank.forEach(img =>{
             
             // ボタンがOFFの場合
             if(img.className == "power-hero-icon-off" && shouldShow){
@@ -640,7 +640,7 @@ function filterPowerTable(elem){
         });
 
         //ダメージ
-        buttons_damage.forEach(img =>{
+        heroes_damage.forEach(img =>{
 
             // ボタンがOFFの場合
             if(img.className == "power-hero-icon-off" && shouldShow){
@@ -649,7 +649,7 @@ function filterPowerTable(elem){
         });
 
         //サポート
-        buttons_support.forEach(img => {
+        heroes_support.forEach(img => {
             // ボタンがOFFの場合
             if(img.className == "power-hero-icon-off" && shouldShow){
                 shouldShow = !(cells[heroNumber]?.innerText == img.id);
