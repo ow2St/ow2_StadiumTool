@@ -346,7 +346,7 @@ function item_searchWords() {
         const shouldShow = keyword !== "" && (itemName.includes(keyword) || textColumn.includes(keyword));
 
         // 非表示対応
-        if(shouldShow){
+        if(shouldShow == true){
             tr.classList.add("table-on");
         }else{
             tr.classList.add("table-off");
@@ -504,9 +504,51 @@ function linkPowerList(powerList) {
     }
 }
 
+//　検索ボックスで絞り込み（アイテム）
+function power_searchWords() {
+
+    //ボタンを全てOFFにした状態に
+    let activeImages = document.querySelectorAll("img.power-hero-icon-on");
+    activeImages.forEach(img => filterPowerTable(img));
+
+    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_power に配列のように格納。各行を1つのアイテムとする。
+    var tbody_power = document.getElementById("power-table").querySelector("tbody");
+    var rows_power = tbody_power.querySelectorAll("tr");
+
+    // 行ごとの絞り込み
+    // アイテム行をループ
+    rows_power.forEach(tr => {
+        const cells = tr.querySelectorAll("td");
+
+        // 毎回クラスを初期化
+        tr.classList.remove("table-on");
+        tr.classList.remove("table-off");
+
+        // 非表示にするアイテムを探す
+
+        const powerName = cells[0]?.textContent.trim() || "";
+        const textColumn = cells[3]?.textContent.trim() || "";
+
+        // 検索ワードを取得
+        const keyword = document.getElementById("power_search-input").value.trim();
+
+        // 非表示フラグ　keywordが空の場合は全て非表示、
+        const shouldShow = keyword !== "" && (powerName.includes(keyword) || textColumn.includes(keyword));
+
+        // 非表示対応
+        if(shouldShow == true){
+            tr.classList.add("table-on");
+        }else{
+            tr.classList.add("table-off");
+        }
+    });
+
+}
+
+
 // パワーリスト用子要素作成関数
 function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
-    
+
 
     // パワー名列
     var td = document.createElement("td");
@@ -539,47 +581,34 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
 }
 
 // 絞り込み条件を更新する関数（パワー）
-function filterPowerTable(elem) {
-    const id = elem.id;
-    const targetText = id;
+function filterPowerTable(elem){
 
-    // まず画像のON/OFF切り替え（クラス切り替え）
-    const isNowOn = elem.classList.contains("power-hero-icon-on");
-    if (isNowOn) {
-        elem.classList.remove("power-hero-icon-on");
-        elem.classList.add("power-hero-icon-off");
-    } else {
-        elem.classList.remove("power-hero-icon-off");
-        elem.classList.add("power-hero-icon-on");
+    // 絞り込みイメージのON/OFF切り替え
+    const tag = elem.tagName.toLowerCase();
+    let isNowOn;
+    if (tag === "img") {
+        isNowOn = elem.classList.contains("power-hero-icon-on");
+        elem.classList.toggle("power-hero-icon-on", !isNowOn);
+        elem.classList.toggle("power-hero-icon-off", isNowOn);
+    } else if (tag === "input" && elem.type === "checkbox") {
+        isNowOn = elem.checked;
+        elem.classList.toggle("checkbox-on", isNowOn);
+        elem.classList.toggle("checkbox-off", !isNowOn);
     }
 
-    // パワーテーブルを取得
-    const tbody_power = document.getElementById("power-table").querySelector("tbody");
-    const rows_power = tbody_power.querySelectorAll("tr");
+    // 各絞り込み一覧を取得
+    const buttons_tank = document.querySelectorAll("#button-tank img");
+    const buttons_damage = document.querySelectorAll("#button-damage img");
+    const buttons_support = document.querySelectorAll("#button-support img");
 
-    // 各行に対してヒーロー一致判定し、表示/非表示を切り替える
-    rows_power.forEach(tr => {
-        const cells = tr.querySelectorAll("td");
-        const cellValue = cells[2]?.textContent.trim(); //cells[2] は各パワーの左から3つ目（ヒーロー列位置）を示す
+    // テーブルのヘッダー行（<tr>）を取得
+    const headerRow = document.querySelector("#power-table thead tr");
 
-        if (cellValue === targetText) {
-            if (isNowOn) {
-                tr.classList.remove("table-on");
-                tr.classList.add("table-off");
-            } else {
-                tr.classList.remove("table-off");
-                tr.classList.add("table-on");
-            }
-        }
-    });
-}
+    // 各 <th> 要素を配列として取得
+    const headers = Array.from(headerRow.querySelectorAll("th"));
 
-//　検索ボックスで絞り込み（パワー）
-function power_searchWords() {
-
-    //アイコンを全てOFFにした状態に
-    let activeIcons = document.querySelectorAll("img.power-hero-icon-on");
-    activeIcons.forEach(img => filterPowerTable(img));
+    // 各絞り込み要素が何番目かを取得
+    const heroNumber = headers.findIndex(th => th.textContent == "ヒーロー");
 
     //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_power に配列のように格納。各行を1つのアイテムとする。
     var tbody_power = document.getElementById("power-table").querySelector("tbody");
@@ -590,29 +619,50 @@ function power_searchWords() {
     rows_power.forEach(tr => {
         const cells = tr.querySelectorAll("td");
 
+
         // 毎回クラスを初期化
         tr.classList.remove("table-on");
         tr.classList.remove("table-off");
 
+        let shouldShow = true;  // 表示判定フラグ
+
         // 非表示にするアイテムを探す
 
-        const powerName = cells[0]?.textContent.trim() || "";
-        const textColumn = cells[3]?.textContent.trim() || "";
+        // ヒーロー関連
 
-        // 検索ワードを取得
-        const keyword = document.getElementById("power_search-input").value.trim();
+        //タンク
+        buttons_tank.forEach(img =>{
+            
+            // ボタンがOFFの場合
+            if(img.className == "power-hero-icon-off" && shouldShow){
+                shouldShow = !(cells[heroNumber]?.innerText == img.id);
+            }
+        });
 
-        // 非表示フラグ　keywordが空の場合は全て非表示、
-        const shouldShow = keyword !== "" && (powerName.includes(keyword) || textColumn.includes(keyword));
+        //ダメージ
+        buttons_damage.forEach(img =>{
+
+            // ボタンがOFFの場合
+            if(img.className == "power-hero-icon-off" && shouldShow){
+                shouldShow = !(cells[heroNumber]?.innerText == img.id);
+            }
+        });
+
+        //サポート
+        buttons_support.forEach(img => {
+            // ボタンがOFFの場合
+            if(img.className == "power-hero-icon-off" && shouldShow){
+                shouldShow = !(cells[heroNumber]?.innerText == img.id);
+            }
+        });
 
         // 非表示対応
-        if(shouldShow){
+        if(shouldShow == true){
             tr.classList.add("table-on");
         }else{
             tr.classList.add("table-off");
         }
     });
-
 }
 
 //パワーテーブルソートの前提準備
