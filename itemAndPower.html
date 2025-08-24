@@ -67,7 +67,7 @@
                         <input type="checkbox" class="checkbox-on" id="uniqueHero" value="固有ヒーロー" onclick="filterItemTable(this)" checked>
                     </div>
                     <div style="margin: 20px;">
-                        <input type="search" style="width:400px; height:55px; font-size:15px;" id="search-input" placeholder="アイテム名・テキストで検索…">
+                        <input type="search" style="width:400px; height:55px; font-size:15px;" id="item_search-input" placeholder="アイテム名・テキストで検索…">
                         <button style="width:80px; height:45px; font-size:15px;" onclick="item_searchWords()">検索</button>
                     </div>
 
@@ -96,7 +96,7 @@
                     <!--パワータブの内容-->
                     <div class="button-list">
                         <span class="button-category">タンク</span>
-                        <div class="button-only">
+                        <div class="button-only" id="button-tank">
                             <img src="assets/images/icons/hero/DVA.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="D.VA">
                             <img src="assets/images/icons/hero/オリーサ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="オリーサ">
                             <img src="assets/images/icons/hero/ザリア.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ザリア">
@@ -107,7 +107,7 @@
                     </div>
                     <div class="button-list">
                         <span class="button-category">ダメージ</span>
-                        <div class="button-only">
+                        <div class="button-only" id="button-damage">
                             <img src="assets/images/icons/hero/アッシュ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="アッシュ">
                             <img src="assets/images/icons/hero/キャスディ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="キャスディ">
                             <img src="assets/images/icons/hero/ゲンジ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ゲンジ">
@@ -120,7 +120,7 @@
                     </div>
                     <div class="button-list">
                         <span class="button-category">サポート</span>
-                        <div class="button-only">
+                        <div class="button-only" id="button-support">
                             <img src="assets/images/icons/hero/アナ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="アナ">
                             <img src="assets/images/icons/hero/キリコ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="キリコ">
                             <img src="assets/images/icons/hero/ジュノ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ジュノ">
@@ -129,6 +129,11 @@
                             <img src="assets/images/icons/hero/ルシオ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ルシオ">
                             <img src="assets/images/icons/hero/ゼニヤッタ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ゼニヤッタ">
                         </div>
+                    </div>
+
+                    <div style="margin: 20px;">
+                        <input type="search" style="width:400px; height:55px; font-size:15px;" id="power_search-input" placeholder="パワー名・テキストで検索…">
+                        <button style="width:80px; height:45px; font-size:15px;" onclick="power_searchWords()">検索</button>
                     </div>
 
                     <!--パワー一覧（テーブル）-->
