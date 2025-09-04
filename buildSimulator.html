@@ -72,13 +72,12 @@
             <span class="herowindow-close-button" onclick="closeHeroWindow()">✖︎</span>
         </div>
     </div>
-    <div style="display: flex;">
+    <div style="display: block;">
         <p class="selectedbuild-title">ビルド</p>
-        <p class="status-title">ステータス</p>
-    </div>
-    <div style="display: flex;">
         <div class="selectedbuild-content">
             <div class="selectedbuild-item">
+                <div class="selectedbuild-text">アイテム
+                </div>
                 <div style="display: flex;" id="item1">
                 </div>
                 <div style="display: flex;" id="item2">
@@ -92,7 +91,13 @@
                 <div style="display: flex;" id="item6">
                 </div>
             </div>
+            <div class="selectedbuild-item">
+                <div class="selectedbuild-text-theoretical">理論値
+                </div>
+            </div>
             <div class="selectedbuild-power">
+                <div class="selectedbuild-text">パワー
+                </div>
                 <div style="display: flex;" id="power1">
                 </div>
                 <div style="display: flex;" id="power2">
@@ -102,7 +107,12 @@
                 <div style="display: flex;" id="power4">
                 </div>
             </div>
+            <div class="selectedbuild-item">
+                <div class="selectedbuild-text-theoretical">理論値
+                </div>
+            </div>
         </div>
+        <p class="status-title">ステータス</p>
         <div class="status-content">
             <div style="display: flex;">
                 <p class="heroname" id="heroname" style="font-weight: 600;"></p>

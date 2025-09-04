@@ -214,30 +214,54 @@ main-buildsimulator {
 
 .selectedbuild-content {
     padding-top: 15px;
-    display: inline-flex;
     margin-left: 20px;
-    width: 195px;
+    width: 850px;
     border: 2px solid gray;
     white-space: nowrap;
-    height: 420px;
+    height: 330px;
     background-color: #FAFAFA;
 }
 
 .selectedbuild-item {
-    padding-left: 10px;
-    width: 50%;
+    margin-top: 10px;
+    margin-left: 15px;
+    display: flex;
 }
 
 .selectedbuild-power {
-    width: 50%;
+    margin-top: 15px;
+    margin-left: 15px;
+    display: flex;
+}
+
+.selectedbuild-text {
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-bottom: 10px;
+    font-size: 18px;
+    font-weight: 400;
+    align-content: center;
+    width: 80px;
+    height: 75px;
+}
+
+.selectedbuild-text-theoretical {
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-bottom: 10px;
+    font-size: 15px;
+    font-weight: 400;
+    align-content: center;
+    width: 80px;
+    height: 35px;
 }
 
 .selectedbuild-item-icon {
     display: block;
     margin-left: 8px;
     margin-bottom: 8px;
-    width: 60px;
-    height: 60px;
+    width: 75px;
+    height: 75px;
     border-radius: 50%;
 }
 
@@ -245,8 +269,8 @@ main-buildsimulator {
     display: block;
     margin-left: 8px;
     margin-bottom: 8px;
-    width: 60px;
-    height: 60px;
+    width: 75px;
+    height: 75px;
     border-radius: 10px;
 }
 
@@ -275,9 +299,9 @@ main-buildsimulator {
     display: block;
     margin-left: 20px;
     margin-right: 20px;
-    width: 630px;
+    width: 850px;
     border: 2px solid gray;
-    height: 420px;
+    height: 495px;
     background-color: #FAFAFA;
     overflow-y: scroll;
 }
