@@ -1120,17 +1120,20 @@ function updateBuild_Item(selectedItemRows){
 
     for(let i=0; i<6; i++) {
         // 親要素を指定
-        const targetDiv = document.getElementById("item" + String(i + 1))
+        const targetDiv = document.getElementById("item" + String(i + 1));
+        let checkDiv = document.getElementById("theoreticalitem" + String(i + 1));
 
         // 指定した要素内に子要素がある場合は削除する
         if(targetDiv.children.length != 0){
             const image = document.getElementById("item-image" + String(i + 1));
             const span = document.getElementById("delete-item" + String(i + 1));
+            const check = document.getElementById("item-check" + String(i + 1));
             targetDiv.removeChild(image);
             targetDiv.removeChild(span);
+            checkDiv.removeChild(check);
         }
         
-        // 選択されたアイテムのアイコンと✖ボタンを追加する
+        // 選択されたアイテムのアイコンと✖ボタンと理論値チェックボックスを追加する
         if(i < selectedItemRows.length){
             // アイコン追加部分
             var iconImg = document.createElement("img");
@@ -1145,6 +1148,14 @@ function updateBuild_Item(selectedItemRows){
             span.classList.add("selectedbuild-delete-button");
             span.id = "delete-item" + String(i + 1);
             targetDiv.appendChild(span);
+
+            // 理論値チェックボックス追加部分
+            var input = document.createElement("input");
+            input.type = "checkbox";
+            input.checked = false;
+            input.classList.add("selectedbuild-theoretical-checkbox");
+            input.id = "item-check" + String(i + 1);
+            checkDiv.appendChild(input);
         }
     }
 }
@@ -1479,16 +1490,19 @@ function updateBuild_Power(selectedPowerRows){
     for(let i=0; i<4; i++) {
         // 親要素を指定
         let targetDiv = document.getElementById("power" + String(i + 1));
+        let checkDiv = document.getElementById("theoreticalpower" + String(i + 1));
 
         // 指定した要素内に子要素がある場合は削除する
         if(targetDiv.children.length != 0){
             const image = document.getElementById("power-image" + String(i + 1));
             const span = document.getElementById("delete-power" + String(i + 1));
+            const check = document.getElementById("power-check" + String(i + 1));
             targetDiv.removeChild(image);
             targetDiv.removeChild(span);
+            checkDiv.removeChild(check);
         }
         
-        // 選択されたアイテムのアイコンと✖ボタンを追加する
+        // 選択されたアイテムのアイコンと✖ボタンと理論値チェックボックスを追加する
         if(i < selectedPowerRows.length){
             // アイコン追加部分
             var iconImg = document.createElement("img");
@@ -1503,6 +1517,14 @@ function updateBuild_Power(selectedPowerRows){
             span.classList.add("selectedbuild-delete-button");
             span.id = "delete-power" + String(i + 1);
             targetDiv.appendChild(span);
+
+            // 理論値チェックボックス追加部分
+            var input = document.createElement("input");
+            input.type = "checkbox";
+            input.checked = false;
+            input.classList.add("selectedbuild-theoretical-checkbox");
+            input.id = "power-check" + String(i + 1);
+            checkDiv.appendChild(input);
         }
     }
 }
