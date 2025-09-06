@@ -2,9 +2,118 @@
 // 処理部
 // ------------------------------
 
-// アイテム・パワーリストをテーブルに紐付け
-linkItemList(itemList);
-linkPowerList(powerList);
+// アイテムリストのキー
+var itemNameKey = "アイテム名";
+var categoryKey = "カテゴリー";
+var rarityKey = "レア度";
+var costKey = "コスト";
+var iconKey = "アイコン";
+var uniqueHeroKey = "固有ヒーロー";
+var textKey = "テキスト";
+var lifeKey = "ライフ";
+var armorKey = "アーマー";
+var shieldKey = "シールド";
+var weaponPowerKey = "武器パワー";
+var abilityPowerKey = "アビリティパワー";
+var attackSpeedKey = "攻撃速度";
+var ctReducationKey = "CT短縮";
+var ammoKey = "弾薬";
+var weapon_LifeStealKey = "ライフ吸収（武器）";
+var ability_LifeStealKey = "ライフ吸収（アビリティ）";
+var speedKey = "移動速度";
+var reloadSpeedKey = "リロード速度";
+var meleeDamageKey = "近接ダメージ";
+var criticalKey = "クリティカル";
+var othersKey = "その他";
+
+// キー対応マッピング（英語 → 日本語）
+const itemKeyMap = {
+    itemname: itemNameKey,
+    category: categoryKey,
+    rarity: rarityKey,
+    cost: costKey,
+    icon: iconKey,
+    uniquehero: uniqueHeroKey,
+    text: textKey,
+    life: lifeKey,
+    armor: armorKey,
+    shield: shieldKey,
+    weaponpower: weaponPowerKey,
+    abilitypower: abilityPowerKey,
+    attackspeed: attackSpeedKey,
+    ctreducation: ctReducationKey,
+    ammo: ammoKey,
+    weaponlifesteal: weapon_LifeStealKey,
+    abilitylifesteal: ability_LifeStealKey,
+    speed: speedKey,
+    reloadspeed: reloadSpeedKey,
+    meleedamage: meleeDamageKey,
+    critical: criticalKey,
+    others: othersKey,
+};
+
+// パワーリストのキー
+var powerNameKey = "パワー名";
+var heroKey = "ヒーロー";
+var iconKey = "アイコン";
+var textKey = "テキスト";
+
+// キー対応マッピング（英語 → 日本語）
+const powerKeyMap = {
+    powername: powerNameKey,
+    hero: heroKey,
+    icon: iconKey,
+    text: textKey,
+};
+
+
+const accordionContainer = document.getElementById("accordion-container");
+
+let itemAllData = []; // 全てのアイテムデータを保持
+
+// データの読み込み(itemList)
+fetch("itemListData.json")
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        itemAllData = data;
+
+        // 整形 → キー変換
+        const itemList = convertKeys(organizeData(itemAllData));
+
+        linkItemList(itemList);
+    })
+    .catch(error => {
+        console.error("データの読み込み中にエラーが発生しました:", error);
+        accordionContainer.textContent = "データの読み込みに失敗しました。";
+    });
+
+let powerAllData = []; // 全てのアイテムデータを保持
+
+// データの読み込み(powerList)
+fetch("powerListData.json")
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        powerAllData = data;
+
+        // 整形 → キー変換
+        const powerList = convertKeys(organizeData(powerAllData));
+
+        linkPowerList(powerList);
+    })
+    .catch(error => {
+        console.error("データの読み込み中にエラーが発生しました:", error);
+        accordionContainer.textContent = "データの読み込みに失敗しました。";
+    });
 
 //パワー一覧　D.VAアイコンをONにする
 window.onload = function() {
@@ -30,6 +139,77 @@ let sortDirection = new Array(8).fill(null);
 // ------------------------------
 // 関数部
 // ------------------------------
+
+//itemList に　itemListData.json　から貰うデータの形を決める
+function organizeData(itemAllData) {
+    const selectedData = itemAllData
+    .map(Ilist => {
+        return {
+            itemname: Ilist.itemname,
+            category: Ilist.category,
+            rarity: Ilist.rarity,
+            cost: Ilist.cost,
+            icon: Ilist.icon,
+            uniquehero: Ilist.uniquehero,
+            text: Ilist.text,
+            life: Ilist.life,
+            armor: Ilist.armor,
+            shield: Ilist.shield,
+            weaponpower: Ilist.weaponpower,
+            abilitypower: Ilist.abilitypower,
+            attackspeed: Ilist.attackspeed,
+            ctreducation: Ilist.ctreducation,
+            ammo: Ilist.ammo,
+            weaponlifesteal: Ilist.weaponlifesteal,
+            abilitylifesteal: Ilist.abilitylifesteal,
+            speed: Ilist.speed,
+            reloadspeed: Ilist.reloadspeed,
+            meleedamage: Ilist.meleedamage,
+            critical: Ilist.critical,
+            others: Ilist.others
+        };
+    })
+    return selectedData;
+}
+
+// 英名キーを日本名キーへ変換処理
+function convertKeys(dataArray) {
+    return dataArray.map(obj => {
+        let newObj = {};
+        for (let key in obj) {
+            let newKey = itemKeyMap[key] || key; // 対応がないキーはそのまま
+            newObj[newKey] = obj[key];
+        }
+        return newObj;
+    });
+}
+
+//powerList に　powerListData.json　から貰うデータの形を決める
+function organizeData(powerAllData) {
+    const selectedData = powerAllData
+    .map(Plist => {
+        return {
+            powername: Plist.powerName,
+            hero: Plist.hero,
+            icon: Plist.icon,
+            text: Plist.text,
+        };
+    })
+    return selectedData;
+}
+
+// 英名キーを日本名キーへ変換処理
+function convertKeys(dataArray) {
+    return dataArray.map(obj => {
+        let newObj = {};
+        for (let key in obj) {
+            let newKey = powerKeyMap[key] || key; // 対応がないキーはそのまま
+            newObj[newKey] = obj[key];
+        }
+        return newObj;
+    });
+}
+
 
 //タブ切り替え
 // アイテムタブに遷移
