@@ -7,9 +7,9 @@ var itemNameKey = "アイテム名";
 var categoryKey = "カテゴリー";
 var rarityKey = "レア度";
 var costKey = "コスト";
-var iconKey = "アイコン";
+var itemIconKey = "アイコン";
 var uniqueHeroKey = "固有ヒーロー";
-var textKey = "テキスト";
+var itemTextKey = "テキスト";
 var lifeKey = "ライフ";
 var armorKey = "アーマー";
 var shieldKey = "シールド";
@@ -32,9 +32,9 @@ const itemKeyMap = {
     category: categoryKey,
     rarity: rarityKey,
     cost: costKey,
-    icon: iconKey,
+    icon: itemIconKey,
     uniquehero: uniqueHeroKey,
-    text: textKey,
+    text: itemTextKey,
     life: lifeKey,
     armor: armorKey,
     shield: shieldKey,
@@ -55,15 +55,15 @@ const itemKeyMap = {
 // パワーリストのキー
 var powerNameKey = "パワー名";
 var heroKey = "ヒーロー";
-var iconKey = "アイコン";
-var textKey = "テキスト";
+var powerIconKey = "アイコン";
+var powerTextKey = "テキスト";
 
 // キー対応マッピング（英語 → 日本語）
 const powerKeyMap = {
     powername: powerNameKey,
     hero: heroKey,
-    icon: iconKey,
-    text: textKey,
+    icon: powerIconKey,
+    text: powerTextKey,
 };
 
 
@@ -83,7 +83,7 @@ fetch("itemListData.json")
         itemAllData = data;
 
         // 整形 → キー変換
-        const itemList = convertKeys(organizeData(itemAllData));
+        const itemList = convertItemKeys(organizeItemData(itemAllData));
 
         linkItemList(itemList);
     })
@@ -106,7 +106,7 @@ fetch("powerListData.json")
         powerAllData = data;
 
         // 整形 → キー変換
-        const powerList = convertKeys(organizeData(powerAllData));
+        const powerList = convertPowerKeys(organizePowerData(powerAllData));
 
         linkPowerList(powerList);
     })
@@ -141,7 +141,7 @@ let sortDirection = new Array(8).fill(null);
 // ------------------------------
 
 //itemList に　itemListData.json　から貰うデータの形を決める
-function organizeData(itemAllData) {
+function organizeItemData(itemAllData) {
     const selectedData = itemAllData
     .map(Ilist => {
         return {
@@ -173,7 +173,7 @@ function organizeData(itemAllData) {
 }
 
 // 英名キーを日本名キーへ変換処理
-function convertKeys(dataArray) {
+function convertItemKeys(dataArray) {
     return dataArray.map(obj => {
         let newObj = {};
         for (let key in obj) {
@@ -185,11 +185,11 @@ function convertKeys(dataArray) {
 }
 
 //powerList に　powerListData.json　から貰うデータの形を決める
-function organizeData(powerAllData) {
+function organizePowerData(powerAllData) {
     const selectedData = powerAllData
     .map(Plist => {
         return {
-            powername: Plist.powerName,
+            powername: Plist.powername,
             hero: Plist.hero,
             icon: Plist.icon,
             text: Plist.text,
@@ -199,7 +199,7 @@ function organizeData(powerAllData) {
 }
 
 // 英名キーを日本名キーへ変換処理
-function convertKeys(dataArray) {
+function convertPowerKeys(dataArray) {
     return dataArray.map(obj => {
         let newObj = {};
         for (let key in obj) {
@@ -266,7 +266,7 @@ function linkItemList(itemList) {
             }
 
             // キー名がアイコンキーの場合
-            if(iconKey == key) {
+            if(itemIconKey == key) {
 
                 // アイコン用変数に値を代入
                 iconText = itemList[i][key];
@@ -323,7 +323,7 @@ function linkItemList(itemList) {
             }
 
             // キー名がテキストキーの場合
-            if(textKey == key) {
+            if(itemTextKey == key) {
 
                 // テキスト用変数に値を代入
                 textText = itemList[i][key];
@@ -659,7 +659,7 @@ function linkPowerList(powerList) {
             }
 
             // キー名がアイコンキーの場合
-            if(iconKey == key) {
+            if(powerIconKey == key) {
 
                 // アイコン用変数に値を代入
                 iconText = powerList[i][key];
@@ -672,7 +672,7 @@ function linkPowerList(powerList) {
                 heroText = powerList[i][key];
             }
             // キー名がテキストキーの場合
-            if(textKey == key) {
+            if(powerTextKey == key) {
 
                 // テキスト用変数に値を代入
                 textText = powerList[i][key];
