@@ -115,12 +115,6 @@ fetch("powerListData.json")
         accordionContainer.textContent = "データの読み込みに失敗しました。";
     });
 
-//パワー一覧　D.VAアイコンをONにする
-window.onload = function() {
-    const defaultHero = document.getElementById("D.VA");
-    filterPowerTable(defaultHero);
-};
-
 //タブ切り替え初期化
 const tabItem = document.getElementById('tabItem');
 const itemContent = document.getElementById('item-content');
@@ -226,15 +220,19 @@ function changeTabItem() {
 }
 // パワータブに遷移
 function changeTabPower() {
-   powerContent.style.display = "block";
-   itemContent.style.display = "none";
-   tabItem.style.backgroundColor = "white";
-   tabPower.style.backgroundColor = "lightgray";
-   tabItem.style.border = "1px dashed black";
-   tabItem.style.borderBottom = "none";
-   tabItem.style.borderRight = "none";
-   tabPower.style.border = "1px solid black";
-   tabPower.style.borderBottom = "none";
+    powerContent.style.display = "block";
+    itemContent.style.display = "none";
+    tabItem.style.backgroundColor = "white";
+    tabPower.style.backgroundColor = "lightgray";
+    tabItem.style.border = "1px dashed black";
+    tabItem.style.borderBottom = "none";
+    tabItem.style.borderRight = "none";
+    tabPower.style.border = "1px solid black";
+    tabPower.style.borderBottom = "none";
+
+    //パワー一覧　D.VAアイコンをONにする
+    let defaultHero = document.getElementById("D.VA");
+    filterPowerTable(defaultHero);
 }
 
 // アイテムリストをテーブルに紐づける関数

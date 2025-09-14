@@ -24,104 +24,278 @@ var queenScratch = 15;  // クイーン傷ダメージ用変数
 // 表示用のステータスリストを初期化
 var showStatusList = {};
 
-// アイテムリストをテーブルに紐付け
-linkItemList(itemList, selectedHero);
+// アイテムリストのキー
+var itemNameKey = "アイテム名";
+var categoryKey = "カテゴリー";
+var rarityKey = "レア度";
+var costKey = "コスト";
+var itemIconKey = "アイコン";
+var uniqueHeroKey = "固有ヒーロー";
+var itemTextKey = "テキスト";
+var lifeKey = "ライフ";
+var armorKey = "アーマー";
+var shieldKey = "シールド";
+var weaponPowerKey = "武器パワー";
+var abilityPowerKey = "アビリティパワー";
+var attackSpeedKey = "攻撃速度";
+var ctReducationKey = "CT短縮";
+var ammoKey = "弾薬";
+var weapon_LifeStealKey = "ライフ吸収（武器）";
+var ability_LifeStealKey = "ライフ吸収（アビリティ）";
+var speedKey = "移動速度";
+var reloadSpeedKey = "リロード速度";
+var meleeDamageKey = "近接ダメージ";
+var criticalKey = "クリティカル";
+var othersKey = "その他";
 
-// パワーリストをテーブルに紐付け
-linkPowerList(powerList, selectedHero);
+// キー対応マッピング（英語 → 日本語）
+const itemKeyMap = {
+    itemname: itemNameKey,
+    category: categoryKey,
+    rarity: rarityKey,
+    cost: costKey,
+    icon: itemIconKey,
+    uniquehero: uniqueHeroKey,
+    text: itemTextKey,
+    life: lifeKey,
+    armor: armorKey,
+    shield: shieldKey,
+    weaponpower: weaponPowerKey,
+    abilitypower: abilityPowerKey,
+    attackspeed: attackSpeedKey,
+    ctreducation: ctReducationKey,
+    ammo: ammoKey,
+    weaponlifesteal: weapon_LifeStealKey,
+    abilitylifesteal: ability_LifeStealKey,
+    speed: speedKey,
+    reloadspeed: reloadSpeedKey,
+    meleedamage: meleeDamageKey,
+    critical: criticalKey,
+    others: othersKey,
+};
 
-// ステータスボックス設定
-initStatus(selectedHero);
+// パワーリストのキー
+var powerNameKey = "パワー名";
+var heroKey = "ヒーロー";
+var powerIconKey = "アイコン";
+var powerTextKey = "テキスト";
+
+// キー対応マッピング（英語 → 日本語）
+const powerKeyMap = {
+    powername: powerNameKey,
+    hero: heroKey,
+    icon: powerIconKey,
+    text: powerTextKey,
+};
+
+
+const accordionContainer = document.getElementById("accordion-container");
+
+let itemAllData = []; // 全てのアイテムデータを保持
+
+let powerAllData = []; // 全てのアイテムデータを保持
 
 // チェックされた行のデータを格納する配列
 var selectedItemRowsData = [];
 var selectedPowerRowsData = [];
 
-// 各イベント発生対象取得
-const itemCheckboxes = document.querySelectorAll(".item-checkbox");
-const powerCheckboxes = document.querySelectorAll(".power-checkbox");
+a();
 
-// 初期表示のために一度実行
-updateSelectedItemsList();
-updateSelectedPowerList();
+async function a() {
+    try {
+        const [itemData, powerData] = await Promise.all([
+            // データの読み込み(itemList)
+            fetch("itemListData.json").then(response => response.json()),
 
-// 各アイテムのチェックボックスにイベントリスナーを追加
-itemCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener("change", () => {
-        const selectedItemRowsDataBeforeLength = selectedItemRowsData.length;
+            // データの読み込み(powerList)
+            fetch("powerListData.json").then(response => response.json())
+        ]);
 
-        // チェックボックスの状態が変わる毎に選択リストを更新
-        selectedItemRowsData = updateSelectedItemsList();
+        itemAllData = itemData;
 
-        // ビルド欄の表示を更新
-        updateBuild_Item(selectedItemRowsData);
-        // ステータスに反映
-        updateStatus_Item(selectedItemRowsData);
+        // 整形 → キー変換
+        const itemList = convertItemKeys(organizeItemData(itemAllData));
 
-        const selectedItemRowsDataAfterLength = selectedItemRowsData.length;
+        // アイテムリストをテーブルに紐付け
+        linkItemList(itemList, selectedHero);
 
-        if(selectedItemRowsDataBeforeLength == 6 && selectedItemRowsDataAfterLength < 6){
-            // 選択できないようにしたチェックボックスを入力可に戻す
-            disableItemTableCheckbox(false);
-        }else if(selectedItemRowsDataAfterLength == 6){
-            //　選択済みのアイテムが6個になった場合、未選択チェックボックスを入力不可にする
-            disableItemTableCheckbox(true);
-        }
-    });
-});
+        powerAllData = powerData;
 
-// 各パワーのチェックボックスにイベントリスナーを追加
-powerCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener("change", () => {
-        const selectedPowerRowsDataBeforeLength = selectedPowerRowsData.length;
+        // 整形 → キー変換
+        const powerList = convertPowerKeys(organizePowerData(powerAllData));
 
-        // チェックボックスの状態が変わる毎に選択リストを更新
-        selectedPowerRowsData = updateSelectedPowerList();
-        // ビルド欄の表示を更新 
-        updateBuild_Power(selectedPowerRowsData);
-        // ステータスに反映
-        updateStatus_Power(selectedPowerRowsData);
+        // パワーリストをテーブルに紐付け
+        linkPowerList(powerList, selectedHero);
 
-        const selectedPowerRowsDataAfterLength = selectedPowerRowsData.length;
 
-        if(selectedPowerRowsDataBeforeLength == 4 && selectedPowerRowsDataAfterLength < 4){
-            // 選択できないようにしたチェックボックスを入力可に戻す
-            disablePowerTableCheckbox(false);
-        }else if(selectedPowerRowsDataAfterLength == 4){
-            //　選択済みのパワーが4個になった場合、未選択チェックボックスを入力不可にする
-            disablePowerTableCheckbox(true);
-        }
-    });
-});
 
-const selectedBuildItem = document.querySelector(".selectedbuild-item");
-const selectedBuildpower = document.querySelector(".selectedbuild-power");
 
-// ビルド欄の各アイテムにイベントリスナーを追加
-selectedBuildItem.addEventListener("click", (event) =>{
-    // 削除ボタンをクリックされた場合
-    if(event.target.classList.contains("selectedbuild-delete-button") && event.target.tagName =="SPAN"){
-        // アイコンを削除する
-        selectedItemRowsData = clickDeleteButton(event.target.id,selectedItemRowsData);
-        // ステータスに反映
-        updateStatus_Item(selectedItemRowsData);
-    }
-});
 
-// ビルド欄の各パワーにイベントリスナーを追加
-selectedBuildpower.addEventListener("click", (event) =>{
-    // 削除ボタンをクリックされた場合
-    if(event.target.classList.contains("selectedbuild-delete-button") && event.target.tagName =="SPAN"){
-        // アイコンを削除する
-        selectedPowerRowsData = clickDeleteButton(event.target.id,selectedPowerRowsData);
-        // ステータスに反映
-        updateStatus_Power(selectedPowerRowsData);
-    }
-});
+        // ステータスボックス設定
+        initStatus(selectedHero);
+
+        // 各イベント発生対象取得
+        const itemCheckboxes = document.querySelectorAll(".item-checkbox");
+        const powerCheckboxes = document.querySelectorAll(".power-checkbox");
+
+
+        // 初期表示のために一度実行
+        updateSelectedItemsList();
+        updateSelectedPowerList();
+
+        // 各アイテムのチェックボックスにイベントリスナーを追加
+        itemCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", () => {
+                const selectedItemRowsDataBeforeLength = selectedItemRowsData.length;
+
+                // チェックボックスの状態が変わる毎に選択リストを更新
+                selectedItemRowsData = updateSelectedItemsList();
+
+                // ビルド欄の表示を更新
+                updateBuild_Item(selectedItemRowsData);
+                // ステータスに反映
+                updateStatus_Item(selectedItemRowsData);
+
+                const selectedItemRowsDataAfterLength = selectedItemRowsData.length;
+
+                if(selectedItemRowsDataBeforeLength == 6 && selectedItemRowsDataAfterLength < 6){
+                    // 選択できないようにしたチェックボックスを入力可に戻す
+                    disableItemTableCheckbox(false);
+                }else if(selectedItemRowsDataAfterLength == 6){
+                    //　選択済みのアイテムが6個になった場合、未選択チェックボックスを入力不可にする
+                    disableItemTableCheckbox(true);
+                }
+            });
+        });
+
+        // 各パワーのチェックボックスにイベントリスナーを追加
+        powerCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", () => {
+                const selectedPowerRowsDataBeforeLength = selectedPowerRowsData.length;
+
+                // チェックボックスの状態が変わる毎に選択リストを更新
+                selectedPowerRowsData = updateSelectedPowerList();
+                // ビルド欄の表示を更新 
+                updateBuild_Power(selectedPowerRowsData);
+                // ステータスに反映
+                updateStatus_Power(selectedPowerRowsData);
+
+                const selectedPowerRowsDataAfterLength = selectedPowerRowsData.length;
+
+                if(selectedPowerRowsDataBeforeLength == 4 && selectedPowerRowsDataAfterLength < 4){
+                    // 選択できないようにしたチェックボックスを入力可に戻す
+                    disablePowerTableCheckbox(false);
+                }else if(selectedPowerRowsDataAfterLength == 4){
+                    //　選択済みのパワーが4個になった場合、未選択チェックボックスを入力不可にする
+                    disablePowerTableCheckbox(true);
+                }
+            });
+        });
+
+        const selectedBuildItem = document.querySelector(".selectedbuild-item");
+        const selectedBuildpower = document.querySelector(".selectedbuild-power");
+
+        // ビルド欄の各アイテムにイベントリスナーを追加
+        selectedBuildItem.addEventListener("click", (event) =>{
+            // 削除ボタンをクリックされた場合
+            if(event.target.classList.contains("selectedbuild-delete-button") && event.target.tagName =="SPAN"){
+                // アイコンを削除する
+                selectedItemRowsData = clickDeleteButton(event.target.id,selectedItemRowsData);
+                // ステータスに反映
+                updateStatus_Item(selectedItemRowsData);
+            }
+        });
+
+        // ビルド欄の各パワーにイベントリスナーを追加
+        selectedBuildpower.addEventListener("click", (event) =>{
+            // 削除ボタンをクリックされた場合
+            if(event.target.classList.contains("selectedbuild-delete-button") && event.target.tagName =="SPAN"){
+                // アイコンを削除する
+                selectedPowerRowsData = clickDeleteButton(event.target.id,selectedPowerRowsData);
+                // ステータスに反映
+                updateStatus_Power(selectedPowerRowsData);
+            }
+        });
+
+    } catch(error){
+        console.error("データの読み込み中にエラーが発生しました:", error);
+/*         accordionContainer.textContent = "データの読み込みに失敗しました。";
+ */    }
+}
 
 // ------------------------------
 // 関数部
 // ------------------------------
+
+//itemList に　itemListData.json　から貰うデータの形を決める
+function organizeItemData(itemAllData) {
+    const selectedData = itemAllData
+    .map(Ilist => {
+        return {
+            itemname: Ilist.itemname,
+            category: Ilist.category,
+            rarity: Ilist.rarity,
+            cost: Ilist.cost,
+            icon: Ilist.icon,
+            uniquehero: Ilist.uniquehero,
+            text: Ilist.text,
+            life: Ilist.life,
+            armor: Ilist.armor,
+            shield: Ilist.shield,
+            weaponpower: Ilist.weaponpower,
+            abilitypower: Ilist.abilitypower,
+            attackspeed: Ilist.attackspeed,
+            ctreducation: Ilist.ctreducation,
+            ammo: Ilist.ammo,
+            weaponlifesteal: Ilist.weaponlifesteal,
+            abilitylifesteal: Ilist.abilitylifesteal,
+            speed: Ilist.speed,
+            reloadspeed: Ilist.reloadspeed,
+            meleedamage: Ilist.meleedamage,
+            critical: Ilist.critical,
+            others: Ilist.others
+        };
+    })
+    return selectedData;
+}
+
+// 英名キーを日本名キーへ変換処理
+function convertItemKeys(dataArray) {
+    return dataArray.map(obj => {
+        let newObj = {};
+        for (let key in obj) {
+            let newKey = itemKeyMap[key] || key; // 対応がないキーはそのまま
+            newObj[newKey] = obj[key];
+        }
+        return newObj;
+    });
+}
+
+//powerList に　powerListData.json　から貰うデータの形を決める
+function organizePowerData(powerAllData) {
+    const selectedData = powerAllData
+    .map(Plist => {
+        return {
+            powername: Plist.powername,
+            hero: Plist.hero,
+            icon: Plist.icon,
+            text: Plist.text,
+        };
+    })
+    return selectedData;
+}
+
+// 英名キーを日本名キーへ変換処理
+function convertPowerKeys(dataArray) {
+    return dataArray.map(obj => {
+        let newObj = {};
+        for (let key in obj) {
+            let newKey = powerKeyMap[key] || key; // 対応がないキーはそのまま
+            newObj[newKey] = obj[key];
+        }
+        return newObj;
+    });
+}
 
 // ヒーロー選択ウィンドウを開く
 function openHeroWindow(){
@@ -767,14 +941,14 @@ function linkItemList(itemList, id) {
             }
 
             // キー名がアイコンキーの場合
-            if(iconKey == key) {
+            if(itemIconKey == key) {
 
                 // アイコン用変数に値を代入
                 iconText = itemList[i][key];
             }
 
             // キー名がテキストキーの場合
-            if(textKey == key) {
+            if(itemTextKey == key) {
 
                 // テキスト用変数に値を代入
                 textText = itemList[i][key];
@@ -931,14 +1105,14 @@ function linkPowerList(powerList, id) {
             }
 
             // キー名がアイコンキーの場合
-            if(iconKey == key) {
+            if(powerIconKey == key) {
 
                 // アイコン用変数に値を代入
                 iconText = powerList[i][key];
             }
 
             // キー名がテキストキーの場合
-            if(textKey == key) {
+            if(powerTextKey == key) {
 
                 // テキスト用変数に値を代入
                 textText = powerList[i][key];
@@ -1137,7 +1311,7 @@ function updateBuild_Item(selectedItemRows){
         if(i < selectedItemRows.length){
             // アイコン追加部分
             var iconImg = document.createElement("img");
-            iconImg.src = "assets/images/icons/item/" + selectedItemRows[i][iconKey];
+            iconImg.src = "assets/images/icons/item/" + selectedItemRows[i][itemIconKey];
             iconImg.classList.add("selectedbuild-item-icon");
             iconImg.id = "item-image" + String(i + 1)
             targetDiv.appendChild(iconImg);
@@ -1197,7 +1371,7 @@ function updateStatus_Item(selectedItemRows){
         const meleeDamageTmp = selectedItemRows[i][meleeDamageKey];
         const criticalTmp = selectedItemRows[i][criticalKey];
         let othersTmp = selectedItemRows[i][othersKey];
-        let textTmp = selectedItemRows[i][textKey];
+        let textTmp = selectedItemRows[i][itemTextKey];
 
         // ライフに記載がある場合
         if(lifeTmp != 0){
@@ -1502,11 +1676,11 @@ function updateBuild_Power(selectedPowerRows){
             checkDiv.removeChild(check);
         }
         
-        // 選択されたアイテムのアイコンと✖ボタンと理論値チェックボックスを追加する
+        // 選択されたパワーのアイコンと✖ボタンと理論値チェックボックスを追加する
         if(i < selectedPowerRows.length){
             // アイコン追加部分
             var iconImg = document.createElement("img");
-            iconImg.src = "assets/images/icons/power/" + selectedPowerRows[i][iconKey];
+            iconImg.src = "assets/images/icons/power/" + selectedPowerRows[i][powerIconKey];
             iconImg.classList.add("selectedbuild-power-icon");
             iconImg.id = "power-image" + String(i + 1)
             targetDiv.appendChild(iconImg);
@@ -1538,7 +1712,7 @@ function updateStatus_Power(selectedPowerRows){
     for(let i=0; i<4; i++) {
 
         // テキストを抽出
-        const textTmp = selectedPowerRows[i][textKey];
+        const textTmp = selectedPowerRows[i][powerTextKey];
 
         // 追加効果欄に羅列(パワーは必ずテキストがあるため空チェックはしない)
         document.getElementById("addpower").innerText = document.getElementById("addpower").innerText + textTmp + "\n";
