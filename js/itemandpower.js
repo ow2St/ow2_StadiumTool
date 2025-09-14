@@ -166,7 +166,7 @@ function organizeItemData(itemAllData) {
             reloadspeed: Ilist.reloadspeed,
             meleedamage: Ilist.meleedamage,
             critical: Ilist.critical,
-            others: Ilist.others
+            others: (Ilist.others === "-") ? Ilist.others : "※" + Ilist.others
         };
     })
     return selectedData;
