@@ -92,12 +92,18 @@ const powerKeyMap = {
 const accordionContainer = document.getElementById("accordion-container");
 
 let itemAllData = []; // 全てのアイテムデータを保持
+var itemList = {};  // 整形後
 
 let powerAllData = []; // 全てのアイテムデータを保持
+var powerList = {};  // 整形後
 
 // チェックされた行のデータを格納する配列
 var selectedItemRowsData = [];
 var selectedPowerRowsData = [];
+
+// チェックボックス
+var itemCheckboxes = [];
+var powerCheckboxes = [];
 
 a();
 
@@ -114,7 +120,7 @@ async function a() {
         itemAllData = itemData;
 
         // 整形 → キー変換
-        const itemList = convertItemKeys(organizeItemData(itemAllData));
+        itemList = convertItemKeys(organizeItemData(itemAllData));
 
         // アイテムリストをテーブルに紐付け
         linkItemList(itemList, selectedHero);
@@ -122,7 +128,7 @@ async function a() {
         powerAllData = powerData;
 
         // 整形 → キー変換
-        const powerList = convertPowerKeys(organizePowerData(powerAllData));
+        powerList = convertPowerKeys(organizePowerData(powerAllData));
 
         // パワーリストをテーブルに紐付け
         linkPowerList(powerList, selectedHero);
@@ -135,8 +141,8 @@ async function a() {
         initStatus(selectedHero);
 
         // 各イベント発生対象取得
-        const itemCheckboxes = document.querySelectorAll(".item-checkbox");
-        const powerCheckboxes = document.querySelectorAll(".power-checkbox");
+        itemCheckboxes = document.querySelectorAll(".item-checkbox");
+        powerCheckboxes = document.querySelectorAll(".power-checkbox");
 
 
         // 初期表示のために一度実行
