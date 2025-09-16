@@ -906,3 +906,11 @@ main-IAP{
     margin: 0 auto;
     transform: scale(2.5);
 }
+
+.weapon {
+    background-color: #ffd3d3;
+}
+
+.ability {
+    background-color: #d3d3ff;
+}
