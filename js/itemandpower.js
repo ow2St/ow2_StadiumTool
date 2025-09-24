@@ -3,13 +3,13 @@
 // ------------------------------
 
 // アイテムリストのキー
-var itemNameKey = "アイテム名";
+var item_nameKey = "アイテム名";
 var categoryKey = "カテゴリー";
 var rarityKey = "レア度";
 var costKey = "コスト";
-var itemIconKey = "アイコン";
+var item_iconKey = "アイコン";
 var uniqueHeroKey = "固有ヒーロー";
-var itemTextKey = "テキスト";
+var item_textKey = "テキスト";
 var lifeKey = "ライフ";
 var armorKey = "アーマー";
 var shieldKey = "シールド";
@@ -28,13 +28,13 @@ var othersKey = "その他";
 
 // キー対応マッピング（英語 → 日本語）
 const itemKeyMap = {
-    itemname: itemNameKey,
+    itemname: item_nameKey,
     category: categoryKey,
     rarity: rarityKey,
     cost: costKey,
-    icon: itemIconKey,
+    icon: item_iconKey,
     uniquehero: uniqueHeroKey,
-    text: itemTextKey,
+    text: item_textKey,
     life: lifeKey,
     armor: armorKey,
     shield: shieldKey,
@@ -53,17 +53,17 @@ const itemKeyMap = {
 };
 
 // パワーリストのキー
-var powerNameKey = "パワー名";
+var power_nameKey = "パワー名";
 var heroKey = "ヒーロー";
-var powerIconKey = "アイコン";
-var powerTextKey = "テキスト";
+var power_iconKey = "アイコン";
+var power_textKey = "テキスト";
 
 // キー対応マッピング（英語 → 日本語）
 const powerKeyMap = {
-    powername: powerNameKey,
+    powername: power_nameKey,
     hero: heroKey,
-    icon: powerIconKey,
-    text: powerTextKey,
+    icon: power_iconKey,
+    text: power_textKey,
 };
 
 
@@ -257,14 +257,14 @@ function linkItemList(itemList) {
         Object.keys(itemList[i]).forEach(key => {
 
             // キー名がアイテム名キーの場合
-            if(itemNameKey == key) {
+            if(item_nameKey == key) {
 
                 // アイテム名用変数に値を代入
                 itemNameText = itemList[i][key];
             }
 
             // キー名がアイコンキーの場合
-            if(itemIconKey == key) {
+            if(item_iconKey == key) {
 
                 // アイコン用変数に値を代入
                 iconText = itemList[i][key];
@@ -321,7 +321,7 @@ function linkItemList(itemList) {
             }
 
             // キー名がテキストキーの場合
-            if(itemTextKey == key) {
+            if(item_textKey == key) {
 
                 // テキスト用変数に値を代入
                 textText = itemList[i][key];
@@ -653,14 +653,14 @@ function linkPowerList(powerList) {
         Object.keys(powerList[i]).forEach(key => {
 
             // キー名がパワー名キーの場合
-            if(powerNameKey == key) {
+            if(power_nameKey == key) {
 
                 // パワー名用変数に値を代入
                 powerNameText = powerList[i][key];
             }
 
             // キー名がアイコンキーの場合
-            if(powerIconKey == key) {
+            if(power_iconKey == key) {
 
                 // アイコン用変数に値を代入
                 iconText = powerList[i][key];
@@ -673,7 +673,7 @@ function linkPowerList(powerList) {
                 heroText = powerList[i][key];
             }
             // キー名がテキストキーの場合
-            if(powerTextKey == key) {
+            if(power_textKey == key) {
 
                 // テキスト用変数に値を代入
                 textText = powerList[i][key];

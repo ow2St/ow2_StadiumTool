@@ -94,39 +94,39 @@ var status_lifeKey = "ライフ";
 var status_armorKey = "アーマー";
 var status_shieldKey = "シールド";
 var mainWeaponNameKey = "メイン武器名";
-var mainWeaponKey = "メイン武器";
+var mainDamageKey = "メイン武器";
 var mainCalculationKey = "メイン計算式";
 var mainReloadKey = "メインリロード速度";
 var mainAmmoKey = "メイン弾薬数";
 var mainHSRateKey = "メインHS倍率";
 var mainLifeStealRateKey = "メインライフ吸収";
 var subWeaponNameKey = "サブ武器名";
-var subWeaponKey = "サブ武器";
+var subDamageKey = "サブ武器";
 var subCalculationKey = "サブ計算式";
 var subReloadKey = "サブリロード速度";
 var subAmmoKey = "サブ弾薬数";
 var subHSRateKey = "サブHS倍率";
 var subLifeStealRateKey = "サブライフ吸収";
 var ability1NameKey = "アビリティ１名";
-var ability1Key = "アビリティ１";
+var ability1DamageKey = "アビリティ１";
 var ability1CalculationKey = "アビリティ１計算式";
 var ability1DurationKey = "アビリティ１継続時間";
 var ability1CTKey = "アビリティ1CT";
 var ability1LifeStealRateKey = "アビリティ1ライフ吸収";
 var ability2NameKey = "アビリティ２名";
-var ability2Key = "アビリティ２";
+var ability2DamageKey = "アビリティ２";
 var ability2CalculationKey = "アビリティ２計算式";
 var ability2DurationKey = "アビリティ２継続時間";
 var ability2CTKey = "アビリティ2CT";
 var ability2LifeStealRateKey = "アビリティ2ライフ吸収";
 var ability3NameKey = "アビリティ３名";
-var ability3Key = "アビリティ３";
+var ability3DamageKey = "アビリティ３";
 var ability3CalculationKey = "アビリティ３計算式";
 var ability3DurationKey = "アビリティ３継続時間";
 var ability3CTKey = "アビリティ3CT";
 var ability3LifeStealRateKey = "アビリティ3ライフ吸収";
 var ultNameKey = "ULT名";
-var ultKey = "ULT";
+var ultDamageKey = "ULT";
 var ultCalculationKey = "ULT計算式";
 var ultDurationKey = "ULT継続時間";
 var ultLifeStealRateKey = "ULT2ライフ吸収";
@@ -139,29 +139,29 @@ const statusKeyMap = {
     shield: status_shieldKey,
     armor: status_armorKey,
     mainweaponname: mainWeaponNameKey,
-    mainweapon: mainWeaponKey,
+    maindamage: mainDamageKey,
     mainreload: mainReloadKey,
     mainammo: mainAmmoKey,
     mainhsrate: mainHSRateKey,
     subweaponname: subWeaponNameKey,
-    subweapon: subWeaponKey,
+    subdamage: subDamageKey,
     subreload: subReloadKey,
     subammo: subAmmoKey,
     subhsrate: subHSRateKey,
     ability1name: ability1NameKey,
-    ability1: ability1Key,
+    ability1damage: ability1DamageKey,
     ability1duration: ability1DurationKey,
     ability1ct: ability1CTKey,
     ability2name: ability2NameKey,
-    ability2: ability2Key,
+    ability2damage: ability2DamageKey,
     ability2duration: ability2DurationKey,
     ability2ct: ability2CTKey,
     ability3name: ability3NameKey,
-    ability3: ability3Key,
+    ability3damage: ability3DamageKey,
     ability3duration: ability3DurationKey,
     ability3ct: ability3CTKey,
     ultname: ultNameKey,
-    ult: ultKey,
+    ultdamage: ultDamageKey,
     ultduration: ultDurationKey,
     meleedamage: status_meleeDamageKey
 };
@@ -393,29 +393,29 @@ function organizeStatusData(statusAllData) {
             shield: Slist.shield,
             armor: Slist.armor,
             mainweaponname: Slist.mainweaponname,
-            mainweapon: Slist.mainweapon,
+            maindamage: Slist.maindamage,
             mainreload: Slist.mainreload,
             mainammo: Slist.mainammo,
             mainhsrate: Slist.mainhsrate,
             subweaponname: Slist.subweaponname,
-            subweapon: Slist.subweapon,
+            subdamage: Slist.subdamage,
             subreload: Slist.subreload,
             subammo: Slist.subammo,
             subhsrate: Slist.subhsrate,
             ability1name: Slist.ability1name,
-            ability1: Slist.ability1,
+            ability1damage: Slist.ability1damage,
             ability1duration: Slist.ability1duration,
             ability1ct: Slist.ability1ct,
             ability2name: Slist.ability2name,
-            ability2: Slist.ability2,
+            ability2damage: Slist.ability2damage,
             ability2duration: Slist.ability2duration,
             ability2ct: Slist.ability2ct,
             ability3name: Slist.ability3name,
-            ability3: Slist.ability3,
+            ability3damage: Slist.ability3damage,
             ability3duration: Slist.ability3duration,
             ability3ct: Slist.ability3ct,
             ultname: Slist.ultname,
-            ult: Slist.ult,
+            ultdamage: Slist.ultdamage,
             ultduration: Slist.ultduration,
             meleedamage: Slist.meleedamage
         };
@@ -582,7 +582,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
     const weapons = [
         {
             nameKey: mainWeaponNameKey,
-            attackPointKey: mainWeaponKey,
+            attackPointKey: mainDamageKey,
             HSRateKey: mainHSRateKey,
             reloadKey: mainReloadKey,
             ammoKey: mainAmmoKey,
@@ -590,7 +590,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
         },
         {
             nameKey: subWeaponNameKey,
-            attackPointKey: subWeaponKey,
+            attackPointKey: subDamageKey,
             HSRateKey: subHSRateKey,
             reloadKey: subReloadKey,
             ammoKey: subAmmoKey,
@@ -610,28 +610,28 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
     const anothers = [
         {
             nameKey: ability1NameKey,
-            attackPointKey: ability1Key,
+            attackPointKey: ability1DamageKey,
             CTKey: ability1CTKey,
             durationKey: ability1DurationKey,
             lifeStealRateKey: ability1LifeStealRateKey
         },
         {
             nameKey: ability2NameKey,
-            attackPointKey: ability2Key,
+            attackPointKey: ability2DamageKey,
             CTKey: ability2CTKey,
             durationKey: ability2DurationKey,
             lifeStealRateKey: ability2LifeStealRateKey
         },
         {
             nameKey: ability3NameKey,
-            attackPointKey: ability3Key,
+            attackPointKey: ability3DamageKey,
             CTKey: ability3CTKey,
             durationKey: ability3DurationKey,
             lifeStealRateKey: ability3LifeStealRateKey
         },
         {
             nameKey: ultNameKey,
-            attackPointKey: ultKey,
+            attackPointKey: ultDamageKey,
             CTKey: "",
             durationKey: ultDurationKey,
             lifeStealRateKey: ultLifeStealRateKey
@@ -763,7 +763,7 @@ function addStatusDiv_Weapon(name,value,hsValue,reload,ammo,lifeSteal){
     const detailsHtml = detailParts.length > 0 ? `<p class="status-detail">${detailParts.join("　")}</p>` : "";
 
     // 内容を生成
-    if(name == meleeDamageKey){
+    if(name == status_meleeDamageKey){
         div.innerHTML = `
         <p><strong>${name}</strong>：${value}${hsView}</p>
         ${detailsHtml}
@@ -790,7 +790,7 @@ function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,life
     let CTValue = 0;
     let lifeStealValue = 0;
     
-    if(attackPointKey == ability1Key){
+    if(attackPointKey == ability1DamageKey){
         if(selectedHero == "ジュノ" && junoFlg == "ヒール"){
             attackValue = statuslist[attackPointKey] + 50;
         }else if(selectedHero == "モイラ" && moiraFlg == 'ヒール'){
@@ -798,9 +798,9 @@ function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,life
         }
     }
 
-    if(attackPointKey == ultKey){
+    if(attackPointKey == ultDamageKey){
         if(selectedHero == "モイラ" && moiraFlg == 'ヒール'){
-            attackValue = Math.round((statuslist[ultKey] / 18 * 27 * 10 ** 2) / 10 ** 2);
+            attackValue = Math.round((statuslist[ultDamageKey] / 18 * 27 * 10 ** 2) / 10 ** 2);
         }
     }
 
@@ -1558,8 +1558,8 @@ function updateStatus_Item(selectedItemRows){
         if(weaponPowerTmp != 0){
 
             // 表示用ステータスリストに反映
-            showStatusList[mainWeaponKey] = Math.round(showStatusList[mainWeaponKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
-            showStatusList[subWeaponKey] = Math.round(showStatusList[subWeaponKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+            showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+            showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
             
             // ラインハルトは近接ダメージにも武器パワーが乗るので対応
             if(showStatusList[heroNameKey] == "ラインハルト"){
@@ -1568,7 +1568,7 @@ function updateStatus_Item(selectedItemRows){
 
             // ゲンジ・ソルジャーの場合はULTにも武器パワーが乗るので対応
             if(showStatusList[heroNameKey] == "ゲンジ" || showStatusList[heroNameKey] == "ソルジャー76"){
-                showStatusList[ultKey] = Math.round(showStatusList[ultKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+                showStatusList[ultDamageKey] = Math.round(showStatusList[ultDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
             }
         }
 
@@ -1576,17 +1576,17 @@ function updateStatus_Item(selectedItemRows){
         if(abilityPowerTmp != 0){
 
             // 表示用ステータスリストに反映
-            showStatusList[ability1Key] = Math.round(showStatusList[ability1Key] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
-            showStatusList[ability2Key] = Math.round(showStatusList[ability2Key] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+            showStatusList[ability1DamageKey] = Math.round(showStatusList[ability1DamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+            showStatusList[ability2DamageKey] = Math.round(showStatusList[ability2DamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
 
             // ラインハルトとシグマの盾は除外
             if(showStatusList[heroNameKey] != "ラインハルト" && showStatusList[heroNameKey] != "シグマ"){
-                showStatusList[ability3Key] = Math.round(showStatusList[ability3Key] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+                showStatusList[ability3DamageKey] = Math.round(showStatusList[ability3DamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
             }
 
             // ゲンジとソルジャーのULTは除外
             if(showStatusList[heroNameKey] != "ゲンジ" && showStatusList[heroNameKey] != "ソルジャー76"){
-                showStatusList[ultKey] = Math.round(showStatusList[ultKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+                showStatusList[ultDamageKey] = Math.round(showStatusList[ultDamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
             }
 
             // クイーンの場合は傷ダメージにも乗算
@@ -1619,10 +1619,10 @@ function updateStatus_Item(selectedItemRows){
         if(weapon_LifeStealTmp != 0){
 
             // 表示用ステータスリストに反映
-            if(showStatusList[mainWeaponKey] != 0){
+            if(showStatusList[mainDamageKey] != 0){
                 showStatusList[mainLifeStealRateKey] = showStatusList[mainLifeStealRateKey] + weapon_LifeStealTmp / 100;
             }
-            if(showStatusList[subWeaponKey] != 0){
+            if(showStatusList[subDamageKey] != 0){
                 showStatusList[subLifeStealRateKey] = showStatusList[subLifeStealRateKey] + weapon_LifeStealTmp / 100;
             }
 
@@ -1636,23 +1636,23 @@ function updateStatus_Item(selectedItemRows){
         if(ability_LifeStealTmp != 0){
 
             // 表示用ステータスリストに反映
-            if(showStatusList[ability1Key] != 0){
+            if(showStatusList[ability1DamageKey] != 0){
                 showStatusList[ability1LifeStealRateKey] = showStatusList[ability1LifeStealRateKey] + ability_LifeStealTmp / 100;
             }
-            if(showStatusList[ability2Key] != 0){
+            if(showStatusList[ability2DamageKey] != 0){
                 showStatusList[ability2LifeStealRateKey] = showStatusList[ability2LifeStealRateKey] + ability_LifeStealTmp / 100;
             }
 
             // ラインハルトとシグマの盾は除外
             if(showStatusList[heroNameKey] != "ラインハルト" && showStatusList[heroNameKey] != "シグマ"){
-                if(showStatusList[ability3Key] != 0){
+                if(showStatusList[ability3DamageKey] != 0){
                     showStatusList[ability3LifeStealRateKey] = showStatusList[ability3LifeStealRateKey] + ability_LifeStealTmp / 100;
                 }
             }
 
             // ゲンジとソルジャーのULTは除外
             if(showStatusList[heroNameKey] != "ゲンジ" && showStatusList[heroNameKey] != "ソルジャー76"){
-                if(showStatusList[ultKey] != 0){
+                if(showStatusList[ultDamageKey] != 0){
                     showStatusList[ultLifeStealRateKey] = showStatusList[ultLifeStealRateKey] + ability_LifeStealTmp / 100;
                 }
             }
@@ -1676,7 +1676,7 @@ function updateStatus_Item(selectedItemRows){
 
             // ラインハルトはメイン武器にも近接ダメージが乗るので対応
             if(showStatusList[heroNameKey] == "ラインハルト"){
-                showStatusList[mainWeaponKey] = Math.round(showStatusList[mainWeaponKey] * (meleeDamageTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+                showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * (meleeDamageTmp/100 + 1) * 10 ** 2) / 10 ** 2;
             }
         }
 
@@ -1753,7 +1753,7 @@ function updateStatus_Item(selectedItemRows){
 
         // ラインハルトの盾増強
         if(nameTmp == "オーバークロック・バリア"){
-            showStatusList[ability3Key] = Math.round(showStatusList[ability3Key] * 1.2 * 10 ** 2) / 10 ** 2;
+            showStatusList[ability3DamageKey] = Math.round(showStatusList[ability3DamageKey] * 1.2 * 10 ** 2) / 10 ** 2;
             othersTmp = "20%[バリア・フィールド]サイズ";
         }
         
