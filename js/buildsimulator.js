@@ -3,7 +3,7 @@
 // ------------------------------
 
 // 選択中ヒーロー変数
-var selectedHero = "DVA（メック）"  // 初期値はDVA
+var selectedHero = "D.VA（メック）"  // 初期値はD.VA
 var life = 0;
 var armor = 0;
 var shield = 0;
@@ -25,16 +25,16 @@ var queenScratch = 15;  // クイーン傷ダメージ用変数
 var showStatusList = {};
 
 // アイテムリストのキー
-var itemNameKey = "アイテム名";
+var item_nameKey = "アイテム名";
 var categoryKey = "カテゴリー";
 var rarityKey = "レア度";
 var costKey = "コスト";
-var itemIconKey = "アイコン";
+var item_iconKey = "アイコン";
 var uniqueHeroKey = "固有ヒーロー";
-var itemTextKey = "テキスト";
-var lifeKey = "ライフ";
-var armorKey = "アーマー";
-var shieldKey = "シールド";
+var item_textKey = "テキスト";
+var item_lifeKey = "ライフ";
+var item_armorKey = "アーマー";
+var item_shieldKey = "シールド";
 var weaponPowerKey = "武器パワー";
 var abilityPowerKey = "アビリティパワー";
 var attackSpeedKey = "攻撃速度";
@@ -44,22 +44,22 @@ var weapon_LifeStealKey = "ライフ吸収（武器）";
 var ability_LifeStealKey = "ライフ吸収（アビリティ）";
 var speedKey = "移動速度";
 var reloadSpeedKey = "リロード速度";
-var meleeDamageKey = "近接ダメージ";
+var item_meleeDamageKey = "近接ダメージ";
 var criticalKey = "クリティカル";
 var othersKey = "その他";
 
-// キー対応マッピング（英語 → 日本語）
+// アイテムキー対応マッピング（英語 → 日本語）
 const itemKeyMap = {
-    itemname: itemNameKey,
+    itemname: item_nameKey,
     category: categoryKey,
     rarity: rarityKey,
     cost: costKey,
-    icon: itemIconKey,
+    icon: item_iconKey,
     uniquehero: uniqueHeroKey,
-    text: itemTextKey,
-    life: lifeKey,
-    armor: armorKey,
-    shield: shieldKey,
+    text: item_textKey,
+    life: item_lifeKey,
+    armor: item_armorKey,
+    shield: item_shieldKey,
     weaponpower: weaponPowerKey,
     abilitypower: abilityPowerKey,
     attackspeed: attackSpeedKey,
@@ -69,25 +69,102 @@ const itemKeyMap = {
     abilitylifesteal: ability_LifeStealKey,
     speed: speedKey,
     reloadspeed: reloadSpeedKey,
-    meleedamage: meleeDamageKey,
+    meleedamage: item_meleeDamageKey,
     critical: criticalKey,
     others: othersKey,
 };
 
 // パワーリストのキー
-var powerNameKey = "パワー名";
+var power_nameKey = "パワー名";
 var heroKey = "ヒーロー";
-var powerIconKey = "アイコン";
-var powerTextKey = "テキスト";
+var power_iconKey = "アイコン";
+var power_textKey = "テキスト";
 
-// キー対応マッピング（英語 → 日本語）
+// パワーキー対応マッピング（英語 → 日本語）
 const powerKeyMap = {
-    powername: powerNameKey,
+    powername: power_nameKey,
     hero: heroKey,
-    icon: powerIconKey,
-    text: powerTextKey,
+    icon: power_iconKey,
+    text: power_textKey,
 };
 
+// ステータスリストのキー
+var heroNameKey = "ヒーロー名";
+var status_lifeKey = "ライフ";
+var status_armorKey = "アーマー";
+var status_shieldKey = "シールド";
+var mainWeaponNameKey = "メイン武器名";
+var mainWeaponKey = "メイン武器";
+var mainCalculationKey = "メイン計算式";
+var mainReloadKey = "メインリロード速度";
+var mainAmmoKey = "メイン弾薬数";
+var mainHSRateKey = "メインHS倍率";
+var mainLifeStealRateKey = "メインライフ吸収";
+var subWeaponNameKey = "サブ武器名";
+var subWeaponKey = "サブ武器";
+var subCalculationKey = "サブ計算式";
+var subReloadKey = "サブリロード速度";
+var subAmmoKey = "サブ弾薬数";
+var subHSRateKey = "サブHS倍率";
+var subLifeStealRateKey = "サブライフ吸収";
+var ability1NameKey = "アビリティ１名";
+var ability1Key = "アビリティ１";
+var ability1CalculationKey = "アビリティ１計算式";
+var ability1DurationKey = "アビリティ１継続時間";
+var ability1CTKey = "アビリティ1CT";
+var ability1LifeStealRateKey = "アビリティ1ライフ吸収";
+var ability2NameKey = "アビリティ２名";
+var ability2Key = "アビリティ２";
+var ability2CalculationKey = "アビリティ２計算式";
+var ability2DurationKey = "アビリティ２継続時間";
+var ability2CTKey = "アビリティ2CT";
+var ability2LifeStealRateKey = "アビリティ2ライフ吸収";
+var ability3NameKey = "アビリティ３名";
+var ability3Key = "アビリティ３";
+var ability3CalculationKey = "アビリティ３計算式";
+var ability3DurationKey = "アビリティ３継続時間";
+var ability3CTKey = "アビリティ3CT";
+var ability3LifeStealRateKey = "アビリティ3ライフ吸収";
+var ultNameKey = "ULT名";
+var ultKey = "ULT";
+var ultCalculationKey = "ULT計算式";
+var ultDurationKey = "ULT継続時間";
+var ultLifeStealRateKey = "ULT2ライフ吸収";
+var status_meleeDamageKey = "近接ダメージ";
+
+// ステータスキー対応マッピング（英語 → 日本語）
+const statusKeyMap = {
+    heroname: heroNameKey,
+    life: status_lifeKey,
+    shield: status_shieldKey,
+    armor: status_armorKey,
+    mainweaponname: mainWeaponNameKey,
+    mainweapon: mainWeaponKey,
+    mainreload: mainReloadKey,
+    mainammo: mainAmmoKey,
+    mainhsrate: mainHSRateKey,
+    subweaponname: subWeaponNameKey,
+    subweapon: subWeaponKey,
+    subreload: subReloadKey,
+    subammo: subAmmoKey,
+    subhsrate: subHSRateKey,
+    ability1name: ability1NameKey,
+    ability1: ability1Key,
+    ability1duration: ability1DurationKey,
+    ability1ct: ability1CTKey,
+    ability2name: ability2NameKey,
+    ability2: ability2Key,
+    ability2duration: ability2DurationKey,
+    ability2ct: ability2CTKey,
+    ability3name: ability3NameKey,
+    ability3: ability3Key,
+    ability3duration: ability3DurationKey,
+    ability3ct: ability3CTKey,
+    ultname: ultNameKey,
+    ult: ultKey,
+    ultduration: ultDurationKey,
+    meleedamage: status_meleeDamageKey
+};
 
 const accordionContainer = document.getElementById("accordion-container");
 
@@ -105,16 +182,24 @@ var selectedPowerRowsData = [];
 var itemCheckboxes = [];
 var powerCheckboxes = [];
 
-a();
+loadAndInitBuildData();
 
-async function a() {
+// ------------------------------
+// 関数部
+// ------------------------------
+
+//ビルド関連データの読み込みと初期化
+async function loadAndInitBuildData() {
     try {
-        const [itemData, powerData] = await Promise.all([
+        const [itemData, powerData, statusData] = await Promise.all([
             // データの読み込み(itemList)
             fetch("itemListData.json").then(response => response.json()),
 
             // データの読み込み(powerList)
-            fetch("powerListData.json").then(response => response.json())
+            fetch("powerListData.json").then(response => response.json()),
+
+            // データの読み込み(powerList)
+            fetch("statusListData.json").then(response => response.json())
         ]);
 
         itemAllData = itemData;
@@ -133,9 +218,10 @@ async function a() {
         // パワーリストをテーブルに紐付け
         linkPowerList(powerList, selectedHero);
 
+        statusAllData = statusData;
 
-
-
+        // 整形 → キー変換
+        initStatusList = convertStatusKeys(organizeStatusData(statusAllData));
 
         // ステータスボックス設定
         initStatus(selectedHero);
@@ -143,7 +229,6 @@ async function a() {
         // 各イベント発生対象取得
         itemCheckboxes = document.querySelectorAll(".item-checkbox");
         powerCheckboxes = document.querySelectorAll(".power-checkbox");
-
 
         // 初期表示のために一度実行
         updateSelectedItemsList();
@@ -225,13 +310,8 @@ async function a() {
 
     } catch(error){
         console.error("データの読み込み中にエラーが発生しました:", error);
-/*         accordionContainer.textContent = "データの読み込みに失敗しました。";
- */    }
+    }
 }
-
-// ------------------------------
-// 関数部
-// ------------------------------
 
 //itemList に　itemListData.json　から貰うデータの形を決める
 function organizeItemData(itemAllData) {
@@ -265,7 +345,7 @@ function organizeItemData(itemAllData) {
     return selectedData;
 }
 
-// 英名キーを日本名キーへ変換処理
+//英名キーを日本名キーへ変換処理(itemList)
 function convertItemKeys(dataArray) {
     return dataArray.map(obj => {
         let newObj = {};
@@ -291,7 +371,7 @@ function organizePowerData(powerAllData) {
     return selectedData;
 }
 
-// 英名キーを日本名キーへ変換処理
+// 英名キーを日本名キーへ変換処理(powerList)
 function convertPowerKeys(dataArray) {
     return dataArray.map(obj => {
         let newObj = {};
@@ -302,6 +382,59 @@ function convertPowerKeys(dataArray) {
         return newObj;
     });
 }
+
+//initStatusList に　statusListData.json　から貰うデータの形を決める
+function organizeStatusData(statusAllData) {
+    const selectedData = statusAllData
+    .map(Slist => {
+        return {
+            heroname: Slist.heroname,
+            life: Slist.life,
+            shield: Slist.shield,
+            armor: Slist.armor,
+            mainweaponname: Slist.mainweaponname,
+            mainweapon: Slist.mainweapon,
+            mainreload: Slist.mainreload,
+            mainammo: Slist.mainammo,
+            mainhsrate: Slist.mainhsrate,
+            subweaponname: Slist.subweaponname,
+            subweapon: Slist.subweapon,
+            subreload: Slist.subreload,
+            subammo: Slist.subammo,
+            subhsrate: Slist.subhsrate,
+            ability1name: Slist.ability1name,
+            ability1: Slist.ability1,
+            ability1duration: Slist.ability1duration,
+            ability1ct: Slist.ability1ct,
+            ability2name: Slist.ability2name,
+            ability2: Slist.ability2,
+            ability2duration: Slist.ability2duration,
+            ability2ct: Slist.ability2ct,
+            ability3name: Slist.ability3name,
+            ability3: Slist.ability3,
+            ability3duration: Slist.ability3duration,
+            ability3ct: Slist.ability3ct,
+            ultname: Slist.ultname,
+            ult: Slist.ult,
+            ultduration: Slist.ultduration,
+            meleedamage: Slist.meleedamage
+        };
+    })
+    return selectedData;
+}
+
+// 英名キーを日本名キーへ変換処理(initStatusList)
+function convertStatusKeys(dataArray) {
+    return dataArray.map(obj => {
+        let newObj = {};
+        for (let key in obj) {
+            let newKey = statusKeyMap[key] || key; // 対応がないキーはそのまま
+            newObj[newKey] = obj[key];
+        }
+        return newObj;
+    });
+}
+
 
 // ヒーロー選択ウィンドウを開く
 function openHeroWindow(){
@@ -324,8 +457,8 @@ function selectHero(id){
 
     let imgPath = "";
     // 選択中ヒーローアイコンを変更
-    // DVAチェック
-    if(id == "DVA（メック）" || id == "DVA（人）"){
+    // D.VAチェック
+    if(id == "D.VA（メック）" || id == "D.VA（人）"){
         imgPath = "DVA.png"
     }else{
         imgPath = id + ".png";
@@ -364,7 +497,7 @@ function changeSelectedHeroTitle(id){
     const selectedHeroTitle = document.querySelector('.selectedhero-title');
     let heroName = "";
 
-    if(id == "DVA（メック）" || id == "DVA（人）"){
+    if(id == "D.VA（メック）" || id == "D.VA（人）"){
         heroName = "DVA";
     }else{
         heroName = id;
@@ -383,7 +516,7 @@ function initStatus(selectedHero){
         if (initStatusList[i][heroNameKey] == selectedHero){
 
             // DVAの場合
-            if(selectedHero == "DVA（メック）" || selectedHero == "DVA（人）"){
+            if(selectedHero == "D.VA（メック）" || selectedHero == "D.VA（人）"){
                 
                 // メック人切り替えボタンを表示
                 document.getElementById("dva-button").style.display = "flex";
@@ -438,9 +571,9 @@ function initStatus(selectedHero){
 // ステータス値初期化
 function initStatusValue(statuslist, addItemText, addItemOthers){
     // 選択中のヒーローのステータスを設定
-    document.getElementById("life").innerText = lifeKey + " :" + statuslist[lifeKey];
-    document.getElementById("armor").innerText = armorKey + " :" + statuslist[armorKey];
-    document.getElementById("shield").innerText = shieldKey + " :" + statuslist[shieldKey];
+    document.getElementById("life").innerText = status_lifeKey + " :" + statuslist[status_lifeKey];
+    document.getElementById("armor").innerText = status_armorKey + " :" + statuslist[status_armorKey];
+    document.getElementById("shield").innerText = status_shieldKey + " :" + statuslist[status_shieldKey];
     
     const container = document.getElementById('status-container');
     container.innerHTML = '';
@@ -464,8 +597,8 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
             lifeStealRateKey: subLifeStealRateKey
         },
         {
-            nameKey: meleeDamageKey,
-            attackPointKey: meleeDamageKey,
+            nameKey: status_meleeDamageKey,
+            attackPointKey: status_meleeDamageKey,
             HSRateKey: "",
             reloadKey: "",
             ammoKey: "",
@@ -563,7 +696,7 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadK
     let ammoValue = 0;
     let lifeStealValue = 0;
     
-    if(weaponNameKey == meleeDamageKey){
+    if(weaponNameKey == status_meleeDamageKey){
         if(selectedHero == "ジャンカー・クイーン"){
             weaponValue =  statuslist[attackPointKey] + queenScratch;
         }
@@ -598,7 +731,7 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadK
     }
 
     // 武器の情報を追加
-    if(weaponNameKey == meleeDamageKey){
+    if(weaponNameKey == status_meleeDamageKey){
         addStatusDiv_Weapon(weaponNameKey,weaponValue,HSValue,reloadValue,ammoValue,lifeStealValue);
     }else{
         addStatusDiv_Weapon(statuslist[weaponNameKey],weaponValue,HSValue,reloadValue,ammoValue,lifeStealValue);
@@ -718,10 +851,10 @@ function addStatusDiv_AbilityOrULT(name,value,ct,duration,lifeSteal){
 function dvaButtonClick(){
 
     // 選択ヒーロー切り替え
-    if(selectedHero == "DVA（メック）"){
-        selectedHero = "DVA（人）";
-    }else if(selectedHero == "DVA（人）"){
-        selectedHero = "DVA（メック）";
+    if(selectedHero == "D.VA（メック）"){
+        selectedHero = "D.VA（人）";
+    }else if(selectedHero == "D.VA（人）"){
+        selectedHero = "D.VA（メック）";
     }
 
     // ステータスボックス初期化
@@ -893,7 +1026,7 @@ function linkItemList(itemList, id) {
     let headers_survival = document.getElementById("item-table-survival").querySelectorAll("th");
 
     // 選択ヒーローがDVAの場合、絞り込み条件と合致させるために値を変更
-    if(id == "DVA（メック）" || id == "DVA（人）"){
+    if(id == "D.VA（メック）" || id == "D.VA（人）"){
         id = "D.VA";
     }
 
@@ -918,16 +1051,16 @@ function linkItemList(itemList, id) {
         Object.keys(itemList[i]).forEach(key => {
 
             // キー名がアイテム名キーの場合
-            if(itemNameKey == key) {
+            if(item_nameKey == key) {
 
                 // アイテム名用変数に値を代入
                 itemNameText = itemList[i][key];
             }
 
             // キー名がステータス関連のキーの場合
-            if([lifeKey, armorKey, shieldKey, weaponPowerKey, abilityPowerKey, 
+            if([item_lifeKey, item_armorKey, item_shieldKey, weaponPowerKey, abilityPowerKey, 
                 attackSpeedKey, ctReducationKey, ammoKey, weapon_LifeStealKey, 
-                ability_LifeStealKey, speedKey, reloadSpeedKey, meleeDamageKey, 
+                ability_LifeStealKey, speedKey, reloadSpeedKey, item_meleeDamageKey, 
                 criticalKey].includes(key)) {
 
                 // 値が0でない場合
@@ -947,14 +1080,14 @@ function linkItemList(itemList, id) {
             }
 
             // キー名がアイコンキーの場合
-            if(itemIconKey == key) {
+            if(item_iconKey == key) {
 
                 // アイコン用変数に値を代入
                 iconText = itemList[i][key];
             }
 
             // キー名がテキストキーの場合
-            if(itemTextKey == key) {
+            if(item_textKey == key) {
 
                 // テキスト用変数に値を代入
                 textText = itemList[i][key];
@@ -1085,7 +1218,7 @@ function linkPowerList(powerList, id) {
     let tbody = document.getElementById("power-table").querySelector("tbody");
 
     // 選択ヒーローがDVAの場合、絞り込み条件と合致させるために値を変更
-    if(id == "DVA（メック）" || id == "DVA（人）"){
+    if(id == "D.VA（メック）" || id == "D.VA（人）"){
         id = "D.VA";
     }
 
@@ -1104,21 +1237,21 @@ function linkPowerList(powerList, id) {
         Object.keys(powerList[i]).forEach(key => {
 
             // キー名がパワー名キーの場合
-            if(powerNameKey == key) {
+            if(power_nameKey == key) {
 
                 // パワー名用変数に値を代入
                 powerNameText = powerList[i][key];
             }
 
             // キー名がアイコンキーの場合
-            if(powerIconKey == key) {
+            if(power_iconKey == key) {
 
                 // アイコン用変数に値を代入
                 iconText = powerList[i][key];
             }
 
             // キー名がテキストキーの場合
-            if(powerTextKey == key) {
+            if(power_textKey == key) {
 
                 // テキスト用変数に値を代入
                 textText = powerList[i][key];
@@ -1263,7 +1396,7 @@ function updateSelectedItemsList() {
             const itemName = cells[1].textContent;
             for(let i=0; i<itemList.length; i++) {
                 
-                if(itemList[i][itemNameKey] == itemName){
+                if(itemList[i][item_nameKey] == itemName){
                     selectedItemRows.push(itemList[i]);
                 }
             }
@@ -1286,7 +1419,7 @@ function updateSelectedPowerList() {
             const powerName = cells[1].textContent;
             for(let i=0; i<powerList.length; i++) {
                 
-                if(powerList[i][powerNameKey] == powerName){
+                if(powerList[i][power_nameKey] == powerName){
                     selectedPowerRows.push(powerList[i]);
                 }
             }
@@ -1317,7 +1450,7 @@ function updateBuild_Item(selectedItemRows){
         if(i < selectedItemRows.length){
             // アイコン追加部分
             var iconImg = document.createElement("img");
-            iconImg.src = "assets/images/icons/item/" + selectedItemRows[i][itemIconKey];
+            iconImg.src = "assets/images/icons/item/" + selectedItemRows[i][item_iconKey];
             iconImg.classList.add("selectedbuild-item-icon");
             iconImg.id = "item-image" + String(i + 1)
             targetDiv.appendChild(iconImg);
@@ -1361,10 +1494,10 @@ function updateStatus_Item(selectedItemRows){
     for(let i=0; i<selectedItemRows.length; i++) {
 
         // 各パラメータを抽出
-        const nameTmp = selectedItemRows[i][itemNameKey];
-        const lifeTmp = selectedItemRows[i][lifeKey];
-        const armorTmp = selectedItemRows[i][armorKey];
-        const shieldTmp = selectedItemRows[i][shieldKey];
+        const nameTmp = selectedItemRows[i][item_nameKey];
+        const lifeTmp = selectedItemRows[i][item_lifeKey];
+        const armorTmp = selectedItemRows[i][item_armorKey];
+        const shieldTmp = selectedItemRows[i][item_shieldKey];
         const weaponPowerTmp = selectedItemRows[i][weaponPowerKey];
         const abilityPowerTmp = selectedItemRows[i][abilityPowerKey];
         const attackSpeedTmp = selectedItemRows[i][attackSpeedKey];
@@ -1374,16 +1507,16 @@ function updateStatus_Item(selectedItemRows){
         const ability_LifeStealTmp = selectedItemRows[i][ability_LifeStealKey];
         const speedTmp = selectedItemRows[i][speedKey];
         const reloadSpeedTmp = selectedItemRows[i][reloadSpeedKey];
-        const meleeDamageTmp = selectedItemRows[i][meleeDamageKey];
+        const meleeDamageTmp = selectedItemRows[i][item_meleeDamageKey];
         const criticalTmp = selectedItemRows[i][criticalKey];
         let othersTmp = selectedItemRows[i][othersKey];
-        let textTmp = selectedItemRows[i][itemTextKey];
+        let textTmp = selectedItemRows[i][item_textKey];
 
         // ライフに記載がある場合
         if(lifeTmp != 0){
 
             // 表示用ステータスリストに反映
-            showStatusList[lifeKey] = showStatusList[lifeKey] + lifeTmp;
+            showStatusList[status_lifeKey] = showStatusList[status_lifeKey] + lifeTmp;
         }
 
         // ライフ割合上昇アイテムの場合は倍率変数に保管後、追加効果に乗らないようハイフンにする
@@ -1403,14 +1536,14 @@ function updateStatus_Item(selectedItemRows){
         if(armorTmp != 0){
 
             // 表示用ステータスリストに反映
-            showStatusList[armorKey] = showStatusList[armorKey] + armorTmp;
+            showStatusList[status_armorKey] = showStatusList[status_armorKey] + armorTmp;
         }
 
         // シールドに記載がある場合
         if(shieldTmp != 0){
 
             // 表示用ステータスリストに反映
-            showStatusList[shieldKey] = showStatusList[shieldKey] + shieldTmp;
+            showStatusList[status_shieldKey] = showStatusList[status_shieldKey] + shieldTmp;
         }
 
         // 武器パワーに記載がある場合
@@ -1422,7 +1555,7 @@ function updateStatus_Item(selectedItemRows){
             
             // ラインハルトは近接ダメージにも武器パワーが乗るので対応
             if(showStatusList[heroNameKey] == "ラインハルト"){
-                showStatusList[meleeDamageKey] = Math.round(showStatusList[meleeDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+                showStatusList[status_meleeDamageKey] = Math.round(showStatusList[status_meleeDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
             }
 
             // ゲンジ・ソルジャーの場合はULTにも武器パワーが乗るので対応
@@ -1531,7 +1664,7 @@ function updateStatus_Item(selectedItemRows){
         if(meleeDamageTmp != 0){
 
             // 表示用ステータスリストに反映
-            showStatusList[meleeDamageKey] = Math.round(showStatusList[meleeDamageKey] * (meleeDamageTmp / 100 + 1) * 10 ** 2) / 10 ** 2;
+            showStatusList[status_meleeDamageKey] = Math.round(showStatusList[status_meleeDamageKey] * (meleeDamageTmp / 100 + 1) * 10 ** 2) / 10 ** 2;
 
             // ラインハルトはメイン武器にも近接ダメージが乗るので対応
             if(showStatusList[heroNameKey] == "ラインハルト"){
@@ -1624,21 +1757,21 @@ function updateStatus_Item(selectedItemRows){
             if(lifeRate != 1){
 
                 // 表示用ステータスリストに反映
-                showStatusList[lifeKey] = Math.round(showStatusList[lifeKey] * lifeRate);
+                showStatusList[status_lifeKey] = Math.round(showStatusList[status_lifeKey] * lifeRate);
             }
 
             // アーマー
             if(armorRate != 1){
 
                 // 表示用ステータスリストに反映
-                showStatusList[armorKey] = Math.round(showStatusList[armorKey] * armorRate);
+                showStatusList[status_armorKey] = Math.round(showStatusList[status_armorKey] * armorRate);
             }
 
             // シールド
             if(shieldRate != 1){
 
                 // 表示用ステータスリストに反映
-                showStatusList[shieldKey] = Math.round(showStatusList[shieldKey] * shieldRate);
+                showStatusList[status_shieldKey] = Math.round(showStatusList[status_shieldKey] * shieldRate);
             }   
 
             // 弾薬
@@ -1686,7 +1819,7 @@ function updateBuild_Power(selectedPowerRows){
         if(i < selectedPowerRows.length){
             // アイコン追加部分
             var iconImg = document.createElement("img");
-            iconImg.src = "assets/images/icons/power/" + selectedPowerRows[i][powerIconKey];
+            iconImg.src = "assets/images/icons/power/" + selectedPowerRows[i][power_iconKey];
             iconImg.classList.add("selectedbuild-power-icon");
             iconImg.id = "power-image" + String(i + 1)
             targetDiv.appendChild(iconImg);
@@ -1718,7 +1851,7 @@ function updateStatus_Power(selectedPowerRows){
     for(let i=0; i<4; i++) {
 
         // テキストを抽出
-        const textTmp = selectedPowerRows[i][powerTextKey];
+        const textTmp = selectedPowerRows[i][power_textKey];
 
         // 追加効果欄に羅列(パワーは必ずテキストがあるため空チェックはしない)
         document.getElementById("addpower").innerText = document.getElementById("addpower").innerText + textTmp + "\n";
@@ -1734,7 +1867,7 @@ function clickDeleteButton(spanId,selectedRows) {
     // IDに「item」が含まれる場合
     if(spanId.includes("item")){
         
-        const itemName = selectedRows[index][itemNameKey];
+        const itemName = selectedRows[index][item_nameKey];
         const category = selectedRows[index][categoryKey];
         //初期値は武器カテゴリを設定
         var tbody = document.getElementById("item-table-weapon").querySelector("tbody");
@@ -1776,7 +1909,7 @@ function clickDeleteButton(spanId,selectedRows) {
 
     }else if(spanId.includes("power")){
 
-        const powerName = selectedRows[index][powerNameKey];
+        const powerName = selectedRows[index][power_nameKey];
         const tbody = document.getElementById("power-table").querySelector("tbody");
         const rows = Array.from(tbody.querySelectorAll("tr"));
         rows.shift();
@@ -1843,7 +1976,7 @@ function disablePowerTableCheckbox(flag){
 function filterTable(id){
 
     // 選択ヒーローがDVAの場合、絞り込み条件と合致させるために値を変更
-    if(id == "DVA（メック）" || id == "DVA（人）"){
+    if(id == "D.VA（メック）" || id == "D.VA（人）"){
         id = "D.VA";
     }
 
