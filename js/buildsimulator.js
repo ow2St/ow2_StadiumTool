@@ -763,10 +763,18 @@ function addStatusDiv_Weapon(name,value,hsValue,reload,ammo,lifeSteal){
     const detailsHtml = detailParts.length > 0 ? `<p class="status-detail">${detailParts.join("　")}</p>` : "";
 
     // 内容を生成
-    div.innerHTML = `
+    if(name == meleeDamageKey){
+        div.innerHTML = `
         <p><strong>${name}</strong>：${value}${hsView}</p>
         ${detailsHtml}
-    `;
+        `;
+    }else{
+        div.innerHTML = `
+        <p><strong class="weapon">${name}</strong>：${value}${hsView}</p>
+        ${detailsHtml}
+        `;
+    }
+    
 
     container.appendChild(div);
 }
@@ -840,7 +848,7 @@ function addStatusDiv_AbilityOrULT(name,value,ct,duration,lifeSteal){
 
     // 内容を生成
     div.innerHTML = `
-        <p><strong>${name}</strong>：${value}</p>
+        <p><strong class="ability">${name}</strong>：${value}</p>
         ${detailsHtml}
     `;
 

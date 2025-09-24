@@ -160,7 +160,7 @@ function organizeItemData(itemAllData) {
             reloadspeed: Ilist.reloadspeed,
             meleedamage: Ilist.meleedamage,
             critical: Ilist.critical,
-            others: Ilist.others
+            others: (Ilist.others === "-") ? Ilist.others : "※" + Ilist.others
         };
     })
     return selectedData;
@@ -339,16 +339,19 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
 
     // アイテム名列
     var td = document.createElement("td");
-    td.textContent = itemNameText;
-    td.classList.add("item-td");
-    tr.appendChild(td);
-
-    // アイコン列
-    var td = document.createElement("td");
+    var div = document.createElement("div");
+    // 中のアイコン
     var iconImg = document.createElement("img");
     iconImg.src = "assets/images/icons/item/" + iconText;
     iconImg.classList.add("itemandpower-itemicon");
-    td.appendChild(iconImg);
+    // 中のアイテム名とヒーロー名
+    var text = document.createElement("span");
+    var textTmp = itemNameText + "\n\n" + "ヒーロー：" + uniqueHeroText;
+    text.innerHTML = textTmp.replace(/\n/g, "<br>");;
+    div.appendChild(iconImg);
+    div.appendChild(text);
+    div.classList.add("name-table");
+    td.appendChild(div);
     td.classList.add("item-td");
     tr.appendChild(td);
 
@@ -370,10 +373,10 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
     td.classList.add("item-td");
     tr.appendChild(td);
 
-    // 固有ヒーロー列
+    // 固有ヒーロー列（非表示）
     var td = document.createElement("td");
     td.textContent = uniqueHeroText;
-    td.classList.add("item-td");
+    td.classList.add("hidden-column");
     tr.appendChild(td);
 
     // ステータス列
@@ -730,23 +733,26 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
 
     // パワー名列
     var td = document.createElement("td");
-    td.textContent = powerNameText;
-    td.classList.add("item-td");
-    tr.appendChild(td);
-
-    // アイコン列
-    var td = document.createElement("td");
+    var div = document.createElement("div");
+    // 中のアイコン
     var iconImg = document.createElement("img");
     iconImg.src = "assets/images/icons/power/" + iconText;
     iconImg.classList.add("itemandpower-powericon");
-    td.appendChild(iconImg);
+    // 中のパワー名とヒーロー名
+    var text = document.createElement("span");
+    var textTmp = powerNameText + "\n\n" + "ヒーロー：" + heroText;
+    text.innerHTML = textTmp.replace(/\n/g, "<br>");;
+    div.appendChild(iconImg);
+    div.appendChild(text);
+    div.classList.add("name-table");
+    td.appendChild(div);
     td.classList.add("item-td");
     tr.appendChild(td);
 
-    // ヒーロー列
+    // ヒーロー列(非表示)
     var td = document.createElement("td");
     td.textContent = heroText;
-    td.classList.add("item-td");
+    td.classList.add("hidden-column");
     tr.appendChild(td);
 
     // テキスト列

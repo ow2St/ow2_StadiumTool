@@ -776,7 +776,7 @@ main-IAP{
     width: 100px;
     height: 100px;
     border-radius: 50%;
-
+    vertical-align: middle;
 }
 
 .itemandpower-powericon {
@@ -785,6 +785,11 @@ main-IAP{
     width: 100px;
     height: 100px;
     border-radius: 15px;
+}
+
+.name-table {
+    display: flex;
+    align-items: center;
 }
 
 .table-on{
@@ -905,4 +910,12 @@ main-IAP{
     width: 20px;
     margin: 0 auto;
     transform: scale(2.5);
+}
+
+.weapon {
+    background-color: #ffd3d3;
+}
+
+.ability {
+    background-color: #d3d3ff;
 }
