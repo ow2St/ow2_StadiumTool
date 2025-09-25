@@ -807,6 +807,11 @@ main-IAP{
     display: none;
 }
 
+.itemandpower-statusicon{
+    width: 10px;
+    height: 10px;
+}
+
 /*
 ====================================================================
 メイン部（パッチノート）
