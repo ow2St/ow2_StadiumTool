@@ -130,6 +130,9 @@ const sortingCriteria = [
 
 let sortDirection = new Array(8).fill(null);
 
+//アイテム表、コストのキャッシュアイコン等初期表示
+addCostDivAndSpan();
+
 // ------------------------------
 // 関数部
 // ------------------------------
@@ -559,7 +562,7 @@ function itemSortClick(id){
     sortingCriteria.forEach(row => {
         document.getElementById(row.column).innerText = labelMap[row.column];
     });
-    
+
     let arrows = "";
     
     if(sortDirection[columnIndex]){
@@ -568,9 +571,55 @@ function itemSortClick(id){
         arrows = "▼"
     }
 
-    // ソート結果に応じた列名に更新
-    document.getElementById(id).innerText = labelMap[id] + arrows;
+    if(id == "cost"){
+        addCostDivAndSpan();
+        document.getElementById("span-cost").innerText = labelMap[id];
+        document.getElementById("span-costArrow").innerText = arrows;
+    }else{
+        // ソート結果に応じた列名に更新
+        document.getElementById(id).innerText = labelMap[id] + arrows;
+    }
+}
 
+function addCostDivAndSpan() {
+
+    //costのth内innerTextはいらないので消去
+    document.getElementById("cost").innerText = "";
+    
+    // costのthを取得
+    const cost_th = document.querySelector("th#cost.item-th");
+
+    // div を作成
+    const cost_div = document.createElement("div");
+    cost_div.id = "div-cost";
+
+    // th の子要素として追加
+    cost_th.appendChild(cost_div);
+
+    //span を作成
+    const cost_span = document.createElement("span");
+    cost_span.innerText = "コスト";
+    cost_span.id = "span-cost";
+
+    const costArrow_span = document.createElement("span");
+    costArrow_span.id = "span-costArrow";
+
+    addImageCashIcon();
+
+    // div の子要素として追加
+    cost_div.appendChild(cost_span);
+    cost_div.appendChild(costArrow_span);
+}
+
+function addImageCashIcon() {
+
+    // img要素を作成
+    let img = document.createElement("img");
+    img.src = "assets/images/icons/status/キャッシュアイコン.png";
+    img.classList.add("itemandpower-statusicon");
+
+    // divの中に追加
+    document.getElementById("div-cost").appendChild(img);
 }
 
 // アイテムテーブルをソートする関数
