@@ -330,15 +330,84 @@ function linkItemList(itemList) {
                 textText = itemList[i][key];
             }
         })
-    
-    tbody.appendChild(appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, statusText, textText));
+
+        //ステータスアイコン設定
+        let statusIcons = [];
+        let statusLists = (statusText || "").split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+
+        statusLists.forEach((status, i) => {
+
+            //その他（特殊効果）以外のアイコン付与
+            if(!status.includes("※")){
+                switch(true) {
+                    case status.includes("ライフ+"):
+                    case status.includes("アーマー"):
+                    case status.includes("シールド"):
+                        statusIcons.push("assets/images/icons/status/ライフアイコン.png");
+                        break;
+
+                    case status.includes("武器パワー"):
+                        statusIcons.push("assets/images/icons/status/武器パワーアイコン.png");
+                        break;
+
+                    case status.includes("アビリティパワー"):
+                        statusIcons.push("assets/images/icons/status/アビリティパワーアイコン.png");
+                        break;
+
+                    case status.includes("攻撃速度"):
+                        statusIcons.push("assets/images/icons/status/攻撃速度アイコン.png");
+                        break;
+
+                    case status.includes("CT短縮"):
+                        statusIcons.push("assets/images/icons/status/クールダウンアイコン.png");
+                        break;
+
+                    case status.includes("弾薬"):
+                        statusIcons.push("assets/images/icons/status/最大弾薬数アイコン.png");
+                        break;
+
+                    case status.includes("ライフ吸収（武器）"):
+                        statusIcons.push("assets/images/icons/status/ライフ吸収(武器)アイコン.png");
+                        break;
+
+                    case status.includes("ライフ吸収（アビリティ）"):
+                        statusIcons.push("assets/images/icons/status/ライフ吸収(アビリティ)アイコン.png");
+                        break;
+
+                    case status.includes("移動速度"):
+                        statusIcons.push("assets/images/icons/status/移動速度アイコン.png");
+                        break;
+
+                    case status.includes("リロード速度"):
+                        statusIcons.push("assets/images/icons/status/リロード速度アイコン.png");
+                        break;
+
+                    case status.includes("近接ダメージ"):
+                        statusIcons.push("assets/images/icons/status/近接攻撃ダメージアイコン.png");
+                        break;
+
+                    case status.includes("クリティカル"):
+                        statusIcons.push("assets/images/icons/status/クリティカル・ダメージアイコン.png");
+                        break;
+                }
+            
+            //その他（特殊効果）の場合
+            }else if(status.includes("※")){
+                statusIcons.push("assets/images/icons/status/特殊効果アイコン.png");
+
+                //テキストから※を削除
+                statusLists[i] = status.replace("※","");
+            }            
+        });           
+
+    tbody.appendChild(appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, statusText, textText, statusLists, statusIcons));
     
     tr.classList.add("table-on");
     }
 }
 
 // アイテムリスト用子要素作成関数
-function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, statusText, textText){
+function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, statusText, textText, statusLists, statusIcons){
 
     // アイテム名列
     var td = document.createElement("td");
@@ -384,9 +453,31 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
 
     // ステータス列
     var td = document.createElement("td");
-    td.innerHTML = statusText.replace(/\n/g, "<br>");
+
+    for (let i = 0; i < statusLists.length; i++) {
+        // ステータスごとのdiv
+        let statusDiv = document.createElement("div");
+
+        // アイコン作成
+        let iconImg = document.createElement("img");
+        iconImg.src = statusIcons[i];
+        iconImg.classList.add("itemandpower-statusicon");
+
+        // テキスト作成
+        let textSpan = document.createElement("span");
+        textSpan.innerText = statusLists[i];
+
+        // まとめて追加
+        statusDiv.appendChild(iconImg);
+        statusDiv.appendChild(textSpan);
+
+        // tdに追加
+        td.appendChild(statusDiv);
+    }
+
     td.classList.add("item-td");
     tr.appendChild(td);
+
 
     // テキスト列
     var td = document.createElement("td");
