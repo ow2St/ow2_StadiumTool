@@ -25,6 +25,7 @@ var queenScratch = 15;  // クイーン傷ダメージ用変数
 var showStatusList = {};
 
 // アイテムリストのキー
+var itemIdKey = "アイテムID"; 
 var item_nameKey = "アイテム名";
 var categoryKey = "カテゴリー";
 var rarityKey = "レア度";
@@ -47,9 +48,13 @@ var reloadSpeedKey = "リロード速度";
 var item_meleeDamageKey = "近接ダメージ";
 var criticalKey = "クリティカル";
 var othersKey = "その他";
+var durationFlgKey = "持続時間フラグ";
+var durationKey = "持続時間";
+var theoreticalFlgKey = "理論値フラグ";
 
 // アイテムキー対応マッピング（英語 → 日本語）
 const itemKeyMap = {
+    id: itemIdKey,
     itemname: item_nameKey,
     category: categoryKey,
     rarity: rarityKey,
@@ -72,6 +77,9 @@ const itemKeyMap = {
     meleedamage: item_meleeDamageKey,
     critical: criticalKey,
     others: othersKey,
+    durationflg: durationFlgKey,
+    duration: durationKey,
+    theoreticalflag: theoreticalFlgKey
 };
 
 // パワーリストのキー
@@ -324,6 +332,7 @@ function organizeItemData(itemAllData) {
     const selectedData = itemAllData
     .map(Ilist => {
         return {
+            id: Ilist.id,
             itemname: Ilist.itemname,
             category: Ilist.category,
             rarity: Ilist.rarity,
@@ -345,7 +354,10 @@ function organizeItemData(itemAllData) {
             reloadspeed: Ilist.reloadspeed,
             meleedamage: Ilist.meleedamage,
             critical: Ilist.critical,
-            others: Ilist.others
+            others: Ilist.others,
+            durationflg: Ilist.durationflg,
+            duration: Ilist.duration,
+            theoreticalflag: Ilist.theoreticalflag
         };
     })
     return selectedData;
@@ -1482,6 +1494,10 @@ function updateBuild_Item(selectedItemRows){
             var input = document.createElement("input");
             input.type = "checkbox";
             input.checked = false;
+            // 理論値フラグがfalseなら表示はするが非活性にする
+            if(!selectedItemRows[i][theoreticalFlgKey]){
+                input.disabled = true;
+            }
             input.classList.add("selectedbuild-theoretical-checkbox");
             input.id = "item-check" + String(i + 1);
             checkDiv.appendChild(input);
@@ -1527,6 +1543,8 @@ function updateStatus_Item(selectedItemRows){
         const criticalTmp = selectedItemRows[i][criticalKey];
         let othersTmp = selectedItemRows[i][othersKey];
         let textTmp = selectedItemRows[i][item_textKey];
+        let durationFlgTmp = selectedItemRows[i][durationFlgKey];
+        let durationTmp = selectedItemRows[i][durationKey];
 
         // ライフに記載がある場合
         if(lifeTmp != 0){
@@ -1700,63 +1718,44 @@ function updateStatus_Item(selectedItemRows){
             }
         }
 
-        // 持続時間上昇アイテム
-        if(nameTmp == "不滅の刃"){
-            showStatusList[ultDurationKey] = showStatusList[ultDurationKey] + 4;
-            othersTmp = "-";
-        }
-        else if(nameTmp == "ターゲット・トラッカー"){
-            showStatusList[ability2DurationKey] = Math.round(showStatusList[ability2DurationKey] * 1.15 * 10 ** 2) / 10 ** 2;
-            othersTmp = "-";
-        }
-        else if(nameTmp == "次世代手首ユニット"){
-            showStatusList[ability3DurationKey] = Math.round(showStatusList[ability3DurationKey] * 1.35 * 10 ** 2) / 10 ** 2;
-            othersTmp = "-";
-        }
-        else if(nameTmp == "エフィの法則"){
-            showStatusList[ability2DurationKey] = Math.round(showStatusList[ability2DurationKey] * 1.5 * 10 ** 2) / 10 ** 2;
-            othersTmp = "-";
-        }
-        else if(nameTmp == "超電導ユニット"){
-            showStatusList[ability1DurationKey] = Math.round(showStatusList[ability1DurationKey] * 1.4 * 10 ** 2) / 10 ** 2;
-            showStatusList[ability2DurationKey] = Math.round(showStatusList[ability2DurationKey] * 1.4 * 10 ** 2) / 10 ** 2;
-            othersTmp = "-";
-        }
-        else if(nameTmp == "バッテリー・パック"){
-            showStatusList[ability2DurationKey] = Math.round(showStatusList[ability2DurationKey] * 1.4 * 10 ** 2) / 10 ** 2;
-            othersTmp = "-";
-        }
-        else if(nameTmp == "コーカイの目"){
-            showStatusList[ultDurationKey] = Math.round(showStatusList[ultDurationKey] * 1.35 * 10 ** 2) / 10 ** 2;
-            othersTmp = "-";
-        }
-        else if(nameTmp == "ルクス・ループ"){
-            showStatusList[ability3DurationKey] = Math.round(showStatusList[ability3DurationKey] * 1.25 * 10 ** 2) / 10 ** 2;
-            othersTmp = "-";
-        }
-        else if(nameTmp == "エクステンデッド・プレイ"){
-            showStatusList[ability2DurationKey] = Math.round(showStatusList[ability2DurationKey] * 1.25 * 10 ** 2) / 10 ** 2;
-            othersTmp = "-";
-        }
-        else if(nameTmp == "導電コア"){
-            showStatusList[ability1DurationKey] = Math.round(showStatusList[ability1DurationKey] * 1.25 * 10 ** 2) / 10 ** 2;
-            othersTmp = "-";
-        }
-        else if(nameTmp == "スライシー・クーラント"){
-            showStatusList[ability1DurationKey] = Math.round(showStatusList[ability1DurationKey] + 1);
-            othersTmp = "-";
-        }
-        else if(nameTmp == "不屈の亡霊"){
-            showStatusList[ability2DurationKey] = Math.round(showStatusList[ability2DurationKey] * 1.15 * 10 ** 2) / 10 ** 2;
-            othersTmp = "15%[レイス・フォーム]移動速度";
-        }
-        else if(nameTmp == "パーフェクト・フォーミュラ"){
-            showStatusList[ultDurationKey] = Math.round(showStatusList[ultDurationKey] * 1.33 * 10 ** 2) / 10 ** 2;
-            othersTmp = "-";
-        }
-        else if(nameTmp == "補助ブースター"){
-            showStatusList[ability2DurationKey] = Math.round(showStatusList[ability2DurationKey] * 1.25 * 10 ** 2) / 10 ** 2;
-            othersTmp = "-";
+        // 持続時間に記載がある場合
+        if(durationFlgTmp != 0){
+            
+            // アビリティ１の場合
+            if(durationFlgTmp == 1){
+                if(durationTmp.charAt(0) == "+"){
+                    showStatusList[ability1DurationKey] = showStatusList[ability1DurationKey] + durationTmp.slice(1);
+                }else{
+                    showStatusList[ability1DurationKey] = (showStatusList[ability1DurationKey] * durationTmp.slice(1) * 10 ** 2) / 10 ** 2;
+                }
+            }
+            
+            // アビリティ２の場合
+            if(durationFlgTmp == 2){
+                if(durationTmp.charAt(0) == "+"){
+                    showStatusList[ability2DurationKey] = showStatusList[ability2DurationKey] + durationTmp.slice(1);
+                }else{
+                    showStatusList[ability2DurationKey] = (showStatusList[ability2DurationKey] * durationTmp.slice(1)* 10 ** 2) / 10 ** 2;
+                }
+            }
+
+            // アビリティ３の場合
+            if(durationFlgTmp == 3){
+                if(durationTmp.charAt(0) == "+"){
+                    showStatusList[ability3DurationKey] = showStatusList[ability3DurationKey] + durationTmp.slice(1);
+                }else{
+                    showStatusList[ability3DurationKey] = (showStatusList[ability3DurationKey] * durationTmp.slice(1)* 10 ** 2) / 10 ** 2;
+                }
+            }
+
+            // ULTの場合
+            if(durationFlgTmp == 4){
+                if(durationTmp.charAt(0) == "+"){
+                    showStatusList[ultDurationKey] = showStatusList[ultDurationKey] + durationTmp.slice(1);
+                }else{
+                    showStatusList[ultDurationKey] = (showStatusList[ultDurationKey] * durationTmp.slice(1)* 10 ** 2) / 10 ** 2;
+                }
+            }
         }
 
         // ラインハルトの盾増強
