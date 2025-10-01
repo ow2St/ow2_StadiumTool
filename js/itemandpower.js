@@ -312,9 +312,9 @@ function linkItemList(itemList) {
             }
 
             // キー名がステータス関連のキーの場合
-            if([lifeKey, armorKey, shieldKey, weaponPowerKey, abilityPowerKey, 
+            if([item_lifeKey, item_armorKey, item_shieldKey, weaponPowerKey, abilityPowerKey, 
                 attackSpeedKey, ctReducationKey, ammoKey, weapon_LifeStealKey, 
-                ability_LifeStealKey, speedKey, reloadSpeedKey, meleeDamageKey, 
+                ability_LifeStealKey, speedKey, reloadSpeedKey, item_meleeDamageKey, 
                 criticalKey].includes(key)) {
 
                 // 値が0でない場合
