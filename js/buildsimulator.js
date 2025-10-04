@@ -151,26 +151,32 @@ const statusKeyMap = {
     mainreload: mainReloadKey,
     mainammo: mainAmmoKey,
     mainhsrate: mainHSRateKey,
+    mainlifesteal: mainLifeStealRateKey,
     subweaponname: subWeaponNameKey,
     subdamage: subDamageKey,
     subreload: subReloadKey,
     subammo: subAmmoKey,
     subhsrate: subHSRateKey,
+    sublifesteal: subLifeStealRateKey,
     ability1name: ability1NameKey,
     ability1damage: ability1DamageKey,
     ability1duration: ability1DurationKey,
     ability1ct: ability1CTKey,
+    ability1lifesteal: ability1LifeStealRateKey,
     ability2name: ability2NameKey,
     ability2damage: ability2DamageKey,
     ability2duration: ability2DurationKey,
     ability2ct: ability2CTKey,
+    ability2lifesteal: ability2LifeStealRateKey,
     ability3name: ability3NameKey,
     ability3damage: ability3DamageKey,
     ability3duration: ability3DurationKey,
     ability3ct: ability3CTKey,
+    ability3lifesteal: ability3LifeStealRateKey,
     ultname: ultNameKey,
     ultdamage: ultDamageKey,
     ultduration: ultDurationKey,
+    ultlifesteal: ultLifeStealRateKey,
     meleedamage: status_meleeDamageKey
 };
 
@@ -409,26 +415,32 @@ function organizeStatusData(statusAllData) {
             mainreload: Slist.mainreload,
             mainammo: Slist.mainammo,
             mainhsrate: Slist.mainhsrate,
+            mainlifesteal: Slist.mainlifesteal,
             subweaponname: Slist.subweaponname,
             subdamage: Slist.subdamage,
             subreload: Slist.subreload,
             subammo: Slist.subammo,
             subhsrate: Slist.subhsrate,
+            sublifesteal: Slist.sublifesteal,
             ability1name: Slist.ability1name,
             ability1damage: Slist.ability1damage,
             ability1duration: Slist.ability1duration,
             ability1ct: Slist.ability1ct,
+            ability1lifesteal: Slist.ability1lifesteal,
             ability2name: Slist.ability2name,
             ability2damage: Slist.ability2damage,
             ability2duration: Slist.ability2duration,
             ability2ct: Slist.ability2ct,
+            ability2lifesteal: Slist.ability2lifesteal,
             ability3name: Slist.ability3name,
             ability3damage: Slist.ability3damage,
             ability3duration: Slist.ability3duration,
             ability3ct: Slist.ability3ct,
+            ability3lifesteal: Slist.ability3lifesteal,
             ultname: Slist.ultname,
             ultdamage: Slist.ultdamage,
             ultduration: Slist.ultduration,
+            ultlifesteal: Slist.ultlifesteal,
             meleedamage: Slist.meleedamage
         };
     })
@@ -510,7 +522,7 @@ function changeSelectedHeroTitle(id){
     let heroName = "";
 
     if(id == "D.VA（メック）" || id == "D.VA（人）"){
-        heroName = "DVA";
+        heroName = "D.VA";
     }else{
         heroName = id;
     }
@@ -698,7 +710,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
 
 function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadKey,ammoKey,lifeStealRateKey){
     // 武器が存在しない場合は何もしない
-    if(statuslist[weaponNameKey] == "なし") {
+    if(statuslist[weaponNameKey] == "-") {
         return;
     }
 
@@ -736,9 +748,7 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadK
     }
 
     // ライフ吸収
-    if(lifeStealRateKey != "" &&  selectedHero == "リーパー"){
-        lifeStealValue = Math.round(statuslist[attackPointKey] * (statuslist[lifeStealRateKey] + 0.3));
-    }else if(lifeStealRateKey != "" &&  statuslist[lifeStealRateKey] != 0){
+    if(lifeStealRateKey != "" &&  statuslist[lifeStealRateKey] != 0){
         lifeStealValue = Math.round(statuslist[attackPointKey] * statuslist[lifeStealRateKey]);
     }
 
@@ -793,7 +803,7 @@ function addStatusDiv_Weapon(name,value,hsValue,reload,ammo,lifeSteal){
 
 function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,lifeStealRateKey){
     // アビリティが存在しない場合は何もしない
-    if(statuslist[nameKey] == "なし") {
+    if(statuslist[nameKey] == "-") {
         return;
     }
 
@@ -827,9 +837,7 @@ function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,life
     }
 
     // ライフ吸収
-    if(selectedHero == "リーパー"){
-        lifeStealValue = Math.round(statuslist[attackPointKey] * (statuslist[lifeStealRateKey] + 0.3));
-    }else if(statuslist[lifeStealRateKey] != 0){
+    if(statuslist[lifeStealRateKey] != 0){
         lifeStealValue = Math.round(statuslist[attackPointKey] * statuslist[lifeStealRateKey]);
     }
 
