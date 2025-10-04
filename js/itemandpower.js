@@ -3,6 +3,7 @@
 // ------------------------------
 
 // アイテムリストのキー
+var itemIdKey = "アイテムID"; 
 var item_nameKey = "アイテム名";
 var categoryKey = "カテゴリー";
 var rarityKey = "レア度";
@@ -10,9 +11,9 @@ var costKey = "コスト";
 var item_iconKey = "アイコン";
 var uniqueHeroKey = "固有ヒーロー";
 var item_textKey = "テキスト";
-var lifeKey = "ライフ";
-var armorKey = "アーマー";
-var shieldKey = "シールド";
+var item_lifeKey = "ライフ";
+var item_armorKey = "アーマー";
+var item_shieldKey = "シールド";
 var weaponPowerKey = "武器パワー";
 var abilityPowerKey = "アビリティパワー";
 var attackSpeedKey = "攻撃速度";
@@ -22,12 +23,16 @@ var weapon_LifeStealKey = "ライフ吸収（武器）";
 var ability_LifeStealKey = "ライフ吸収（アビリティ）";
 var speedKey = "移動速度";
 var reloadSpeedKey = "リロード速度";
-var meleeDamageKey = "近接ダメージ";
+var item_meleeDamageKey = "近接ダメージ";
 var criticalKey = "クリティカル";
 var othersKey = "その他";
+var durationFlgKey = "持続時間フラグ";
+var durationKey = "持続時間";
+var theoreticalFlgKey = "理論値フラグ";
 
 // キー対応マッピング（英語 → 日本語）
 const itemKeyMap = {
+    id: itemIdKey,
     itemname: item_nameKey,
     category: categoryKey,
     rarity: rarityKey,
@@ -35,9 +40,9 @@ const itemKeyMap = {
     icon: item_iconKey,
     uniquehero: uniqueHeroKey,
     text: item_textKey,
-    life: lifeKey,
-    armor: armorKey,
-    shield: shieldKey,
+    life: item_lifeKey,
+    armor: item_armorKey,
+    shield: item_shieldKey,
     weaponpower: weaponPowerKey,
     abilitypower: abilityPowerKey,
     attackspeed: attackSpeedKey,
@@ -47,9 +52,12 @@ const itemKeyMap = {
     abilitylifesteal: ability_LifeStealKey,
     speed: speedKey,
     reloadspeed: reloadSpeedKey,
-    meleedamage: meleeDamageKey,
+    meleedamage: item_meleeDamageKey,
     critical: criticalKey,
     others: othersKey,
+    durationflg: durationFlgKey,
+    duration: durationKey,
+    theoreticalflag: theoreticalFlgKey
 };
 
 // パワーリストのキー
@@ -142,6 +150,7 @@ function organizeItemData(itemAllData) {
     const selectedData = itemAllData
     .map(Ilist => {
         return {
+            id: Ilist.id,
             itemname: Ilist.itemname,
             category: Ilist.category,
             rarity: Ilist.rarity,
@@ -163,7 +172,11 @@ function organizeItemData(itemAllData) {
             reloadspeed: Ilist.reloadspeed,
             meleedamage: Ilist.meleedamage,
             critical: Ilist.critical,
-            others: (Ilist.others === "-") ? Ilist.others : "※" + Ilist.others
+            others: (Ilist.others === "-") ? Ilist.others : "※" + Ilist.others,
+            durationflg: Ilist.durationflg,
+            duration: Ilist.duration,
+            theoreticalflag: Ilist.theoreticalflag
+
         };
     })
     return selectedData;
@@ -302,9 +315,9 @@ function linkItemList(itemList) {
             }
 
             // キー名がステータス関連のキーの場合
-            if([lifeKey, armorKey, shieldKey, weaponPowerKey, abilityPowerKey, 
+            if([item_lifeKey, item_armorKey, item_shieldKey, weaponPowerKey, abilityPowerKey, 
                 attackSpeedKey, ctReducationKey, ammoKey, weapon_LifeStealKey, 
-                ability_LifeStealKey, speedKey, reloadSpeedKey, meleeDamageKey, 
+                ability_LifeStealKey, speedKey, reloadSpeedKey, item_meleeDamageKey, 
                 criticalKey].includes(key)) {
 
                 // 値が0でない場合
