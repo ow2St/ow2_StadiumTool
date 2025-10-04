@@ -143,32 +143,26 @@ const statusKeyMap = {
     mainreload: mainReloadKey,
     mainammo: mainAmmoKey,
     mainhsrate: mainHSRateKey,
-    mainlifesteal: mainLifeStealRateKey,
     subweaponname: subWeaponNameKey,
     subdamage: subDamageKey,
     subreload: subReloadKey,
     subammo: subAmmoKey,
     subhsrate: subHSRateKey,
-    sublifesteal: subLifeStealRateKey,
     ability1name: ability1NameKey,
     ability1damage: ability1DamageKey,
     ability1duration: ability1DurationKey,
     ability1ct: ability1CTKey,
-    ability1lifesteal: ability1LifeStealRateKey,
     ability2name: ability2NameKey,
     ability2damage: ability2DamageKey,
     ability2duration: ability2DurationKey,
     ability2ct: ability2CTKey,
-    ability2lifesteal: ability2LifeStealRateKey,
     ability3name: ability3NameKey,
     ability3damage: ability3DamageKey,
     ability3duration: ability3DurationKey,
     ability3ct: ability3CTKey,
-    ability3lifesteal: ability3LifeStealRateKey,
     ultname: ultNameKey,
     ultdamage: ultDamageKey,
     ultduration: ultDurationKey,
-    ultlifesteal: ultLifeStealRateKey,
     meleedamage: status_meleeDamageKey
 };
 
@@ -345,7 +339,7 @@ function organizeItemData(itemAllData) {
             reloadspeed: Ilist.reloadspeed,
             meleedamage: Ilist.meleedamage,
             critical: Ilist.critical,
-            others: (Ilist.others === "-") ? Ilist.others : "※" + Ilist.others
+            others: Ilist.others
         };
     })
     return selectedData;
@@ -403,32 +397,26 @@ function organizeStatusData(statusAllData) {
             mainreload: Slist.mainreload,
             mainammo: Slist.mainammo,
             mainhsrate: Slist.mainhsrate,
-            mainlifesteal: Slist.mainlifesteal,
             subweaponname: Slist.subweaponname,
             subdamage: Slist.subdamage,
             subreload: Slist.subreload,
             subammo: Slist.subammo,
             subhsrate: Slist.subhsrate,
-            sublifesteal: Slist.sublifesteal,
             ability1name: Slist.ability1name,
             ability1damage: Slist.ability1damage,
             ability1duration: Slist.ability1duration,
             ability1ct: Slist.ability1ct,
-            ability1lifesteal: Slist.ability1lifesteal,
             ability2name: Slist.ability2name,
             ability2damage: Slist.ability2damage,
             ability2duration: Slist.ability2duration,
             ability2ct: Slist.ability2ct,
-            ability2lifesteal: Slist.ability2lifesteal,
             ability3name: Slist.ability3name,
             ability3damage: Slist.ability3damage,
             ability3duration: Slist.ability3duration,
             ability3ct: Slist.ability3ct,
-            ability3lifesteal: Slist.ability3lifesteal,
             ultname: Slist.ultname,
             ultdamage: Slist.ultdamage,
             ultduration: Slist.ultduration,
-            ultlifesteal: Slist.ultlifesteal,
             meleedamage: Slist.meleedamage
         };
     })
@@ -510,7 +498,7 @@ function changeSelectedHeroTitle(id){
     let heroName = "";
 
     if(id == "D.VA（メック）" || id == "D.VA（人）"){
-        heroName = "D.VA";
+        heroName = "DVA";
     }else{
         heroName = id;
     }
@@ -698,7 +686,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
 
 function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadKey,ammoKey,lifeStealRateKey){
     // 武器が存在しない場合は何もしない
-    if(statuslist[weaponNameKey] == "-") {
+    if(statuslist[weaponNameKey] == "なし") {
         return;
     }
 
@@ -736,7 +724,9 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadK
     }
 
     // ライフ吸収
-    if(lifeStealRateKey != "" &&  statuslist[lifeStealRateKey] != 0){
+    if(lifeStealRateKey != "" &&  selectedHero == "リーパー"){
+        lifeStealValue = Math.round(statuslist[attackPointKey] * (statuslist[lifeStealRateKey] + 0.3));
+    }else if(lifeStealRateKey != "" &&  statuslist[lifeStealRateKey] != 0){
         lifeStealValue = Math.round(statuslist[attackPointKey] * statuslist[lifeStealRateKey]);
     }
 
@@ -791,7 +781,7 @@ function addStatusDiv_Weapon(name,value,hsValue,reload,ammo,lifeSteal){
 
 function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,lifeStealRateKey){
     // アビリティが存在しない場合は何もしない
-    if(statuslist[nameKey] == "-") {
+    if(statuslist[nameKey] == "なし") {
         return;
     }
 
@@ -825,7 +815,9 @@ function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,life
     }
 
     // ライフ吸収
-    if(statuslist[lifeStealRateKey] != 0){
+    if(selectedHero == "リーパー"){
+        lifeStealValue = Math.round(statuslist[attackPointKey] * (statuslist[lifeStealRateKey] + 0.3));
+    }else if(statuslist[lifeStealRateKey] != 0){
         lifeStealValue = Math.round(statuslist[attackPointKey] * statuslist[lifeStealRateKey]);
     }
 
@@ -1139,84 +1131,14 @@ function linkItemList(itemList, id) {
 
         })
 
-                //ステータスアイコン設定
-        let statusIcons = [];
-        let statusLists = (statusText || "").split(/\r?\n/).map(s => s.trim()).filter(Boolean);
-
-        statusLists.forEach((status, i) => {
-
-            //その他（特殊効果）以外のアイコン付与
-            if(!status.includes("※")){
-                switch(true) {
-                    case status.includes("ライフ+"):
-                    case status.includes("アーマー"):
-                    case status.includes("シールド"):
-                        statusIcons.push("assets/images/icons/status/ライフアイコン.png");
-                        break;
-
-                    case status.includes("武器パワー"):
-                        statusIcons.push("assets/images/icons/status/武器パワーアイコン.png");
-                        break;
-
-                    case status.includes("アビリティパワー"):
-                        statusIcons.push("assets/images/icons/status/アビリティパワーアイコン.png");
-                        break;
-
-                    case status.includes("攻撃速度"):
-                        statusIcons.push("assets/images/icons/status/攻撃速度アイコン.png");
-                        break;
-
-                    case status.includes("CT短縮"):
-                        statusIcons.push("assets/images/icons/status/クールダウンアイコン.png");
-                        break;
-
-                    case status.includes("弾薬"):
-                        statusIcons.push("assets/images/icons/status/最大弾薬数アイコン.png");
-                        break;
-
-                    case status.includes("ライフ吸収（武器）"):
-                        statusIcons.push("assets/images/icons/status/ライフ吸収(武器)アイコン.png");
-                        break;
-
-                    case status.includes("ライフ吸収（アビリティ）"):
-                        statusIcons.push("assets/images/icons/status/ライフ吸収(アビリティ)アイコン.png");
-                        break;
-
-                    case status.includes("移動速度"):
-                        statusIcons.push("assets/images/icons/status/移動速度アイコン.png");
-                        break;
-
-                    case status.includes("リロード速度"):
-                        statusIcons.push("assets/images/icons/status/リロード速度アイコン.png");
-                        break;
-
-                    case status.includes("近接ダメージ"):
-                        statusIcons.push("assets/images/icons/status/近接攻撃ダメージアイコン.png");
-                        break;
-
-                    case status.includes("クリティカル"):
-                        statusIcons.push("assets/images/icons/status/クリティカル・ダメージアイコン.png");
-                        break;
-                }
-            
-            //その他（特殊効果）の場合
-            }else if(status.includes("※")){
-                statusIcons.push("assets/images/icons/status/特殊効果アイコン.png");
-
-                //テキストから※を削除
-                statusLists[i] = status.replace("※","");
-            }            
-        });           
-
-
         // 取得した各値をテーブルに紐付け
         // カテゴリー別に紐付け先のテーブルを分ける
         if(categoryCheck == "武器"){
-            tbody_weapon.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText, uniqueHeroText, id, statusLists, statusIcons));
+            tbody_weapon.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText, uniqueHeroText, id));
         }else if(categoryCheck == "アビリティ"){
-            tbody_ability.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText, uniqueHeroText, id, statusLists, statusIcons));
+            tbody_ability.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText, uniqueHeroText, id));
         }else if(categoryCheck == "サバイバル"){
-            tbody_survival.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText, uniqueHeroText, id, statusLists, statusIcons));
+            tbody_survival.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText, uniqueHeroText, id));
         }
     }
 
@@ -1233,7 +1155,7 @@ function linkItemList(itemList, id) {
 }
 
 // アイテムリスト用子要素作成関数（※カテゴリー別に分けているため関数化）
-function appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText, uniqueHeroText, id, statusLists, statusIcons){
+function appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText, uniqueHeroText, id){
     // 選択列
     var td = document.createElement("td");
     td.classList.add("item-td");
@@ -1261,28 +1183,7 @@ function appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, te
 
     // ステータス列
     var td = document.createElement("td");
-
-    for (let i = 0; i < statusLists.length; i++) {
-        // ステータスごとのdiv
-        let statusDiv = document.createElement("div");
-
-        // アイコン作成
-        let iconImg = document.createElement("img");
-        iconImg.src = statusIcons[i];
-        iconImg.classList.add("itemandpower-statusicon");
-
-        // テキスト作成
-        let textSpan = document.createElement("span");
-        textSpan.innerText = statusLists[i];
-
-        // まとめて追加
-        statusDiv.appendChild(iconImg);
-        statusDiv.appendChild(textSpan);
-
-        // tdに追加
-        td.appendChild(statusDiv);
-    }
-
+    td.innerHTML = statusText.replace(/\n/g, "<br>");
     td.classList.add("item-td");
     tr.appendChild(td);
 
