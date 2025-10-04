@@ -450,6 +450,7 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
     td.textContent = uniqueHeroText;
     td.classList.add("hidden-column");
     tr.appendChild(td);
+    
 
     // ステータス列
     var td = document.createElement("td");
