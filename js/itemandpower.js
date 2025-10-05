@@ -413,14 +413,14 @@ function linkItemList(itemList) {
             }            
         });           
 
-    tbody.appendChild(appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, statusText, textText, statusLists, statusIcons));
+    tbody.appendChild(appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, textText, statusLists, statusIcons));
     
     tr.classList.add("table-on");
     }
 }
 
 // アイテムリスト用子要素作成関数
-function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, statusText, textText, statusLists, statusIcons){
+function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, textText, statusLists, statusIcons){
 
     // アイテム名列
     var td = document.createElement("td");
@@ -463,6 +463,7 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
     td.textContent = uniqueHeroText;
     td.classList.add("hidden-column");
     tr.appendChild(td);
+    
 
     // ステータス列
     var td = document.createElement("td");

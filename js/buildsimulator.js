@@ -354,7 +354,7 @@ function organizeItemData(itemAllData) {
             reloadspeed: Ilist.reloadspeed,
             meleedamage: Ilist.meleedamage,
             critical: Ilist.critical,
-            others: Ilist.others,
+            others: (Ilist.others === "-") ? Ilist.others : "※" + Ilist.others,
             durationflg: Ilist.durationflg,
             duration: Ilist.duration,
             theoreticalflag: Ilist.theoreticalflag
@@ -1151,14 +1151,84 @@ function linkItemList(itemList, id) {
 
         })
 
+                //ステータスアイコン設定
+        let statusIcons = [];
+        let statusLists = (statusText || "").split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+
+        statusLists.forEach((status, i) => {
+
+            //その他（特殊効果）以外のアイコン付与
+            if(!status.includes("※")){
+                switch(true) {
+                    case status.includes("ライフ+"):
+                    case status.includes("アーマー"):
+                    case status.includes("シールド"):
+                        statusIcons.push("assets/images/icons/status/ライフアイコン.png");
+                        break;
+
+                    case status.includes("武器パワー"):
+                        statusIcons.push("assets/images/icons/status/武器パワーアイコン.png");
+                        break;
+
+                    case status.includes("アビリティパワー"):
+                        statusIcons.push("assets/images/icons/status/アビリティパワーアイコン.png");
+                        break;
+
+                    case status.includes("攻撃速度"):
+                        statusIcons.push("assets/images/icons/status/攻撃速度アイコン.png");
+                        break;
+
+                    case status.includes("CT短縮"):
+                        statusIcons.push("assets/images/icons/status/クールダウンアイコン.png");
+                        break;
+
+                    case status.includes("弾薬"):
+                        statusIcons.push("assets/images/icons/status/最大弾薬数アイコン.png");
+                        break;
+
+                    case status.includes("ライフ吸収（武器）"):
+                        statusIcons.push("assets/images/icons/status/ライフ吸収(武器)アイコン.png");
+                        break;
+
+                    case status.includes("ライフ吸収（アビリティ）"):
+                        statusIcons.push("assets/images/icons/status/ライフ吸収(アビリティ)アイコン.png");
+                        break;
+
+                    case status.includes("移動速度"):
+                        statusIcons.push("assets/images/icons/status/移動速度アイコン.png");
+                        break;
+
+                    case status.includes("リロード速度"):
+                        statusIcons.push("assets/images/icons/status/リロード速度アイコン.png");
+                        break;
+
+                    case status.includes("近接ダメージ"):
+                        statusIcons.push("assets/images/icons/status/近接攻撃ダメージアイコン.png");
+                        break;
+
+                    case status.includes("クリティカル"):
+                        statusIcons.push("assets/images/icons/status/クリティカル・ダメージアイコン.png");
+                        break;
+                }
+            
+            //その他（特殊効果）の場合
+            }else if(status.includes("※")){
+                statusIcons.push("assets/images/icons/status/特殊効果アイコン.png");
+
+                //テキストから※を削除
+                statusLists[i] = status.replace("※","");
+            }            
+        });           
+
+
         // 取得した各値をテーブルに紐付け
         // カテゴリー別に紐付け先のテーブルを分ける
         if(categoryCheck == "武器"){
-            tbody_weapon.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText, uniqueHeroText, id));
+            tbody_weapon.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, textText, rarityText, costText, uniqueHeroText, id, statusLists, statusIcons));
         }else if(categoryCheck == "アビリティ"){
-            tbody_ability.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText, uniqueHeroText, id));
+            tbody_ability.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, textText, rarityText, costText, uniqueHeroText, id, statusLists, statusIcons));
         }else if(categoryCheck == "サバイバル"){
-            tbody_survival.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText, uniqueHeroText, id));
+            tbody_survival.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, textText, rarityText, costText, uniqueHeroText, id, statusLists, statusIcons));
         }
     }
 
@@ -1175,7 +1245,7 @@ function linkItemList(itemList, id) {
 }
 
 // アイテムリスト用子要素作成関数（※カテゴリー別に分けているため関数化）
-function appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, textText, rarityText, costText, uniqueHeroText, id){
+function appendChildItemList(tr, isCheck, itemNameText, iconText, textText, rarityText, costText, uniqueHeroText, id, statusLists, statusIcons){
     // 選択列
     var td = document.createElement("td");
     td.classList.add("item-td");
@@ -1201,11 +1271,34 @@ function appendChildItemList(tr, isCheck, itemNameText, iconText, statusText, te
     td.appendChild(iconImg);
     tr.appendChild(td);
 
+
     // ステータス列
     var td = document.createElement("td");
-    td.innerHTML = statusText.replace(/\n/g, "<br>");
+
+    for (let i = 0; i < statusLists.length; i++) {
+        // ステータスごとのdiv
+        let statusDiv = document.createElement("div");
+
+        // アイコン作成
+        let iconImg = document.createElement("img");
+        iconImg.src = statusIcons[i];
+        iconImg.classList.add("itemandpower-statusicon");
+
+        // テキスト作成
+        let textSpan = document.createElement("span");
+        textSpan.innerText = statusLists[i];
+
+        // まとめて追加
+        statusDiv.appendChild(iconImg);
+        statusDiv.appendChild(textSpan);
+
+        // tdに追加
+        td.appendChild(statusDiv);
+    }
+
     td.classList.add("item-td");
     tr.appendChild(td);
+
 
     // テキスト列
     var td = document.createElement("td");
