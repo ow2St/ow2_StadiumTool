@@ -7,7 +7,7 @@
         "cost": 4000,
         "icon": "レア_サバイバル_メイ1.png",
         "uniquehero": "メイ",
-        "text": "メイン攻撃と[ブリザード]で炎上を除去できる",
+        "text": "メイン攻撃と[ブリザード]で炎上効果を解除できる。メイン攻撃を空中の敵に当てると1.50秒間、その敵の移動速度が35%遅くなる",
         "life": 25,
         "armor": 0,
         "shield": 0,
@@ -343,7 +343,7 @@
         "cost": 4000,
         "icon": "レア_サバイバル_オリーサ1.png",
         "uniquehero": "オリーサ",
-        "text": "[エネルギー・ジャベリン]でダメージを与えると、3秒間かけて最大3秒間かけて最大ライフ値の10%回復する",
+        "text": "[エネルギー・ジャベリン]でダメージを与えると、3秒間かけて最大ライフ値の10%回復する",
         "life": 25,
         "armor": 0,
         "shield": 0,
@@ -529,7 +529,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "11202bcb-1696-4e1b-9129-0734b6431794",
@@ -781,7 +781,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "15640d75-a6cf-46a5-b0d3-886ffcd26c91",
@@ -837,7 +837,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "16bef57a-2173-4206-8b79-e545fbfe1f39",
@@ -893,7 +893,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "1d2a05f0-4414-4218-b836-97f71020aa0f",
@@ -919,8 +919,8 @@
         "meleedamage": 0,
         "critical": 0,
         "others": "-",
-        "durationflg": 0,
-        "duration": "+(2*1.25)",
+        "durationflg": 4,
+        "duration": "*1.25",
         "theoreticalflag": false
     },
     {
@@ -959,7 +959,7 @@
         "cost": 4000,
         "icon": "レア_サバイバル_キャスディ1.png",
         "uniquehero": "キャスディ",
-        "text": "[デッド・アイ]で敵を1人キルするたびに、キャッシュが500手に入る",
+        "text": "[デッド・アイ]で敵を1人キルするたびに、キャッシュが500手に入る。[デッド・アイ]で空中の敵にダメージを与えると、チャージが50%速くなる",
         "life": 25,
         "armor": 0,
         "shield": 0,
@@ -1145,7 +1145,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "298c496e-7186-4d26-b198-590871ea46a5",
@@ -1240,8 +1240,8 @@
         "icon": "エピック_サバイバル_マーシー2.png",
         "uniquehero": "マーシー",
         "text": "-",
-        "life": 0,
-        "armor": 50,
+        "life": 50,
+        "armor": 0,
         "shield": 0,
         "weaponpower": 0,
         "abilitypower": 0,
@@ -1285,7 +1285,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "2ddba2a1-57a2-420d-9e73-ea8e24549ac8",
@@ -1302,7 +1302,7 @@
         "weaponpower": 0,
         "abilitypower": 0,
         "attackspeed": 0,
-        "ctreducation": 0,
+        "ctreducation": 10,
         "ammo": 0,
         "weaponlifesteal": 0,
         "abilitylifesteal": 0,
@@ -1537,7 +1537,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "37a1ebd3-c596-41b5-8d4d-3f7310291aa4",
@@ -1733,7 +1733,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "3c3e495d-20d8-4eb5-a0bc-bd73efb09286",
@@ -1827,7 +1827,7 @@
         "cost": 9500,
         "icon": "紅の外套.png",
         "uniquehero": "リーパー",
-        "text": "[デス・ブロッサム]を発動すると、その範囲内にいる敵1人事にライフ最大値5%分の追加ライフを得る",
+        "text": "[デス・ブロッサム]を発動すると、その範囲内にいる敵1人ごとにライフ最大値5%分の追加ライフを得る",
         "life": 25,
         "armor": 0,
         "shield": 0,
@@ -1873,7 +1873,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "4174f6ca-94ed-4dfe-b0d1-6e89578772f9",
@@ -2153,7 +2153,7 @@
         "others": "35％[パルサー・トーピード]弾速",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "4666f195-1b63-48b3-8120-969025e41204",
@@ -2181,7 +2181,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "46e331c0-a277-4c25-b2fb-932923a8da10",
@@ -2265,7 +2265,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "49b2d002-c1b3-458b-9f7c-968c81da2bd0",
@@ -2471,7 +2471,7 @@
         "cost": 4000,
         "icon": "レア_アビリティ_ジャンカー・クイーン1.png",
         "uniquehero": "ジャンカー・クイーン",
-        "text": "[ギザギザブレード]の引き込み力が35％上がる",
+        "text": "[ギザギザブレード]の引き込み力が35％上がり、滞空中の敵を引きずり下ろせるようになる",
         "life": 0,
         "armor": 0,
         "shield": 0,
@@ -2545,7 +2545,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "4fb8a463-90a0-4c1d-a6d1-a93f30521643",
@@ -2601,7 +2601,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "50691225-df97-45d1-8567-ad3ac7d9ab49",
@@ -3031,7 +3031,7 @@
         "cost": 10000,
         "icon": "エピック_武器_ザリア1.png",
         "uniquehero": "ザリア",
-        "text": "[パーティクル・キャノン]（サブ射撃）を連続で撃つと、弾薬の消費が20％減る。最大60％現象し、リロードでリセットされる",
+        "text": "[パーティクル・キャノン]（サブ射撃）を連続で撃つと、弾薬の消費が20％減る。最大60％減少し、リロードでリセットされる",
         "life": 0,
         "armor": 0,
         "shield": 0,
@@ -3133,7 +3133,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "621a5437-eef3-43c2-8037-6dfac2bb4376",
@@ -3441,7 +3441,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "680e8049-b496-4e6a-8f0e-462eac0fd8a4",
@@ -3525,7 +3525,7 @@
         "others": "25%[クイック・ダッシュ]距離",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "699e67ac-74e2-467d-a20e-f7e2f6503b24",
@@ -3721,7 +3721,7 @@
         "others": "15%近接攻撃ダメージ",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "701b487c-d803-4d2a-8321-22dcfe6e9d98",
@@ -4001,7 +4001,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "75414d6b-a659-4cd5-a75a-096237916a41",
@@ -4029,7 +4029,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "75b51670-0e1c-4a52-b51e-6620ac449d47",
@@ -4057,7 +4057,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "78f92c40-f340-4772-860a-da9c2631d51b",
@@ -4309,7 +4309,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "7f0ab6df-8597-4a58-b4f9-b52adaaa7457",
@@ -4337,7 +4337,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "7f617ecd-7800-41e8-8877-cd3477c130c6",
@@ -4421,7 +4421,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "808b86d5-9eb7-4a34-8d4e-fb47a3b2978e",
@@ -4785,7 +4785,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "8aac9158-9a51-47ce-9ba9-81ff856979fd",
@@ -5225,7 +5225,7 @@
         "ctreducation": 0,
         "ammo": 0,
         "weaponlifesteal": 0,
-        "abilitylifesteal": 0,
+        "abilitylifesteal": 15,
         "speed": 0,
         "reloadspeed": 0,
         "meleedamage": 0,
@@ -6269,7 +6269,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "c191561e-1879-478e-8368-b2bfc532f44c",
@@ -6388,7 +6388,7 @@
         "itemname": "天使の舞",
         "category": "アビリティ",
         "rarity": "エピック",
-        "cost": 10000,
+        "cost": 11000,
         "icon": "エピック_アビリティ_マーシー2.png",
         "uniquehero": "マーシー",
         "text": "[ガーディアン・エンジェル]のクールダウンが、ジャンプするかしゃがむとすぐに始まる",
@@ -6396,7 +6396,7 @@
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
-        "abilitypower": 0,
+        "abilitypower": 15,
         "attackspeed": 0,
         "ctreducation": 0,
         "ammo": 0,
@@ -6521,7 +6521,7 @@
         "others": "50%ノックバック抵抗力",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "c531d795-5918-4bd8-8a30-e35cf1f3abb3",
@@ -6661,7 +6661,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "c8319987-6fda-4103-a45c-ee76a85ede6c",
@@ -6717,7 +6717,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "c8b77bee-e2c0-4bb7-8a06-8f35fceb227c",
@@ -6969,7 +6969,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "d01be908-9a4f-48c9-92a4-84660a6cc2db",
@@ -7081,7 +7081,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "d492b0e4-cf8d-4b52-9c13-af70aa36e958",
@@ -7249,7 +7249,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "dbace372-d31f-4e86-9c11-be639ee542a9",
@@ -7501,7 +7501,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "ea86e389-142f-4f59-a030-241495cb24ed",
@@ -7534,17 +7534,17 @@
     {
         "id": "eaad8f7e-f460-4b6e-a598-485325ba9ea3",
         "itemname": "エンジェル・ブースター",
-        "category": "サバイバル",
+        "category": "アビリティ",
         "rarity": "エピック",
         "cost": 9000,
         "icon": "エピック_サバイバル_マーシー1.png",
         "uniquehero": "マーシー",
         "text": "[ガーディアン・エンジェル]をしゃがみまたはジャンプでキャンセルした際の上昇速度が25%上がる",
-        "life": 50,
+        "life": 25,
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
-        "abilitypower": 0,
+        "abilitypower": 10,
         "attackspeed": 0,
         "ctreducation": 0,
         "ammo": 0,
@@ -7585,7 +7585,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "eca6be74-8e49-441a-97a6-237adfcc4612",
@@ -7613,7 +7613,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "ecbc517e-f442-4797-9745-2a73caa49bc9",
@@ -7669,7 +7669,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "ee09499b-2e53-4305-86ed-ea97a78f2962",
@@ -7697,7 +7697,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "ee681275-1893-4a21-bd13-eb3eb8ad3974",
@@ -8005,7 +8005,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "f44c7b31-ea83-43c3-86b2-ff092619a54c",
@@ -8089,7 +8089,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "f67d92ca-8602-427a-9fc5-578122261499",
@@ -8201,7 +8201,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "f90cbf4c-51ec-449f-b892-11f38e570b6b",
@@ -8257,7 +8257,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "f9546b0d-7384-4a75-af79-3d53af3e3b43",
@@ -8313,7 +8313,7 @@
         "others": "15％[バイオティック・グレネード]持続時間",
         "durationflg": 2,
         "duration": "*1.15",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "fb94dd77-30b0-417a-9bc6-e4d32bda018b",
@@ -8481,7 +8481,7 @@
         "others": "-",
         "durationflg": 0,
         "duration": "+0",
-        "theoreticalflag": false
+        "theoreticalflag": true
     },
     {
         "id": "ff0eb7bb-396b-43c3-aa64-7f599d7d2800",

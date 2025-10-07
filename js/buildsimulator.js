@@ -96,6 +96,50 @@ const powerKeyMap = {
     text: power_textKey,
 };
 
+// 理論値アイテムリストのキー
+var theoreticalItem_IDKey = "アイテムID";
+var theoreticalItem_LifeKey = "ライフ";
+var theoreticalItem_ArmorKey = "アーマー";
+var theoreticalItem_ShieldKey = "シールド";
+var theoreticalItem_WeaponPowerKey = "武器パワー";
+var theoreticalItem_AbilityPowerKey = "アビリティパワー";
+var theoreticalItem_CTReducationKey = "CT短縮";
+var theoreticalItem_AmmoKey = "弾薬";
+var theoreticalItem_WeaponLifeStealKey = "武器（ライフ吸収）";
+var theoreticalItem_AbilityLifeStealKey = "アビリティ（ライフ吸収）";
+var theoreticalItem_ReloadSpeedKey = "リロード速度";
+var theoreticalItem_MeleeDamageKey = "近接ダメージ";
+var theoreticalItem_CriticalKey = "クリティカル";
+var theoreticalItem_SpecialFlgKey = "特別フラグ";
+var theoreticalItem_AdditionDamageFlgKey = "追加ダメージフラグ";
+var theoreticalItem_HealDamageUpFlgKey = "ヒールダメージ上昇フラグ";
+var theoreticalItem_WeaponAbilityUpFlgKey = "武器アビリティ上昇フラグ";
+var theoreticalItem_HealUpKey = "ヒール上昇量";
+var theoreticalItem_DamageUpKey = "ダメージ上昇量";
+
+// 理論値アイテムキー対応マッピング（英語 → 日本語）
+const theoreticalItemKeyMap = {
+    life: theoreticalItem_LifeKey,
+    armor: theoreticalItem_ArmorKey,
+    shield: theoreticalItem_ShieldKey,
+    weaponpower: theoreticalItem_WeaponPowerKey,
+    abilitypower: theoreticalItem_AbilityPowerKey,
+    ctreducation: theoreticalItem_CTReducationKey,
+    ammo: theoreticalItem_AmmoKey,
+    weaponlifesteal: theoreticalItem_WeaponLifeStealKey,
+    abilitylifesteal: theoreticalItem_AbilityLifeStealKey,
+    reloadspeed: theoreticalItem_ReloadSpeedKey,
+    meleedamage: theoreticalItem_MeleeDamageKey,
+    critical: theoreticalItem_CriticalKey,
+    itemid: theoreticalItem_IDKey,
+    specialflg: theoreticalItem_SpecialFlgKey,
+    additiondamageflg: theoreticalItem_AdditionDamageFlgKey,
+    healdamageupflg: theoreticalItem_HealDamageUpFlgKey,
+    weaponabilityupflg: theoreticalItem_WeaponAbilityUpFlgKey,
+    healup: theoreticalItem_HealUpKey,
+    damageup: theoreticalItem_DamageUpKey
+};
+
 // ステータスリストのキー
 var heroNameKey = "ヒーロー名";
 var status_lifeKey = "ライフ";
@@ -188,6 +232,9 @@ var itemList = {};  // 整形後
 let powerAllData = []; // 全てのアイテムデータを保持
 var powerList = {};  // 整形後
 
+let theoreticalItem = []; // 全ての理論値アイテムデータを保持
+var theoreticalItemList = {}; // 整形後
+
 // チェックされた行のデータを格納する配列
 var selectedItemRowsData = [];
 var selectedPowerRowsData = [];
@@ -205,7 +252,7 @@ loadAndInitBuildData();
 //ビルド関連データの読み込みと初期化
 async function loadAndInitBuildData() {
     try {
-        const [itemData, powerData, statusData] = await Promise.all([
+        const [itemData, powerData, statusData, theoreticalItemData] = await Promise.all([
             // データの読み込み(itemList)
             fetch("itemListData.json").then(response => response.json()),
 
@@ -213,7 +260,10 @@ async function loadAndInitBuildData() {
             fetch("powerListData.json").then(response => response.json()),
 
             // データの読み込み(powerList)
-            fetch("statusListData.json").then(response => response.json())
+            fetch("statusListData.json").then(response => response.json()),
+
+            // データの読み込み(theoreticalItem)
+            fetch("theoreticalItemData.json").then(response => response.json())
         ]);
 
         itemAllData = itemData;
@@ -231,6 +281,11 @@ async function loadAndInitBuildData() {
 
         // パワーリストをテーブルに紐付け
         linkPowerList(powerList, selectedHero);
+
+        theoreticalItem = theoreticalItemData;
+
+        // 整形 → キー変換
+        theoreticalItemList = convertTheoreticalItemKeys(organizeTheoreticalItemData(theoreticalItem));
 
         statusAllData = statusData;
 
@@ -395,6 +450,47 @@ function convertPowerKeys(dataArray) {
         let newObj = {};
         for (let key in obj) {
             let newKey = powerKeyMap[key] || key; // 対応がないキーはそのまま
+            newObj[newKey] = obj[key];
+        }
+        return newObj;
+    });
+}
+
+//theoreticalItemList に　theoreticalItemData.json　から貰うデータの形を決める
+function organizeTheoreticalItemData(theoreticalItemAllData) {
+    const selectedData = theoreticalItemAllData
+    .map(TIlist => {
+        return {
+            life: TIlist.life,
+            armor: TIlist.armor,
+            shield: TIlist.shield,
+            weaponpower: TIlist.weaponpower,
+            abilitypower: TIlist.abilitypower,
+            ctreducation: TIlist.ctreducation,
+            ammo: TIlist.ammo,
+            weaponlifesteal: TIlist.weaponlifesteal,
+            abilitylifesteal: TIlist.abilitylifesteal,
+            reloadspeed: TIlist.reloadspeed,
+            meleedamage: TIlist.meleedamage,
+            critical: TIlist.critical,
+            itemid: TIlist.itemid,
+            specialflg: TIlist.specialflg,
+            additiondamageflg: TIlist.additiondamageflg,
+            healdamageupflg: TIlist.healdamageupflg,
+            weaponabilityupflg: TIlist.weaponabilityupflg,
+            healup: TIlist.healup,
+            damageup: TIlist.damageup
+        };
+    })
+    return selectedData;
+}
+
+//英名キーを日本名キーへ変換処理(theoreticalitemList)
+function convertTheoreticalItemKeys(dataArray) {
+    return dataArray.map(obj => {
+        let newObj = {};
+        for (let key in obj) {
+            let newKey = theoreticalItemKeyMap[key] || key; // 対応がないキーはそのまま
             newObj[newKey] = obj[key];
         }
         return newObj;
