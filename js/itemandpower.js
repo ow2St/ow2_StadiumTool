@@ -90,6 +90,23 @@ fetch("itemListData.json")
     .then(data => {
         itemAllData = data;
 
+        //初期データをカテゴリー順に並び替え
+        // 並び替え優先順位を定義
+        const categoryOrder = ["武器", "アビリティ", "サバイバル"];
+
+        itemAllData.sort((a, b) => {
+        // categoryOrder内でのインデックスを取得
+        const indexA = categoryOrder.indexOf(a.category);
+        const indexB = categoryOrder.indexOf(b.category);
+
+        // indexが見つからない（＝該当しないカテゴリ）場合は末尾へ
+        const orderA = indexA === -1 ? categoryOrder.length : indexA;
+        const orderB = indexB === -1 ? categoryOrder.length : indexB;
+
+        // 比較して順序を返す
+        return orderA - orderB;
+        });
+
         // 整形 → キー変換
         const itemList = convertItemKeys(organizeItemData(itemAllData));
 
