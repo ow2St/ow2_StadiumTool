@@ -556,6 +556,7 @@ function filterItemTable(elem){
     //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_item に配列のように格納。各行を1つのアイテムとする。
     var tbody_item = document.getElementById("item-table").querySelector("tbody");
     var rows_item = tbody_item.querySelectorAll("tr");
+    var aggjhhgvhjvhjc = "aaa";
 
     // 行ごとの絞り込み
     // アイテム行をループ
@@ -604,7 +605,14 @@ function filterItemTable(elem){
                 if(button.innerText == "ライフ"){
                     shouldShowStatus = statusList.some(status => status.includes("ライフ+"));
                 }else if(button.innerText == "その他"){
-                    shouldShowStatus = statusList.some(status => status.includes("※"));
+                    const imgs = cells[statusNumber].querySelectorAll("img");
+                    const otherImg = Array.from(imgs).map(img => decodeURIComponent(img.src.split('/').pop()));
+
+                    if (otherImg.some(src => src.includes("特殊効果アイコン.png"))) {
+                        shouldShowStatus = true;
+                    } else {
+                        shouldShowStatus = false;
+                    }
                 }else{
                     shouldShowStatus = statusList.some(status => status.includes(button.innerText));
                 }
@@ -622,6 +630,14 @@ function filterItemTable(elem){
 
 //　検索ボックスで絞り込み（アイテム）
 function item_searchWords() {
+
+    // 検索ワードを取得
+    const keyword = document.getElementById("item_search-input").value.trim();
+
+    //検索ワードなしなら何もしない
+    if(keyword === "" || keyword === null || keyword === undefined){
+        return;
+    }
 
     //ボタンを全てOFFにした状態に
     let activeButtons = document.querySelectorAll("button.button-on");
@@ -644,9 +660,6 @@ function item_searchWords() {
 
         const itemName = cells[0]?.textContent.trim() || "";
         const textColumn = cells[7]?.textContent.trim() || "";
-
-        // 検索ワードを取得
-        const keyword = document.getElementById("item_search-input").value.trim();
 
         // 非表示フラグ　keywordが空の場合は全て非表示、
         const shouldShow = keyword !== "" && (itemName.includes(keyword) || textColumn.includes(keyword));
@@ -726,15 +739,6 @@ function addCostDivAndSpan() {
     const costArrow_span = document.createElement("span");
     costArrow_span.id = "span-costArrow";
 
-    addImageCashIcon();
-
-    // div の子要素として追加
-    cost_div.appendChild(cost_span);
-    cost_div.appendChild(costArrow_span);
-}
-
-function addImageCashIcon() {
-
     // img要素を作成
     let img = document.createElement("img");
     img.src = "assets/images/icons/status/キャッシュアイコン.png";
@@ -742,6 +746,10 @@ function addImageCashIcon() {
 
     // divの中に追加
     document.getElementById("div-cost").appendChild(img);
+
+    // div の子要素として追加
+    cost_div.appendChild(cost_span);
+    cost_div.appendChild(costArrow_span);
 }
 
 // アイテムテーブルをソートする関数
