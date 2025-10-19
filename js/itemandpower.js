@@ -556,7 +556,6 @@ function filterItemTable(elem){
     //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_item に配列のように格納。各行を1つのアイテムとする。
     var tbody_item = document.getElementById("item-table").querySelector("tbody");
     var rows_item = tbody_item.querySelectorAll("tr");
-    var aggjhhgvhjvhjc = "aaa";
 
     // 行ごとの絞り込み
     // アイテム行をループ
