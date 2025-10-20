@@ -694,6 +694,8 @@ main-IAP{
     background-color: lightgray;
     cursor: pointer;
     color: black;
+
+    word-wrap: break-word;
 }
 
 .button-off{
@@ -706,6 +708,8 @@ main-IAP{
     background-color: white;
     cursor: pointer;
     color: black;
+
+    word-wrap: break-word;
 }
 
 .button-list{
