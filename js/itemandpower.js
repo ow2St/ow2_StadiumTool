@@ -90,6 +90,23 @@ fetch("itemListData.json")
     .then(data => {
         itemAllData = data;
 
+        //初期データをカテゴリー順に並び替え
+        // 並び替え優先順位を定義
+        const categoryOrder = ["武器", "アビリティ", "サバイバル"];
+
+        itemAllData.sort((a, b) => {
+        // categoryOrder内でのインデックスを取得
+        const indexA = categoryOrder.indexOf(a.category);
+        const indexB = categoryOrder.indexOf(b.category);
+
+        // indexが見つからない（＝該当しないカテゴリ）場合は末尾へ
+        const orderA = indexA === -1 ? categoryOrder.length : indexA;
+        const orderB = indexB === -1 ? categoryOrder.length : indexB;
+
+        // 比較して順序を返す
+        return orderA - orderB;
+        });
+
         // 整形 → キー変換
         const itemList = convertItemKeys(organizeItemData(itemAllData));
 
@@ -587,7 +604,14 @@ function filterItemTable(elem){
                 if(button.innerText == "ライフ"){
                     shouldShowStatus = statusList.some(status => status.includes("ライフ+"));
                 }else if(button.innerText == "その他"){
-                    shouldShowStatus = statusList.some(status => status.includes("※"));
+                    const imgs = cells[statusNumber].querySelectorAll("img");
+                    const otherImg = Array.from(imgs).map(img => decodeURIComponent(img.src.split('/').pop()));
+
+                    if (otherImg.some(src => src.includes("特殊効果アイコン.png"))) {
+                        shouldShowStatus = true;
+                    } else {
+                        shouldShowStatus = false;
+                    }
                 }else{
                     shouldShowStatus = statusList.some(status => status.includes(button.innerText));
                 }
@@ -605,6 +629,14 @@ function filterItemTable(elem){
 
 //　検索ボックスで絞り込み（アイテム）
 function item_searchWords() {
+
+    // 検索ワードを取得
+    const keyword = document.getElementById("item_search-input").value.trim();
+
+    //検索ワードなしなら何もしない
+    if(keyword === "" || keyword === null || keyword === undefined){
+        return;
+    }
 
     //ボタンを全てOFFにした状態に
     let activeButtons = document.querySelectorAll("button.button-on");
@@ -627,9 +659,6 @@ function item_searchWords() {
 
         const itemName = cells[0]?.textContent.trim() || "";
         const textColumn = cells[7]?.textContent.trim() || "";
-
-        // 検索ワードを取得
-        const keyword = document.getElementById("item_search-input").value.trim();
 
         // 非表示フラグ　keywordが空の場合は全て非表示、
         const shouldShow = keyword !== "" && (itemName.includes(keyword) || textColumn.includes(keyword));
@@ -709,15 +738,6 @@ function addCostDivAndSpan() {
     const costArrow_span = document.createElement("span");
     costArrow_span.id = "span-costArrow";
 
-    addImageCashIcon();
-
-    // div の子要素として追加
-    cost_div.appendChild(cost_span);
-    cost_div.appendChild(costArrow_span);
-}
-
-function addImageCashIcon() {
-
     // img要素を作成
     let img = document.createElement("img");
     img.src = "assets/images/icons/status/キャッシュアイコン.png";
@@ -725,6 +745,10 @@ function addImageCashIcon() {
 
     // divの中に追加
     document.getElementById("div-cost").appendChild(img);
+
+    // div の子要素として追加
+    cost_div.appendChild(cost_span);
+    cost_div.appendChild(costArrow_span);
 }
 
 // アイテムテーブルをソートする関数

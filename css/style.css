@@ -694,6 +694,8 @@ main-IAP{
     background-color: lightgray;
     cursor: pointer;
     color: black;
+
+    word-wrap: break-word;
 }
 
 .button-off{
@@ -706,6 +708,8 @@ main-IAP{
     background-color: white;
     cursor: pointer;
     color: black;
+
+    word-wrap: break-word;
 }
 
 .button-list{
@@ -923,4 +927,14 @@ main-IAP{
 
 .ability {
     background-color: #d3d3ff;
+}
+
+.character_name_toppage {
+    text-decoration: underline;
+    margin-left: 20px;
+}
+
+.character_data_toppage {
+    margin-left: 30px;
+    line-height: 1.2;
 }
