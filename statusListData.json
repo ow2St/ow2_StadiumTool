@@ -725,7 +725,7 @@
         "ability1ct": "0",
         "ability1lifesteal": "0",
         "ability2name": "バイオティック・フィールド",
-        "ability2damage": "0",
+        "ability2damage": "200",
         "ability2duration": "5",
         "ability2ct": "15",
         "ability2lifesteal": "0",
