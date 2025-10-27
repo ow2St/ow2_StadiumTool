@@ -1257,9 +1257,15 @@ function linkItemList(itemList, id) {
             if(!status.includes("※")){
                 switch(true) {
                     case status.includes("ライフ+"):
-                    case status.includes("アーマー"):
-                    case status.includes("シールド"):
                         statusIcons.push("assets/images/icons/status/ライフアイコン.png");
+                        break;
+
+                    case status.includes("アーマー"):
+                        statusIcons.push("assets/images/icons/status/アーマーアイコン.png");
+                        break;
+
+                    case status.includes("シールド"):
+                        statusIcons.push("assets/images/icons/status/シールドアイコン.png");
                         break;
 
                     case status.includes("武器パワー"):
