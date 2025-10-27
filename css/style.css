@@ -928,3 +928,13 @@ main-IAP{
 .ability {
     background-color: #d3d3ff;
 }
+
+.character_name_toppage {
+    text-decoration: underline;
+    margin-left: 20px;
+}
+
+.character_data_toppage {
+    margin-left: 30px;
+    line-height: 1.2;
+}

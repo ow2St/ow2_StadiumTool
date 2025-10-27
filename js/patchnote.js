@@ -15,9 +15,11 @@ fetch("patchNoteData.json")
     })
     .then(data => {
         allData = data;
-        const organizedData = organizeData(allData);
+        const result = organizeData(allData);
+        const organizedData = result.organizedData;
+
         const dateToExpand = getUrlParameter("date");
-        const shouldAutoExpand = getUrlParameter("autoExpand") === "true";
+        const shouldAutoExpand = getUrlParameter("autoExpand") == "true";
 
         // autoExpand=trueかつdateパラメータがあれば、その日付を展開
         if (shouldAutoExpand && dateToExpand) {
@@ -39,9 +41,22 @@ fetch("patchNoteData.json")
 // データを年、月、日、キャラクターで階層整理する関数
 function organizeData(data) {
     const organized = {};
+    // 最終日付データ退避用変数
+    let latestDateString = null;
+
     data.forEach(item => {
+
+        const datetimeString = item.date;
+        if (!datetimeString) return;
+
+        // 最新日付の更新チェック
+        if (!latestDateString || new Date(datetimeString) > new Date(latestDateString)) {
+            latestDateString = datetimeString;
+        }
+
+        // 日付を分割
         const [year, month, day] = item.date.split("/");
-        const character = item.hero || "不明なキャラクター";
+        const character = item.hero || "システム";
 
         if (!organized[year]) {
             organized[year] = {};
@@ -60,13 +75,32 @@ function organizeData(data) {
         }
         organized[year][month][day][character].push(item);
     });
-    return organized;
+
+    // 最新日付のデータを退避
+    let latestData = null;
+    if (latestDateString) {
+        const [latestYear, latestMonth, latestDay] = latestDateString.split('/');
+        // 最新日付のデータを取り出す
+        latestData = organized[latestYear][latestMonth][latestDay];
+    }
+
+    return {
+        organizedData: organized,
+        latestData: latestData,
+        latestDateString: latestDateString // YYYY/MM/DD形式の最新日付も退避
+    };
 }
 
 // アイテムの詳細情報（カテゴリ、サブカテゴリ、レアリティ、名前、内容）を生成する関数
-function createItemDetailsElement(item) {
+function createItemDetailsElement(item,invoker) {
     const itemDiv = document.createElement("div");
-    itemDiv.classList.add("item-details");
+
+    if(invoker == "toppage"){
+        itemDiv.classList.add("item-details_toppage");
+    }else{
+        itemDiv.classList.add("item-details");
+    }
+    
 
     const p = document.createElement("p");
 
@@ -188,7 +222,7 @@ function buildAccordion(organizedData, targetDateString = null) {
 
                     // そのキャラクターの全情報を追加
                     organizedData[year][month][day][character].forEach(item => {
-                        characterDataContainer.appendChild(createItemDetailsElement(item));
+                        characterDataContainer.appendChild(createItemDetailsElement(item,"patchnote"));
                     });
                 });
 
@@ -304,5 +338,53 @@ function buildAccordion(organizedData, targetDateString = null) {
             });
         }, 0);
     }
+}
+
+function formatSlashDateToJapanese(dateString) {
+    const parts = dateString.split('/');
+    const year = parts[0];
+    const month = parseInt(parts[1], 10);
+    const day = parseInt(parts[2], 10);
+    return `${year}年${month}月${day}日`;
+}
+
+// 最新日付の全データを専用領域に表示する関数
+function displayLatestData(latestData, latestDateString) {
+    const displayContainer = document.getElementById('latest-data-display');
+    if (!displayContainer || !latestData) {
+        displayContainer.textContent = '最新情報がありません。';
+        return;
+    }
+
+    // コンテナをクリア
+    displayContainer.innerHTML = '';
+    
+    // 見出しを追加
+    const formattedDate = formatSlashDateToJapanese(latestDateString);
+    const dateTitle = document.createElement('h3');
+    dateTitle.textContent = `・${formattedDate}パッチノート（最新）`;
+    displayContainer.appendChild(dateTitle);
+
+    // キャラクターごとのデータを表示
+    const charactersInLatest = Object.keys(latestData).sort();
+
+    charactersInLatest.forEach(character => {
+        // キャラクター名表示
+        const characterNameDiv = document.createElement("div");
+        characterNameDiv.classList.add("character_name_toppage");
+        characterNameDiv.style.marginTop = '15px';
+        characterNameDiv.textContent = character == "-" ? "システム" : character; 
+        displayContainer.appendChild(characterNameDiv);
+
+        // コンテンツを配置
+        const dataContainer = document.createElement("div");
+        dataContainer.classList.add("character_data_toppage");
+        displayContainer.appendChild(dataContainer);
+
+        // そのキャラクターの全情報を追加
+        latestData[character].forEach(item => {
+            dataContainer.appendChild(createItemDetailsElement(item,"toppage"));
+        });
+    });
 }
 

@@ -238,10 +238,12 @@ var theoreticalItemList = {}; // 整形後
 // チェックされた行のデータを格納する配列
 var selectedItemRowsData = [];
 var selectedPowerRowsData = [];
+var selectedTheoreticalItemData = [];
 
 // チェックボックス
 var itemCheckboxes = [];
 var powerCheckboxes = [];
+var theoreticalItemCheckboxes = [];
 
 loadAndInitBuildData();
 
@@ -789,19 +791,13 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
         document.getElementById("additem").innerText = "追加効果(アイテム):";
     }
 
-    // テキストに記載がある場合
-    if(addItemText != "-" && addItemText != "init"){
-
-    // 追加効果欄に羅列
-        document.getElementById("additem").innerText = document.getElementById("additem").innerText + addItemText + "\n";
-    }
-
-    // その他に記載がある場合
-    if(addItemOthers != "-"){
+    // その他・テキストに記載がある場合
+    if(addItemText != "init"){
 
         // 追加効果欄に羅列
-        document.getElementById("additem").innerText = document.getElementById("additem").innerText + addItemOthers + "\n";
-    }
+        document.getElementById("additem").innerText = document.getElementById("additem").innerText + addItemText;
+        document.getElementById("additem").innerText = document.getElementById("additem").innerText + addItemOthers;
+    }    
 }
 
 function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadKey,ammoKey,lifeStealRateKey){
@@ -1651,6 +1647,15 @@ function updateSelectedPowerList() {
     return selectedPowerRows;
 }
 
+// 理論値アイテムでステータスを反映
+function updateStatusForTheoreticalItem() {
+
+    var selectedTheoreticalItemRows = [];
+
+    
+    return selectedTheoreticalItemRows;
+}
+
 //ビルド欄のアイテムを更新する関数
 function updateBuild_Item(selectedItemRows){
 
@@ -1689,6 +1694,7 @@ function updateBuild_Item(selectedItemRows){
             var input = document.createElement("input");
             input.type = "checkbox";
             input.checked = false;
+            input.classList.add("theoretical-item-checkbox");
             // 理論値フラグがfalseなら表示はするが非活性にする
             if(!selectedItemRows[i][theoreticalFlgKey]){
                 input.disabled = true;
@@ -1698,10 +1704,27 @@ function updateBuild_Item(selectedItemRows){
             checkDiv.appendChild(input);
         }
     }
+
+    // 理論値チェックボックス
+    theoreticalItemCheckboxes = document.querySelectorAll(".theoretical-item-checkbox");
+
+    // 各アイテムの理論値チェックボックスにイベントリスナーを追加
+        theoreticalItemCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", () => {
+                
+                // ステータスを更新
+                updateStatus_Item(selectedItemRowsData, true);
+            });
+        });
 }
 
 //ステータスにアイテムの内容を反映する関数
-function updateStatus_Item(selectedItemRows){
+/**
+ * 
+ * @param {Object} selectedItemRows - 選択中アイテム（連想配列）
+ * @param {boolean} theoreticalFlag - 理論値フラグ
+ */
+function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
 
     // 選択中のヒーローのステータスを初期化
     const showStatusListTmp = initStatusList.filter(heroStatus => heroStatus[heroNameKey] === selectedHero);
@@ -1717,29 +1740,178 @@ function updateStatus_Item(selectedItemRows){
     let armorRate = 1;
     let shieldRate = 1;
     let ammoRate = 1;
+    let text = "";
+    let others = "";
 
+    // #region 選択中のアイテムごとにアイテムの効果をステータスリストに反映
     for(let i=0; i<selectedItemRows.length; i++) {
 
         // 各パラメータを抽出
-        const nameTmp = selectedItemRows[i][item_nameKey];
-        const lifeTmp = selectedItemRows[i][item_lifeKey];
-        const armorTmp = selectedItemRows[i][item_armorKey];
-        const shieldTmp = selectedItemRows[i][item_shieldKey];
-        const weaponPowerTmp = selectedItemRows[i][weaponPowerKey];
-        const abilityPowerTmp = selectedItemRows[i][abilityPowerKey];
-        const attackSpeedTmp = selectedItemRows[i][attackSpeedKey];
-        const ctReducationTmp = selectedItemRows[i][ctReducationKey];
-        const ammoTmp = selectedItemRows[i][ammoKey];
-        const weapon_LifeStealTmp = selectedItemRows[i][weapon_LifeStealKey];
-        const ability_LifeStealTmp = selectedItemRows[i][ability_LifeStealKey];
-        const speedTmp = selectedItemRows[i][speedKey];
-        const reloadSpeedTmp = selectedItemRows[i][reloadSpeedKey];
-        const meleeDamageTmp = selectedItemRows[i][item_meleeDamageKey];
-        const criticalTmp = selectedItemRows[i][criticalKey];
+        let nameTmp = selectedItemRows[i][item_nameKey];
+        let lifeTmp = selectedItemRows[i][item_lifeKey];
+        let armorTmp = selectedItemRows[i][item_armorKey];
+        let shieldTmp = selectedItemRows[i][item_shieldKey];
+        let weaponPowerTmp = selectedItemRows[i][weaponPowerKey];
+        let abilityPowerTmp = selectedItemRows[i][abilityPowerKey];
+        let attackSpeedTmp = selectedItemRows[i][attackSpeedKey];
+        let ctReducationTmp = selectedItemRows[i][ctReducationKey];
+        let ammoTmp = selectedItemRows[i][ammoKey];
+        let weapon_LifeStealTmp = selectedItemRows[i][weapon_LifeStealKey];
+        let ability_LifeStealTmp = selectedItemRows[i][ability_LifeStealKey];
+        let speedTmp = selectedItemRows[i][speedKey];
+        let reloadSpeedTmp = selectedItemRows[i][reloadSpeedKey];
+        let meleeDamageTmp = selectedItemRows[i][item_meleeDamageKey];
+        let criticalTmp = selectedItemRows[i][criticalKey];
         let othersTmp = selectedItemRows[i][othersKey];
         let textTmp = selectedItemRows[i][item_textKey];
         let durationFlgTmp = selectedItemRows[i][durationFlgKey];
         let durationTmp = selectedItemRows[i][durationKey];
+
+        // 理論値計算時は理論値チェックがONか確認
+        if(theoreticalFlag && selectedItemRows[i][theoreticalFlgKey]){
+            theoreticalItemCheckboxes.forEach(checkbox => {
+                const div = checkbox.closest('div');
+            
+                //アイテムの番号からアイコンのアイテム名を抜き出す
+                const itemNumber = div.id.slice(-1);
+                const img = document.getElementById("item-image" + itemNumber);
+                const imgSRC = decodeURIComponent(img.src.split('/').pop());
+
+                // アイテム名が一致かつチェックがONの時はアイテムIDを抜き出す
+                if(selectedItemRows[i][item_iconKey] == imgSRC && checkbox.checked){
+                    const itemID = selectedItemRows[i][itemIdKey];
+
+                    // アイテムIDから理論値リストのデータを検索
+                    for(let j=0; j<theoreticalItemList.length; j++){
+                        const thItemID = theoreticalItemList[j][theoreticalItem_IDKey];
+                        if(thItemID == itemID){
+                            
+                            // 特別フラグがOFFの場合そのままステータスに反映
+                            if(!theoreticalItemList[j][theoreticalItem_SpecialFlgKey]){
+                                // 各パラメータを抽出
+                                const thLifeTmp = theoreticalItemList[j][theoreticalItem_LifeKey];
+                                const thArmorTmp = theoreticalItemList[j][theoreticalItem_ArmorKey];
+                                const thShieldTmp = theoreticalItemList[j][theoreticalItem_ShieldKey];
+                                const thWeaponPowerTmp = theoreticalItemList[j][theoreticalItem_WeaponPowerKey];
+                                const thAbilityPowerTmp = theoreticalItemList[j][theoreticalItem_AbilityPowerKey];
+                                const thCtReducationTmp = theoreticalItemList[j][theoreticalItem_CTReducationKey];
+                                const thAmmoTmp = theoreticalItemList[j][theoreticalItem_AmmoKey];
+                                const thWeapon_LifeStealTmp = theoreticalItemList[j][theoreticalItem_WeaponLifeStealKey];
+                                const thAbility_LifeStealTmp = theoreticalItemList[j][theoreticalItem_AbilityLifeStealKey];
+                                const thReloadSpeedTmp = theoreticalItemList[j][theoreticalItem_ReloadSpeedKey];
+                                const thMeleeDamageTmp = theoreticalItemList[j][theoreticalItem_MeleeDamageKey];
+                                const thCriticalTmp = theoreticalItemList[j][theoreticalItem_CriticalKey];
+
+                                // 通常の計算変数に加算
+                                lifeTmp += thLifeTmp;
+                                armorTmp += thArmorTmp;
+                                shieldTmp += thShieldTmp;
+                                weaponPowerTmp += thWeaponPowerTmp;
+                                abilityPowerTmp += thAbilityPowerTmp;
+                                ctReducationTmp += thCtReducationTmp;
+                                ammoTmp += thAmmoTmp;
+                                weapon_LifeStealTmp += thWeapon_LifeStealTmp;
+                                ability_LifeStealTmp += thAbility_LifeStealTmp;
+                                reloadSpeedTmp += thReloadSpeedTmp;
+                                meleeDamageTmp += thMeleeDamageTmp;
+                                criticalTmp += thCriticalTmp;
+                            }
+                            else
+                            {
+                                // 武器アビリティ上昇フラグから上昇する対象を決定
+                                switch(theoreticalItemList[j][theoreticalItem_WeaponAbilityUpFlgKey]){
+                                    
+                                    // アビリティ１の場合
+                                    case 1:
+
+                                        // 掛け算の場合
+                                        if(theoreticalItemList[j][theoreticalItem_DamageUpKey][0] == "*"){
+
+                                            // 表示用ステータスリストに反映
+                                            showStatusList[ability1DamageKey] = Math.round(showStatusList[ability1DamageKey] * theoreticalItemList[j][theoreticalItem_DamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                        }
+                                        break;
+                                    
+                                    // アビリティ２の場合
+                                    case 2:
+
+                                        // 掛け算の場合
+                                        if(theoreticalItemList[j][theoreticalItem_DamageUpKey][0] == "*"){
+
+                                            // 表示用ステータスリストに反映
+                                            showStatusList[ability2DamageKey] = Math.round(showStatusList[ability2DamageKey] * theoreticalItemList[j][theoreticalItem_DamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                        }
+                                        break;
+
+                                    // アビリティ３の場合
+                                    case 3:
+
+                                        // 掛け算の場合
+                                        if(theoreticalItemList[j][theoreticalItem_DamageUpKey][0] == "*"){
+
+                                            // 表示用ステータスリストに反映
+                                            showStatusList[ability3DamageKey] = Math.round(showStatusList[ability3DamageKey] * theoreticalItemList[j][theoreticalItem_DamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                        }
+                                        break;
+
+                                    // ULTの場合
+                                    case 4:
+
+                                        // 掛け算の場合
+                                        if(theoreticalItemList[j][theoreticalItem_DamageUpKey][0] == "*"){
+
+                                            // 表示用ステータスリストに反映
+                                            showStatusList[ultDamageKey] = Math.round(showStatusList[ultDamageKey] * theoreticalItemList[j][theoreticalItem_DamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                        }
+                                        break;
+
+                                    // メイン武器の場合
+                                    case 5:
+                                        // 掛け算の場合
+                                        if(theoreticalItemList[j][theoreticalItem_DamageUpKey][0] == "*"){
+                                            // 表示用ステータスリストに反映
+                                            showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * theoreticalItemList[j][theoreticalItem_DamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                        }
+                                        break;
+
+                                    // サブ武器の場合
+                                    case 6:
+
+                                        // 掛け算の場合
+                                        if(theoreticalItemList[j][theoreticalItem_DamageUpKey][0] == "*"){
+
+                                            // 表示用ステータスリストに反映
+                                            showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * theoreticalItemList[j][theoreticalItem_DamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                        }
+                                        break;
+
+                                    // メイン武器とサブ武器の場合
+                                    case 7:
+
+                                        // 掛け算の場合
+                                        if(theoreticalItemList[j][theoreticalItem_DamageUpKey][0] == "*"){
+
+                                            // 表示用ステータスリストに反映
+                                            showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * theoreticalItemList[j][theoreticalItem_DamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * theoreticalItemList[j][theoreticalItem_DamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                        }
+                                        break;
+
+                                    // その他の場合
+                                    case 8:
+                                        break;
+
+                                    // 未設定の場合
+                                    default:
+
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
         // ライフに記載がある場合
         if(lifeTmp != 0){
@@ -2002,9 +2174,18 @@ function updateStatus_Item(selectedItemRows){
             }   
         }
 
-        // ステータス表に反映
-        initStatusValue(showStatusList, textTmp, othersTmp);
+        // テキストとその他をまとめる
+        if(textTmp != "-"){
+            text = text + textTmp + "\n";
+        }
+        if(othersTmp != "-"){
+            others = others + othersTmp + "\n";
+        }
     }
+    // #endregion
+
+    // ステータス表に反映
+    initStatusValue(showStatusList, text, others);
 }
 
 //ビルド欄のパワーを更新する関数

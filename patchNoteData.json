@@ -3625,5 +3625,90 @@
         "rarity": "エピック",
         "name": "オーバードライブ・コア",
         "content": "コストが10,000から9,500に減少"
+    },
+    {
+        "date": "2025/09/05",
+        "hero": "D.VA",
+        "category": "パワー",
+        "subcategory": "-",
+        "rarity": "-",
+        "name": "メディカル・マトリックス",
+        "content": "回復量が40%から30%に減少"
+    },
+    {
+        "date": "2025/09/05",
+        "hero": "D.VA",
+        "category": "アイテム",
+        "subcategory": "武器",
+        "rarity": "エピック",
+        "name": "マルチ・タスクMod",
+        "content": "武器パワーが20%から10%に減少",
+        "weaponpower": 10,
+        "updatecategory": 2
+    },
+    {
+        "date": "2025/09/05",
+        "hero": "ジャンカー・クイーン",
+        "category": "パワー",
+        "subcategory": "-",
+        "rarity": "-",
+        "name": "統率者の一撃",
+        "content": "継続ダメージが50から40に減少"
+    },
+    {
+        "date": "2025/09/05",
+        "hero": "オリーサ",
+        "category": "アイテム",
+        "subcategory": "サバイバル",
+        "rarity": "レア",
+        "name": "反射プレート",
+        "content": "ダメージ軽減量が50%から75%に増加"
+    },
+    {
+        "date": "2025/09/05",
+        "hero": "ファラ",
+        "category": "パワー",
+        "subcategory": "-",
+        "rarity": "-",
+        "name": "回生システム",
+        "content": "ライフ吸収量が50%から25%に減少"
+    },
+    {
+        "date": "2025/09/05",
+        "hero": "ファラ",
+        "category": "パワー",
+        "subcategory": "-",
+        "rarity": "-",
+        "name": "電撃砲火",
+        "content": "ロケットの減少率が60%から75%に増加"
+    },
+    {
+        "date": "2025/09/05",
+        "hero": "ファラ",
+        "category": "アイテム",
+        "subcategory": "アビリティ",
+        "rarity": "レア",
+        "name": "オーバーチャージング・ブラスト",
+        "content": "コストが4,000から5,500に増加",
+        "cost": 5500,
+        "updatecategory": 2
+    },
+    {
+        "date": "2025/09/05",
+        "hero": "ブリギッテ",
+        "category": "パワー",
+        "subcategory": "-",
+        "rarity": "-",
+        "name": "義烈の猛撃",
+        "content": "効果を発動できる距離が5メートルから10メートルに延長"
+    },
+    {
+        "date": "2025/09/05",
+        "hero": "ブリギッテ",
+        "category": "アイテム",
+        "subcategory": "アビリティ",
+        "rarity": "エピック",
+        "name": "リビルド",
+        "content": "〈ラリー〉発動中のアルティメット・チャージ付与の効果を削除"
     }
 ]
