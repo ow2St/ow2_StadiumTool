@@ -181,7 +181,7 @@ var ultNameKey = "ULT名";
 var ultDamageKey = "ULT";
 var ultCalculationKey = "ULT計算式";
 var ultDurationKey = "ULT継続時間";
-var ultLifeStealRateKey = "ULT2ライフ吸収";
+var ultLifeStealRateKey = "ULTライフ吸収";
 var status_meleeDamageKey = "近接ダメージ";
 
 // ステータスキー対応マッピング（英語 → 日本語）
