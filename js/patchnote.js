@@ -362,7 +362,7 @@ function displayLatestData(latestData, latestDateString) {
     // 見出しを追加
     const formattedDate = formatSlashDateToJapanese(latestDateString);
     const dateTitle = document.createElement('h3');
-    dateTitle.textContent = `・${formattedDate}パッチノート（最新）`;
+    dateTitle.textContent = ` ${formattedDate}パッチノート（最新）`;
     displayContainer.appendChild(dateTitle);
 
     // キャラクターごとのデータを表示
