@@ -786,13 +786,13 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
     });
 
     document.getElementById("addpower").innerText = "追加効果(パワー):";
+    
     // 羅列するため初期設定時のみ走るようinit判定をする
     if(addItemText == "init"){
         document.getElementById("additem").innerText = "追加効果(アイテム):";
     }
-
     // その他・テキストに記載がある場合
-    if(addItemText != "init"){
+    else if(addItemText != "-"){
 
         // 追加効果欄に羅列
         document.getElementById("additem").innerText = document.getElementById("additem").innerText + addItemText;
@@ -906,7 +906,7 @@ function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,life
     
     if(attackPointKey == ability1DamageKey){
         if(selectedHero == "ジュノ" && junoFlg == "ヒール"){
-            attackValue = statuslist[attackPointKey] + 50;
+            attackValue = Number(statuslist[attackPointKey]) + 50;
         }else if(selectedHero == "モイラ" && moiraFlg == 'ヒール'){
             attackValue = Math.round((statuslist[attackPointKey] * 1.5 * 10 ** 2) / 10 ** 2);
         }
