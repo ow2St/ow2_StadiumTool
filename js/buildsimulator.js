@@ -114,8 +114,7 @@ var theoreticalItem_SpecialFlgKey = "特別フラグ";
 var theoreticalItem_AdditionDamageFlgKey = "追加ダメージフラグ";
 var theoreticalItem_HealDamageUpFlgKey = "ヒールダメージ上昇フラグ";
 var theoreticalItem_WeaponAbilityUpFlgKey = "武器アビリティ上昇フラグ";
-var theoreticalItem_HealUpKey = "ヒール上昇量";
-var theoreticalItem_DamageUpKey = "ダメージ上昇量";
+var theoreticalItem_HealDamageUpKey = "ヒールダメージ上昇量";
 
 // 理論値アイテムキー対応マッピング（英語 → 日本語）
 const theoreticalItemKeyMap = {
@@ -136,8 +135,7 @@ const theoreticalItemKeyMap = {
     additiondamageflg: theoreticalItem_AdditionDamageFlgKey,
     healdamageupflg: theoreticalItem_HealDamageUpFlgKey,
     weaponabilityupflg: theoreticalItem_WeaponAbilityUpFlgKey,
-    healup: theoreticalItem_HealUpKey,
-    damageup: theoreticalItem_DamageUpKey
+    healdamageup: theoreticalItem_HealDamageUpKey
 };
 
 // ステータスリストのキー
@@ -480,8 +478,7 @@ function organizeTheoreticalItemData(theoreticalItemAllData) {
             additiondamageflg: TIlist.additiondamageflg,
             healdamageupflg: TIlist.healdamageupflg,
             weaponabilityupflg: TIlist.weaponabilityupflg,
-            healup: TIlist.healup,
-            damageup: TIlist.damageup
+            healdamageup: TIlist.healdamageup
         };
     })
     return selectedData;
@@ -1819,10 +1816,10 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                                     case 1:
 
                                         // 掛け算の場合
-                                        if(theoreticalItemList[j][theoreticalItem_DamageUpKey][0] == "*"){
+                                        if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
 
                                             // 表示用ステータスリストに反映
-                                            showStatusList[ability1DamageKey] = Math.round(showStatusList[ability1DamageKey] * theoreticalItemList[j][theoreticalItem_DamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            showStatusList[ability1DamageKey] = Math.round(showStatusList[ability1DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
                                         }
                                         break;
                                     
@@ -1830,10 +1827,10 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                                     case 2:
 
                                         // 掛け算の場合
-                                        if(theoreticalItemList[j][theoreticalItem_DamageUpKey][0] == "*"){
+                                        if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
 
                                             // 表示用ステータスリストに反映
-                                            showStatusList[ability2DamageKey] = Math.round(showStatusList[ability2DamageKey] * theoreticalItemList[j][theoreticalItem_DamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            showStatusList[ability2DamageKey] = Math.round(showStatusList[ability2DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
                                         }
                                         break;
 
@@ -1841,10 +1838,10 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                                     case 3:
 
                                         // 掛け算の場合
-                                        if(theoreticalItemList[j][theoreticalItem_DamageUpKey][0] == "*"){
+                                        if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
 
                                             // 表示用ステータスリストに反映
-                                            showStatusList[ability3DamageKey] = Math.round(showStatusList[ability3DamageKey] * theoreticalItemList[j][theoreticalItem_DamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            showStatusList[ability3DamageKey] = Math.round(showStatusList[ability3DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
                                         }
                                         break;
 
@@ -1852,19 +1849,19 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                                     case 4:
 
                                         // 掛け算の場合
-                                        if(theoreticalItemList[j][theoreticalItem_DamageUpKey][0] == "*"){
+                                        if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
 
                                             // 表示用ステータスリストに反映
-                                            showStatusList[ultDamageKey] = Math.round(showStatusList[ultDamageKey] * theoreticalItemList[j][theoreticalItem_DamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            showStatusList[ultDamageKey] = Math.round(showStatusList[ultDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
                                         }
                                         break;
 
                                     // メイン武器の場合
                                     case 5:
                                         // 掛け算の場合
-                                        if(theoreticalItemList[j][theoreticalItem_DamageUpKey][0] == "*"){
+                                        if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
                                             // 表示用ステータスリストに反映
-                                            showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * theoreticalItemList[j][theoreticalItem_DamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
                                         }
                                         break;
 
@@ -1872,10 +1869,10 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                                     case 6:
 
                                         // 掛け算の場合
-                                        if(theoreticalItemList[j][theoreticalItem_DamageUpKey][0] == "*"){
+                                        if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
 
                                             // 表示用ステータスリストに反映
-                                            showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * theoreticalItemList[j][theoreticalItem_DamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
                                         }
                                         break;
 
@@ -1883,11 +1880,11 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                                     case 7:
 
                                         // 掛け算の場合
-                                        if(theoreticalItemList[j][theoreticalItem_DamageUpKey][0] == "*"){
+                                        if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
 
                                             // 表示用ステータスリストに反映
-                                            showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * theoreticalItemList[j][theoreticalItem_DamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                            showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * theoreticalItemList[j][theoreticalItem_DamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
                                         }
                                         break;
 
