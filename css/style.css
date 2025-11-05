@@ -109,6 +109,7 @@ main-toppage {
 }
 
 .info-content {
+    padding-left: 20px;
     display: block;
     margin-left: 20px;
     margin-right: 20px;
@@ -174,7 +175,7 @@ main-buildsimulator {
     right: 20%;
     padding: 15px;
     min-width: 630px;
-    height: 250px;
+    height: 320px;
     background: white;
     border-radius: 8px;
 }
