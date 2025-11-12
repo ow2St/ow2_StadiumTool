@@ -7819,7 +7819,7 @@
         "cost": 10000,
         "icon": "エピック_サバイバル_ソルジャー761.png",
         "uniquehero": "ソルジャー76",
-        "text": "[スプリット]を行うと、毎秒ライフ最大値5%分の追加ライフを得る。最大25%、5秒間",
+        "text": "[スプリント]を行うと、毎秒ライフ最大値5%分の追加ライフを得る。最大25%、5秒間",
         "life": 25,
         "armor": 0,
         "shield": 0,
@@ -7862,7 +7862,7 @@
         "reloadspeed": 0,
         "meleedamage": 0,
         "critical": 0,
-        "others": "25%[スプリット]移動速度",
+        "others": "25%[スプリント]移動速度",
         "durationflg": 0,
         "duration": "+0",
         "theoreticalflag": false
