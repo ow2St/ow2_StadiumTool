@@ -480,7 +480,7 @@
         "specialflg": true,
         "additiondamageflg": 2,
         "healdamageupflg": 0,
-        "weaponabilityupflg": 0,
+        "weaponabilityupflg": 1,
         "healdamageup": "20"
     },
     {
@@ -700,7 +700,7 @@
         "specialflg": true,
         "additiondamageflg": 2,
         "healdamageupflg": 0,
-        "weaponabilityupflg": 0,
+        "weaponabilityupflg": 2,
         "healdamageup": "75"
     },
     {
@@ -832,7 +832,7 @@
         "specialflg": true,
         "additiondamageflg": 2,
         "healdamageupflg": 0,
-        "weaponabilityupflg": 0,
+        "weaponabilityupflg": 1,
         "healdamageup": "100"
     },
     {
