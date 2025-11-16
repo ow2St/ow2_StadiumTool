@@ -695,7 +695,7 @@ function item_searchWords() {
         // 非表示にするアイテムを探す
 
         const itemName = cells[0]?.textContent.trim() || "";
-        const textColumn = cells[7]?.textContent.trim() || "";
+        const textColumn = cells[6]?.textContent.trim() || "";
 
         // 非表示フラグ　keywordが空の場合は全て非表示、
         const shouldShow = keyword !== "" && (itemName.includes(keyword) || textColumn.includes(keyword));
@@ -903,6 +903,14 @@ function linkPowerList(powerList) {
 //　検索ボックスで絞り込み（パワー）
 function power_searchWords() {
 
+    // 検索ワードを取得
+    const keyword = document.getElementById("power_search-input").value.trim();
+
+    //検索ワードなしなら何もしない
+    if(keyword === "" || keyword === null || keyword === undefined){
+        return;
+    }
+
     //ボタンを全てOFFにした状態に
     let activeImages = document.querySelectorAll("img.power-hero-icon-on");
     activeImages.forEach(img => filterPowerTable(img));
@@ -923,10 +931,7 @@ function power_searchWords() {
         // 非表示にするパワーを探す
 
         const powerName = cells[0]?.textContent.trim() || "";
-        const textColumn = cells[3]?.textContent.trim() || "";
-
-        // 検索ワードを取得
-        const keyword = document.getElementById("power_search-input").value.trim();
+        const textColumn = cells[2]?.textContent.trim() || "";
 
         // 非表示フラグ　keywordが空の場合は全て非表示、
         const shouldShow = keyword !== "" && (powerName.includes(keyword) || textColumn.includes(keyword));
