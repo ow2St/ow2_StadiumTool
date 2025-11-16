@@ -77,6 +77,8 @@ const powerKeyMap = {
 
 const accordionContainer = document.getElementById("accordion-container");
 
+let patchNotesApplied = false;
+
 let itemAllData = []; // 全てのアイテムデータを保持
 
 // データの読み込み(itemList)
@@ -111,6 +113,8 @@ fetch("itemListData.json")
         const itemList = convertItemKeys(organizeItemData(itemAllData));
 
         linkItemList(itemList);
+
+        applyPatchNotesIfReady();
     })
     .catch(error => {
         console.error("データの読み込み中にエラーが発生しました:", error);
@@ -134,6 +138,28 @@ fetch("powerListData.json")
         const powerList = convertPowerKeys(organizePowerData(powerAllData));
 
         linkPowerList(powerList);
+
+        applyPatchNotesIfReady();
+    })
+    .catch(error => {
+        console.error("データの読み込み中にエラーが発生しました:", error);
+        accordionContainer.textContent = "データの読み込みに失敗しました。";
+    });
+
+let patchNoteAllData = []; // 全てのパッチノートデータを保持
+
+// データの読み込み(patchNoteData)
+fetch("patchNoteData.json")
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        patchNoteAllData = data;
+
+        applyPatchNotesIfReady();
     })
     .catch(error => {
         console.error("データの読み込み中にエラーが発生しました:", error);
@@ -520,6 +546,11 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
     var td = document.createElement("td");
     td.textContent = textText;
     td.classList.add("item-td");
+    tr.appendChild(td);
+
+    // 変更履歴列
+    var td = document.createElement("td");
+    td.classList.add("item-td", "itemandpower-history");
     tr.appendChild(td);
 
     return tr;
@@ -945,6 +976,11 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
     td.classList.add("item-td");
     tr.appendChild(td);
 
+    // 変更履歴列
+    var td = document.createElement("td");
+    td.classList.add("item-td", "itemandpower-history");
+    tr.appendChild(td);
+
     return tr;
 }
 
@@ -1118,8 +1154,7 @@ function powerTableSort(headers, tbody, sortingCriteria,index,sorting) {
 
         // 全てのキーが同じ場合
         return 0; 
-    };
-        
+    }; 
 
     // 配列のソート
     rows.sort(comparator);
@@ -1129,4 +1164,128 @@ function powerTableSort(headers, tbody, sortingCriteria,index,sorting) {
     }
     // ソートされた順序で行を追加
     rows.forEach(row => tbody.appendChild(row));
+}
+
+function applyPatchNotesIfReady() {
+    // 一度適用したら再実行しない
+    if (patchNotesApplied) return;
+    
+    // 必要なテーブルとデータが揃っているかを確認
+    const itemTableTr = document.getElementById("item-table")?.querySelector("tbody").querySelectorAll('tr');
+    const powerTableTr = document.getElementById("power-table")?.querySelector("tbody").querySelectorAll('tr');
+    
+    // アイテム、パワーのテーブルが存在し、かつパッチノートデータが読み込まれていれば実行
+    if (itemTableTr.length > 0 && powerTableTr.length > 0 && patchNoteAllData.length > 0) {
+        applyPatchNotesToTables();
+        patchNotesApplied = true;
+    }
+}
+
+function processPatchNotes() {
+    const changesMap = new Map();
+
+    patchNoteAllData.forEach(note => {
+        if (note.category != "アイテム" && note.category != "パワー") return;
+
+        const name = note.name;
+        if (!name || name == "-") return;
+        
+        const changeEntry = {
+            category: note.category,
+            hero: note.hero,
+            date: note.date,
+            content: note.content.replaceAll("/", "<br>・"),
+            updatecategory: note.updatecategory
+        };
+        
+        if (!changesMap.has(name)) {
+            changesMap.set(name, []);
+        }
+        changesMap.get(name).push(changeEntry);
+    });
+
+    // 日付の新しい順（降順）にソート
+    changesMap.forEach(changes => {
+        changes.sort((a, b) => b.date.localeCompare(a.date));
+    });
+
+    return changesMap;
+}
+
+function createHistoryHtml(changes) {
+
+    let html = "";
+
+    changes.forEach(change => {
+        html += `<div class="patch-date"><strong>${change.date}</strong></div>`;
+        html += `<div class="patch-content">・${change.content}</div>`;
+    });
+
+    return `<div class="history-content-wrapper">${html}</div>`;
+}
+
+function applyPatchNotesToTables() {
+    if (patchNoteAllData.length == 0) return;
+
+    const changesMap = processPatchNotes();
+    
+    // アイテムテーブルへの適用
+    applyChangesToTable("item-table", 0, changesMap); 
+    
+    // パワーテーブルへの適用
+    applyChangesToTable("power-table", 0, changesMap);
+
+    patchNotesApplied = true;
+}
+
+function applyChangesToTable(tableId, nameColIndex, changesMap) {
+    const tableElement = document.getElementById(tableId);
+    const tbody = tableElement?.querySelector("tbody");
+    if (!tbody) return;
+
+    const rows = tbody.querySelectorAll("tr");
+    const HISTORY_COLUMN_INDEX = rows.length > 0 ? rows[0].cells.length - 1 : -1; 
+    
+    if (HISTORY_COLUMN_INDEX == -1) {
+        console.warn(`テーブルID: ${tableId} に行が見つかりません。`);
+        return;
+    }
+
+    rows.forEach(tr => {
+        const nameCell = tr.cells[nameColIndex];
+        
+        // テーブルのアイテム/パワー名を取得
+        const itemNameText = nameCell.textContent.trim().split('\n')[0].trim().replace("ヒーロー：", "/");
+        const itemName = itemNameText.substring(0,itemNameText.indexOf("/"));
+        const heroName = itemNameText.substring(itemNameText.indexOf("/") + 1,itemNameText.length);
+
+        const changes = changesMap.get(itemName);
+        let filteredChanges = changes;
+
+        if (changes) {
+            filteredChanges = changes.filter(change => {
+                // 更新カテゴリが更新のデータの絞り込み実施
+                if (heroName != "-"){
+                    return change.updatecategory && change.updatecategory == UPDATECATEGORY.update && change.hero && change.hero == heroName;
+                }else{
+                    return change.updatecategory && change.updatecategory == UPDATECATEGORY.update;
+                }
+                
+            });
+        }
+        
+        // 描画済み最終列の「変更履歴」セルを取得
+        const historyCell = tr.cells[HISTORY_COLUMN_INDEX];
+        historyCell.classList.add("patch-history-content");
+        
+        if (filteredChanges && filteredChanges.length > 0) {
+            // 変更履歴の内容をHTMLでセルに書き込む
+            historyCell.innerHTML = createHistoryHtml(filteredChanges);
+            // 変更があった行に目印のクラスを追加
+            tr.classList.add("row-patchnote");
+        } else {
+            // 変更がない場合
+            historyCell.textContent = "-";
+        }
+    });
 }

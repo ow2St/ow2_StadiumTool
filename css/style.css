@@ -817,6 +817,18 @@ main-IAP{
     height: 10px;
 }
 
+.patch-history-content {
+    padding: 5px;
+    min-height: 100px;
+}
+
+.history-content-wrapper {
+    height: 100px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+}
+
 /*
 ====================================================================
 メイン部（パッチノート）
