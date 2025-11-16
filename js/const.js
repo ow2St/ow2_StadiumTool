@@ -29,3 +29,12 @@ window.ITEMLISTKEY = {
     durationKey: "持続時間",
     theoreticalFlgKey: "理論値フラグ"
 };
+
+/**
+ * パッチノート更新区分
+ */
+window.UPDATECATEGORY = {
+    add: 1,
+    update: 2,
+    delete: 3
+}
