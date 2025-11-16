@@ -31,6 +31,11 @@ window.ITEMLISTKEY = {
 };
 
 /**
+ * 専用処理があるアイテム
+ */
+ashItemID = "8661860d-a170-4682-9e94-da0fdfbf9522"   // トライポッド
+
+/**
  * パッチノート更新区分
  */
 window.UPDATECATEGORY = {
