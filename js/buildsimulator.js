@@ -4,6 +4,7 @@
 
 // 選択中ヒーロー変数
 var selectedHero = "D.VA（メック）"  // 初期値はD.VA
+
 var life = 0;
 var armor = 0;
 var shield = 0;
@@ -14,6 +15,10 @@ var ability2 = 0;
 var ability3 = 0;
 var ult = 0;
 var addPower = "";
+
+var ability1AddDamageAbility = 0;  // アビリティ１追加ダメージ用変数
+var ability2AddDamageAbility = 0;  // アビリティ２追加ダメージ用変数
+var ability3AddDamageAbility = 0;  // アビリティ３追加ダメージ用変数
 
 var zariaFlg = "エネルギー0%"  // ザリア計算用フラグ
 var junoFlg = "ダメージ"  // ジュノ計算用フラグ
@@ -26,7 +31,7 @@ var showStatusList = {};
 
 // アイテムキー対応マッピング（英語 → 日本語）
 const itemKeyMap = {
-    id: ITEMLISTKEY.itemiDKey,
+    id: ITEMLISTKEY.itemIdKey,
     itemname: ITEMLISTKEY.item_nameKey,
     category: ITEMLISTKEY.categoryKey,
     rarity: ITEMLISTKEY.rarityKey,
@@ -153,6 +158,15 @@ var ultCalculationKey = "ULT計算式";
 var ultDurationKey = "ULT継続時間";
 var ultLifeStealRateKey = "ULTライフ吸収";
 var status_meleeDamageKey = "近接ダメージ";
+var mainSpeedKey = "メイン攻撃速度";
+var subSpeedKey = "サブ攻撃速度";
+var moveSpeedKey = "移動速度";
+var mainHealDamageUpFlg = "メイン上昇フラグ";
+var subHealDamageUpFlg = "サブ上昇フラグ";
+var ability1HealDamageUpFlg = "アビリティ１上昇フラグ";
+var ability2HealDamageUpFlg = "アビリティ２上昇フラグ";
+var ability3HealDamageUpFlg = "アビリティ３上昇フラグ";
+var ultHealDamageUpFlg = "ULT上昇フラグ";
 
 // ステータスキー対応マッピング（英語 → 日本語）
 const statusKeyMap = {
@@ -191,7 +205,16 @@ const statusKeyMap = {
     ultdamage: ultDamageKey,
     ultduration: ultDurationKey,
     ultlifesteal: ultLifeStealRateKey,
-    meleedamage: status_meleeDamageKey
+    meleedamage: status_meleeDamageKey,
+    mainspeed: mainSpeedKey,
+    subspeed: subSpeedKey,
+    movespeed: moveSpeedKey,
+    mainhealdamageupflg: mainHealDamageUpFlg,
+    subhealdamageupflg: subHealDamageUpFlg,
+    ability1healdamageupflg: ability1HealDamageUpFlg,
+    ability2healdamageupflg: ability2HealDamageUpFlg,
+    ability3healdamageupflg: ability3HealDamageUpFlg,
+    ulthealdamageupflg: ultHealDamageUpFlg
 };
 
 const accordionContainer = document.getElementById("accordion-container");
@@ -508,7 +531,16 @@ function organizeStatusData(statusAllData) {
             ultdamage: Slist.ultdamage,
             ultduration: Slist.ultduration,
             ultlifesteal: Slist.ultlifesteal,
-            meleedamage: Slist.meleedamage
+            meleedamage: Slist.meleedamage,
+            mainspeed: Slist.mainspeed,
+            subspeed: Slist.subspeed,
+            movespeed: Slist.movespeed,
+            mainhealdamageupflg: Slist.mainhealdamageupflg,
+            subhealdamageupflg: Slist.subhealdamageupflg,
+            ability1healdamageupflg: Slist.ability1healdamageupflg,
+            ability2healdamageupflg: Slist.ability2healdamageupflg,
+            ability3healdamageupflg: Slist.ability3healdamageupflg,
+            ulthealdamageupflg: Slist.ulthealdamageupflg
         };
     })
     return selectedData;
@@ -1699,8 +1731,11 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     const showStatusListTmp = initStatusList.filter(heroStatus => heroStatus[heroNameKey] === selectedHero);
     showStatusList = JSON.parse(JSON.stringify(showStatusListTmp[0]));
     
-    // 傷ダメージも初期化
+    // 傷ダメージと追加ダメージも初期化
     queenScratch = 15;
+    ability1AddDamageAbility = 0;
+    ability2AddDamageAbility = 0;
+    ability3AddDamageAbility = 0;
 
     initStatusValue(showStatusList,"init","-");
 
@@ -1708,35 +1743,127 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     let lifeRate = 1;
     let armorRate = 1;
     let shieldRate = 1;
-    let ammoRate = 1;
     let text = "";
     let others = "";
+    let nameTmp = "";
+    let lifeTmp = 0;
+    let armorTmp = 0;
+    let shieldTmp = 0;
+    let weaponPowerTmp = 0;
+    let abilityPowerTmp = 0;
+    let attackSpeedTmp = 0;
+    let ctReducationTmp = 0;
+    let ammoTmp = 0;
+    let weapon_LifeStealTmp = 0;
+    let ability_LifeStealTmp = 0;
+    let speedTmp = 0;
+    let reloadSpeedTmp = 0;
+    let meleeDamageTmp = 0;
+    let criticalTmp = 0;
+    let othersTmp = "";
+    let textTmp = "";
+    let durationFlgTmp = -1;
+    let durationTmp = 0;
 
-    // #region 選択中のアイテムごとにアイテムの効果をステータスリストに反映
+    // #region ステータス反映
     for(let i=0; i<selectedItemRows.length; i++) {
 
         // 各パラメータを抽出
-        let nameTmp = selectedItemRows[i][ITEMLISTKEY.item_nameKey];
-        let lifeTmp = selectedItemRows[i][ITEMLISTKEY.item_lifeKey];
-        let armorTmp = selectedItemRows[i][ITEMLISTKEY.item_armorKey];
-        let shieldTmp = selectedItemRows[i][ITEMLISTKEY.item_shieldKey];
-        let weaponPowerTmp = selectedItemRows[i][ITEMLISTKEY.weaponPowerKey];
-        let abilityPowerTmp = selectedItemRows[i][ITEMLISTKEY.abilityPowerKey];
-        let attackSpeedTmp = selectedItemRows[i][ITEMLISTKEY.attackSpeedKey];
-        let ctReducationTmp = selectedItemRows[i][ITEMLISTKEY.ctReducationKey];
-        let ammoTmp = selectedItemRows[i][ITEMLISTKEY.ammoKey];
-        let weapon_LifeStealTmp = selectedItemRows[i][ITEMLISTKEY.weapon_LifeStealKey];
-        let ability_LifeStealTmp = selectedItemRows[i][ITEMLISTKEY.ability_LifeStealKey];
-        let speedTmp = selectedItemRows[i][ITEMLISTKEY.speedKey];
-        let reloadSpeedTmp = selectedItemRows[i][ITEMLISTKEY.reloadSpeedKey];
-        let meleeDamageTmp = selectedItemRows[i][ITEMLISTKEY.item_meleeDamageKey];
-        let criticalTmp = selectedItemRows[i][ITEMLISTKEY.criticalKey];
-        let othersTmp = selectedItemRows[i][ITEMLISTKEY.othersKey];
-        let textTmp = selectedItemRows[i][ITEMLISTKEY.item_textKey];
-        let durationFlgTmp = selectedItemRows[i][ITEMLISTKEY.durationFlgKey];
-        let durationTmp = selectedItemRows[i][ITEMLISTKEY.durationKey];
+        nameTmp = selectedItemRows[i][ITEMLISTKEY.item_nameKey];
+        lifeTmp += selectedItemRows[i][ITEMLISTKEY.item_lifeKey];
+        armorTmp += selectedItemRows[i][ITEMLISTKEY.item_armorKey];
+        shieldTmp += selectedItemRows[i][ITEMLISTKEY.item_shieldKey];
+        weaponPowerTmp += selectedItemRows[i][ITEMLISTKEY.weaponPowerKey];
+        abilityPowerTmp += selectedItemRows[i][ITEMLISTKEY.abilityPowerKey];
+        attackSpeedTmp += selectedItemRows[i][ITEMLISTKEY.attackSpeedKey];
+        ctReducationTmp += selectedItemRows[i][ITEMLISTKEY.ctReducationKey];
+        ammoTmp += selectedItemRows[i][ITEMLISTKEY.ammoKey];
+        weapon_LifeStealTmp += selectedItemRows[i][ITEMLISTKEY.weapon_LifeStealKey];
+        ability_LifeStealTmp += selectedItemRows[i][ITEMLISTKEY.ability_LifeStealKey];
+        speedTmp += selectedItemRows[i][ITEMLISTKEY.speedKey];
+        reloadSpeedTmp += selectedItemRows[i][ITEMLISTKEY.reloadSpeedKey];
+        meleeDamageTmp += selectedItemRows[i][ITEMLISTKEY.item_meleeDamageKey];
+        criticalTmp += selectedItemRows[i][ITEMLISTKEY.criticalKey];
+        othersTmp = selectedItemRows[i][ITEMLISTKEY.othersKey];
+        textTmp = selectedItemRows[i][ITEMLISTKEY.item_textKey];
+        durationFlgTmp = selectedItemRows[i][ITEMLISTKEY.durationFlgKey];
+        durationTmp = selectedItemRows[i][ITEMLISTKEY.durationKey];
 
-        // 理論値計算時は理論値チェックがONか確認
+        // #region 特殊計算・持続時間計算　計算順序①
+        // ライフ割合上昇アイテムの場合は倍率変数に保管後、追加効果に乗らないようハイフンにする
+        if(nameTmp == "MEKA Zシリーズ"){
+            lifeRate = lifeRate * 1.08;
+            armorRate = armorRate * 1.08;
+            shieldRate = shieldRate * 1.08;
+            othersTmp = "-";
+        }else if(nameTmp == "不屈の獅子"){
+            lifeRate = lifeRate * 1.15;
+            armorRate = armorRate * 1.15;
+            shieldRate = shieldRate * 1.15;
+            othersTmp = "-";
+        }
+
+        // ラインハルトの盾増強
+        if(nameTmp == "オーバークロック・バリア"){
+            showStatusList[ability3DamageKey] = Math.round(showStatusList[ability3DamageKey] * 1.2 * 10 ** 2) / 10 ** 2;
+            othersTmp = "20%[バリア・フィールド]サイズ";
+        }
+
+        // 固定値計算アイテムを先に表示用ステータスリストに反映し、追加効果に乗らないようハイフンにする　
+        if(nameTmp == "リソース・マネジメント"){
+            showStatusList[mainAmmoKey] += 4;
+            othersTmp = "-";
+        }
+
+        // 持続時間に記載がある場合
+        if(durationFlgTmp != 0){
+        
+            // アビリティ１の場合
+            if(durationFlgTmp == 1){
+                if(durationTmp.charAt(0) == "+"){
+                    showStatusList[ability1DurationKey] = showStatusList[ability1DurationKey] + durationTmp.slice(1);
+                }else{
+                    showStatusList[ability1DurationKey] = (showStatusList[ability1DurationKey] * durationTmp.slice(1) * 10 ** 2) / 10 ** 2;
+                }
+            }
+            
+            // アビリティ２の場合
+            if(durationFlgTmp == 2){
+                if(durationTmp.charAt(0) == "+"){
+                    showStatusList[ability2DurationKey] = showStatusList[ability2DurationKey] + durationTmp.slice(1);
+                }else{
+                    showStatusList[ability2DurationKey] = (showStatusList[ability2DurationKey] * durationTmp.slice(1)* 10 ** 2) / 10 ** 2;
+                }
+            }
+
+            // アビリティ３の場合
+            if(durationFlgTmp == 3){
+                if(durationTmp.charAt(0) == "+"){
+                    showStatusList[ability3DurationKey] = showStatusList[ability3DurationKey] + durationTmp.slice(1);
+                }else{
+                    showStatusList[ability3DurationKey] = (showStatusList[ability3DurationKey] * durationTmp.slice(1)* 10 ** 2) / 10 ** 2;
+                }
+            }
+
+            // ULTの場合
+            if(durationFlgTmp == 4){
+                if(durationTmp.charAt(0) == "+"){
+                    showStatusList[ultDurationKey] = showStatusList[ultDurationKey] + durationTmp.slice(1);
+                }else{
+                    showStatusList[ultDurationKey] = (showStatusList[ultDurationKey] * durationTmp.slice(1)* 10 ** 2) / 10 ** 2;
+                }
+            }
+        }
+        // テキストとその他をまとめる
+        if(textTmp != "-"){
+            text = text + textTmp + "\n";
+        }
+        if(othersTmp != "-"){
+            others = others + othersTmp + "\n";
+        }
+        // #endregion
+
+        // #region 理論値計算
         if(theoreticalFlag && selectedItemRows[i][ITEMLISTKEY.theoreticalFlgKey]){
             theoreticalItemCheckboxes.forEach(checkbox => {
                 const div = checkbox.closest('div');
@@ -1748,7 +1875,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
 
                 // アイテム名が一致かつチェックがONの時はアイテムIDを抜き出す
                 if(selectedItemRows[i][ITEMLISTKEY.item_iconKey] == imgSRC && checkbox.checked){
-                    const itemID = selectedItemRows[i][ITEMLISTKEY.itemiDKey];
+                    const itemID = selectedItemRows[i][ITEMLISTKEY.itemIdKey];
 
                     // アイテムIDから理論値リストのデータを検索
                     for(let j=0; j<theoreticalItemList.length; j++){
@@ -1787,93 +1914,251 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                             }
                             else
                             {
-                                // 武器アビリティ上昇フラグから上昇する対象を決定
-                                switch(theoreticalItemList[j][theoreticalItem_WeaponAbilityUpFlgKey]){
+                                // 追加ダメージ系か判別
+                                if(theoreticalItemList[j][theoreticalItem_AdditionDamageFlgKey] != 0){
                                     
-                                    // アビリティ１の場合
-                                    case 1:
-
-                                        // 掛け算の場合
-                                        if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
-
-                                            // 表示用ステータスリストに反映
-                                            showStatusList[ability1DamageKey] = Math.round(showStatusList[ability1DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                        }
-                                        break;
+                                    // 1なら武器依存の追加ダメージ（現状はない）
+                                    if(theoreticalItemList[j][theoreticalItem_AdditionDamageFlgKey] == 1){
                                     
-                                    // アビリティ２の場合
-                                    case 2:
+                                    }
+                                    else
+                                    {
+                                        // 武器アビリティ上昇フラグで判断 
+                                        switch(theoreticalItemList[j][theoreticalItem_WeaponAbilityUpFlgKey]){
+                                    
+                                            // アビリティ１の場合
+                                            case 1:
 
-                                        // 掛け算の場合
-                                        if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+                                                ability1AddDamageAbility += theoreticalItemList[j][theoreticalItem_HealDamageUpKey];
+                                                break;
 
-                                            // 表示用ステータスリストに反映
-                                            showStatusList[ability2DamageKey] = Math.round(showStatusList[ability2DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            // アビリティ２の場合
+                                            case 2:
+
+                                                ability2AddDamageAbility += theoreticalItemList[j][theoreticalItem_HealDamageUpKey];
+                                                break;
+                                            
+                                                // アビリティ３の場合
+                                            case 3:
+
+                                                ability3AddDamageAbility += theoreticalItemList[j][theoreticalItem_HealDamageUpKey];
+                                                break;
                                         }
-                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    // 武器アビリティ上昇フラグから上昇する対象を決定 計算順序②
+                                    switch(theoreticalItemList[j][theoreticalItem_WeaponAbilityUpFlgKey]){
+                                    
+                                        // アビリティ１の場合
+                                        case 1:
 
-                                    // アビリティ３の場合
-                                    case 3:
+                                            // 掛け算の場合
+                                            if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
 
-                                        // 掛け算の場合
-                                        if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+                                                // 表示用ステータスリストに反映
+                                                showStatusList[ability1DamageKey] = Math.round(showStatusList[ability1DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            }
+                                            break;
+                                    
+                                        // アビリティ２の場合
+                                        case 2:
 
-                                            // 表示用ステータスリストに反映
-                                            showStatusList[ability3DamageKey] = Math.round(showStatusList[ability3DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                        }
-                                        break;
+                                            // 掛け算の場合
+                                            if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
 
-                                    // ULTの場合
-                                    case 4:
+                                                // 表示用ステータスリストに反映
+                                                showStatusList[ability2DamageKey] = Math.round(showStatusList[ability2DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            }
+                                            break;
 
-                                        // 掛け算の場合
-                                        if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+                                        // アビリティ３の場合
+                                        case 3:
 
-                                            // 表示用ステータスリストに反映
-                                            showStatusList[ultDamageKey] = Math.round(showStatusList[ultDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                        }
-                                        break;
+                                            // 掛け算の場合
+                                            if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
 
-                                    // メイン武器の場合
-                                    case 5:
-                                        // 掛け算の場合
-                                        if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
-                                            // 表示用ステータスリストに反映
-                                            showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                        }
-                                        break;
+                                                // 表示用ステータスリストに反映
+                                                showStatusList[ability3DamageKey] = Math.round(showStatusList[ability3DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            }
+                                            break;
 
-                                    // サブ武器の場合
-                                    case 6:
+                                        // ULTの場合
+                                        case 4:
 
-                                        // 掛け算の場合
-                                        if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+                                            // 掛け算の場合
+                                            if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
 
-                                            // 表示用ステータスリストに反映
-                                            showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                        }
-                                        break;
+                                                // 表示用ステータスリストに反映
+                                                showStatusList[ultDamageKey] = Math.round(showStatusList[ultDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            }
+                                            break;
 
-                                    // メイン武器とサブ武器の場合
-                                    case 7:
+                                        // メイン武器の場合
+                                        case 5:
+                                            // 掛け算の場合
+                                            if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+                                                // 表示用ステータスリストに反映
+                                                showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            }
+                                            break;
 
-                                        // 掛け算の場合
-                                        if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+                                        // サブ武器の場合
+                                        case 6:
 
-                                            // 表示用ステータスリストに反映
-                                            showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                            showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                        }
-                                        break;
+                                            // 掛け算の場合
+                                            if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
 
-                                    // その他の場合
-                                    case 8:
-                                        break;
+                                                // 表示用ステータスリストに反映
+                                                showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            }
+                                            break;
 
-                                    // 未設定の場合
-                                    default:
+                                        // メイン武器とサブ武器の場合
+                                        case 7:
 
-                                        break;
+                                            // 掛け算の場合
+                                            if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+
+                                                // 表示用ステータスリストに反映
+                                                showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                                showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            }
+                                            break;
+
+                                        // その他の場合
+                                        case 8:
+                                            // トライポッド
+                                            if(theoreticalItemList[j][theoreticalItem_IDKey] == ashItemID){
+                                                // 表示用ステータスリストに反映
+                                                showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                                showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                                showStatusList[ability1DamageKey] = Math.round(showStatusList[ability1DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                                showStatusList[ability2DamageKey] = Math.round(showStatusList[ability2DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                            }
+                                            break;
+
+                                        // 未設定の場合
+                                        default:
+
+                                            // 上昇種別フラグが１なら全ての回復量を上昇
+                                            if(theoreticalItemList[j][theoreticalItem_HealDamageUpFlgKey] == 1){
+                                                if(showStatusList[mainHealDamageUpFlg] == 1){
+                                            
+                                                    // 掛け算の場合
+                                                    if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+
+                                                        // 表示用ステータスリストに反映
+                                                        showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                                    }   
+                                                }
+                                                if(showStatusList[subHealDamageUpFlg] == 1){
+                                            
+                                                    // 掛け算の場合
+                                                    if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+
+                                                        // 表示用ステータスリストに反映
+                                                        showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                                    }   
+                                                }
+                                                if(showStatusList[ability1HealDamageUpFlg] == 1){
+                                            
+                                                    // 掛け算の場合
+                                                    if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+
+                                                        // 表示用ステータスリストに反映
+                                                        showStatusList[ability1DamageKey] = Math.round(showStatusList[ability1DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                                    }
+                                                }
+                                                if(showStatusList[ability2HealDamageUpFlg] == 1){
+                                            
+                                                    // 掛け算の場合
+                                                    if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+
+                                                        // 表示用ステータスリストに反映
+                                                        showStatusList[ability2DamageKey] = Math.round(showStatusList[ability2DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                                    }
+                                                }
+                                                if(showStatusList[ability3HealDamageUpFlg] == 1){
+                                            
+                                                    // 掛け算の場合
+                                                    if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+
+                                                        // 表示用ステータスリストに反映
+                                                        showStatusList[ability3DamageKey] = Math.round(showStatusList[ability3DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                                    }
+                                                }
+                                                if(showStatusList[ultHealDamageUpFlg] == 1){
+                                            
+                                                    // 掛け算の場合
+                                                    if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+
+                                                        // 表示用ステータスリストに反映
+                                                        showStatusList[ultDamageKey] = Math.round(showStatusList[ultDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                                    }
+                                                }
+                                            }   
+                                            else if(theoreticalItemList[j][theoreticalItem_HealDamageUpFlgKey] == 2)
+                                            {
+                                                // 上昇種別フラグが2なら全てのダメージを上昇
+                                                if(showStatusList[mainHealDamageUpFlg] == 2){
+                                            
+                                                    // 掛け算の場合
+                                                    if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+
+                                                        // 表示用ステータスリストに反映
+                                                        showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                                    }
+                                                }   
+                                                if(showStatusList[subHealDamageUpFlg] == 2){
+                                            
+                                                    // 掛け算の場合
+                                                    if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+
+                                                        // 表示用ステータスリストに反映
+                                                        showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                                    }
+                                                }
+                                                if(showStatusList[ability1HealDamageUpFlg] == 2){
+                                            
+                                                    // 掛け算の場合
+                                                    if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+
+                                                        // 表示用ステータスリストに反映
+                                                        showStatusList[ability1DamageKey] = Math.round(showStatusList[ability1DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                                    }
+                                                }
+                                                if(showStatusList[ability2HealDamageUpFlg] == 2){
+                                            
+                                                    // 掛け算の場合
+                                                    if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+
+                                                        // 表示用ステータスリストに反映
+                                                        showStatusList[ability2DamageKey] = Math.round(showStatusList[ability2DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                                    }
+                                                }
+                                                if(showStatusList[ability3HealDamageUpFlg] == 2){
+                                            
+                                                    // 掛け算の場合
+                                                    if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+
+                                                        // 表示用ステータスリストに反映
+                                                        showStatusList[ability3DamageKey] = Math.round(showStatusList[ability3DamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                                    }
+                                                }
+                                                if(showStatusList[ultHealDamageUpFlg] == 2){
+                                            
+                                                    // 掛け算の場合
+                                                    if(theoreticalItemList[j][theoreticalItem_HealDamageUpKey][0] == "*"){
+
+                                                        // 表示用ステータスリストに反映
+                                                        showStatusList[ultDamageKey] = Math.round(showStatusList[ultDamageKey] * theoreticalItemList[j][theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                    }
                                 }
                             }
                         }
@@ -1881,276 +2166,215 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                 }
             });
         }
+        // #endregion
+    }
 
-        // ライフに記載がある場合
-        if(lifeTmp != 0){
+    // #region 通常計算 計算順序③
+    // ライフに記載がある場合
+    if(lifeTmp != 0){
 
-            // 表示用ステータスリストに反映
-            showStatusList[status_lifeKey] = showStatusList[status_lifeKey] + lifeTmp;
-        }
+        // 表示用ステータスリストに反映
+        showStatusList[status_lifeKey] = showStatusList[status_lifeKey] + lifeTmp;
+    }
 
-        // ライフ割合上昇アイテムの場合は倍率変数に保管後、追加効果に乗らないようハイフンにする
-        if(nameTmp == "MEKA Zシリーズ"){
-            lifeRate = lifeRate * 1.08;
-            armorRate = armorRate * 1.08;
-            shieldRate = shieldRate * 1.08;
-            othersTmp = "-";
-        }else if(nameTmp == "不屈の獅子"){
-            lifeRate = lifeRate * 1.15;
-            armorRate = armorRate * 1.15;
-            shieldRate = shieldRate * 1.15;
-            othersTmp = "-";
-        }
+    // アーマーに記載がある場合
+    if(armorTmp != 0){
 
-        // アーマーに記載がある場合
-        if(armorTmp != 0){
+        // 表示用ステータスリストに反映
+        showStatusList[status_armorKey] = showStatusList[status_armorKey] + armorTmp;
+    }
 
-            // 表示用ステータスリストに反映
-            showStatusList[status_armorKey] = showStatusList[status_armorKey] + armorTmp;
-        }
+    // シールドに記載がある場合
+    if(shieldTmp != 0){
 
-        // シールドに記載がある場合
-        if(shieldTmp != 0){
+        // 表示用ステータスリストに反映
+        showStatusList[status_shieldKey] = showStatusList[status_shieldKey] + shieldTmp;
+    }
 
-            // 表示用ステータスリストに反映
-            showStatusList[status_shieldKey] = showStatusList[status_shieldKey] + shieldTmp;
-        }
+    // 武器パワーに記載がある場合
+    if(weaponPowerTmp != 0){
 
-        // 武器パワーに記載がある場合
-        if(weaponPowerTmp != 0){
+        // 表示用ステータスリストに反映
+        showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+        showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
 
-            // 表示用ステータスリストに反映
-            showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
-            showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
-            
-            // ラインハルトは近接ダメージにも武器パワーが乗るので対応
-            if(showStatusList[heroNameKey] == "ラインハルト"){
-                showStatusList[status_meleeDamageKey] = Math.round(showStatusList[status_meleeDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
-            }
-
-            // ゲンジ・ソルジャーの場合はULTにも武器パワーが乗るので対応
-            if(showStatusList[heroNameKey] == "ゲンジ" || showStatusList[heroNameKey] == "ソルジャー76"){
-                showStatusList[ultDamageKey] = Math.round(showStatusList[ultDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
-            }
-        }
-
-        // アビリティパワーに記載がある場合
-        if(abilityPowerTmp != 0){
-
-            // 表示用ステータスリストに反映
-            showStatusList[ability1DamageKey] = Math.round(showStatusList[ability1DamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
-            showStatusList[ability2DamageKey] = Math.round(showStatusList[ability2DamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
-
-            // ラインハルトとシグマの盾は除外
-            if(showStatusList[heroNameKey] != "ラインハルト" && showStatusList[heroNameKey] != "シグマ"){
-                showStatusList[ability3DamageKey] = Math.round(showStatusList[ability3DamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
-            }
-
-            // ゲンジとソルジャーのULTは除外
-            if(showStatusList[heroNameKey] != "ゲンジ" && showStatusList[heroNameKey] != "ソルジャー76"){
-                showStatusList[ultDamageKey] = Math.round(showStatusList[ultDamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
-            }
-
-            // クイーンの場合は傷ダメージにも乗算
-            queenScratch = Math.round(queenScratch * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
-        }
-
-        // TODO:RIN 攻撃速度に記載がある場合
-
-        // CT短縮に記載がある場合
-        if(ctReducationTmp != 0){
-
-            // 表示用ステータスリストに反映
-            showStatusList[ability1CTKey] = Math.round(showStatusList[ability1CTKey] * ((100 - abilityPowerTmp) / 100) * 10 ** 2) / 10 ** 2;
-            showStatusList[ability2CTKey] = Math.round(showStatusList[ability2CTKey] * ((100 - abilityPowerTmp) / 100) * 10 ** 2) / 10 ** 2;
-            showStatusList[ability3CTKey] = Math.round(showStatusList[ability3CTKey] * ((100 - abilityPowerTmp) / 100) * 10 ** 2) / 10 ** 2;
-        }
-
-        // 弾薬に記載がある場合
-        if(ammoTmp != 0){
-
-            // 固定値計算アイテムを先に表示用ステータスリストに反映し、追加効果に乗らないようハイフンにする
-            if(nameTmp == "リソース・マネジメント"){
-                showStatusList[mainAmmoKey] += 4;
-                othersTmp = "-";
-            }
-            ammoRate = ammoRate * ammoTmp;
-        }
-
-        // 武器ライフ吸収に記載がある場合
-        if(weapon_LifeStealTmp != 0){
-
-            // 表示用ステータスリストに反映
-            if(showStatusList[mainDamageKey] != 0){
-                showStatusList[mainLifeStealRateKey] = showStatusList[mainLifeStealRateKey] + weapon_LifeStealTmp / 100;
-            }
-            if(showStatusList[subDamageKey] != 0){
-                showStatusList[subLifeStealRateKey] = showStatusList[subLifeStealRateKey] + weapon_LifeStealTmp / 100;
-            }
-
-            // ゲンジ・ソルジャーの場合はULTにも武器パワーが乗るので対応
-            if(showStatusList[heroNameKey] == "ゲンジ" || showStatusList[heroNameKey] == "ソルジャー76"){
-                showStatusList[ultLifeStealRateKey] = showStatusList[ultLifeStealRateKey] + weapon_LifeStealTmp / 100;
-            }
-        }
-
-        // アビリティライフ吸収に記載がある場合
-        if(ability_LifeStealTmp != 0){
-
-            // 表示用ステータスリストに反映
-            if(showStatusList[ability1DamageKey] != 0){
-                showStatusList[ability1LifeStealRateKey] = showStatusList[ability1LifeStealRateKey] + ability_LifeStealTmp / 100;
-            }
-            if(showStatusList[ability2DamageKey] != 0){
-                showStatusList[ability2LifeStealRateKey] = showStatusList[ability2LifeStealRateKey] + ability_LifeStealTmp / 100;
-            }
-
-            // ラインハルトとシグマの盾は除外
-            if(showStatusList[heroNameKey] != "ラインハルト" && showStatusList[heroNameKey] != "シグマ"){
-                if(showStatusList[ability3DamageKey] != 0){
-                    showStatusList[ability3LifeStealRateKey] = showStatusList[ability3LifeStealRateKey] + ability_LifeStealTmp / 100;
-                }
-            }
-
-            // ゲンジとソルジャーのULTは除外
-            if(showStatusList[heroNameKey] != "ゲンジ" && showStatusList[heroNameKey] != "ソルジャー76"){
-                if(showStatusList[ultDamageKey] != 0){
-                    showStatusList[ultLifeStealRateKey] = showStatusList[ultLifeStealRateKey] + ability_LifeStealTmp / 100;
-                }
-            }
-        }
-
-        // TODO:RIN 移動速度に記載がある場合
-
-        // リロード速度に記載がある場合
-        if(reloadSpeedTmp != 0){
-
-            // 表示用ステータスリストに反映
-            showStatusList[mainReloadKey] = Math.round(showStatusList[mainReloadKey] * ((100 - reloadSpeedTmp) / 100) * 10 ** 2) / 10 ** 2;
-            showStatusList[subReloadKey] = Math.round(showStatusList[subReloadKey] * ((100 - reloadSpeedTmp) / 100) * 10 ** 2) / 10 ** 2;
-        }
-
-        // 近接ダメージに記載がある場合
-        if(meleeDamageTmp != 0){
-
-            // 表示用ステータスリストに反映
-            showStatusList[status_meleeDamageKey] = Math.round(showStatusList[status_meleeDamageKey] * (meleeDamageTmp / 100 + 1) * 10 ** 2) / 10 ** 2;
-
-            // ラインハルトはメイン武器にも近接ダメージが乗るので対応
-            if(showStatusList[heroNameKey] == "ラインハルト"){
-                showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * (meleeDamageTmp/100 + 1) * 10 ** 2) / 10 ** 2;
-            }
-        }
-
-        // クリティカルに記載がある場合
-        if(criticalTmp != 0){
-
-            // HS倍率があるなら表示用ステータスリストに反映
-            if(showStatusList[mainHSRateKey] != 1){
-                showStatusList[mainHSRateKey] = showStatusList[mainHSRateKey] * (criticalTmp/100 + 1);
-            }
-            if(showStatusList[subHSRateKey] != 1){
-                showStatusList[subHSRateKey] = showStatusList[subHSRateKey] * (criticalTmp / 100 + 1);   
-            }
-        }
-
-        // 持続時間に記載がある場合
-        if(durationFlgTmp != 0){
-            
-            // アビリティ１の場合
-            if(durationFlgTmp == 1){
-                if(durationTmp.charAt(0) == "+"){
-                    showStatusList[ability1DurationKey] = showStatusList[ability1DurationKey] + durationTmp.slice(1);
-                }else{
-                    showStatusList[ability1DurationKey] = (showStatusList[ability1DurationKey] * durationTmp.slice(1) * 10 ** 2) / 10 ** 2;
-                }
-            }
-            
-            // アビリティ２の場合
-            if(durationFlgTmp == 2){
-                if(durationTmp.charAt(0) == "+"){
-                    showStatusList[ability2DurationKey] = showStatusList[ability2DurationKey] + durationTmp.slice(1);
-                }else{
-                    showStatusList[ability2DurationKey] = (showStatusList[ability2DurationKey] * durationTmp.slice(1)* 10 ** 2) / 10 ** 2;
-                }
-            }
-
-            // アビリティ３の場合
-            if(durationFlgTmp == 3){
-                if(durationTmp.charAt(0) == "+"){
-                    showStatusList[ability3DurationKey] = showStatusList[ability3DurationKey] + durationTmp.slice(1);
-                }else{
-                    showStatusList[ability3DurationKey] = (showStatusList[ability3DurationKey] * durationTmp.slice(1)* 10 ** 2) / 10 ** 2;
-                }
-            }
-
-            // ULTの場合
-            if(durationFlgTmp == 4){
-                if(durationTmp.charAt(0) == "+"){
-                    showStatusList[ultDurationKey] = showStatusList[ultDurationKey] + durationTmp.slice(1);
-                }else{
-                    showStatusList[ultDurationKey] = (showStatusList[ultDurationKey] * durationTmp.slice(1)* 10 ** 2) / 10 ** 2;
-                }
-            }
-        }
-
-        // ラインハルトの盾増強
-        if(nameTmp == "オーバークロック・バリア"){
-            showStatusList[ability3DamageKey] = Math.round(showStatusList[ability3DamageKey] * 1.2 * 10 ** 2) / 10 ** 2;
-            othersTmp = "20%[バリア・フィールド]サイズ";
-        }
-        
-
-        // 最後に計算するものがある場合
-        if(i + 1 == selectedItemRows.length){
-
-            // ライフ
-            if(lifeRate != 1){
-
-                // 表示用ステータスリストに反映
-                showStatusList[status_lifeKey] = Math.round(showStatusList[status_lifeKey] * lifeRate);
-            }
-
-            // アーマー
-            if(armorRate != 1){
-
-                // 表示用ステータスリストに反映
-                showStatusList[status_armorKey] = Math.round(showStatusList[status_armorKey] * armorRate);
-            }
-
-            // シールド
-            if(shieldRate != 1){
-
-                // 表示用ステータスリストに反映
-                showStatusList[status_shieldKey] = Math.round(showStatusList[status_shieldKey] * shieldRate);
-            }   
-
-            // 弾薬
-            if(ammoRate != 1){
-
-                // 表示用ステータスリストに反映
-                if(showStatusList[heroNameKey] != "キリコ"){
-
-                    // キリコのメイン弾薬は増えないので除外
-                    showStatusList[mainAmmoKey] = Math.round(showStatusList[mainAmmoKey] * ammoRate);
-                }
-                
-                if(showStatusList[heroNameKey] != "フレイヤ"){
-
-                    // フレイヤのサブ弾薬は増えないので除外
-                    showStatusList[subAmmoKey] = Math.round(showStatusList[subAmmoKey] * ammoRate);
-                }
-            }   
-        }
-
-        // テキストとその他をまとめる
-        if(textTmp != "-"){
-            text = text + textTmp + "\n";
-        }
-        if(othersTmp != "-"){
-            others = others + othersTmp + "\n";
+        // ゲンジ・ソルジャー・マーシーの場合はULTにも武器パワーが乗るので対応
+        if(showStatusList[heroNameKey] == "ゲンジ" || showStatusList[heroNameKey] == "ソルジャー76" || showStatusList[heroNameKey] == "マーシー"){
+            showStatusList[ultDamageKey] = Math.round(showStatusList[ultDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         }
     }
+
+    // アビリティパワーに記載がある場合
+    if(abilityPowerTmp != 0){
+
+        // 表示用ステータスリストに反映
+        showStatusList[ability1DamageKey] = Math.round(showStatusList[ability1DamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+        showStatusList[ability2DamageKey] = Math.round(showStatusList[ability2DamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+
+        // ラインハルトとシグマの盾は除外
+        if(showStatusList[heroNameKey] != "ラインハルト" && showStatusList[heroNameKey] != "シグマ"){
+            showStatusList[ability3DamageKey] = Math.round(showStatusList[ability3DamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+        }
+
+        // ゲンジとソルジャーのULTは除外
+        if(showStatusList[heroNameKey] != "ゲンジ" && showStatusList[heroNameKey] != "ソルジャー76"){
+            showStatusList[ultDamageKey] = Math.round(showStatusList[ultDamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+        }
+
+        // クイーンの場合は傷ダメージにも乗算
+        queenScratch = Math.round(queenScratch * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+        
+        // 追加ダメージも乗算
+        ability1AddDamageAbility = Math.round(ability1AddDamageAbility * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+        ability2AddDamageAbility = Math.round(ability2AddDamageAbility * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+        ability3AddDamageAbility = Math.round(ability3AddDamageAbility * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+    }
+
+    // TODO:RIN 攻撃速度に記載がある場合
+
+    // CT短縮に記載がある場合
+    if(ctReducationTmp != 0){
+
+        // 表示用ステータスリストに反映
+        showStatusList[ability1CTKey] = Math.round(showStatusList[ability1CTKey] * ((100 - ctReducationTmp) / 100) * 10 ** 2) / 10 ** 2;
+        showStatusList[ability2CTKey] = Math.round(showStatusList[ability2CTKey] * ((100 - ctReducationTmp) / 100) * 10 ** 2) / 10 ** 2;
+        showStatusList[ability3CTKey] = Math.round(showStatusList[ability3CTKey] * ((100 - ctReducationTmp) / 100) * 10 ** 2) / 10 ** 2;
+    }
+
+    // 弾薬に記載がある場合
+    if(ammoTmp != 0){
+
+        // 表示用ステータスリストに反映
+        if(showStatusList[heroNameKey] != "キリコ"){
+
+            // キリコのメイン弾薬は増えないので除外
+            showStatusList[mainAmmoKey] = Math.round(showStatusList[mainAmmoKey] * (ammoTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+        }
+            
+        if(showStatusList[heroNameKey] != "フレイヤ"){
+
+            // フレイヤのサブ弾薬は増えないので除外
+            showStatusList[subAmmoKey] = Math.round(showStatusList[subAmmoKey] * (ammoTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+        }
+    }
+
+    // 武器ライフ吸収に記載がある場合
+    if(weapon_LifeStealTmp != 0){
+
+        // 表示用ステータスリストに反映
+        if(showStatusList[mainDamageKey] != 0){
+            showStatusList[mainLifeStealRateKey] = showStatusList[mainLifeStealRateKey] + weapon_LifeStealTmp / 100;
+        }
+        if(showStatusList[subDamageKey] != 0){
+            showStatusList[subLifeStealRateKey] = showStatusList[subLifeStealRateKey] + weapon_LifeStealTmp / 100;
+        }
+
+        // ゲンジ・ソルジャーの場合はULTにも武器パワーが乗るので対応
+        if(showStatusList[heroNameKey] == "ゲンジ" || showStatusList[heroNameKey] == "ソルジャー76"){
+            showStatusList[ultLifeStealRateKey] = showStatusList[ultLifeStealRateKey] + weapon_LifeStealTmp / 100;
+        }
+    }
+
+    // アビリティライフ吸収に記載がある場合
+    if(ability_LifeStealTmp != 0){
+
+        // 表示用ステータスリストに反映
+        if(showStatusList[ability1DamageKey] != 0){
+            showStatusList[ability1LifeStealRateKey] = showStatusList[ability1LifeStealRateKey] + ability_LifeStealTmp / 100;
+        }
+        if(showStatusList[ability2DamageKey] != 0){
+            showStatusList[ability2LifeStealRateKey] = showStatusList[ability2LifeStealRateKey] + ability_LifeStealTmp / 100;
+        }
+
+        // ラインハルトとシグマの盾は除外
+        if(showStatusList[heroNameKey] != "ラインハルト" && showStatusList[heroNameKey] != "シグマ"){
+            if(showStatusList[ability3DamageKey] != 0){
+                showStatusList[ability3LifeStealRateKey] = showStatusList[ability3LifeStealRateKey] + ability_LifeStealTmp / 100;
+            }
+        }
+
+        // ゲンジとソルジャーのULTは除外
+        if(showStatusList[heroNameKey] != "ゲンジ" && showStatusList[heroNameKey] != "ソルジャー76"){
+            if(showStatusList[ultDamageKey] != 0){
+                showStatusList[ultLifeStealRateKey] = showStatusList[ultLifeStealRateKey] + ability_LifeStealTmp / 100;
+            }
+        }
+    }
+
+    // TODO:RIN 移動速度に記載がある場合
+
+    // リロード速度に記載がある場合
+    if(reloadSpeedTmp != 0){
+
+        // 表示用ステータスリストに反映
+        showStatusList[mainReloadKey] = Math.round(showStatusList[mainReloadKey] * ((100 - reloadSpeedTmp) / 100) * 10 ** 2) / 10 ** 2;
+        showStatusList[subReloadKey] = Math.round(showStatusList[subReloadKey] * ((100 - reloadSpeedTmp) / 100) * 10 ** 2) / 10 ** 2;
+    }
+
+    // 近接ダメージに記載がある場合
+    if(meleeDamageTmp != 0){
+
+        // 表示用ステータスリストに反映
+        showStatusList[status_meleeDamageKey] = Math.round(showStatusList[status_meleeDamageKey] * (meleeDamageTmp / 100 + 1) * 10 ** 2) / 10 ** 2;
+
+        // ラインハルトはメイン武器にも近接ダメージが乗るので対応
+        if(showStatusList[heroNameKey] == "ラインハルト"){
+            showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * (meleeDamageTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+        }
+    }
+
+    // クリティカルに記載がある場合
+    if(criticalTmp != 0){
+
+        // HS倍率があるなら表示用ステータスリストに反映
+        if(showStatusList[mainHSRateKey] != 1){
+            showStatusList[mainHSRateKey] = showStatusList[mainHSRateKey] * (criticalTmp/100 + 1);
+        }
+        if(showStatusList[subHSRateKey] != 1){
+            showStatusList[subHSRateKey] = showStatusList[subHSRateKey] * (criticalTmp / 100 + 1);   
+        }
+    }
+    // #endregion 
+
+    // #region 順序がある計算　 計算順序④
+    // 計算系
+    // ライフ
+    if(lifeRate != 1){
+
+        // 表示用ステータスリストに反映
+        showStatusList[status_lifeKey] = Math.round(showStatusList[status_lifeKey] * lifeRate);
+    }
+
+    // アーマー
+    if(armorRate != 1){
+
+        // 表示用ステータスリストに反映
+        showStatusList[status_armorKey] = Math.round(showStatusList[status_armorKey] * armorRate);
+    }
+
+    // シールド
+    if(shieldRate != 1){
+
+        // 表示用ステータスリストに反映
+        showStatusList[status_shieldKey] = Math.round(showStatusList[status_shieldKey] * shieldRate);
+    }
+
+    // 追加ダメージ系
+    if(ability1AddDamageAbility != 0){
+        // 表示用ステータスリストに反映
+        showStatusList[ability1DamageKey] = Number(showStatusList[ability1DamageKey]) + Number(ability1AddDamageAbility);
+    }
+    if(ability2AddDamageAbility != 0){
+        // 表示用ステータスリストに反映
+        showStatusList[ability2DamageKey] = Number(showStatusList[ability2DamageKey]) + Number(ability2AddDamageAbility);
+    }
+    if(ability3AddDamageAbility != 0){
+        // 表示用ステータスリストに反映
+        showStatusList[ability3DamageKey] = Number(showStatusList[ability3DamageKey]) + Number(ability3AddDamageAbility);
+    }
+    
+    // #endregion
+
     // #endregion
 
     // ステータス表に反映

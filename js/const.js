@@ -37,4 +37,9 @@ window.UPDATECATEGORY = {
     add: 1,
     update: 2,
     delete: 3
-}
+};
+
+/**
+ * 専用処理があるアイテム
+ */
+ashItemID = "8661860d-a170-4682-9e94-da0fdfbf9522";   // トライポッド
