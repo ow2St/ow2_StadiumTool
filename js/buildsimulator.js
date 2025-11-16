@@ -2198,8 +2198,8 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         showStatusList[mainDamageKey] = Math.round(showStatusList[mainDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         showStatusList[subDamageKey] = Math.round(showStatusList[subDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
 
-        // ゲンジ・ソルジャーの場合はULTにも武器パワーが乗るので対応
-        if(showStatusList[heroNameKey] == "ゲンジ" || showStatusList[heroNameKey] == "ソルジャー76"){
+        // ゲンジ・ソルジャー・マーシーの場合はULTにも武器パワーが乗るので対応
+        if(showStatusList[heroNameKey] == "ゲンジ" || showStatusList[heroNameKey] == "ソルジャー76" || showStatusList[heroNameKey] == "マーシー"){
             showStatusList[ultDamageKey] = Math.round(showStatusList[ultDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         }
     }
