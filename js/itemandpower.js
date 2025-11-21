@@ -61,17 +61,17 @@ const itemKeyMap = {
 };
 
 // パワーリストのキー
-var power_nameKey = "パワー名";
-var heroKey = "ヒーロー";
-var power_iconKey = "アイコン";
-var power_textKey = "テキスト";
+var POWERLISTKEY.power_nameKey = "パワー名";
+var POWERLISTKEY.heroKey = "ヒーロー";
+var POWERLISTKEY.power_iconKey = "アイコン";
+var POWERLISTKEY.power_textKey = "テキスト";
 
 // キー対応マッピング（英語 → 日本語）
 const powerKeyMap = {
-    powername: power_nameKey,
-    hero: heroKey,
-    icon: power_iconKey,
-    text: power_textKey,
+    powername: POWERLISTKEY.power_nameKey,
+    hero: POWERLISTKEY.heroKey,
+    icon: POWERLISTKEY.power_iconKey,
+    text: POWERLISTKEY.power_textKey,
 };
 
 
@@ -868,27 +868,27 @@ function linkPowerList(powerList) {
         Object.keys(powerList[i]).forEach(key => {
 
             // キー名がパワー名キーの場合
-            if(power_nameKey == key) {
+            if(POWERLISTKEY.power_nameKey == key) {
 
                 // パワー名用変数に値を代入
                 powerNameText = powerList[i][key];
             }
 
             // キー名がアイコンキーの場合
-            if(power_iconKey == key) {
+            if(POWERLISTKEY.power_iconKey == key) {
 
                 // アイコン用変数に値を代入
                 iconText = powerList[i][key];
             }
 
             // キー名がヒーローキーの場合
-            if(heroKey == key) {
+            if(POWERLISTKEY.heroKey == key) {
 
                 // ヒーロー用変数に値を代入
                 heroText = powerList[i][key];
             }
             // キー名がテキストキーの場合
-            if(power_textKey == key) {
+            if(POWERLISTKEY.power_textKey == key) {
 
                 // テキスト用変数に値を代入
                 textText = powerList[i][key];
