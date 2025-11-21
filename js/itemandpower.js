@@ -60,12 +60,6 @@ const itemKeyMap = {
     theoreticalflag: theoreticalFlgKey
 };
 
-// パワーリストのキー
-var POWERLISTKEY.power_nameKey = "パワー名";
-var POWERLISTKEY.heroKey = "ヒーロー";
-var POWERLISTKEY.power_iconKey = "アイコン";
-var POWERLISTKEY.power_textKey = "テキスト";
-
 // キー対応マッピング（英語 → 日本語）
 const powerKeyMap = {
     powername: POWERLISTKEY.power_nameKey,
