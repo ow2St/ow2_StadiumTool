@@ -134,3 +134,27 @@ window.UPDATECATEGORY = {
  * 専用処理があるアイテム
  */
 ashItemID = "8661860d-a170-4682-9e94-da0fdfbf9522";   // トライポッド
+
+/**
+ * ヒーロー名
+ */
+window.HERONAME = {
+    dvaMech: "D.VA（メック）"
+};
+
+/**
+ * ヒーロー専用文言・数値
+ */
+window.UNIQUEHEROWORD = {
+    zaria: "エネルギー0%",
+    damage: "ダメージ",
+    scratch: 15
+};
+
+/**
+ * 上限値
+ */
+window.MAXNUMBER = {
+    selectMaxItem: 6,
+    selectMaxPower: 4
+};

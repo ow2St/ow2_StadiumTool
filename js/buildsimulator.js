@@ -2,8 +2,9 @@
 // 処理部
 // ------------------------------
 
+// #region 変数定義など
 // 選択中ヒーロー変数
-var selectedHero = "D.VA（メック）"  // 初期値はD.VA
+var selectedHero = HERONAME.dvaMech;  // 初期値はDVA
 
 var life = 0;
 var armor = 0;
@@ -20,11 +21,11 @@ var ability1AddDamageAbility = 0;  // アビリティ１追加ダメージ用変
 var ability2AddDamageAbility = 0;  // アビリティ２追加ダメージ用変数
 var ability3AddDamageAbility = 0;  // アビリティ３追加ダメージ用変数
 
-var zariaFlg = "エネルギー0%"  // ザリア計算用フラグ
-var junoFlg = "ダメージ"  // ジュノ計算用フラグ
-var moiraFlg = "ダメージ"  // モイラ計算用フラグ
+var zariaFlg = UNIQUEHEROWORD.zaria;  // ザリア計算用フラグ
+var junoFlg = UNIQUEHEROWORD.damage;  // ジュノ計算用フラグ
+var moiraFlg = UNIQUEHEROWORD.damage;  // モイラ計算用フラグ
 
-var queenScratch = 15;  // クイーン傷ダメージ用変数
+var queenScratch = UNIQUEHEROWORD.scratch;  // クイーン傷ダメージ用変数
 
 // 表示用のステータスリストを初期化
 var showStatusList = {};
@@ -158,16 +159,24 @@ var selectedTheoreticalItemData = [];
 var itemCheckboxes = [];
 var powerCheckboxes = [];
 var theoreticalItemCheckboxes = [];
+// #endregion 
 
+// ビルド関連データの読み込みと初期化
 loadAndInitBuildData();
 
 // ------------------------------
 // 関数部
 // ------------------------------
 
-//ビルド関連データの読み込みと初期化
+/**
+ * ビルド関連データの読み込みと初期化
+ * @param {void}
+ * @return {void}
+ */
 async function loadAndInitBuildData() {
-    try {
+    try 
+    {
+        // #region データの読み込み
         const [itemData, powerData, statusData, theoreticalItemData] = await Promise.all([
             // データの読み込み(itemList)
             fetch("itemListData.json").then(response => response.json()),
@@ -183,30 +192,20 @@ async function loadAndInitBuildData() {
         ]);
 
         itemAllData = itemData;
-
-        // 整形 → キー変換
-        itemList = convertItemKeys(organizeItemData(itemAllData));
-
-        // アイテムリストをテーブルに紐付け
-        linkItemList(itemList, selectedHero);
-
         powerAllData = powerData;
-
-        // 整形 → キー変換
-        powerList = convertPowerKeys(organizePowerData(powerAllData));
-
-        // パワーリストをテーブルに紐付け
-        linkPowerList(powerList, selectedHero);
-
         theoreticalItem = theoreticalItemData;
-
-        // 整形 → キー変換
-        theoreticalItemList = convertTheoreticalItemKeys(organizeTheoreticalItemData(theoreticalItem));
-
         statusAllData = statusData;
 
         // 整形 → キー変換
-        initStatusList = convertStatusKeys(organizeStatusData(statusAllData));
+        itemList = convertKeys(organizeItemData(itemAllData), itemKeyMap);
+        powerList = convertKeys(organizePowerData(powerAllData), powerKeyMap);
+        theoreticalItemList = convertKeys(organizeTheoreticalItemData(theoreticalItem), theoreticalItemKeyMap);
+        initStatusList = convertKeys(organizeStatusData(statusAllData), statusKeyMap);
+        // #endregion
+
+        // テーブルに紐付け
+        linkItemList(itemList, selectedHero);
+        linkPowerList(powerList, selectedHero);
 
         // ステータスボックス設定
         initStatus(selectedHero);
@@ -219,6 +218,7 @@ async function loadAndInitBuildData() {
         updateSelectedItemsList();
         updateSelectedPowerList();
 
+        // #region イベントリスナー設定
         // 各アイテムのチェックボックスにイベントリスナーを追加
         itemCheckboxes.forEach(checkbox => {
             checkbox.addEventListener("change", () => {
@@ -234,10 +234,10 @@ async function loadAndInitBuildData() {
 
                 const selectedItemRowsDataAfterLength = selectedItemRowsData.length;
 
-                if(selectedItemRowsDataBeforeLength == 6 && selectedItemRowsDataAfterLength < 6){
+                if(selectedItemRowsDataBeforeLength == MAXNUMBER.selectMaxItem && selectedItemRowsDataAfterLength < MAXNUMBER.selectMaxItem){
                     // 選択できないようにしたチェックボックスを入力可に戻す
                     disableItemTableCheckbox(false);
-                }else if(selectedItemRowsDataAfterLength == 6){
+                }else if(selectedItemRowsDataAfterLength == MAXNUMBER.selectMaxItem){
                     //　選択済みのアイテムが6個になった場合、未選択チェックボックスを入力不可にする
                     disableItemTableCheckbox(true);
                 }
@@ -258,10 +258,10 @@ async function loadAndInitBuildData() {
 
                 const selectedPowerRowsDataAfterLength = selectedPowerRowsData.length;
 
-                if(selectedPowerRowsDataBeforeLength == 4 && selectedPowerRowsDataAfterLength < 4){
+                if(selectedPowerRowsDataBeforeLength == MAXNUMBER.selectMaxPower && selectedPowerRowsDataAfterLength < MAXNUMBER.selectMaxPower){
                     // 選択できないようにしたチェックボックスを入力可に戻す
                     disablePowerTableCheckbox(false);
-                }else if(selectedPowerRowsDataAfterLength == 4){
+                }else if(selectedPowerRowsDataAfterLength == MAXNUMBER.selectMaxPower){
                     //　選択済みのパワーが4個になった場合、未選択チェックボックスを入力不可にする
                     disablePowerTableCheckbox(true);
                 }
@@ -292,13 +292,18 @@ async function loadAndInitBuildData() {
                 updateStatus_Power(selectedPowerRowsData);
             }
         });
+        // #endregion
 
     } catch(error){
         console.error("データの読み込み中にエラーが発生しました:", error);
     }
 }
 
-//itemList に　itemListData.json　から貰うデータの形を決める
+/**
+ * itemList に　itemListData.json　から貰うデータの形を決める
+ * @param {object} itemAllData 読み込んだ全てのアイテムデータ
+ * @return {object}　selectedData　整形後のアイテムデータ
+ */
 function organizeItemData(itemAllData) {
     const selectedData = itemAllData
     .map(Ilist => {
@@ -334,19 +339,11 @@ function organizeItemData(itemAllData) {
     return selectedData;
 }
 
-//英名キーを日本名キーへ変換処理(itemList)
-function convertItemKeys(dataArray) {
-    return dataArray.map(obj => {
-        let newObj = {};
-        for (let key in obj) {
-            let newKey = itemKeyMap[key] || key; // 対応がないキーはそのまま
-            newObj[newKey] = obj[key];
-        }
-        return newObj;
-    });
-}
-
-//powerList に　powerListData.json　から貰うデータの形を決める
+/**
+ * powerList に　powerListData.json　から貰うデータの形を決める
+ * @param {object} powerAllData 読み込んだ全てのパワーデータ
+ * @return {object}　selectedData　整形後のパワーデータ
+ */
 function organizePowerData(powerAllData) {
     const selectedData = powerAllData
     .map(Plist => {
@@ -360,19 +357,11 @@ function organizePowerData(powerAllData) {
     return selectedData;
 }
 
-// 英名キーを日本名キーへ変換処理(powerList)
-function convertPowerKeys(dataArray) {
-    return dataArray.map(obj => {
-        let newObj = {};
-        for (let key in obj) {
-            let newKey = powerKeyMap[key] || key; // 対応がないキーはそのまま
-            newObj[newKey] = obj[key];
-        }
-        return newObj;
-    });
-}
-
-//theoreticalItemList に　theoreticalItemData.json　から貰うデータの形を決める
+/**
+ * theoreticalItemList に　theoreticalItemData.json　から貰うデータの形を決める
+ * @param {object} theoreticalItemAllData 読み込んだ全ての理論値アイテムデータ
+ * @return {object}　selectedData　整形後の理論値アイテムデータ
+ */
 function organizeTheoreticalItemData(theoreticalItemAllData) {
     const selectedData = theoreticalItemAllData
     .map(TIlist => {
@@ -400,19 +389,11 @@ function organizeTheoreticalItemData(theoreticalItemAllData) {
     return selectedData;
 }
 
-//英名キーを日本名キーへ変換処理(theoreticalitemList)
-function convertTheoreticalItemKeys(dataArray) {
-    return dataArray.map(obj => {
-        let newObj = {};
-        for (let key in obj) {
-            let newKey = theoreticalItemKeyMap[key] || key; // 対応がないキーはそのまま
-            newObj[newKey] = obj[key];
-        }
-        return newObj;
-    });
-}
-
-//initStatusList に　statusListData.json　から貰うデータの形を決める
+/**
+ * initStatusList に　statusListData.json　から貰うデータの形を決める
+ * @param {object} statusAllData 読み込んだ全てのステータスデータ
+ * @return {object}　selectedData　整形後のステータスデータ
+ */
 function organizeStatusData(statusAllData) {
     const selectedData = statusAllData
     .map(Slist => {
@@ -467,18 +448,22 @@ function organizeStatusData(statusAllData) {
     return selectedData;
 }
 
-// 英名キーを日本名キーへ変換処理(initStatusList)
-function convertStatusKeys(dataArray) {
+/**
+ * 英名キーを日本名キーへ変換処理
+ * @param {object} dataArray 変換対象のデータ配列
+ * @param {object} keyMap キー対応マッピングオブジェクト
+ * @return {object} newObj 変換後のデータオブジェクト配列
+ */
+function convertKeys(dataArray, keyMap) {
     return dataArray.map(obj => {
         let newObj = {};
         for (let key in obj) {
-            let newKey = statusKeyMap[key] || key; // 対応がないキーはそのまま
+            let newKey = keyMap[key] || key; // 対応がないキーはそのまま
             newObj[newKey] = obj[key];
         }
         return newObj;
     });
 }
-
 
 // ヒーロー選択ウィンドウを開く
 function openHeroWindow(){
@@ -1640,11 +1625,11 @@ function updateBuild_Item(selectedItemRows){
         });
 }
 
-//ステータスにアイテムの内容を反映する関数
 /**
- * 
+ * ステータスにアイテムの内容を反映する関数 
  * @param {Object} selectedItemRows - 選択中アイテム（連想配列）
  * @param {boolean} theoreticalFlag - 理論値フラグ
+ * @return {void}
  */
 function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
 
