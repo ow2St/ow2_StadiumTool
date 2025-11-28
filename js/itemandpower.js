@@ -2,62 +2,34 @@
 // 処理部
 // ------------------------------
 
-// アイテムリストのキー
-var itemIdKey = "アイテムID"; 
-var item_nameKey = "アイテム名";
-var categoryKey = "カテゴリー";
-var rarityKey = "レア度";
-var costKey = "コスト";
-var item_iconKey = "アイコン";
-var uniqueHeroKey = "固有ヒーロー";
-var item_textKey = "テキスト";
-var item_lifeKey = "ライフ";
-var item_armorKey = "アーマー";
-var item_shieldKey = "シールド";
-var weaponPowerKey = "武器パワー";
-var abilityPowerKey = "アビリティパワー";
-var attackSpeedKey = "攻撃速度";
-var ctReducationKey = "CT短縮";
-var ammoKey = "弾薬";
-var weapon_LifeStealKey = "ライフ吸収（武器）";
-var ability_LifeStealKey = "ライフ吸収（アビリティ）";
-var speedKey = "移動速度";
-var reloadSpeedKey = "リロード速度";
-var item_meleeDamageKey = "近接ダメージ";
-var criticalKey = "クリティカル";
-var othersKey = "その他";
-var durationFlgKey = "持続時間フラグ";
-var durationKey = "持続時間";
-var theoreticalFlgKey = "理論値フラグ";
-
 // キー対応マッピング（英語 → 日本語）
 const itemKeyMap = {
-    id: itemIdKey,
-    itemname: item_nameKey,
-    category: categoryKey,
-    rarity: rarityKey,
-    cost: costKey,
-    icon: item_iconKey,
-    uniquehero: uniqueHeroKey,
-    text: item_textKey,
-    life: item_lifeKey,
-    armor: item_armorKey,
-    shield: item_shieldKey,
-    weaponpower: weaponPowerKey,
-    abilitypower: abilityPowerKey,
-    attackspeed: attackSpeedKey,
-    ctreducation: ctReducationKey,
-    ammo: ammoKey,
-    weaponlifesteal: weapon_LifeStealKey,
-    abilitylifesteal: ability_LifeStealKey,
-    speed: speedKey,
-    reloadspeed: reloadSpeedKey,
-    meleedamage: item_meleeDamageKey,
-    critical: criticalKey,
-    others: othersKey,
-    durationflg: durationFlgKey,
-    duration: durationKey,
-    theoreticalflag: theoreticalFlgKey
+    id: ITEMLISTKEY.itemIdKey,
+    itemname: ITEMLISTKEY.item_nameKey,
+    category: ITEMLISTKEY.categoryKey,
+    rarity: ITEMLISTKEY.rarityKey,
+    cost: ITEMLISTKEY.costKey,
+    icon: ITEMLISTKEY.item_iconKey,
+    uniquehero: ITEMLISTKEY.uniqueHeroKey,
+    text: ITEMLISTKEY.item_textKey,
+    life: ITEMLISTKEY.item_lifeKey,
+    armor: ITEMLISTKEY.item_armorKey,
+    shield: ITEMLISTKEY.item_shieldKey,
+    weaponpower: ITEMLISTKEY.weaponPowerKey,
+    abilitypower: ITEMLISTKEY.abilityPowerKey,
+    attackspeed: ITEMLISTKEY.attackSpeedKey,
+    ctreducation: ITEMLISTKEY.ctReducationKey,
+    ammo: ITEMLISTKEY.ammoKey,
+    weaponlifesteal: ITEMLISTKEY.weapon_LifeStealKey,
+    abilitylifesteal: ITEMLISTKEY.ability_LifeStealKey,
+    speed: ITEMLISTKEY.speedKey,
+    reloadspeed: ITEMLISTKEY.reloadSpeedKey,
+    meleedamage: ITEMLISTKEY.item_meleeDamageKey,
+    critical: ITEMLISTKEY.criticalKey,
+    others: ITEMLISTKEY.othersKey,
+    durationflg: ITEMLISTKEY.durationFlgKey,
+    duration: ITEMLISTKEY.durationKey,
+    theoreticalflag: ITEMLISTKEY.theoreticalFlgKey
 };
 
 // パワーリストのキー
@@ -81,7 +53,8 @@ let patchNotesApplied = false;
 
 let itemAllData = []; // 全てのアイテムデータを保持
 
-// データの読み込み(itemList)
+
+// データの読み込み(アイテムデータ)
 fetch("itemListData.json")
     .then(response => {
         if (!response.ok) {
@@ -123,7 +96,7 @@ fetch("itemListData.json")
 
 let powerAllData = []; // 全てのアイテムデータを保持
 
-// データの読み込み(powerList)
+// データの読み込み(パワーデータ)
 fetch("powerListData.json")
     .then(response => {
         if (!response.ok) {
@@ -181,14 +154,17 @@ const sortingCriteria = [
 
 let sortDirection = new Array(8).fill(null);
 
-//アイテム表、コストのキャッシュアイコン等初期表示
+//アイテムテーブル、コストのキャッシュアイコン等初期表示
 addCostDivAndSpan();
 
 // ------------------------------
 // 関数部
 // ------------------------------
 
-//itemList に　itemListData.json　から貰うデータの形を決める
+/** itemList に　itemListData.json　から貰うデータの形を決める
+ * @param {object} itemAllData - アイテム全データ
+ * @returns {} 編集されたアイテムデータ
+ */
 function organizeItemData(itemAllData) {
     const selectedData = itemAllData
     .map(Ilist => {
@@ -225,7 +201,10 @@ function organizeItemData(itemAllData) {
     return selectedData;
 }
 
-// 英名キーを日本名キーへ変換処理
+/** 英名キーを日本名キーへ変換処理
+ * @param {object} dataArray - 編集済アイテムデータ
+ * @returns {} キーが日本語変換されたアイテムデータ
+ */
 function convertItemKeys(dataArray) {
     return dataArray.map(obj => {
         let newObj = {};
@@ -237,7 +216,10 @@ function convertItemKeys(dataArray) {
     });
 }
 
-//powerList に　powerListData.json　から貰うデータの形を決める
+/** powerList に　powerListData.json　から貰うデータの形を決める
+ * @param {object} powerAllData - パワー全データ
+ * @returns {} 編集されたパワーデータ
+ */
 function organizePowerData(powerAllData) {
     const selectedData = powerAllData
     .map(Plist => {
@@ -251,7 +233,10 @@ function organizePowerData(powerAllData) {
     return selectedData;
 }
 
-// 英名キーを日本名キーへ変換処理
+/** 英名キーを日本名キーへ変換処理
+ * @param {object} dataArray - 編集済パワーデータ
+ * @returns {} キーが日本語変換されたパワーデータ
+ */
 function convertPowerKeys(dataArray) {
     return dataArray.map(obj => {
         let newObj = {};
@@ -263,9 +248,8 @@ function convertPowerKeys(dataArray) {
     });
 }
 
-
 //タブ切り替え
-// アイテムタブに遷移
+/** アイテムタブに遷移 */
 function changeTabItem() {
    itemContent.style.display = "block";
    powerContent.style.display = "none";
@@ -277,7 +261,7 @@ function changeTabItem() {
    tabItem.style.border = "1px solid black";
    tabItem.style.borderBottom = "none";
 }
-// パワータブに遷移
+/** パワータブに遷移 */
 function changeTabPower() {
     powerContent.style.display = "block";
     itemContent.style.display = "none";
@@ -294,7 +278,9 @@ function changeTabPower() {
     filterPowerTable(defaultHero);
 }
 
-// アイテムリストをテーブルに紐づける関数
+/** アイテムリストをテーブルに紐づける関数
+ * @param {object} itemList - キー変換・編集済アイテムデータ
+ */
 function linkItemList(itemList) {
     let tbody = document.getElementById("item-table").querySelector("tbody");
 
@@ -316,52 +302,52 @@ function linkItemList(itemList) {
         Object.keys(itemList[i]).forEach(key => {
 
             // キー名がアイテム名キーの場合
-            if(item_nameKey == key) {
+            if(ITEMLISTKEY.item_nameKey == key) {
 
                 // アイテム名用変数に値を代入
                 itemNameText = itemList[i][key];
             }
 
             // キー名がアイコンキーの場合
-            if(item_iconKey == key) {
+            if(ITEMLISTKEY.item_iconKey == key) {
 
                 // アイコン用変数に値を代入
                 iconText = itemList[i][key];
             }
 
             // キー名がカテゴリーキーの場合
-            if(categoryKey == key) {
+            if(ITEMLISTKEY.categoryKey == key) {
 
                 // カテゴリー用変数に値を代入
                 categoryText = itemList[i][key];
             }
 
             // キー名がレアリティキーの場合
-            if(rarityKey == key) {
+            if(ITEMLISTKEY.rarityKey == key) {
 
                 // レアリティ用変数に値を代入
                 rarityText = itemList[i][key];
             }
 
              // キー名がコストキーの場合
-            if(costKey == key) {
+            if(ITEMLISTKEY.costKey == key) {
 
                 // コスト用変数に値を代入
                 costText = itemList[i][key];
             }
 
              // キー名が固有ヒーローキーの場合
-            if(uniqueHeroKey == key) {
+            if(ITEMLISTKEY.uniqueHeroKey == key) {
 
                 // 固有ヒーロー用変数に値を代入
                 uniqueHeroText = itemList[i][key];
             }
 
             // キー名がステータス関連のキーの場合
-            if([item_lifeKey, item_armorKey, item_shieldKey, weaponPowerKey, abilityPowerKey, 
-                attackSpeedKey, ctReducationKey, ammoKey, weapon_LifeStealKey, 
-                ability_LifeStealKey, speedKey, reloadSpeedKey, item_meleeDamageKey, 
-                criticalKey].includes(key)) {
+            if([ITEMLISTKEY.item_lifeKey, ITEMLISTKEY.item_armorKey, ITEMLISTKEY.item_shieldKey, ITEMLISTKEY.weaponPowerKey, ITEMLISTKEY.abilityPowerKey, 
+                ITEMLISTKEY.attackSpeedKey, ITEMLISTKEY.ctReducationKey, ITEMLISTKEY.ammoKey, ITEMLISTKEY.weapon_LifeStealKey, 
+                ITEMLISTKEY.ability_LifeStealKey, ITEMLISTKEY.speedKey, ITEMLISTKEY.reloadSpeedKey, ITEMLISTKEY.item_meleeDamageKey, 
+                ITEMLISTKEY.criticalKey].includes(key)) {
 
                 // 値が0でない場合
                 if(itemList[i][key] != 0) {
@@ -370,7 +356,7 @@ function linkItemList(itemList) {
             }
 
             // キー名がその他キーの場合
-            if(othersKey == key) {
+            if(ITEMLISTKEY.othersKey == key) {
 
                 // 値が"-"でない場合
                 if(itemList[i][key] != "-") {
@@ -380,14 +366,14 @@ function linkItemList(itemList) {
             }
 
             // キー名がテキストキーの場合
-            if(item_textKey == key) {
+            if(ITEMLISTKEY.item_textKey == key) {
 
                 // テキスト用変数に値を代入
                 textText = itemList[i][key];
             }
         })
 
-        //ステータスアイコン設定
+        // #region ステータスアイコン準備
         let statusIcons = [];
         let statusLists = (statusText || "").split(/\r?\n/).map(s => s.trim()).filter(Boolean);
 
@@ -460,7 +446,8 @@ function linkItemList(itemList) {
                 //テキストから※を削除
                 statusLists[i] = status.replace("※","");
             }            
-        });           
+        });   
+        // #endregion (ステータスアイコン準備)
 
     tbody.appendChild(appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, textText, statusLists, statusIcons));
     
@@ -468,7 +455,20 @@ function linkItemList(itemList) {
     }
 }
 
-// アイテムリスト用子要素作成関数
+/** アイテムリスト用子要素作成関数
+ * （空のテーブル1行に、用意したデータを格納する）
+ * @param {object} tr - １つ分の参照中アイテム　データ（行）
+ * @param {string} itemNameText - 参照中アイテムのアイテム名
+ * @param {string} iconText - 参照中アイテムのアイコン
+ * @param {string} categoryText - 参照中アイテムのカテゴリー
+ * @param {string} rarityText - 参照中アイテムのレアリティー
+ * @param {number} costText - 参照中アイテムのコスト
+ * @param {string} uniqueHeroText - 参照中アイテムの固有ヒーロー名
+ * @param {string} textText - 参照中アイテムの効果テキスト
+ * @param {array} statusLists - 参照中アイテムのステータス（配列）
+ * @param {array} statusIcons - 参照中アイテムのステータスアイコン（配列）
+ * @returns {object} 子要素追加後のデータ
+ */
 function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, textText, statusLists, statusIcons){
 
     // アイテム名列
@@ -556,7 +556,9 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
     return tr;
 }
 
-// 絞り込み条件を更新する関数（アイテム）
+/** 絞り込み条件を更新する関数（アイテム）
+ * @param {object} elem - クリックされたアイテムタブのボタン（チェックボックス）データ
+ */
 function filterItemTable(elem){
 
     // 絞り込みボタンのON/OFF切り替え
@@ -606,7 +608,7 @@ function filterItemTable(elem){
         let shouldShow = true;  // 表示判定フラグ
         let shouldShowStatus = false;  // ステータス判定用フラグ
 
-        // 非表示にするアイテムを探す
+        // #region 非表示にするアイテムを探す
         // 固有ヒーロー関連
         if (!uniqueHero.checked) {
             shouldShow = !(cells[uniqueHeroNumber]?.innerText != "-");
@@ -654,6 +656,7 @@ function filterItemTable(elem){
                 }
             }
         });
+        // #endregion (非表示にするアイテムを探す)
 
         // 非表示対応
         if(shouldShow && shouldShowStatus){
@@ -664,7 +667,7 @@ function filterItemTable(elem){
     });
 }
 
-//　検索ボックスで絞り込み（アイテム）
+/** 検索ボックスで絞り込み（アイテム） */
 function item_searchWords() {
 
     // 検索ワードを取得
@@ -710,7 +713,9 @@ function item_searchWords() {
 
 }
 
-//アイテムテーブルソートの前提準備
+/** アイテムテーブルソートの前提準備
+ * @param {string} id - ソート対象（「itemName」「rarity」「cost」のいずれかが格納される）
+ */
 function itemSortClick(id){
     const tHeader=document.getElementById("item-table").querySelectorAll("th");
     const tBody = document.getElementById("item-table").querySelector("tbody");
@@ -752,43 +757,13 @@ function itemSortClick(id){
     }
 }
 
-function addCostDivAndSpan() {
-
-    //costのth内innerTextはいらないので消去
-    document.getElementById("cost").innerText = "";
-    
-    // costのthを取得
-    const cost_th = document.querySelector("th#cost.item-th");
-
-    // div を作成
-    const cost_div = document.createElement("div");
-    cost_div.id = "div-cost";
-
-    // th の子要素として追加
-    cost_th.appendChild(cost_div);
-
-    //span を作成
-    const cost_span = document.createElement("span");
-    cost_span.innerText = "コスト";
-    cost_span.id = "span-cost";
-
-    const costArrow_span = document.createElement("span");
-    costArrow_span.id = "span-costArrow";
-
-    // img要素を作成
-    let img = document.createElement("img");
-    img.src = "assets/images/icons/status/キャッシュアイコン.png";
-    img.classList.add("itemandpower-statusicon");
-
-    // divの中に追加
-    document.getElementById("div-cost").appendChild(img);
-
-    // div の子要素として追加
-    cost_div.appendChild(cost_span);
-    cost_div.appendChild(costArrow_span);
-}
-
-// アイテムテーブルをソートする関数
+/** アイテムテーブルをソートする関数
+ * @param {array} headers - アイテムテーブルの各ヘッダー（配列）
+ * @param {object} tbody - アイテムテーブルのデータ全て
+ * @param {object} sortingCriteria - ソート対象の種類
+ * @param {number} index - ソート対象の位置（見出しの左から何番目か）
+ * @param {boolean} sorting - ソートルール（現在降順の場合はfalse）
+ */
 function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
 
     //レア度の並び替えの基準を設定
@@ -839,7 +814,6 @@ function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
         return 0; 
     };
         
-
     // 配列のソート
     rows.sort(comparator);
     // 既存の行をすべて削除
@@ -849,8 +823,46 @@ function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
     // ソートされた順序で行を追加
     rows.forEach(row => tbody.appendChild(row));
 }
+/** アイテムテーブル　コストの見出しにキャッシュアイコンを追加する関数 */
+function addCostDivAndSpan() {
 
-// パワーリストをテーブルに紐づける関数
+    //costのth内innerTextはいらないので消去
+    document.getElementById("cost").innerText = "";
+    
+    // costのthを取得
+    const cost_th = document.querySelector("th#cost.item-th");
+
+    // div を作成
+    const cost_div = document.createElement("div");
+    cost_div.id = "div-cost";
+
+    // th の子要素として追加
+    cost_th.appendChild(cost_div);
+
+    //span を作成
+    const cost_span = document.createElement("span");
+    cost_span.innerText = "コスト";
+    cost_span.id = "span-cost";
+
+    const costArrow_span = document.createElement("span");
+    costArrow_span.id = "span-costArrow";
+
+    // img要素を作成
+    let img = document.createElement("img");
+    img.src = "assets/images/icons/status/キャッシュアイコン.png";
+    img.classList.add("itemandpower-statusicon");
+
+    // divの中に追加
+    document.getElementById("div-cost").appendChild(img);
+
+    // div の子要素として追加
+    cost_div.appendChild(cost_span);
+    cost_div.appendChild(costArrow_span);
+}
+
+/** パワーリストをテーブルに紐づける関数
+ * @param {object} powerList - キー変換・編集済パワーデータ
+ */
 function linkPowerList(powerList) {
     let tbody = document.getElementById("power-table").querySelector("tbody");
 
@@ -900,7 +912,7 @@ function linkPowerList(powerList) {
     }
 }
 
-//　検索ボックスで絞り込み（パワー）
+/**　検索ボックスで絞り込み（パワー） */
 function power_searchWords() {
 
     // 検索ワードを取得
@@ -946,8 +958,15 @@ function power_searchWords() {
 
 }
 
-
-// パワーリスト用子要素作成関数
+/** パワーリスト用子要素作成関数
+ * （空のテーブル1行に、用意したデータを格納する）
+ * @param {object} tr - １つ分の参照中パワー　データ（行）
+ * @param {string} powerNameText - 参照中パワーのパワー名
+ * @param {string} iconText - 参照中パワーのアイコン
+ * @param {string} heroText - 参照中パワーのヒーロー名
+ * @param {string} textText - 参照中パワーの効果テキスト
+ * @returns {object} 子要素追加後のデータ
+ */
 function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
 
 
@@ -989,7 +1008,9 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
     return tr;
 }
 
-// 絞り込み条件を更新する関数（パワー）
+/** 絞り込み条件を更新する関数（パワー）
+ * @param {object} elem - クリックされたパワータブのヒーローデータ
+ */
 function filterPowerTable(elem){
 
     // 絞り込みイメージのON/OFF切り替え
@@ -1074,7 +1095,9 @@ function filterPowerTable(elem){
     });
 }
 
-//パワーテーブルソートの前提準備
+/** パワーテーブルソートの前提準備
+ * @param {string} id - ソート対象（アイテムタブと違い、ソート項目が現状１つしかない）
+ */
 function powerSortClick(id){
     const tHeader=document.getElementById("power-table").querySelectorAll("th");
     const tBody = document.getElementById("power-table").querySelector("tbody");
@@ -1109,7 +1132,13 @@ function powerSortClick(id){
 
 }
 
-// パワーテーブルをソートする関数
+/** パワーテーブルをソートする関数
+ * @param {array} headers - パワーテーブルの各ヘッダー（配列）
+ * @param {object} tbody - パワーテーブルのデータ全て
+ * @param {object} sortingCriteria - ソート対象の種類
+ * @param {number} index - ソート対象の位置（見出しの左から何番目か）
+ * @param {boolean} sorting - ソートルール（現在降順の場合はfalse）
+ */
 function powerTableSort(headers, tbody, sortingCriteria,index,sorting) {
 
     //レア度の並び替えの基準を設定
@@ -1171,6 +1200,7 @@ function powerTableSort(headers, tbody, sortingCriteria,index,sorting) {
     rows.forEach(row => tbody.appendChild(row));
 }
 
+/** パッチノート実行準備関数 */
 function applyPatchNotesIfReady() {
     // 一度適用したら再実行しない
     if (patchNotesApplied) return;
@@ -1186,6 +1216,9 @@ function applyPatchNotesIfReady() {
     }
 }
 
+/** patchNoteAllData.Json のデータを整える関数
+ * @returns {object} 整形済のパッチノートデータ（アイテム・パワー）
+ */
 function processPatchNotes() {
     const changesMap = new Map();
 
@@ -1217,6 +1250,9 @@ function processPatchNotes() {
     return changesMap;
 }
 
+/** 参照中の変更履歴データをセルに書き込む関数
+ * @param {object} changes - 参照中の変更履歴データ
+ */
 function createHistoryHtml(changes) {
 
     let html = "";
@@ -1228,7 +1264,7 @@ function createHistoryHtml(changes) {
 
     return `<div class="history-content-wrapper">${html}</div>`;
 }
-
+/** パッチノートデータの準備・適用 */
 function applyPatchNotesToTables() {
     if (patchNoteAllData.length == 0) return;
 
@@ -1242,6 +1278,12 @@ function applyPatchNotesToTables() {
 
     patchNotesApplied = true;
 }
+
+/** 用意したパッチノートデータをテーブルに格納する関数
+ * @param {string} tableId - テーブルの種類（アイテムかパワー）
+ * @param {number} nameColIndex - 検索する名前 "name" の位置
+ * @param {object} changesMap - 整形済の変更履歴データ
+ */
 
 function applyChangesToTable(tableId, nameColIndex, changesMap) {
     const tableElement = document.getElementById(tableId);
