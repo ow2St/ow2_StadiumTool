@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "pwa-msedge",
+            "type": "pwa-chrome",
             "request": "launch",
             "name": "localhost に対して Chrome を起動する",
-            "url": "http://127.0.0.1:5500/itemAndPower.html",
+            "url": "http://127.0.0.1:5500/index.html",
             "webRoot": "${workspaceFolder}"
         }
     ]
