@@ -614,7 +614,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
             nameKey: STATUSLISTKEY.mainWeaponNameKey,
             attackPointKey: STATUSLISTKEY.mainDamageKey,
             HSRateKey: STATUSLISTKEY.mainHSRateKey,
-            mainSpeedKey: STATUSLISTKEY.mainSpeedKey,
+            attackSpeedKey: STATUSLISTKEY.mainSpeedKey,
             reloadKey: STATUSLISTKEY.mainReloadKey,
             ammoKey: STATUSLISTKEY.mainAmmoKey,
             lifeStealRateKey: STATUSLISTKEY.mainLifeStealRateKey
@@ -623,7 +623,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
             nameKey: STATUSLISTKEY.subWeaponNameKey,
             attackPointKey: STATUSLISTKEY.subDamageKey,
             HSRateKey: STATUSLISTKEY.subHSRateKey,
-            mainSpeedKey: STATUSLISTKEY.subSpeedKey,
+            attackSpeedKey: STATUSLISTKEY.subSpeedKey,
             reloadKey: STATUSLISTKEY.subReloadKey,
             ammoKey: STATUSLISTKEY.subAmmoKey,
             lifeStealRateKey: STATUSLISTKEY.subLifeStealRateKey
@@ -632,7 +632,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
             nameKey: STATUSLISTKEY.status_meleeDamageKey,
             attackPointKey: STATUSLISTKEY.status_meleeDamageKey,
             HSRateKey: "",
-            mainSpeedKey: STATUSLISTKEY.mainSpeedKey,
+            attackSpeedKey: "",
             reloadKey: "",
             ammoKey: "",
             lifeStealRateKey: ""
@@ -678,7 +678,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
             weapon.nameKey,
             weapon.attackPointKey,
             weapon.HSRateKey,
-            weapon.mainSpeedKey,
+            weapon.attackSpeedKey,
             weapon.reloadKey,
             weapon.ammoKey,
             weapon.lifeStealRateKey
