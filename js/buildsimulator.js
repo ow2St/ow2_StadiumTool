@@ -623,7 +623,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
             nameKey: STATUSLISTKEY.subWeaponNameKey,
             attackPointKey: STATUSLISTKEY.subDamageKey,
             HSRateKey: STATUSLISTKEY.subHSRateKey,
-            mainSpeedKey: STATUSLISTKEY.mainSpeedKey,
+            mainSpeedKey: STATUSLISTKEY.subSpeedKey,
             reloadKey: STATUSLISTKEY.subReloadKey,
             ammoKey: STATUSLISTKEY.subAmmoKey,
             lifeStealRateKey: STATUSLISTKEY.subLifeStealRateKey
@@ -712,7 +712,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
     }    
 }
 
-function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,mainSpeedKey,reloadKey,ammoKey,lifeStealRateKey){
+function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,attackSpeedKey,reloadKey,ammoKey,lifeStealRateKey){
     // 武器が存在しない場合は何もしない
     if(statuslist[weaponNameKey] == "-") {
         return;
@@ -743,8 +743,8 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,mainSpe
     }
 
     // 攻撃速度
-    if(mainSpeedKey != "" && statuslist[mainSpeedKey] != 0){
-        attackSpeedValue = statuslist[mainSpeedKey];
+    if(attackSpeedKey != "" && statuslist[attackSpeedKey] != 0){
+        attackSpeedValue = statuslist[attackSpeedKey];
     }
 
     // リロード速度
@@ -2154,6 +2154,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     if(attackSpeedTmp != 0){
         // 表示用ステータスリストに反映
         showStatusList[STATUSLISTKEY.mainSpeedKey] = showStatusList[STATUSLISTKEY.mainSpeedKey] + attackSpeedTmp;
+        showStatusList[STATUSLISTKEY.subSpeedKey] = showStatusList[STATUSLISTKEY.subSpeedKey] + attackSpeedTmp;
     }
 
     // CT短縮に記載がある場合
