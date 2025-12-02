@@ -603,6 +603,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
     document.getElementById("life").innerText = STATUSLISTKEY.status_lifeKey + " :" + statuslist[STATUSLISTKEY.status_lifeKey];
     document.getElementById("armor").innerText = STATUSLISTKEY.status_armorKey + " :" + statuslist[STATUSLISTKEY.status_armorKey];
     document.getElementById("shield").innerText = STATUSLISTKEY.status_shieldKey + " :" + statuslist[STATUSLISTKEY.status_shieldKey];
+    document.getElementById("movespeed").innerText = STATUSLISTKEY.moveSpeedKey + " :" + statuslist[STATUSLISTKEY.moveSpeedKey] + "%";
     
     const container = document.getElementById('status-container');
     container.innerHTML = '';
@@ -613,6 +614,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
             nameKey: STATUSLISTKEY.mainWeaponNameKey,
             attackPointKey: STATUSLISTKEY.mainDamageKey,
             HSRateKey: STATUSLISTKEY.mainHSRateKey,
+            attackSpeedKey: STATUSLISTKEY.mainSpeedKey,
             reloadKey: STATUSLISTKEY.mainReloadKey,
             ammoKey: STATUSLISTKEY.mainAmmoKey,
             lifeStealRateKey: STATUSLISTKEY.mainLifeStealRateKey
@@ -621,6 +623,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
             nameKey: STATUSLISTKEY.subWeaponNameKey,
             attackPointKey: STATUSLISTKEY.subDamageKey,
             HSRateKey: STATUSLISTKEY.subHSRateKey,
+            attackSpeedKey: STATUSLISTKEY.subSpeedKey,
             reloadKey: STATUSLISTKEY.subReloadKey,
             ammoKey: STATUSLISTKEY.subAmmoKey,
             lifeStealRateKey: STATUSLISTKEY.subLifeStealRateKey
@@ -629,6 +632,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
             nameKey: STATUSLISTKEY.status_meleeDamageKey,
             attackPointKey: STATUSLISTKEY.status_meleeDamageKey,
             HSRateKey: "",
+            attackSpeedKey: "",
             reloadKey: "",
             ammoKey: "",
             lifeStealRateKey: ""
@@ -674,6 +678,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
             weapon.nameKey,
             weapon.attackPointKey,
             weapon.HSRateKey,
+            weapon.attackSpeedKey,
             weapon.reloadKey,
             weapon.ammoKey,
             weapon.lifeStealRateKey
@@ -707,7 +712,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
     }    
 }
 
-function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadKey,ammoKey,lifeStealRateKey){
+function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,attackSpeedKey,reloadKey,ammoKey,lifeStealRateKey){
     // 武器が存在しない場合は何もしない
     if(statuslist[weaponNameKey] == "-") {
         return;
@@ -715,6 +720,7 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadK
 
     let weaponValue = statuslist[attackPointKey];
     let HSValue = 0;
+    let attackSpeedValue = 0;
     let reloadValue = 0;
     let ammoValue = 0;
     let lifeStealValue = 0;
@@ -736,6 +742,11 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadK
         HSValue = Math.round(statuslist[attackPointKey] * statuslist[HSRateKey]);
     }
 
+    // 攻撃速度
+    if(attackSpeedKey != "" && statuslist[attackSpeedKey] != 0){
+        attackSpeedValue = statuslist[attackSpeedKey];
+    }
+
     // リロード速度
     if(reloadKey != "" && statuslist[reloadKey] != 0){
         reloadValue = statuslist[reloadKey];
@@ -753,14 +764,14 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,reloadK
 
     // 武器の情報を追加
     if(weaponNameKey == STATUSLISTKEY.status_meleeDamageKey){
-        addStatusDiv_Weapon(weaponNameKey,weaponValue,HSValue,reloadValue,ammoValue,lifeStealValue);
+        addStatusDiv_Weapon(weaponNameKey,weaponValue,HSValue,attackSpeedValue,reloadValue,ammoValue,lifeStealValue);
     }else{
-        addStatusDiv_Weapon(statuslist[weaponNameKey],weaponValue,HSValue,reloadValue,ammoValue,lifeStealValue);
+        addStatusDiv_Weapon(statuslist[weaponNameKey],weaponValue,HSValue,attackSpeedValue,reloadValue,ammoValue,lifeStealValue);
     }
     
 }
 
-function addStatusDiv_Weapon(name,value,hsValue,reload,ammo,lifeSteal){
+function addStatusDiv_Weapon(name,value,hsValue,attackSpeed,reload,ammo,lifeSteal){
     const container = document.getElementById('status-container');
     const div = document.createElement('div');
     div.classList.add('status-div');
@@ -770,6 +781,9 @@ function addStatusDiv_Weapon(name,value,hsValue,reload,ammo,lifeSteal){
     // リロード、弾薬、L吸収の表示用文字列を生成
     let detailParts = [];
 
+    if(attackSpeed != 0){
+        detailParts.push(`<span><strong>攻撃速度</strong>：${attackSpeed}%</span>`);
+    }
     if(reload != 0) {
         detailParts.push(`<span><strong>リロード</strong>：${reload}秒</span>`);
     }
@@ -2136,7 +2150,12 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         ability3AddDamageAbility = Math.round(ability3AddDamageAbility * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
     }
 
-    // TODO:RIN 攻撃速度に記載がある場合
+    // 攻撃速度に記載がある場合
+    if(attackSpeedTmp != 0){
+        // 表示用ステータスリストに反映
+        showStatusList[STATUSLISTKEY.mainSpeedKey] = showStatusList[STATUSLISTKEY.mainSpeedKey] + attackSpeedTmp;
+        showStatusList[STATUSLISTKEY.subSpeedKey] = showStatusList[STATUSLISTKEY.subSpeedKey] + attackSpeedTmp;
+    }
 
     // CT短縮に記載がある場合
     if(ctReducationTmp != 0){
@@ -2207,7 +2226,11 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         }
     }
 
-    // TODO:RIN 移動速度に記載がある場合
+    // 移動速度に記載がある場合
+    if(speedTmp != 0){
+        // 表示用ステータスリストに反映
+        showStatusList[STATUSLISTKEY.moveSpeedKey] = showStatusList[STATUSLISTKEY.moveSpeedKey] + speedTmp;
+    }
 
     // リロード速度に記載がある場合
     if(reloadSpeedTmp != 0){
