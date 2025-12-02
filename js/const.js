@@ -215,7 +215,7 @@ window.RARITYELEMENTS = {
 };
 
 /**
- * ステータスの要素 TODO:jsへの変更まだ
+ * ステータスの要素
  */
 window.STATUSELEMENTS = {
     life: "ライフ",
