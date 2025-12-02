@@ -1603,7 +1603,7 @@ function updateBuild_Item(selectedItemRows){
             input.checked = false;
             input.classList.add("theoretical-item-checkbox");
             // 理論値フラグがfalseなら表示はするが非活性にする
-            if(!selectedItemRows[i][ITEMLISTKEY.theoreticalFlgKey]){
+            if(selectedItemRows[i][ITEMLISTKEY.theoreticalFlgKey] == 0){
                 input.disabled = true;
             }
             input.classList.add("selectedbuild-theoretical-checkbox");
@@ -1770,7 +1770,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         // #endregion
 
         // #region 理論値計算
-        if(theoreticalFlag && selectedItemRows[i][ITEMLISTKEY.theoreticalFlgKey]){
+        if(theoreticalFlag && selectedItemRows[i][ITEMLISTKEY.theoreticalFlgKey] == 1){
             theoreticalItemCheckboxes.forEach(checkbox => {
                 const div = checkbox.closest('div');
             
