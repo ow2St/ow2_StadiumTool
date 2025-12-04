@@ -88,7 +88,7 @@ fetch("itemListData.json")
 
         //初期データをカテゴリー順に並び替え
         // 並び替え優先順位を定義
-        const categoryOrder = ["武器", "アビリティ", "サバイバル"];
+        const categoryOrder = [CATEGORYELEMENTS.weapon, CATEGORYELEMENTS.ability, CATEGORYELEMENTS.survival];
 
         itemAllData.sort((a, b) => {
         // categoryOrder内でのインデックスを取得
@@ -209,7 +209,7 @@ function organizeItemData(itemAllData) {
             reloadspeed: Ilist.reloadspeed,
             meleedamage: Ilist.meleedamage,
             critical: Ilist.critical,
-            others: (Ilist.others === "-") ? Ilist.others : "※" + Ilist.others,
+            others: (Ilist.others === "-") ? Ilist.others : STATUSELEMENTS.others_sign + Ilist.others,
             durationflg: Ilist.durationflg,
             duration: Ilist.duration,
             theoreticalflag: Ilist.theoreticalflag
@@ -388,71 +388,71 @@ function linkItemList(itemList) {
         statusLists.forEach((status, i) => {
 
             //その他（特殊効果）以外のアイコン付与
-            if(!status.includes("※")){
+            if(!status.includes(STATUSELEMENTS.others_sign)){
                 switch(true) {
-                    case status.includes("ライフ+"):
-                        statusIcons.push("assets/images/icons/status/ライフアイコン.png");
+                    case status.includes(STATUSELEMENTS.life_includes):
+                        statusIcons.push(STATUSICON.life);
                         break;
 
-                    case status.includes("アーマー"):
-                        statusIcons.push("assets/images/icons/status/アーマーアイコン.png");
+                    case status.includes(STATUSELEMENTS.armor):
+                        statusIcons.push(STATUSICON.armor);
                         break;
 
-                    case status.includes("シールド"):
-                        statusIcons.push("assets/images/icons/status/シールドアイコン.png");
+                    case status.includes(STATUSELEMENTS.shield):
+                        statusIcons.push(STATUSICON.shield);
                         break;
 
-                    case status.includes("武器パワー"):
-                        statusIcons.push("assets/images/icons/status/武器パワーアイコン.png");
+                    case status.includes(STATUSELEMENTS.weaponPower):
+                        statusIcons.push(STATUSICON.weaponPower);
                         break;
 
-                    case status.includes("アビリティパワー"):
-                        statusIcons.push("assets/images/icons/status/アビリティパワーアイコン.png");
+                    case status.includes(STATUSELEMENTS.abilityPower):
+                        statusIcons.push(STATUSICON.abilityPower);
                         break;
 
-                    case status.includes("攻撃速度"):
-                        statusIcons.push("assets/images/icons/status/攻撃速度アイコン.png");
+                    case status.includes(STATUSELEMENTS.attackSpeed):
+                        statusIcons.push(STATUSICON.attackSpeed);
                         break;
 
-                    case status.includes("CT短縮"):
-                        statusIcons.push("assets/images/icons/status/クールダウンアイコン.png");
+                    case status.includes(STATUSELEMENTS.ctReducation):
+                        statusIcons.push(STATUSICON.ctReducation);
                         break;
 
-                    case status.includes("弾薬"):
-                        statusIcons.push("assets/images/icons/status/最大弾薬数アイコン.png");
+                    case status.includes(STATUSELEMENTS.ammo):
+                        statusIcons.push(STATUSICON.ammo);
                         break;
 
-                    case status.includes("ライフ吸収（武器）"):
-                        statusIcons.push("assets/images/icons/status/ライフ吸収(武器)アイコン.png");
+                    case status.includes(STATUSELEMENTS.weapon_LifeSteal):
+                        statusIcons.push(STATUSICON.weapon_LifeSteal);
                         break;
 
-                    case status.includes("ライフ吸収（アビリティ）"):
-                        statusIcons.push("assets/images/icons/status/ライフ吸収(アビリティ)アイコン.png");
+                    case status.includes(STATUSELEMENTS.ability_LifeSteal):
+                        statusIcons.push(STATUSICON.ability_LifeSteal);
                         break;
 
-                    case status.includes("移動速度"):
-                        statusIcons.push("assets/images/icons/status/移動速度アイコン.png");
+                    case status.includes(STATUSELEMENTS.speed):
+                        statusIcons.push(STATUSICON.speed);
                         break;
 
-                    case status.includes("リロード速度"):
-                        statusIcons.push("assets/images/icons/status/リロード速度アイコン.png");
+                    case status.includes(STATUSELEMENTS.reloadSpeed):
+                        statusIcons.push(STATUSICON.reloadSpeed);
                         break;
 
-                    case status.includes("近接ダメージ"):
-                        statusIcons.push("assets/images/icons/status/近接攻撃ダメージアイコン.png");
+                    case status.includes(STATUSELEMENTS.meleeDamage):
+                        statusIcons.push(STATUSICON.meleeDamage);
                         break;
 
-                    case status.includes("クリティカル"):
-                        statusIcons.push("assets/images/icons/status/クリティカル・ダメージアイコン.png");
+                    case status.includes(STATUSELEMENTS.critical):
+                        statusIcons.push(STATUSICON.critical);
                         break;
                 }
             
             //その他（特殊効果）の場合
-            }else if(status.includes("※")){
-                statusIcons.push("assets/images/icons/status/特殊効果アイコン.png");
+            }else if(status.includes(STATUSELEMENTS.others_sign)){
+                statusIcons.push(STATUSICON.others);
 
                 //テキストから※を削除
-                statusLists[i] = status.replace("※","");
+                statusLists[i] = status.replace(STATUSELEMENTS.others_sign,"");
             }            
         });           
 
@@ -579,10 +579,10 @@ function filterItemTable(elem){
     const headers = Array.from(headerRow.querySelectorAll("th"));
 
     // 各絞り込み要素が何番目かを取得
-    const categoryNumber = headers.findIndex(th => th.textContent == "カテゴリー");
-    const rarityNumber = headers.findIndex(th => th.textContent == "レアリティ");
-    const statusNumber = headers.findIndex(th => th.textContent == "ステータス");
-    const uniqueHeroNumber = headers.findIndex(th => th.textContent == "固有ヒーロー");
+    const categoryNumber = headers.findIndex(th => th.textContent == THTEXT.category);
+    const rarityNumber = headers.findIndex(th => th.textContent == THTEXT.rarity);
+    const statusNumber = headers.findIndex(th => th.textContent == THTEXT.status);
+    const uniqueHeroNumber = headers.findIndex(th => th.textContent == THTEXT.uniqueHero);
 
     //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_item に配列のように格納。各行を1つのアイテムとする。
     var tbody_item = document.getElementById("item-table").querySelector("tbody");
@@ -638,7 +638,7 @@ function filterItemTable(elem){
                     const imgs = cells[statusNumber].querySelectorAll("img");
                     const otherImg = Array.from(imgs).map(img => decodeURIComponent(img.src.split('/').pop()));
 
-                    if (otherImg.some(src => src.includes("特殊効果アイコン.png"))) {
+                    if (otherImg.some(src => src.includes(STATUSICON.sort_others))) {
                         shouldShowStatus = true;
                     } else {
                         shouldShowStatus = false;
@@ -688,8 +688,8 @@ function item_searchWords() {
 
         // 非表示にするアイテムを探す
 
-        const itemName = cells[0]?.textContent.trim() || "";
-        const textColumn = cells[6]?.textContent.trim() || "";
+        const itemName = cells[ITEMTHINDEX.itemName]?.textContent.trim() || "";
+        const textColumn = cells[ITEMTHINDEX.text]?.textContent.trim() || "";
 
         // 非表示フラグ　keywordが空の場合は全て非表示、
         const shouldShow = keyword !== "" && (itemName.includes(keyword) || textColumn.includes(keyword));
@@ -718,9 +718,9 @@ function itemSortClick(id){
 
     // 表示テキスト更新
     const labelMap = {
-        itemName: "アイテム名",
-        rarity: "レアリティ",
-        cost: "コスト"
+        itemName: THTEXT.itemName,
+        rarity: THTEXT.rarity,
+        cost: THTEXT.cost
     };
 
     // テーブル列名初期化
@@ -786,7 +786,7 @@ function addCostDivAndSpan() {
 function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
 
     //レア度の並び替えの基準を設定
-    const rarityOrder = ['コモン', 'レア', 'エピック']
+    const rarityOrder = [RARITYELEMENTS.common, RARITYELEMENTS.rare, RARITYELEMENTS.epic]
 
     const rows = Array.from(tbody.querySelectorAll("tr"));
 
@@ -844,7 +844,9 @@ function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
     rows.forEach(row => tbody.appendChild(row));
 }
 
-// パワーリストをテーブルに紐づける関数
+/** パワーリストをテーブルに紐づける関数
+ * @param {object} powerList - キー変換・編集済パワーデータ
+ */
 function linkPowerList(powerList) {
     let tbody = document.getElementById("power-table").querySelector("tbody");
 
@@ -924,8 +926,8 @@ function power_searchWords() {
 
         // 非表示にするパワーを探す
 
-        const powerName = cells[0]?.textContent.trim() || "";
-        const textColumn = cells[2]?.textContent.trim() || "";
+        const powerName = cells[POWERTHINDEX.powerName]?.textContent.trim() || "";
+        const textColumn = cells[POWERTHINDEX.text]?.textContent.trim() || "";
 
         // 非表示フラグ　keywordが空の場合は全て非表示、
         const shouldShow = keyword !== "" && (powerName.includes(keyword) || textColumn.includes(keyword));
@@ -1082,7 +1084,7 @@ function powerSortClick(id){
 
     // 表示テキスト更新
     const labelMap = {
-        powerName: "パワー名",
+        powerName: THTEXT.powerName,
     };
 
     // テーブル列名初期化
@@ -1107,7 +1109,7 @@ function powerSortClick(id){
 function powerTableSort(headers, tbody, sortingCriteria,index,sorting) {
 
     //レア度の並び替えの基準を設定
-    const rarityOrder = ['コモン', 'レア', 'エピック']
+    const rarityOrder = [RARITYELEMENTS.common, RARITYELEMENTS.rare, RARITYELEMENTS.epic]
 
     const rows = Array.from(tbody.querySelectorAll("tr"));
 

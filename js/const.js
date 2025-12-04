@@ -158,3 +158,105 @@ window.MAXNUMBER = {
     selectMaxItem: 6,
     selectMaxPower: 4
 };
+
+/**
+ * テーブル見出しテキスト
+ */
+window.THTEXT = {
+    itemName: "アイテム名",
+    powerName: "パワー名",
+    category: "カテゴリー",
+    rarity: "レアリティ",
+    cost: "コスト",
+    uniqueHero: "固有ヒーロー",
+    status: "ステータス"
+};
+
+/**
+ * アイテムテーブル見出しナンバー管理
+ */
+window.ITEMTHINDEX = {
+    itemName: "0",
+    category: "1",
+    rarity: "2",
+    cost: "3",
+    uniqueHero: "4",
+    status: "5",
+    text: "6",
+    ChangeHistory: "7"
+};
+
+/**
+ * パワーテーブル見出しナンバー管理
+ */
+window.POWERTHINDEX = {
+    powerName: "0",
+    hero: "1",
+    text: "2",
+    ChangeHistory: "3"
+};
+
+/**
+ * カテゴリーの要素
+ */
+window.CATEGORYELEMENTS = {
+    weapon: "武器",
+    ability: "アビリティ",
+    survival: "サバイバル"
+};
+
+/**
+ * レアリティの要素
+ */
+window.RARITYELEMENTS = {
+    common: "コモン",
+    rare: "レア",
+    epic: "エピック"
+};
+
+/**
+ * ステータスの要素
+ */
+window.STATUSELEMENTS = {
+    life: "ライフ",
+    life_includes: "ライフ+",
+    armor: "アーマー",
+    shield: "シールド",
+    weaponPower: "武器パワー",
+    abilityPower: "アビリティパワー",
+    attackSpeed: "攻撃速度",
+    ctReducation: "CT短縮",
+    ammo: "弾薬",
+    weapon_LifeSteal: "ライフ吸収（武器）",
+    ability_LifeSteal: "ライフ吸収（アビリティ）",
+    speed: "移動速度",
+    reloadSpeed: "リロード速度",
+    meleeDamage: "近接ダメージ",
+    critical: "クリティカル",
+    others_sign: "※",
+};
+
+/**
+ * ステータスアイコン
+ */
+window.STATUSICON = {
+    life: "assets/images/icons/status/ライフアイコン.png",
+    armor: "assets/images/icons/status/アーマーアイコン.png",
+    shield: "assets/images/icons/status/シールドアイコン.png",
+    weaponPower: "assets/images/icons/status/武器パワーアイコン.png",
+    abilityPower: "assets/images/icons/status/アビリティパワーアイコン.png",
+    attackSpeed: "assets/images/icons/status/攻撃速度アイコン.png",
+    ctReducation: "assets/images/icons/status/クールダウンアイコン.png",
+    ammo: "assets/images/icons/status/最大弾薬数アイコン.png",
+    weapon_LifeSteal: "assets/images/icons/status/ライフ吸収(武器)アイコン.png",
+    ability_LifeSteal: "assets/images/icons/status/ライフ吸収(アビリティ)アイコン.png",
+    speed: "assets/images/icons/status/移動速度アイコン.png",
+    reloadSpeed: "assets/images/icons/status/リロード速度アイコン.png",
+    meleeDamage: "assets/images/icons/status/近接攻撃ダメージアイコン.png",
+    critical: "assets/images/icons/status/クリティカル・ダメージアイコン.png",
+    others: "assets/images/icons/status/特殊効果アイコン.png",
+    cash: "assets/images/icons/status/キャッシュアイコン.png",
+    //絞り込み検索用
+    sort_others: "特殊効果アイコン.png"
+};
+
