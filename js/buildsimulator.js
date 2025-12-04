@@ -128,8 +128,7 @@ const statusKeyMap = {
     ultduration: STATUSLISTKEY.ultDurationKey,
     ultlifesteal: STATUSLISTKEY.ultLifeStealRateKey,
     meleedamage: STATUSLISTKEY.status_meleeDamageKey,
-    mainspeed: STATUSLISTKEY.mainSpeedKey,
-    subspeed: STATUSLISTKEY.subSpeedKey,
+    attackspeed: STATUSLISTKEY.attackSpeedKey,
     movespeed: STATUSLISTKEY.moveSpeedKey,
     mainhealdamageupflg: STATUSLISTKEY.mainHealDamageUpFlg,
     subhealdamageupflg: STATUSLISTKEY.subHealDamageUpFlg,
@@ -299,6 +298,7 @@ async function loadAndInitBuildData() {
     }
 }
 
+
 /**
  * itemList に　itemListData.json　から貰うデータの形を決める
  * @param {object} itemAllData 読み込んだ全てのアイテムデータ
@@ -339,6 +339,7 @@ function organizeItemData(itemAllData) {
     return selectedData;
 }
 
+
 /**
  * powerList に　powerListData.json　から貰うデータの形を決める
  * @param {object} powerAllData 読み込んだ全てのパワーデータ
@@ -356,6 +357,7 @@ function organizePowerData(powerAllData) {
     })
     return selectedData;
 }
+
 
 /**
  * theoreticalItemList に　theoreticalItemData.json　から貰うデータの形を決める
@@ -388,6 +390,7 @@ function organizeTheoreticalItemData(theoreticalItemAllData) {
     })
     return selectedData;
 }
+
 
 /**
  * initStatusList に　statusListData.json　から貰うデータの形を決める
@@ -434,8 +437,7 @@ function organizeStatusData(statusAllData) {
             ultduration: Slist.ultduration,
             ultlifesteal: Slist.ultlifesteal,
             meleedamage: Slist.meleedamage,
-            mainspeed: Slist.mainspeed,
-            subspeed: Slist.subspeed,
+            attackspeed: Slist.attackspeed,
             movespeed: Slist.movespeed,
             mainhealdamageupflg: Slist.mainhealdamageupflg,
             subhealdamageupflg: Slist.subhealdamageupflg,
@@ -447,6 +449,7 @@ function organizeStatusData(statusAllData) {
     })
     return selectedData;
 }
+
 
 /**
  * 英名キーを日本名キーへ変換処理
@@ -465,40 +468,53 @@ function convertKeys(dataArray, keyMap) {
     });
 }
 
-// ヒーロー選択ウィンドウを開く
+
+/**
+ * ヒーロー選択ウィンドウを開く
+ * @param {void}
+ * @return {void}
+ */
 function openHeroWindow(){
     document.getElementById("herowindow").style.display = "block";
 }
 
-// ヒーロー選択ウィンドウを閉じる
+
+/**
+ * ヒーロー選択ウィンドウを閉じる
+ * @param {void}
+ * @return {void}
+ */
 function closeHeroWindow(){
     document.getElementById("herowindow").style.display = "none";
 }
 
-// ヒーロー選択
+
+/**
+ * ヒーロー選択
+ * @param {text} id 選択したヒーロー名
+ * @return {void}
+ */
 function selectHero(id){
     
     // 選択中ヒーローを設定
     selectedHero = id;
 
-    // ジュノ計算用フラグ初期化
-    junoFlg = "ダメージ";
+    // 専用変数初期化
+    junoFlg = UNIQUEHEROWORD.damage;   // ジュノ計算要素フラグ
+    queenScratch = 15;  // クイーン傷ダメージ用変数
 
     let imgPath = "";
     // 選択中ヒーローアイコンを変更
     // D.VAチェック
-    if(id == "D.VA（メック）" || id == "D.VA（人）"){
-        imgPath = "DVA.png"
+    if(id == HERONAME.dvaMech || id == HERONAME.dvaHuman){
+        imgPath = HERONAME.dva + EXTENSION.png;
     }else{
-        imgPath = id + ".png";
+        imgPath = id + EXTENSION.png;
     }
     document.getElementById("selected-hero-icon").src = "assets/images/icons/hero/" + imgPath;
 
     // 選択ヒーロー名変更
     changeSelectedHeroTitle(id);
-
-    // 傷ダメージ初期化
-    queenScratch = 15;
 
     // ステータスボックス初期化
     initStatus(id);
@@ -511,8 +527,6 @@ function selectHero(id){
     // 選択済みアイテム、選択済みパワーについて初期化
     selectedItemRowsData = updateSelectedItemsList();
     selectedPowerRowsData = updateSelectedPowerList();
-
-    
     updateBuild_Item(selectedItemRowsData);
     updateBuild_Power(selectedPowerRowsData);
 
@@ -520,22 +534,24 @@ function selectHero(id){
     document.getElementById("herowindow").style.display = "none";
 }
 
-// 選択ヒーロー名切り替え
+
+/**
+ * 選択ヒーロー名切り替え
+ * @param {text} id 選択したヒーロー名
+ * @return {void}
+ */
 function changeSelectedHeroTitle(id){
 
     const selectedHeroTitle = document.querySelector('.selectedhero-title');
-    let heroName = "";
-
-    if(id == "D.VA（メック）" || id == "D.VA（人）"){
-        heroName = "D.VA";
-    }else{
-        heroName = id;
-    }
-
-    selectedHeroTitle.textContent = heroName;
+    selectedHeroTitle.textContent = id;
 }
 
-// ステータスボックス初期化
+
+/**
+ * ステータスボックス初期化
+ * @param {text} selectedHero 選択したヒーロー名
+ * @return {void}
+ */
 function initStatus(selectedHero){
 
     // 各ヒーローごとにループ
@@ -543,49 +559,34 @@ function initStatus(selectedHero){
 
         // 選択中のヒーローの場合
         if (initStatusList[i][STATUSLISTKEY.heroNameKey] == selectedHero){
+            switch(selectedHero){
 
-            // DVAの場合
-            if(selectedHero == "D.VA（メック）" || selectedHero == "D.VA（人）"){
+                // DVAの場合 メック人切り替えボタンを表示
+                case HERONAME.dvaMech || HERONAME.dvaHuman:
+                    document.getElementById("dva-button").style.display = "flex";
+                    break;
                 
-                // メック人切り替えボタンを表示
-                document.getElementById("dva-button").style.display = "flex";
-            }else{
-
-                // メック人切り替えボタンを非表示
-                document.getElementById("dva-button").style.display = "none";
-            }
-
-            // ザリアの場合
-            if(selectedHero == "ザリア"){
+                // ザリアの場合 エネルギーボタンを表示
+                case HERONAME.zaria:
+                    document.getElementById("zaria-button").style.display = "flex";
+                    break;
                 
-                // エネルギーボタンを表示
-                document.getElementById("zaria-button").style.display = "flex";
-            }else{
+                // ジュノの場合 ダメージボタンを表示
+                case HERONAME.juno:
+                    document.getElementById("juno-button").style.display = "flex";
+                    break;
 
-                // エネルギーボタンを非表示
-                document.getElementById("zaria-button").style.display = "none";
-            }
+                // モイラの場合 エネルギーボタンを表示
+                case HERONAME.moira:
+                    document.getElementById("moira-button").style.display = "flex";
+                    break;
 
-            // ジュノの場合
-            if(selectedHero == "ジュノ"){
-                
-                // ダメージボタンを表示
-                document.getElementById("juno-button").style.display = "flex";
-            }else{
-
-                // ダメージボタンを非表示
-                document.getElementById("juno-button").style.display = "none";
-            }
-
-            // モイラの場合
-            if(selectedHero == "モイラ"){
-                
-                // エネルギーボタンを表示
-                document.getElementById("moira-button").style.display = "flex";
-            }else{
-
-                // エネルギーボタンを非表示
-                document.getElementById("moira-button").style.display = "none";
+                default:
+                    document.getElementById("dva-button").style.display = "none";
+                    document.getElementById("zaria-button").style.display = "none";
+                    document.getElementById("juno-button").style.display = "none";
+                    document.getElementById("moira-button").style.display = "none";
+                    break;
             }
 
             // 選択中のヒーローのステータスを設定
@@ -597,37 +598,52 @@ function initStatus(selectedHero){
     }
 }
 
-// ステータス値初期化
+
+/**
+ * ステータス値初期化
+ * @param {Object} statuslist ステータスリスト
+ * @param {text} addItemText 追加効果(アイテム)テキスト
+ * @param {text} addItemOthers 追加効果(その他)テキスト
+ * @return {void}
+ */
 function initStatusValue(statuslist, addItemText, addItemOthers){
     // 選択中のヒーローのステータスを設定
     document.getElementById("life").innerText = STATUSLISTKEY.status_lifeKey + " :" + statuslist[STATUSLISTKEY.status_lifeKey];
     document.getElementById("armor").innerText = STATUSLISTKEY.status_armorKey + " :" + statuslist[STATUSLISTKEY.status_armorKey];
     document.getElementById("shield").innerText = STATUSLISTKEY.status_shieldKey + " :" + statuslist[STATUSLISTKEY.status_shieldKey];
-    document.getElementById("movespeed").innerText = STATUSLISTKEY.moveSpeedKey + " :" + statuslist[STATUSLISTKEY.moveSpeedKey] + "%";
+    if(statuslist[STATUSLISTKEY.moveSpeedKey] != 0){
+        document.getElementById("movespeed").innerText = STATUSLISTKEY.moveSpeedKey + " :" + statuslist[STATUSLISTKEY.moveSpeedKey] + "%";
+    }else{
+        document.getElementById("movespeed").innerText = "";
+    }
     
     const container = document.getElementById('status-container');
     container.innerHTML = '';
 
+    // #region 武器アビリティ初期設定
     // 武器キーをまとめておく配列
     const weapons = [
+        // メイン武器
         {
             nameKey: STATUSLISTKEY.mainWeaponNameKey,
             attackPointKey: STATUSLISTKEY.mainDamageKey,
             HSRateKey: STATUSLISTKEY.mainHSRateKey,
-            attackSpeedKey: STATUSLISTKEY.mainSpeedKey,
+            attackSpeedKey: STATUSLISTKEY.attackSpeedKey,
             reloadKey: STATUSLISTKEY.mainReloadKey,
             ammoKey: STATUSLISTKEY.mainAmmoKey,
             lifeStealRateKey: STATUSLISTKEY.mainLifeStealRateKey
         },
+        // サブ武器
         {
             nameKey: STATUSLISTKEY.subWeaponNameKey,
             attackPointKey: STATUSLISTKEY.subDamageKey,
             HSRateKey: STATUSLISTKEY.subHSRateKey,
-            attackSpeedKey: STATUSLISTKEY.subSpeedKey,
+            attackSpeedKey: STATUSLISTKEY.attackSpeedKey,
             reloadKey: STATUSLISTKEY.subReloadKey,
             ammoKey: STATUSLISTKEY.subAmmoKey,
             lifeStealRateKey: STATUSLISTKEY.subLifeStealRateKey
         },
+        // 近接攻撃
         {
             nameKey: STATUSLISTKEY.status_meleeDamageKey,
             attackPointKey: STATUSLISTKEY.status_meleeDamageKey,
@@ -641,6 +657,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
 
     // アビリティ、ウルトキーをまとめておく配列
     const anothers = [
+        // アビリティ１
         {
             nameKey: STATUSLISTKEY.ability1NameKey,
             attackPointKey: STATUSLISTKEY.ability1DamageKey,
@@ -648,6 +665,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
             durationKey: STATUSLISTKEY.ability1DurationKey,
             lifeStealRateKey: STATUSLISTKEY.ability1LifeStealRateKey
         },
+        // アビリティ２
         {
             nameKey: STATUSLISTKEY.ability2NameKey,
             attackPointKey: STATUSLISTKEY.ability2DamageKey,
@@ -655,6 +673,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
             durationKey: STATUSLISTKEY.ability2DurationKey,
             lifeStealRateKey: STATUSLISTKEY.ability2LifeStealRateKey
         },
+        // アビリティ３
         {
             nameKey: STATUSLISTKEY.ability3NameKey,
             attackPointKey: STATUSLISTKEY.ability3DamageKey,
@@ -662,6 +681,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
             durationKey: STATUSLISTKEY.ability3DurationKey,
             lifeStealRateKey: STATUSLISTKEY.ability3LifeStealRateKey
         },
+        // ULT
         {
             nameKey: STATUSLISTKEY.ultNameKey,
             attackPointKey: STATUSLISTKEY.ultDamageKey,
@@ -696,6 +716,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
             another.lifeStealRateKey
         );
     });
+    //#endregion
 
     document.getElementById("addpower").innerText = "追加効果(パワー):";
     
@@ -711,6 +732,7 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
         document.getElementById("additem").innerText = document.getElementById("additem").innerText + addItemOthers;
     }    
 }
+
 
 function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,attackSpeedKey,reloadKey,ammoKey,lifeStealRateKey){
     // 武器が存在しない場合は何もしない
@@ -2153,8 +2175,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     // 攻撃速度に記載がある場合
     if(attackSpeedTmp != 0){
         // 表示用ステータスリストに反映
-        showStatusList[STATUSLISTKEY.mainSpeedKey] = showStatusList[STATUSLISTKEY.mainSpeedKey] + attackSpeedTmp;
-        showStatusList[STATUSLISTKEY.subSpeedKey] = showStatusList[STATUSLISTKEY.subSpeedKey] + attackSpeedTmp;
+        showStatusList[STATUSLISTKEY.attackSpeedKey] = showStatusList[STATUSLISTKEY.attackSpeedKey] + attackSpeedTmp;
     }
 
     // CT短縮に記載がある場合

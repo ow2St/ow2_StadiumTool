@@ -110,8 +110,7 @@ window.STATUSLISTKEY = {
     ultDurationKey: "ULT継続時間",
     ultLifeStealRateKey: "ULTライフ吸収",
     status_meleeDamageKey: "近接ダメージ",
-    mainSpeedKey: "メイン攻撃速度",
-    subSpeedKey: "サブ攻撃速度",
+    attackSpeedKey: "攻撃速度",
     moveSpeedKey: "移動速度",
     mainHealDamageUpFlg: "メイン上昇フラグ",
     subHealDamageUpFlg: "サブ上昇フラグ",
@@ -139,7 +138,12 @@ ashItemID = "8661860d-a170-4682-9e94-da0fdfbf9522";   // トライポッド
  * ヒーロー名
  */
 window.HERONAME = {
-    dvaMech: "D.VA（メック）"
+    dvaMech: "D.VA（メック）",
+    dvaHuman: "D.VA（人）",
+    dva: "DVA",
+    zaria: "ザリア",
+    juno: "ジュノ",
+    moira: "モイラ"
 };
 
 /**
@@ -258,5 +262,12 @@ window.STATUSICON = {
     cash: "assets/images/icons/status/キャッシュアイコン.png",
     //絞り込み検索用
     sort_others: "特殊効果アイコン.png"
+};
+
+/**
+ * ステータスアイコン
+ */
+window.EXTENSION = {
+    png: ".png"
 };
 

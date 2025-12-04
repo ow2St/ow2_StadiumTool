@@ -36,8 +36,7 @@
         "ultduration": "10",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 1,
         "subhealdamageupflg": 2,
@@ -45,7 +44,10 @@
         "ability2healdamageupflg": 1,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 1,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "12bb36fc-ad1d-4f21-a5cf-3661a1620790",
@@ -84,8 +86,7 @@
         "ultduration": "0",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 0,
@@ -93,7 +94,10 @@
         "ability2healdamageupflg": 0,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "165ecc83-fa03-4746-8273-154cc5171bc2",
@@ -132,8 +136,7 @@
         "ultduration": "8",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 0,
@@ -141,7 +144,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "1e94b5b9-0148-4805-b043-3475917b1c6a",
@@ -180,8 +186,7 @@
         "ultduration": "4",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 2,
@@ -189,7 +194,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 2,
-        "shield": 225
+        "shield": 225,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "1f6e896a-195c-4881-bc12-8b2632d585a3",
@@ -228,8 +236,7 @@
         "ultduration": "2",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 0,
@@ -237,7 +244,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 2,
         "ulthealdamageupflg": 2,
-        "shield": 275
+        "shield": 275,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "257db814-453e-49b3-b766-86c3b51cdca8",
@@ -276,8 +286,7 @@
         "ultduration": "4",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 0,
@@ -285,7 +294,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 2,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 1
     },
     {
         "id": "25adfedd-7388-4f15-9ce1-8e50853a2975",
@@ -324,8 +336,7 @@
         "ultduration": "7",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 0,
@@ -333,7 +344,10 @@
         "ability2healdamageupflg": 1,
         "ability3healdamageupflg": 2,
         "ulthealdamageupflg": 1,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 0,
+        "ability2ctflag": 1,
+        "ability3ctflag": 1
     },
     {
         "id": "25b85750-cd61-4749-9a75-e84e2a717393",
@@ -372,8 +386,7 @@
         "ultduration": "2.5",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 0,
@@ -381,7 +394,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 1
     },
     {
         "id": "3951a573-2c18-4f9a-bea7-6b156423e9c6",
@@ -420,8 +436,7 @@
         "ultduration": "4.5",
         "ultlifesteal": "0",
         "meleedamage": 55,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 0,
@@ -429,7 +444,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 2,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 1
     },
     {
         "id": "43ed9732-6f35-4a69-b835-71b215a41b1f",
@@ -468,8 +486,7 @@
         "ultduration": "15",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 1,
         "subhealdamageupflg": 2,
@@ -477,7 +494,10 @@
         "ability2healdamageupflg": 0,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "5fd88987-d02f-41f6-b8f5-c6f6e8a7359e",
@@ -516,8 +536,7 @@
         "ultduration": "7",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 2,
@@ -525,7 +544,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "629af5df-ca3e-4c8c-81e4-a6dd0b3494d0",
@@ -549,7 +571,7 @@
         "ability1duration": "3",
         "ability1ct": "1",
         "ability1lifesteal": "0",
-        "ability2name": "バイオレット・リープ",
+        "ability2name": "バイオレント・リープ",
         "ability2damage": "70",
         "ability2duration": "0",
         "ability2ct": "6",
@@ -564,8 +586,7 @@
         "ultduration": "2.8",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 0,
@@ -573,7 +594,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 2,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 0,
+        "ability2ctflag": 1,
+        "ability3ctflag": 1
     },
     {
         "id": "6b69227d-824c-4dc2-a7d9-4e3ffdea46d4",
@@ -612,8 +636,7 @@
         "ultduration": "0",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 2,
@@ -621,7 +644,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "6c6f28eb-135f-4cb7-bd0e-1e1b4492b6aa",
@@ -660,8 +686,7 @@
         "ultduration": "6",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 2,
@@ -669,7 +694,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "a062d053-e41a-4f28-a009-d1a1800861db",
@@ -708,8 +736,7 @@
         "ultduration": "10",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 2,
@@ -717,7 +744,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 2,
-        "shield": 200
+        "shield": 200,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "b45e62c0-6c93-4774-8043-0dd379553e91",
@@ -756,8 +786,7 @@
         "ultduration": "4.25",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 2,
@@ -765,7 +794,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "b5846648-4fc4-4dc8-9ee5-821bb0973a88",
@@ -804,8 +836,7 @@
         "ultduration": "10",
         "ultlifesteal": "0",
         "meleedamage": 45,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 0,
@@ -813,7 +844,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 2,
         "ulthealdamageupflg": 1,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 1
     },
     {
         "id": "c1319173-a832-4daf-9850-917efdd342d6",
@@ -852,8 +886,7 @@
         "ultduration": "3",
         "ultlifesteal": "0",
         "meleedamage": 100,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 0,
@@ -861,7 +894,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 2,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "c1c605d8-c813-4d34-b54d-b1fa2751f39f",
@@ -900,8 +936,7 @@
         "ultduration": "0",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 0,
@@ -909,7 +944,10 @@
         "ability2healdamageupflg": 0,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 0,
+        "ability2ctflag": 0,
+        "ability3ctflag": 0
     },
     {
         "id": "c2f0cfa6-89dd-4595-8a6b-e725850f6150",
@@ -948,8 +986,7 @@
         "ultduration": "6",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 0,
@@ -957,7 +994,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 2,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 0,
+        "ability2ctflag": 1,
+        "ability3ctflag": 1
     },
     {
         "id": "c566f176-cebc-4635-9887-28eaec182959",
@@ -996,8 +1036,7 @@
         "ultduration": "3",
         "ultlifesteal": "0.3",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 0,
@@ -1005,7 +1044,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "cfd5f18d-4d56-4490-83ab-e7819b45e3fe",
@@ -1044,8 +1086,7 @@
         "ultduration": "10",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 2,
@@ -1053,7 +1094,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "d13a3b88-8fde-4598-8702-131f99b4a27f",
@@ -1092,8 +1136,7 @@
         "ultduration": "10",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 0,
@@ -1101,7 +1144,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 2,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "d68af1e1-56b7-47b5-9ab4-8626c9ac3106",
@@ -1140,8 +1186,7 @@
         "ultduration": "8",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 0,
@@ -1149,7 +1194,10 @@
         "ability2healdamageupflg": 0,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 1,
-        "shield": 150
+        "shield": 150,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 1
     },
     {
         "id": "e85a68e3-23ed-45cd-8696-3bcdcefb677f",
@@ -1188,8 +1236,7 @@
         "ultduration": "3",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 0,
@@ -1197,7 +1244,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 2,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 0,
+        "ability3ctflag": 1
     },
     {
         "id": "eb7a2bcf-4eca-4408-bfb8-b5fee5e0af1d",
@@ -1222,7 +1272,7 @@
         "ability1ct": "7",
         "ability1lifesteal": "0",
         "ability2name": "ディスラプター・ショット",
-        "ability2damage": "80",
+        "ability2damage": "315",
         "ability2duration": "3.5",
         "ability2ct": "15",
         "ability2lifesteal": "0",
@@ -1236,8 +1286,7 @@
         "ultduration": "8",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 2,
@@ -1245,7 +1294,10 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 0,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "f226213f-9d41-453a-a931-2b16a890752a",
@@ -1284,8 +1336,7 @@
         "ultduration": "6",
         "ultlifesteal": "0",
         "meleedamage": 60,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 2,
@@ -1293,7 +1344,10 @@
         "ability2healdamageupflg": 1,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 1,
-        "shield": 175
+        "shield": 175,
+        "ability1ctflag": 0,
+        "ability2ctflag": 0,
+        "ability3ctflag": 0
     },
     {
         "id": "fcf64846-3d24-4684-8b6c-b175f7e40511",
@@ -1332,8 +1386,7 @@
         "ultduration": "8",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 1,
         "subhealdamageupflg": 2,
@@ -1341,7 +1394,10 @@
         "ability2healdamageupflg": 0,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 2,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     },
     {
         "id": "fe687a12-3ed9-413a-aa3d-4fe5891eb863",
@@ -1365,7 +1421,7 @@
         "ability1duration": "0",
         "ability1ct": "12",
         "ability1lifesteal": "0",
-        "ability2name": "-",
+        "ability2name": "オーバーロード",
         "ability2damage": "80",
         "ability2duration": "6",
         "ability2ct": "10",
@@ -1380,8 +1436,7 @@
         "ultduration": "8",
         "ultlifesteal": "0",
         "meleedamage": 40,
-        "mainspeed": 0,
-        "subspeed": 0,
+        "attackspeed": 0,
         "movespeed": 0,
         "mainhealdamageupflg": 2,
         "subhealdamageupflg": 2,
@@ -1389,6 +1444,9 @@
         "ability2healdamageupflg": 2,
         "ability3healdamageupflg": 0,
         "ulthealdamageupflg": 0,
-        "shield": 0
+        "shield": 0,
+        "ability1ctflag": 1,
+        "ability2ctflag": 1,
+        "ability3ctflag": 0
     }
 ]
