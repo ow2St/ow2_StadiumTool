@@ -87,7 +87,9 @@ const theoreticalItemKeyMap = {
     additiondamageflg: THEORETICALITEMLISTKEY.theoreticalItem_AdditionDamageFlgKey,
     healdamageupflg: THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpFlgKey,
     weaponabilityupflg: THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey,
-    healdamageup: THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey
+    healdamageup: THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey,
+    attackspeed: THEORETICALITEMLISTKEY.theoreticalItem_AttackSpeedKey,
+    speed: THEORETICALITEMLISTKEY.theoreticalItem_SpeedKey
 };
 
 // ステータスキー対応マッピング（英語 → 日本語）
@@ -135,7 +137,10 @@ const statusKeyMap = {
     ability1healdamageupflg: STATUSLISTKEY.ability1HealDamageUpFlg,
     ability2healdamageupflg: STATUSLISTKEY.ability2HealDamageUpFlg,
     ability3healdamageupflg: STATUSLISTKEY.ability3HealDamageUpFlg,
-    ulthealdamageupflg: STATUSLISTKEY.ultHealDamageUpFlg
+    ulthealdamageupflg: STATUSLISTKEY.ultHealDamageUpFlg,
+    ability1ctflag: STATUSLISTKEY.ability1ctflag,
+    ability2ctflag: STATUSLISTKEY.ability2ctflag,
+    ability3ctflag: STATUSLISTKEY.ability3ctflag
 };
 
 const accordionContainer = document.getElementById("accordion-container");
@@ -385,7 +390,9 @@ function organizeTheoreticalItemData(theoreticalItemAllData) {
             additiondamageflg: TIlist.additiondamageflg,
             healdamageupflg: TIlist.healdamageupflg,
             weaponabilityupflg: TIlist.weaponabilityupflg,
-            healdamageup: TIlist.healdamageup
+            healdamageup: TIlist.healdamageup,
+            attackspeed: TIlist.attackspeed,
+            speed: TIlist.speed
         };
     })
     return selectedData;
@@ -444,7 +451,10 @@ function organizeStatusData(statusAllData) {
             ability1healdamageupflg: Slist.ability1healdamageupflg,
             ability2healdamageupflg: Slist.ability2healdamageupflg,
             ability3healdamageupflg: Slist.ability3healdamageupflg,
-            ulthealdamageupflg: Slist.ulthealdamageupflg
+            ulthealdamageupflg: Slist.ulthealdamageupflg,
+            ability1ctflag: Slist.ability1ctflag,
+            ability2ctflag: Slist.ability2ctflag,
+            ability3ctflag: Slist.ability3ctflag
         };
     })
     return selectedData;
@@ -1839,6 +1849,8 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                                 const thReloadSpeedTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_ReloadSpeedKey];
                                 const thMeleeDamageTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_MeleeDamageKey];
                                 const thCriticalTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_CriticalKey];
+                                const thAttackSpeedTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_AttackSpeedKey];
+                                const thSpeedTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_SpeedKey];
 
                                 // 通常の計算変数に加算
                                 lifeTmp += thLifeTmp;
@@ -1853,6 +1865,8 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                                 reloadSpeedTmp += thReloadSpeedTmp;
                                 meleeDamageTmp += thMeleeDamageTmp;
                                 criticalTmp += thCriticalTmp;
+                                attackSpeedTmp += thAttackSpeedTmp;
+                                speedTmp += thSpeedTmp;
                             }
                             else
                             {
@@ -2182,9 +2196,15 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     if(ctReducationTmp != 0){
 
         // 表示用ステータスリストに反映
-        showStatusList[STATUSLISTKEY.ability1CTKey] = Math.round(showStatusList[STATUSLISTKEY.ability1CTKey] * ((100 - ctReducationTmp) / 100) * 10 ** 2) / 10 ** 2;
-        showStatusList[STATUSLISTKEY.ability2CTKey] = Math.round(showStatusList[STATUSLISTKEY.ability2CTKey] * ((100 - ctReducationTmp) / 100) * 10 ** 2) / 10 ** 2;
-        showStatusList[STATUSLISTKEY.ability3CTKey] = Math.round(showStatusList[STATUSLISTKEY.ability3CTKey] * ((100 - ctReducationTmp) / 100) * 10 ** 2) / 10 ** 2;
+        if(showStatusList[STATUSLISTKEY.ability1ctflag] == 1){
+            showStatusList[STATUSLISTKEY.ability1CTKey] = Math.round(showStatusList[STATUSLISTKEY.ability1CTKey] * ((100 - ctReducationTmp) / 100) * 10 ** 2) / 10 ** 2;
+        }
+        if(showStatusList[STATUSLISTKEY.ability2ctflag] == 1){
+            showStatusList[STATUSLISTKEY.ability2CTKey] = Math.round(showStatusList[STATUSLISTKEY.ability2CTKey] * ((100 - ctReducationTmp) / 100) * 10 ** 2) / 10 ** 2;
+        }
+        if(showStatusList[STATUSLISTKEY.ability3ctflag] == 1){
+            showStatusList[STATUSLISTKEY.ability3CTKey] = Math.round(showStatusList[STATUSLISTKEY.ability3CTKey] * ((100 - ctReducationTmp) / 100)  * 10 ** 2) / 10 ** 2;
+        }
     }
 
     // 弾薬に記載がある場合

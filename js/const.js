@@ -61,7 +61,9 @@ window.THEORETICALITEMLISTKEY = {
     theoreticalItem_AdditionDamageFlgKey: "追加ダメージフラグ",
     theoreticalItem_HealDamageUpFlgKey: "ヒールダメージ上昇フラグ",
     theoreticalItem_WeaponAbilityUpFlgKey: "武器アビリティ上昇フラグ",
-    theoreticalItem_HealDamageUpKey: "ヒールダメージ上昇量"
+    theoreticalItem_HealDamageUpKey: "ヒールダメージ上昇量",
+    theoreticalItem_AttackSpeedKey: "攻撃速度",
+    theoreticalItem_SpeedKey: "移動速度"
 };
 
 /**
@@ -118,6 +120,9 @@ window.STATUSLISTKEY = {
     ability2HealDamageUpFlg: "アビリティ２上昇フラグ",
     ability3HealDamageUpFlg: "アビリティ３上昇フラグ",
     ultHealDamageUpFlg: "ULT上昇フラグ",
+    ability1ctflag: "アビリティ1CTフラグ",
+    ability2ctflag: "アビリティ2CTフラグ",
+    ability3ctflag: "アビリティ3CTフラグ"
 };
 
 /**
