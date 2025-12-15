@@ -630,9 +630,13 @@ function filterItemTable(elem){
 
             // ボタンがONの場合
             if(button.className == "button-on" && !shouldShowStatus){
-                
+
+                // ステータスのセルになにもない場合はtrueに
+                if(cells[statusNumber].innerText === "" || cells[statusNumber].innerText === null || cells[statusNumber].innerText === undefined){
+                    shouldShowStatus = true;
+
                 // ライフはライフ吸収と重複するので専用処理
-                if(button.innerText == "ライフ"){
+                }else if(button.innerText == "ライフ"){
                     shouldShowStatus = statusList.some(status => status.includes("ライフ+"));
                 }else if(button.innerText == "その他"){
                     const imgs = cells[statusNumber].querySelectorAll("img");

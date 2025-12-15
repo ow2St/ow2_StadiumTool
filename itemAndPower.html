@@ -105,6 +105,7 @@
                             <img src="assets/images/icons/hero/シグマ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="シグマ">
                             <img src="assets/images/icons/hero/ウィンストン.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ウィンストン">
                             <img src="assets/images/icons/hero/ハザード.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ハザード">
+                            <img src="assets/images/icons/hero/ドゥームフィスト.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ドゥームフィスト">
                         </div>
                     </div>
                     <div class="button-list">
@@ -135,6 +136,7 @@
                             <img src="assets/images/icons/hero/ルシオ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ルシオ">
                             <img src="assets/images/icons/hero/ゼニヤッタ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ゼニヤッタ">
                             <img src="assets/images/icons/hero/ブリギッテ.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ブリギッテ">
+                            <img src="assets/images/icons/hero/ウーヤン.png" onclick="filterPowerTable(this)" class="power-hero-icon-off" id="ウーヤン">
                         </div>
                     </div>
 
@@ -162,4 +164,11 @@
     </body>
     <script src="js/const.js"></script>
     <script src="js/itemandpower.js"></script>
+    <script>//検索ボックスにて、エンターキーと検索ボタンのクリックを紐づける
+        document.getElementById("item_search-input").addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+                item_searchWords();
+            }
+        });
+    </script>
 </html>
