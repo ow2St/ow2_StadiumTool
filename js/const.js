@@ -148,7 +148,8 @@ window.HERONAME = {
     dva: "DVA",
     zaria: "ザリア",
     juno: "ジュノ",
-    moira: "モイラ"
+    moira: "モイラ",
+    queen: "ジャンカー・クイーン"
 };
 
 /**
@@ -156,7 +157,9 @@ window.HERONAME = {
  */
 window.UNIQUEHEROWORD = {
     zaria: "エネルギー0%",
+    zaria100: "エネルギー100%",
     damage: "ダメージ",
+    heal: "ヒール",
     scratch: 15
 };
 

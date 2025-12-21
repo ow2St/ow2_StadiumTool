@@ -219,8 +219,8 @@ async function loadAndInitBuildData() {
         powerCheckboxes = document.querySelectorAll(".power-checkbox");
 
         // 初期表示のために一度実行
-        updateSelectedItemsList();
-        updateSelectedPowerList();
+        updateSelectedList(itemCheckboxes, itemList, true);
+        updateSelectedList(powerCheckboxes, powerList, false);
 
         // #region イベントリスナー設定
         // 各アイテムのチェックボックスにイベントリスナーを追加
@@ -229,7 +229,7 @@ async function loadAndInitBuildData() {
                 const selectedItemRowsDataBeforeLength = selectedItemRowsData.length;
 
                 // チェックボックスの状態が変わる毎に選択リストを更新
-                selectedItemRowsData = updateSelectedItemsList();
+                selectedItemRowsData = updateSelectedList(itemCheckboxes, itemList, true);
 
                 // ビルド欄の表示を更新
                 updateBuild_Item(selectedItemRowsData);
@@ -254,7 +254,7 @@ async function loadAndInitBuildData() {
                 const selectedPowerRowsDataBeforeLength = selectedPowerRowsData.length;
 
                 // チェックボックスの状態が変わる毎に選択リストを更新
-                selectedPowerRowsData = updateSelectedPowerList();
+                selectedPowerRowsData = updateSelectedList(powerCheckboxes, powerList, false);
                 // ビルド欄の表示を更新 
                 updateBuild_Power(selectedPowerRowsData);
                 // ステータスに反映
@@ -535,8 +535,8 @@ function selectHero(id){
     filterTable(id);
 
     // 選択済みアイテム、選択済みパワーについて初期化
-    selectedItemRowsData = updateSelectedItemsList();
-    selectedPowerRowsData = updateSelectedPowerList();
+    selectedItemRowsData = updateSelectedList(itemCheckboxes, itemList, true);
+    selectedPowerRowsData = updateSelectedList(powerCheckboxes, powerList, false);
     updateBuild_Item(selectedItemRowsData);
     updateBuild_Power(selectedPowerRowsData);
 
@@ -572,7 +572,8 @@ function initStatus(selectedHero){
             switch(selectedHero){
 
                 // DVAの場合 メック人切り替えボタンを表示
-                case HERONAME.dvaMech || HERONAME.dvaHuman:
+                case HERONAME.dvaMech: 
+                case HERONAME.dvaHuman:
                     document.getElementById("dva-button").style.display = "flex";
                     break;
                 
@@ -744,12 +745,23 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
 }
 
 
+/**
+ * 武器関連の表示する数値計算処理
+ * @param {Object} statuslist ステータスリスト
+ * @param {text} weaponNameKey 武器名キー
+ * @param {text} attackPointKey 攻撃力キー
+ * @param {text} HSRateKey HS倍率キー
+ * @param {text} attackSpeedKey 攻撃速度キー
+ * @param {text} reloadKey リロード速度キー
+ * @param {text} ammoKey 弾薬数キー
+ * @param {text} lifeStealRateKey ライフ吸収キー
+ * @return {void}
+ */
 function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,attackSpeedKey,reloadKey,ammoKey,lifeStealRateKey){
     // 武器が存在しない場合は何もしない
-    if(statuslist[weaponNameKey] == "-") {
-        return;
-    }
+    if (statuslist[weaponNameKey] == "-") return;
 
+    // 各数値定義
     let weaponValue = statuslist[attackPointKey];
     let HSValue = 0;
     let attackSpeedValue = 0;
@@ -757,14 +769,15 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,attackS
     let ammoValue = 0;
     let lifeStealValue = 0;
     
+    // #region 数値計算処理
     if(weaponNameKey == STATUSLISTKEY.status_meleeDamageKey){
-        if(selectedHero == "ジャンカー・クイーン"){
+        if(selectedHero == HERONAME.queen){
             weaponValue =  statuslist[attackPointKey] + queenScratch;
         }
     }else{
-        if(selectedHero == "ジュノ" && junoFlg == "ヒール") {
+        if(selectedHero == HERONAME.juno && junoFlg == UNIQUEHEROWORD.hero) {
             weaponValue = Math.round((statuslist[attackPointKey] * 0.8 * 10 ** 2) / 10 ** 2);
-        }else if(selectedHero == "ザリア" && zariaFlg == "エネルギー100%") {
+        }else if(selectedHero == HERONAME.zaria && zariaFlg == UNIQUEHEROWORD.zaria100){
             weaponValue = Math.round(statuslist[attackPointKey] * 2 * 10 ** 2) / 10 ** 2;
         }
     }
@@ -793,6 +806,7 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,attackS
     if(lifeStealRateKey != "" &&  statuslist[lifeStealRateKey] != 0){
         lifeStealValue = Math.round(statuslist[attackPointKey] * statuslist[lifeStealRateKey]);
     }
+    // #endregion
 
     // 武器の情報を追加
     if(weaponNameKey == STATUSLISTKEY.status_meleeDamageKey){
@@ -800,9 +814,20 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,attackS
     }else{
         addStatusDiv_Weapon(statuslist[weaponNameKey],weaponValue,HSValue,attackSpeedValue,reloadValue,ammoValue,lifeStealValue);
     }
-    
 }
 
+
+/**
+ * 武器関連のステータス表示処理
+ * @param {text} name 武器名
+ * @param {number} value 攻撃力
+ * @param {number} hsValue ヘッドショット倍率
+ * @param {number} attackSpeed 攻撃速度
+ * @param {number} reload リロード速度
+ * @param {number} ammo 弾薬数
+ * @param {number} lifeSteal ライフ吸収
+ * @return {void}
+ */
 function addStatusDiv_Weapon(name,value,hsValue,attackSpeed,reload,ammo,lifeSteal){
     const container = document.getElementById('status-container');
     const div = document.createElement('div');
@@ -812,7 +837,6 @@ function addStatusDiv_Weapon(name,value,hsValue,attackSpeed,reload,ammo,lifeStea
     const hsView = hsValue > 0 ? "（HS" + hsValue + "）" : "";
     // リロード、弾薬、L吸収の表示用文字列を生成
     let detailParts = [];
-
     if(attackSpeed != 0){
         detailParts.push(`<span><strong>攻撃速度</strong>：${attackSpeed}%</span>`);
     }
@@ -841,37 +865,45 @@ function addStatusDiv_Weapon(name,value,hsValue,attackSpeed,reload,ammo,lifeStea
         ${detailsHtml}
         `;
     }
-    
-
     container.appendChild(div);
 }
 
+/**
+ * 武器以外関連のステータス表示処理
+ * @param {Object} statuslist ステータスリスト
+ * @param {text} nameKey 名前キー
+ * @param {text} attackPointKey 攻撃力キー
+ * @param {text} CTKey CTキー
+ * @param {text} durationKey 持続時間キー
+ * @param {text} lifeStealRateKey ライフ吸収キー
+ * @return {void}
+ */
 function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,lifeStealRateKey){
     // アビリティが存在しない場合は何もしない
-    if(statuslist[nameKey] == "-") {
-        return;
-    }
+    if(statuslist[nameKey] == "-") return;
 
+    // 各数値定義
     let attackValue = statuslist[attackPointKey];
     let durationValue = 0;
     let CTValue = 0;
     let lifeStealValue = 0;
     
+    // #region 数値計算処理
     if(attackPointKey == STATUSLISTKEY.ability1DamageKey){
-        if(selectedHero == "ジュノ" && junoFlg == "ヒール"){
+        if(selectedHero == HERONAME.juno && junoFlg == UNIQUEHEROWORD.heal) {
             attackValue = Number(statuslist[attackPointKey]) + 50;
-        }else if(selectedHero == "モイラ" && moiraFlg == 'ヒール'){
+        }else if(selectedHero == HERONAME.moira && moiraFlg == UNIQUEHEROWORD.heal){
             attackValue = Math.round((statuslist[attackPointKey] * 1.5 * 10 ** 2) / 10 ** 2);
         }
     }
 
     if(attackPointKey == STATUSLISTKEY.ultDamageKey){
-        if(selectedHero == "モイラ" && moiraFlg == 'ヒール'){
+        if(selectedHero == HERONAME.moira && moiraFlg == UNIQUEHEROWORD.heal){
             attackValue = Math.round((statuslist[STATUSLISTKEY.ultDamageKey] / 18 * 27 * 10 ** 2) / 10 ** 2);
         }
     }
 
-    // 継続時間
+    // 持続時間
     if(statuslist[durationKey] != 0){
         durationValue = statuslist[durationKey];
     }
@@ -885,11 +917,21 @@ function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,life
     if(statuslist[lifeStealRateKey] != 0){
         lifeStealValue = Math.round(statuslist[attackPointKey] * statuslist[lifeStealRateKey]);
     }
+    // #endregion
 
     // アビリティ、ウルトの情報を追加
     addStatusDiv_AbilityOrULT(statuslist[nameKey],attackValue,CTValue,durationValue,lifeStealValue);
 }
 
+/**
+ * 武器関連以外のステータス表示処理
+ * @param {text} name アビリティ名またはウルト名
+ * @param {number} value 攻撃力または回復量
+ * @param {number} ct クールタイム
+ * @param {number} duration 継続時間
+ * @param {number} lifeSteal ライフ吸収
+ * @return {void}
+ */
 function addStatusDiv_AbilityOrULT(name,value,ct,duration,lifeSteal){
     const container = document.getElementById('status-container');
     const div = document.createElement('div');
@@ -897,7 +939,6 @@ function addStatusDiv_AbilityOrULT(name,value,ct,duration,lifeSteal){
 
     // CT、継続時間、L吸収の表示用文字列を生成
     let detailParts = [];
-
     if(ct != 0) {
         detailParts.push(`<span><strong>CT</strong>：${ct}秒</span>`);
     }
@@ -916,179 +957,222 @@ function addStatusDiv_AbilityOrULT(name,value,ct,duration,lifeSteal){
         <p><strong class="ability">${name}</strong>：${value}</p>
         ${detailsHtml}
     `;
-
     container.appendChild(div);
 }
 
-// メック人切り替え
+
+/**
+ * D.VAメック/人切り替え
+ * @return {void}
+ */
 function dvaButtonClick(){
 
     // 選択ヒーロー切り替え
-    if(selectedHero == "D.VA（メック）"){
-        selectedHero = "D.VA（人）";
-    }else if(selectedHero == "D.VA（人）"){
-        selectedHero = "D.VA（メック）";
+    if(selectedHero == HERONAME.dvaMech){
+        selectedHero = HERONAME.dvaHuman;
+    }else if(selectedHero == HERONAME.dvaHuman){
+        selectedHero = HERONAME.dvaMech;
     }
 
     // ステータスボックス初期化
     initStatus(selectedHero);
 
     // ビルドを反映
-    if(selectedItemRowsData.length > 0){
-        updateStatus_Item(selectedItemRowsData);
-    }
-    if(selectedPowerRowsData.length > 0){
-        updateStatus_Power(selectedPowerRowsData);
-    }
+    if(selectedItemRowsData.length > 0) updateStatus_Item(selectedItemRowsData);
+    if(selectedPowerRowsData.length > 0) updateStatus_Power(selectedPowerRowsData);
 }
 
-// ザリアエネルギー切り替え
-function zariaButtonClick(){
 
+/**
+ * ザリアエネルギー切り替え
+ * @return {void}
+ */
+function zariaButtonClick(){
     const zariaButton = document.getElementById("zaria-button");
 
     // エネルギー表示を入れ替える
-    if(zariaButton.innerText == "エネルギー0%"){
-        zariaFlg = "エネルギー100%";
+    if(zariaButton.innerText == UNIQUEHEROWORD.zaria){
+        zariaFlg = UNIQUEHEROWORD.zaria100;
         zariaButton.innerText = zariaFlg;
-    }else if(zariaButton.innerText == "エネルギー100%"){
-        zariaFlg = "エネルギー0%";
+    }else if(zariaButton.innerText == UNIQUEHEROWORD.zaria100){
+        zariaFlg = UNIQUEHEROWORD.zaria;
         zariaButton.innerText = zariaFlg;
     }
     // ステータスボックス初期化
     initStatusValue(showStatusList,"-","-");
 
     // ビルドを反映
-    if(selectedItemRowsData.length > 0){
-        updateStatus_Item(selectedItemRowsData);
-    }
-    if(selectedPowerRowsData.length > 0){
-        updateStatus_Power(selectedPowerRowsData);
-    }
+    if(selectedItemRowsData.length > 0) updateStatus_Item(selectedItemRowsData);
+    if(selectedPowerRowsData.length > 0) updateStatus_Power(selectedPowerRowsData);
 }
 
-// ジュノダメージ/ヒール切り替え
-function junoButtonClick(){
 
+/**
+ * ジュノダメージ/ヒール切り替え
+ * @return {void}
+ */
+function junoButtonClick(){
     const junoButton = document.getElementById("juno-button");
 
     // ダメージ/ヒール表示を入れ替える
-    if(junoButton.innerText == "ダメージ"){
-        junoFlg = "ヒール";
+    if(junoButton.innerText == UNIQUEHEROWORD.damage){
+        junoFlg = UNIQUEHEROWORD.heal;
         junoButton.innerText = junoFlg;
-    }else if(junoButton.innerText == "ヒール"){
-        junoFlg = "ダメージ";
+    }else if(junoButton.innerText == UNIQUEHEROWORD.heal){
+        junoFlg = UNIQUEHEROWORD.damage;
         junoButton.innerText = junoFlg;
     }
     // ステータスボックス初期化
     initStatusValue(showStatusList,"-","-");
 
     // ビルドを反映
-    if(selectedItemRowsData.length > 0){
-        updateStatus_Item(selectedItemRowsData);
-    }
-    if(selectedPowerRowsData.length > 0){
-        updateStatus_Power(selectedPowerRowsData);
-    }
+    if(selectedItemRowsData.length > 0) updateStatus_Item(selectedItemRowsData);
+    if(selectedPowerRowsData.length > 0) updateStatus_Power(selectedPowerRowsData);
 }
 
-// モイラダメージ/ヒール切り替え
-function moiraButtonClick(){
 
+/**
+ * モイラダメージ/ヒール切り替え
+ * @return {void}
+ */
+function moiraButtonClick(){
     const moiraButton = document.getElementById("moira-button");
 
     // ダメージ/ヒール表示を入れ替える
-    if(moiraButton.innerText == "ダメージ"){
-        moiraFlg = "ヒール";
+    if(moiraButton.innerText == UNIQUEHEROWORD.damage){
+        moiraFlg = UNIQUEHEROWORD.heal;
         moiraButton.innerText = moiraFlg;
-    }else if(moiraButton.innerText == "ヒール"){
-        moiraFlg = "ダメージ";
+    }else if(moiraButton.innerText == UNIQUEHEROWORD.heal){
+        moiraFlg = UNIQUEHEROWORD.damage;
         moiraButton.innerText = moiraFlg;
     }
     // ステータスボックス初期化
     initStatusValue(showStatusList,"-","-");
 
         // ビルドを反映
-    if(selectedItemRowsData.length > 0){
-        updateStatus_Item(selectedItemRowsData);
-    }
-    if(selectedPowerRowsData.length > 0){
-        updateStatus_Power(selectedPowerRowsData);
-    }
+    if(selectedItemRowsData.length > 0) updateStatus_Item(selectedItemRowsData);
+    if(selectedPowerRowsData.length > 0) updateStatus_Power(selectedPowerRowsData);
 }
 
-// アイテムリストを開く
+
+/**
+ * アイテムリストを開く
+ * @return {void}
+ */
 function openItemList(){
     document.getElementById("itemlist-title-open").style.display = "block";
     document.getElementById("itemlist-title-close").style.display = "none";
     document.getElementById("itemlist").style.display = "block";
 }
 
-// アイテムリストを閉じる
+
+/**
+ * アイテムリストを閉じる
+ * @return {void}
+ */
 function closeItemList(){
     document.getElementById("itemlist-title-open").style.display = "none";
     document.getElementById("itemlist-title-close").style.display = "block";
     document.getElementById("itemlist").style.display = "none";
 }
 
-// 武器リストを開く
+
+/**
+ * 武器リストを開く
+ * @return {void}
+ */
 function openWeapon(){
     document.getElementById("weapon-title-open").style.display = "block";
     document.getElementById("weapon-title-close").style.display = "none";
     document.getElementById("weapon").style.display = "block";
 }
 
-// 武器リストを閉じる
+
+/**
+ * 武器リストを閉じる
+ * @return {void}
+ */
 function closeWeapon(){
     document.getElementById("weapon-title-open").style.display = "none";
     document.getElementById("weapon-title-close").style.display = "block";
     document.getElementById("weapon").style.display = "none";
 }
 
-// アビリティリストを開く
+
+/**
+ * アビリティリストを開く
+ * @return {void}
+ */
 function openAbility(){
     document.getElementById("ability-title-open").style.display = "block";
     document.getElementById("ability-title-close").style.display = "none";
     document.getElementById("ability").style.display = "block";
 }
 
-// アビリティリストを閉じる
+
+/**
+ * アビリティリストを閉じる
+ * @return {void}
+ */
 function closeAbility(){
     document.getElementById("ability-title-open").style.display = "none";
     document.getElementById("ability-title-close").style.display = "block";
     document.getElementById("ability").style.display = "none";
 }
 
-// サバイバルリストを開く
+
+/**
+ * サバイバルリストを開く
+ * @return {void}
+ */
 function openSurvival(){
     document.getElementById("survival-title-open").style.display = "block";
     document.getElementById("survival-title-close").style.display = "none";
     document.getElementById("survival").style.display = "block";
 }
 
-// サバイバルリストを閉じる
+
+/**
+ * サバイバルリストを閉じる
+ * @return {void}
+ */
 function closeSurvival(){
     document.getElementById("survival-title-open").style.display = "none";
     document.getElementById("survival-title-close").style.display = "block";
     document.getElementById("survival").style.display = "none";
 }
 
-// パワーリストを開く
+
+/**
+ * パワーリストを開く
+ * @return {void}
+ */
 function openPowerList(){
     document.getElementById("powerlist-title-open").style.display = "block";
     document.getElementById("powerlist-title-close").style.display = "none";
     document.getElementById("powerlist").style.display = "block";
 }
 
-// パワーリストを閉じる
+
+/**
+ * パワーリストを閉じる
+ * @return {void}
+ */
 function closePowerList(){
     document.getElementById("powerlist-title-open").style.display = "none";
     document.getElementById("powerlist-title-close").style.display = "block";
     document.getElementById("powerlist").style.display = "none";
 }
 
-// アイテムリストをテーブルに紐づける関数
+
+/**
+ * アイテムリストをテーブルに紐づける関数
+ * @param {object} itemList アイテムリストデータ
+ * @param {text} id 選択したヒーロー名
+ * @return {void}
+ */
 function linkItemList(itemList, id) {
+    // #region アイテムリストテーブル紐付け
     let tbody_weapon = document.getElementById("item-table-weapon").querySelector("tbody");
     let tbody_ability = document.getElementById("item-table-ability").querySelector("tbody");
     let tbody_survival = document.getElementById("item-table-survival").querySelector("tbody");
@@ -1099,7 +1183,7 @@ function linkItemList(itemList, id) {
     let headers_survival = document.getElementById("item-table-survival").querySelectorAll("th");
 
     // 選択ヒーローがDVAの場合、絞り込み条件と合致させるために値を変更
-    if(id == "D.VA（メック）" || id == "D.VA（人）"){
+    if(id == HERONAME.dvaMech || id == HERONAME.dvaHuman){
         id = "D.VA";
     }
 
@@ -1116,9 +1200,7 @@ function linkItemList(itemList, id) {
         let rarityText = "";
         let costText = "";
         let uniqueHeroText = "";
-
-        // カテゴリー判定用変数
-        let categoryCheck = "";
+        let categoryCheck = "";   // カテゴリー判定用変数
 
         // 各キーペアごとにループ
         Object.keys(itemList[i]).forEach(key => {
@@ -1196,10 +1278,9 @@ function linkItemList(itemList, id) {
 
         })
 
-                //ステータスアイコン設定
+        //ステータスアイコン設定
         let statusIcons = [];
         let statusLists = (statusText || "").split(/\r?\n/).map(s => s.trim()).filter(Boolean);
-
         statusLists.forEach((status, i) => {
 
             //その他（特殊効果）以外のアイコン付与
@@ -1271,17 +1352,17 @@ function linkItemList(itemList, id) {
             }            
         });           
 
-
         // 取得した各値をテーブルに紐付け
         // カテゴリー別に紐付け先のテーブルを分ける
-        if(categoryCheck == "武器"){
+        if(categoryCheck == CATEGORYELEMENTS.weapon){
             tbody_weapon.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, textText, rarityText, costText, uniqueHeroText, id, statusLists, statusIcons));
-        }else if(categoryCheck == "アビリティ"){
+        }else if(categoryCheck == CATEGORYELEMENTS.ability){
             tbody_ability.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, textText, rarityText, costText, uniqueHeroText, id, statusLists, statusIcons));
-        }else if(categoryCheck == "サバイバル"){
+        }else if(categoryCheck == CATEGORYELEMENTS.survival){
             tbody_survival.appendChild(appendChildItemList(tr, isCheck, itemNameText, iconText, textText, rarityText, costText, uniqueHeroText, id, statusLists, statusIcons));
         }
     }
+    //#endregion
 
     const sortingCriteria = [
         { column: "rarity", order: "asc", type: "string" },
@@ -1292,10 +1373,24 @@ function linkItemList(itemList, id) {
     TableSort(headers_weapon,tbody_weapon, sortingCriteria);
     TableSort(headers_ability,tbody_ability, sortingCriteria);
     TableSort(headers_survival,tbody_survival, sortingCriteria);
-    
 }
 
-// アイテムリスト用子要素作成関数（※カテゴリー別に分けているため関数化）
+
+/**
+ * アイテムリスト用子要素作成関数（※カテゴリー別に分けているため関数化）
+ * @param {object} tr テーブル行要素
+ * @param {boolean} isCheck 選択列チェック状態
+ * @param {text} itemNameText アイテム名テキスト
+ * @param {text} iconText アイコンテキスト
+ * @param {text} textText テキストテキスト
+ * @param {text} rarityText レア度テキスト
+ * @param {text} costText コストテキスト
+ * @param {text} uniqueHeroText 固有ヒーローテキスト
+ * @param {text} id 選択ヒーロー名
+ * @param {array} statusLists ステータスリスト配列
+ * @param {array} statusIcons ステータスアイコン配列
+ * @return {object} tr テーブル行要素返却    
+ */
 function appendChildItemList(tr, isCheck, itemNameText, iconText, textText, rarityText, costText, uniqueHeroText, id, statusLists, statusIcons){
     // 選択列
     var td = document.createElement("td");
@@ -1322,10 +1417,8 @@ function appendChildItemList(tr, isCheck, itemNameText, iconText, textText, rari
     td.appendChild(iconImg);
     tr.appendChild(td);
 
-
     // ステータス列
     var td = document.createElement("td");
-
     for (let i = 0; i < statusLists.length; i++) {
         // ステータスごとのdiv
         let statusDiv = document.createElement("div");
@@ -1346,10 +1439,8 @@ function appendChildItemList(tr, isCheck, itemNameText, iconText, textText, rari
         // tdに追加
         td.appendChild(statusDiv);
     }
-
     td.classList.add("item-td");
     tr.appendChild(td);
-
 
     // テキスト列
     var td = document.createElement("td");
@@ -1375,22 +1466,26 @@ function appendChildItemList(tr, isCheck, itemNameText, iconText, textText, rari
     td.classList.add("hidden-column");
     td.id = "filter-target";
     tr.appendChild(td);
-
     if(uniqueHeroText == "-" || uniqueHeroText == id){
         tr.classList.remove("hidden-column");
     }else if(uniqueHeroText != "-" && uniqueHeroText != id){
         tr.classList.add("hidden-column");
     }
-
     return tr;
 }
 
-// パワーリストをテーブルに紐づける関数
+
+/**
+ * パワーリストをテーブルに紐づける関数
+ * @param {object} powerList パワーリストデータ
+ * @param {text} id 選択したヒーロー名
+ * @return {void}
+ */
 function linkPowerList(powerList, id) {
     let tbody = document.getElementById("power-table").querySelector("tbody");
 
     // 選択ヒーローがDVAの場合、絞り込み条件と合致させるために値を変更
-    if(id == "D.VA（メック）" || id == "D.VA（人）"){
+    if(id == HERONAME.dvaMech || id == HERONAME.dvaHuman){
         id = "D.VA";
     }
 
@@ -1435,7 +1530,6 @@ function linkPowerList(powerList, id) {
                 // 固有ヒーロー用変数に値を代入
                 heroText = powerList[i][key];
             }
-
         })
 
         // 取得した各値をテーブルに紐付け
@@ -1482,17 +1576,22 @@ function linkPowerList(powerList, id) {
         }else if(heroText != "-" && heroText != id){
             tr.classList.add("hidden-column");
         }
-
         tbody.appendChild(tr);
     }
 }
 
-// テーブルをソートする関数
+
+/**
+ * テーブルをソートする関数
+ * @param {object} headers テーブルヘッダー要素
+ * @param {object} tbody テーブルボディ要素
+ * @param {array} sortingCriteria ソート基準配列
+ * @return {void}
+ */
 function TableSort(headers, tbody, sortingCriteria) {
 
     //レア度の並び替えの基準を設定
-    const rarityOrder = ['コモン', 'レア', 'エピック']
-
+    const rarityOrder = [RARITYELEMENTS.common, RARITYELEMENTS.rare, RARITYELEMENTS.epic];
     const rows = Array.from(tbody.querySelectorAll("tr"));
     rows.shift();
 
@@ -1505,10 +1604,8 @@ function TableSort(headers, tbody, sortingCriteria) {
             const columnIndex = Array.from(headers).findIndex(th => th.dataset.column == column);
             // カラムが見つからない場合は次の基準へ
             if (columnIndex == -1) continue;
-
             const cellA = rowA.children[columnIndex].textContent.trim();
             const cellB = rowB.children[columnIndex].textContent.trim();
-
             let valA, valB;
 
             // データの型に応じて比較対象の値を変換（デフォルトはString型）
@@ -1525,7 +1622,6 @@ function TableSort(headers, tbody, sortingCriteria) {
                 valA = rarityOrder.indexOf(valA);
                 valB = rarityOrder.indexOf(valB);
             }
-
             let comparison = 0;
             if (valA < valB) {
                 comparison = -1;
@@ -1549,56 +1645,36 @@ function TableSort(headers, tbody, sortingCriteria) {
     while (tbody.firstChild) {
         tbody.removeChild(tbody.firstChild);
     }
+
     // ソートされた順序で行を追加
     rows.forEach(row => tbody.appendChild(row));
 }
 
 
-// チェックされたアイテム名をもとに、アイテムリストの情報を配列に格納する関数
-function updateSelectedItemsList() {
-
-    var selectedItemRows = [];
-
-    itemCheckboxes.forEach(checkbox => {
+/**
+ * チェックされたアイテムまたはパワーを配列に格納する関数
+ * @return {array} selectedRows - 選択されたアイテム情報配列
+ */
+function updateSelectedList(checkboxes, list, isItem) {
+    var selectedRows = [];
+    var judgeKey = isItem ? ITEMLISTKEY.item_nameKey : POWERLISTKEY.power_nameKey;
+    checkboxes.forEach(checkbox => {
         if (checkbox.checked) {
             const row = checkbox.closest('tr');
             const cells = row.querySelectorAll('td');
             
-            //選択されたアイテム名
-            const itemName = cells[1].textContent;
-            for(let i=0; i<itemList.length; i++) {
-                
-                if(itemList[i][ITEMLISTKEY.item_nameKey] == itemName){
-                    selectedItemRows.push(itemList[i]);
+            //選択されたものの名前
+            const name = cells[1].textContent;
+            for(let i=0; i<list.length; i++) {
+                if(list[i][judgeKey] == name){
+                    selectedRows.push(list[i]);
                 }
             }
         }
     });
-    return selectedItemRows;
+    return selectedRows;
 }
 
-// チェックされたパワー名をもとに、パワーリストの情報を配列に格納する関数
-function updateSelectedPowerList() {
-
-    var selectedPowerRows = [];
-
-    powerCheckboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-            const row = checkbox.closest('tr');
-            const cells = row.querySelectorAll('td');
-            
-            //選択されたパワー名
-            const powerName = cells[1].textContent;
-            for(let i=0; i<powerList.length; i++) {
-                
-                if(powerList[i][POWERLISTKEY.power_nameKey] == powerName){
-                    selectedPowerRows.push(powerList[i]);
-                }
-            }
-        }
-    });
-    return selectedPowerRows;
-}
 
 // 理論値アイテムでステータスを反映
 function updateStatusForTheoreticalItem() {
@@ -2440,7 +2516,7 @@ function clickDeleteButton(spanId,selectedRows) {
         });
 
         // アイテムリスト、ビルド欄を更新
-        selectedRows = updateSelectedItemsList();
+        selectedRows = updateSelectedList(itemCheckboxes, itemList, true);
         updateBuild_Item(selectedRows);
 
         if(selectedRowsBeforeLength == 6){
@@ -2473,7 +2549,7 @@ function clickDeleteButton(spanId,selectedRows) {
         });
 
         // パワーリスト、ビルド欄を更新
-        selectedRows = updateSelectedPowerList();
+        selectedRows = updateSelectedList(powerCheckboxes, powerList, false);
         updateBuild_Power(selectedRows);
 
         if(selectedRowsBeforeLength == 4){
