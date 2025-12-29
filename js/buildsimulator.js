@@ -1676,18 +1676,11 @@ function updateSelectedList(checkboxes, list, isItem) {
 }
 
 
-// 理論値アイテムでステータスを反映
-function updateStatusForTheoreticalItem() {
-
-    var selectedTheoreticalItemRows = [];
-
-    
-    return selectedTheoreticalItemRows;
-}
-
-//ビルド欄のアイテムを更新する関数
+/**
+ * ビルド欄のアイテムを更新する関数
+ * @return {array} selectedRows - 選択されたアイテム情報配列
+ */
 function updateBuild_Item(selectedItemRows){
-
     for(let i=0; i<6; i++) {
         // 親要素を指定
         const targetDiv = document.getElementById("item" + String(i + 1));
@@ -1738,14 +1731,15 @@ function updateBuild_Item(selectedItemRows){
     theoreticalItemCheckboxes = document.querySelectorAll(".theoretical-item-checkbox");
 
     // 各アイテムの理論値チェックボックスにイベントリスナーを追加
-        theoreticalItemCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener("change", () => {
-                
-                // ステータスを更新
-                updateStatus_Item(selectedItemRowsData, true);
-            });
+    theoreticalItemCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", () => {
+            
+            // ステータスを更新
+            updateStatus_Item(selectedItemRowsData, true);
         });
+    });
 }
+
 
 /**
  * ステータスにアイテムの内容を反映する関数 
@@ -1764,7 +1758,6 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     ability1AddDamageAbility = 0;
     ability2AddDamageAbility = 0;
     ability3AddDamageAbility = 0;
-
     initStatusValue(showStatusList,"init","-");
 
     // 最後に計算する倍率変数
@@ -1819,12 +1812,12 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
 
         // #region 特殊計算・持続時間計算　計算順序①
         // ライフ割合上昇アイテムの場合は倍率変数に保管後、追加効果に乗らないようハイフンにする
-        if(nameTmp == "MEKA Zシリーズ"){
+        if(nameTmp == mekaZName){
             lifeRate = lifeRate * 1.08;
             armorRate = armorRate * 1.08;
             shieldRate = shieldRate * 1.08;
             othersTmp = "-";
-        }else if(nameTmp == "不屈の獅子"){
+        }else if(nameTmp == hukutuName){
             lifeRate = lifeRate * 1.15;
             armorRate = armorRate * 1.15;
             shieldRate = shieldRate * 1.15;
@@ -1832,13 +1825,13 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         }
 
         // ラインハルトの盾増強
-        if(nameTmp == "オーバークロック・バリア"){
+        if(nameTmp == overClockName){
             showStatusList[STATUSLISTKEY.ability3DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability3DamageKey] * 1.2 * 10 ** 2) / 10 ** 2;
             othersTmp = "20%[バリア・フィールド]サイズ";
         }
 
         // 固定値計算アイテムを先に表示用ステータスリストに反映し、追加効果に乗らないようハイフンにする　
-        if(nameTmp == "リソース・マネジメント"){
+        if(nameTmp == resourceManagementName){
             showStatusList[STATUSLISTKEY.mainAmmoKey] += 4;
             othersTmp = "-";
         }
@@ -1911,7 +1904,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                         if(thItemID == itemID){
                             
                             // 特別フラグがOFFの場合そのままステータスに反映
-                            if(!theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_SpecialFlgKey]){
+                            if(!theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_SpecialFlgKey] == 1){
                                 // 各パラメータを抽出
                                 const thLifeTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_LifeKey];
                                 const thArmorTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_ArmorKey];
@@ -2231,7 +2224,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         showStatusList[STATUSLISTKEY.subDamageKey] = Math.round(showStatusList[STATUSLISTKEY.subDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
 
         // ゲンジ・ソルジャー・マーシーの場合はULTにも武器パワーが乗るので対応
-        if(showStatusList[STATUSLISTKEY.heroNameKey] == "ゲンジ" || showStatusList[STATUSLISTKEY.heroNameKey] == "ソルジャー76" || showStatusList[STATUSLISTKEY.heroNameKey] == "マーシー"){
+        if(showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.genji || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.soldier76 || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.mercy){
             showStatusList[STATUSLISTKEY.ultDamageKey] = Math.round(showStatusList[STATUSLISTKEY.ultDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         }
     }
@@ -2244,12 +2237,12 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         showStatusList[STATUSLISTKEY.ability2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability2DamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
 
         // ラインハルトとシグマの盾は除外
-        if(showStatusList[STATUSLISTKEY.heroNameKey] != "ラインハルト" && showStatusList[STATUSLISTKEY.heroNameKey] != "シグマ"){
+        if(showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.reinhardt && showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.sigma){
             showStatusList[STATUSLISTKEY.ability3DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability3DamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         }
 
         // ゲンジとソルジャーのULTは除外
-        if(showStatusList[STATUSLISTKEY.heroNameKey] != "ゲンジ" && showStatusList[STATUSLISTKEY.heroNameKey] != "ソルジャー76"){
+        if(showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.genji && showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.soldier76){
             showStatusList[STATUSLISTKEY.ultDamageKey] = Math.round(showStatusList[STATUSLISTKEY.ultDamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         }
 
@@ -2287,13 +2280,12 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     if(ammoTmp != 0){
 
         // 表示用ステータスリストに反映
-        if(showStatusList[STATUSLISTKEY.heroNameKey] != "キリコ"){
+        if(showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME){
 
             // キリコのメイン弾薬は増えないので除外
             showStatusList[STATUSLISTKEY.mainAmmoKey] = Math.round(showStatusList[STATUSLISTKEY.mainAmmoKey] * (ammoTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         }
-            
-        if(showStatusList[STATUSLISTKEY.heroNameKey] != "フレイヤ"){
+        if(showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.freya){
 
             // フレイヤのサブ弾薬は増えないので除外
             showStatusList[STATUSLISTKEY.subAmmoKey] = Math.round(showStatusList[STATUSLISTKEY.subAmmoKey] * (ammoTmp/100 + 1) * 10 ** 2) / 10 ** 2;
@@ -2312,7 +2304,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         }
 
         // ゲンジ・ソルジャーの場合はULTにも武器パワーが乗るので対応
-        if(showStatusList[STATUSLISTKEY.heroNameKey] == "ゲンジ" || showStatusList[STATUSLISTKEY.heroNameKey] == "ソルジャー76"){
+        if(showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.genji || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.soldier76){
             showStatusList[STATUSLISTKEY.ultLifeStealRateKey] = showStatusList[STATUSLISTKEY.ultLifeStealRateKey] + weapon_LifeStealTmp / 100;
         }
     }
@@ -2329,14 +2321,14 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         }
 
         // ラインハルトとシグマの盾は除外
-        if(showStatusList[STATUSLISTKEY.heroNameKey] != "ラインハルト" && showStatusList[STATUSLISTKEY.heroNameKey] != "シグマ"){
+        if(showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.reinhardt && showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.sigma){
             if(showStatusList[STATUSLISTKEY.ability3DamageKey] != 0){
                 showStatusList[STATUSLISTKEY.ability3LifeStealRateKey] = showStatusList[STATUSLISTKEY.ability3LifeStealRateKey] + ability_LifeStealTmp / 100;
             }
         }
 
         // ゲンジとソルジャーのULTは除外
-        if(showStatusList[STATUSLISTKEY.heroNameKey] != "ゲンジ" && showStatusList[STATUSLISTKEY.heroNameKey] != "ソルジャー76"){
+        if(showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.genji && showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.soldier76){
             if(showStatusList[STATUSLISTKEY.ultDamageKey] != 0){
                 showStatusList[STATUSLISTKEY.ultLifeStealRateKey] = showStatusList[STATUSLISTKEY.ultLifeStealRateKey] + ability_LifeStealTmp / 100;
             }
@@ -2364,7 +2356,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         showStatusList[STATUSLISTKEY.status_meleeDamageKey] = Math.round(showStatusList[STATUSLISTKEY.status_meleeDamageKey] * (meleeDamageTmp / 100 + 1) * 10 ** 2) / 10 ** 2;
 
         // ラインハルトはメイン武器にも近接ダメージが乗るので対応
-        if(showStatusList[STATUSLISTKEY.heroNameKey] == "ラインハルト"){
+        if(showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.reinhardt){
             showStatusList[STATUSLISTKEY.mainDamageKey] = Math.round(showStatusList[STATUSLISTKEY.mainDamageKey] * (meleeDamageTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         }
     }
@@ -2427,7 +2419,12 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     initStatusValue(showStatusList, text, others);
 }
 
-//ビルド欄のパワーを更新する関数
+
+/**
+ * ビルド欄のパワーを更新する関数
+ * @param {Array} selectedPowerRows 選択されているパワーの行データ配列
+ * @return {void}
+ */
 function updateBuild_Power(selectedPowerRows){
 
     for(let i=0; i<4; i++) {
@@ -2461,12 +2458,16 @@ function updateBuild_Power(selectedPowerRows){
     }
 }
 
-//ステータスにパワーの内容を反映する関数
+
+/**
+ * ステータスにパワーの内容を反映する関数
+ * @param {Array} selectedPowerRows 選択されているパワーの行データ配列
+ * @return {void}
+ */
 function updateStatus_Power(selectedPowerRows){
 
     // 追加効果欄を初期化
     document.getElementById("addpower").innerText = "追加効果(パワー):";
-    
     for(let i=0; i<4; i++) {
 
         // テキストを抽出
@@ -2477,15 +2478,19 @@ function updateStatus_Power(selectedPowerRows){
     }
 }
 
-// ✖ボタンクリック時にアイコンを削除する関数
-function clickDeleteButton(spanId,selectedRows) {
 
+/**
+ * ✖ボタンクリック時にアイコンを削除する関数
+ * @param {string} spanId クリックされた✖ボタンのID
+ * @param {Array} selectedRows 選択されている行データ配列
+ * @return {void}
+ */
+function clickDeleteButton(spanId,selectedRows) {
     let index = Number(spanId.slice(-1)) - 1;
     const selectedRowsBeforeLength = selectedRows.length
 
     // IDに「item」が含まれる場合
     if(spanId.includes("item")){
-        
         const itemName = selectedRows[index][ITEMLISTKEY.item_nameKey];
         const category = selectedRows[index][ITEMLISTKEY.categoryKey];
         //初期値は武器カテゴリを設定
@@ -2499,15 +2504,11 @@ function clickDeleteButton(spanId,selectedRows) {
         }
 
         const rows = tbody.querySelectorAll("tr");
-        // アイテム名のインデックス
-        const targetColumnIndex = 1;
-        // 変更する列のインデックス
-        const changeColumnIndex = 0;
-
+        const targetColumnIndex = 1;   // アイテム名のインデックス
+        const changeColumnIndex = 0;   // 変更する列のインデックス
         rows.forEach(row => {
             const cells = row.querySelectorAll("td");
             const cellText = cells[targetColumnIndex].textContent;
-
             if(cellText == itemName){
                 // 選択したアイテムのチェックボックスのチェックを解除
                 const checkbox =  cells[changeColumnIndex].querySelector(".item-checkbox");
@@ -2518,29 +2519,23 @@ function clickDeleteButton(spanId,selectedRows) {
         // アイテムリスト、ビルド欄を更新
         selectedRows = updateSelectedList(itemCheckboxes, itemList, true);
         updateBuild_Item(selectedRows);
-
         if(selectedRowsBeforeLength == 6){
             //元々アイテムが6個選ばれていた場合、選択されていないアイテムのチェックボックスを入力可
             disableItemTableCheckbox(false);
         }
-
         return selectedRows;
-
-    }else if(spanId.includes("power")){
-
+    }
+    // IDに「power」が含まれる場合
+    else if(spanId.includes("power")){
         const powerName = selectedRows[index][POWERLISTKEY.power_nameKey];
         const tbody = document.getElementById("power-table").querySelector("tbody");
         const rows = Array.from(tbody.querySelectorAll("tr"));
         rows.shift();
-        // パワー名のインデックス
-        const targetColumnIndex = 1;
-        // 変更する列のインデックス
-        const changeColumnIndex = 0;
-
+        const targetColumnIndex = 1;   // パワー名のインデックス
+        const changeColumnIndex = 0;   // 変更する列のインデックス
         rows.forEach(row => {
             const cells = row.querySelectorAll("td");
             const cellText = cells[targetColumnIndex].textContent;
-
             if(cellText == powerName){
                 // 選択したパワーのチェックボックスのチェックを解除
                 const checkbox =  cells[changeColumnIndex].querySelector(".power-checkbox");
@@ -2551,20 +2546,22 @@ function clickDeleteButton(spanId,selectedRows) {
         // パワーリスト、ビルド欄を更新
         selectedRows = updateSelectedList(powerCheckboxes, powerList, false);
         updateBuild_Power(selectedRows);
-
         if(selectedRowsBeforeLength == 4){
             //元々パワーが4個選ばれていた場合、選択されていないパワーのチェックボックスを入力可
             disablePowerTableCheckbox(false);
         }
-
         return selectedRows;
     }
 }
 
-// アイテムテーブルのチェックボックス管理の関数
+
+/**
+ * アイテムテーブルのチェックボックス管理の関数
+ * @param {boolean} flag true:無効化、false:有効化
+ * @return {void}
+ */
 function disableItemTableCheckbox(flag){
     const checkboxes = document.querySelectorAll(".item-checkbox");
-
     checkboxes.forEach(checkbox =>{
         if(!checkbox.checked){
             if(flag){
@@ -2576,10 +2573,14 @@ function disableItemTableCheckbox(flag){
     });
 }
 
-// パワーテーブルのチェックボックス管理の関数
+
+/**
+ * パワーテーブルのチェックボックス管理の関数
+ * @param {boolean} flag true:無効化、false:有効化
+ * @return {void}
+ */
 function disablePowerTableCheckbox(flag){
     const checkboxes = document.querySelectorAll(".power-checkbox");
-
     checkboxes.forEach(checkbox =>{
         if(!checkbox.checked){
             if(flag){
@@ -2591,7 +2592,12 @@ function disablePowerTableCheckbox(flag){
     });
 }
 
-// 選択ヒーローに応じてテーブルを絞り込む関数
+
+/**
+ * 選択ヒーローに応じてテーブルを絞り込む関数
+ * @param {string} id 選択ヒーローのID
+ * @return {void}
+ */
 function filterTable(id){
 
     // 選択ヒーローがDVAの場合、絞り込み条件と合致させるために値を変更
@@ -2648,7 +2654,11 @@ function filterTable(id){
     });
 }
 
-// 理論値ON/OFF切り替え
+
+/**
+ * 理論値ON/OFF切り替え
+ * @return {void}
+ */
 function theoreticalValueClick(){
     const theoreticalValueButton = document.getElementById("theoreticalvalue-button");
 
