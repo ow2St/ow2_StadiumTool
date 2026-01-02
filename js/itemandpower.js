@@ -3,7 +3,7 @@
 // ------------------------------
 
 // アイテムリストのキー
-var itemIdKey = "アイテムID"; 
+var itemIdKey = "アイテムID";
 var item_nameKey = "アイテム名";
 var categoryKey = "カテゴリー";
 var rarityKey = "レア度";
@@ -261,15 +261,15 @@ function convertPowerKeys(dataArray) {
 //タブ切り替え
 // アイテムタブに遷移
 function changeTabItem() {
-   itemContent.style.display = "block";
-   powerContent.style.display = "none";
-   tabPower.style.backgroundColor = "white";
-   tabItem.style.backgroundColor = "lightgray";
-   tabPower.style.border = "1px dashed black";
-   tabPower.style.borderBottom = "none";
-   tabPower.style.borderLeft = "none";
-   tabItem.style.border = "1px solid black";
-   tabItem.style.borderBottom = "none";
+itemContent.style.display = "block";
+powerContent.style.display = "none";
+tabPower.style.backgroundColor = "white";
+tabItem.style.backgroundColor = "lightgray";
+tabPower.style.border = "1px dashed black";
+tabPower.style.borderBottom = "none";
+tabPower.style.borderLeft = "none";
+tabItem.style.border = "1px solid black";
+tabItem.style.borderBottom = "none";
 }
 // パワータブに遷移
 function changeTabPower() {
@@ -296,7 +296,7 @@ function linkItemList(itemList) {
     for(let i=0; i<itemList.length; i++) {
         var tr = document.createElement("tr");
 
-        // 必要な列ごとの変数を初期化 
+        // 必要な列ごとの変数を初期化
         let itemNameText = "";
         let iconText = "";
         let categoryText = "";
@@ -453,8 +453,8 @@ function linkItemList(itemList) {
 
                 //テキストから※を削除
                 statusLists[i] = status.replace(STATUSELEMENTS.others_sign,"");
-            }            
-        });           
+            }
+        });
 
     tbody.appendChild(appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, textText, statusLists, statusIcons));
     
@@ -608,7 +608,10 @@ function filterItemTable(elem){
 
         // カテゴリー関連
         buttons_category.forEach(button =>{
-            
+            // ボタンがONの場合
+            if(button.className == "button-on" && shouldShow){
+                shouldShow = (cells[categoryNumber]?.innerText == button.innerText);
+            }
             // ボタンがOFFの場合
             if(button.className == "button-off" && shouldShow){
                 shouldShow = !(cells[categoryNumber]?.innerText == button.innerText);
@@ -834,7 +837,7 @@ function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
         return sorting ? comparison : -comparison;
 
         // 全てのキーが同じ場合
-        return 0; 
+        return 0;
     };
         
 
@@ -1158,8 +1161,8 @@ function powerTableSort(headers, tbody, sortingCriteria,index,sorting) {
         return sorting ? comparison : -comparison;
 
         // 全てのキーが同じ場合
-        return 0; 
-    }; 
+        return 0;
+    };
 
     // 配列のソート
     rows.sort(comparator);
@@ -1235,7 +1238,7 @@ function applyPatchNotesToTables() {
     const changesMap = processPatchNotes();
     
     // アイテムテーブルへの適用
-    applyChangesToTable("item-table", 0, changesMap); 
+    applyChangesToTable("item-table", 0, changesMap);
     
     // パワーテーブルへの適用
     applyChangesToTable("power-table", 0, changesMap);
@@ -1249,7 +1252,7 @@ function applyChangesToTable(tableId, nameColIndex, changesMap) {
     if (!tbody) return;
 
     const rows = tbody.querySelectorAll("tr");
-    const HISTORY_COLUMN_INDEX = rows.length > 0 ? rows[0].cells.length - 1 : -1; 
+    const HISTORY_COLUMN_INDEX = rows.length > 0 ? rows[0].cells.length - 1 : -1;
     
     if (HISTORY_COLUMN_INDEX == -1) {
         console.warn(`テーブルID: ${tableId} に行が見つかりません。`);
