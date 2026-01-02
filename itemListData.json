@@ -730,7 +730,7 @@
         "shield": 0,
         "speed": 0,
         "text": "最大弾薬数が75％増えるが、リロード時間が50％長くなる",
-        "theoreticalflag": 1,
+        "theoreticalflag": 0,
         "uniquehero": "メイ",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -890,7 +890,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[バリア・プロジェクター]の内部にいる間、自身の武器パワーが10%上がる",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "ウィンストン",
         "weaponlifesteal": 0,
         "weaponpower": 10
@@ -1114,7 +1114,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[バイオティック・グレネード]が敵をノックバックし、同アビリティの効果を受けている自身の移動速度が20%上がる",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "アナ",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -1401,7 +1401,7 @@
         "reloadspeed": 0,
         "shield": 25,
         "speed": 0,
-        "text": "[養神泉]（自動回復）で追加ライフを毎秒10与えられる最大30付与可能",
+        "text": "[養神泉]（自動回復）で追加ライフを毎秒10与えられる最大30（アビ依存）付与可能",
         "theoreticalflag": 0,
         "uniquehero": "ウーヤン",
         "weaponlifesteal": 0,
@@ -1561,7 +1561,7 @@
         "reloadspeed": 0,
         "shield": 0,
         "speed": 0,
-        "text": "[アクリーション]でダメージを与えると、アビリティ・パワーが5%増える。最大4回まで蓄積し、ミスショットでリセットされる",
+        "text": "[アクリーション]でダメージを与えると、アビリティ・パワーが5%増える。最大4回まで蓄積し、ラウンド終了時にリセットされる",
         "theoreticalflag": 1,
         "uniquehero": "シグマ",
         "weaponlifesteal": 0,
@@ -2394,7 +2394,7 @@
         "shield": 25,
         "speed": 0,
         "text": "空中の敵に対して武器でダメージを加えると、その相手に3秒間かけて25%の継続ダメージを与える",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -2426,7 +2426,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[パワー・スライド]中に繰り出すクイック近接攻撃に、30%の追加ダメージとノックバックの効果が付く",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "ソジョーン",
         "weaponlifesteal": 0,
         "weaponpower": 5
@@ -3322,7 +3322,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[ブリンク]を使用すると、6メートル以内の味方と自身の移動速度が1秒間、10%上がる",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "トレーサー",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -3642,7 +3642,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[ジャギー・ウォール]の周囲9メートル以内にいる間、自身の移動速度が20%、ジャンプ速度が100%上がる",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "ハザード",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -3674,7 +3674,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[バリア・フィールド]の展開中、移動速度が30%上がる",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "ラインハルト",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -4378,7 +4378,7 @@
         "shield": 0,
         "speed": 0,
         "text": "アルティメット・チャージを消費すると、すべてのクールダウンがリセットされる。[タクティカル・バイザー]の発動中、クールダウンが20％短くなる",
-        "theoreticalflag": 1,
+        "theoreticalflag": 0,
         "uniquehero": "ソルジャー76",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -4442,7 +4442,7 @@
         "shield": 0,
         "speed": 0,
         "text": "リロードするか弾薬数が回復してから5秒間、武器に15%のライフ吸収効果が付く",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "ハザード",
         "weaponlifesteal": 0,
         "weaponpower": 5
@@ -5146,7 +5146,7 @@
         "shield": 0,
         "speed": 0,
         "text": "敵を1人眠らせるごとに、ライフを10得る。最大50獲得",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "アナ",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -5306,7 +5306,7 @@
         "shield": 0,
         "speed": 0,
         "text": "タレットを破壊された際、[タレット設置]のクールダウンが1秒短くなると同時に、25の追加ライフを3秒間得る",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "トールビョーン",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -5466,7 +5466,7 @@
         "shield": 0,
         "speed": 0,
         "text": "近接攻撃でダメージを与えると、2秒間かけて、移動速度が10%上がり、ライフ最大値の5%分回復する",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -5722,7 +5722,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[デッド・アイ]でキルを達成すると、[フラッシュバン]の最大クールダウン時間が10％縮まる。ラウンドごとに最大40％",
-        "theoreticalflag": 1,
+        "theoreticalflag": 0,
         "uniquehero": "キャスディ",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -5882,7 +5882,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[ウォール・ライド]後2秒間、移動速度が30%上がる",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "ルシオ",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -5914,7 +5914,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[ジャベリン・スピン]の使用中、飛行できるようになり、移動速度が20％上がる",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "オリーサ",
         "weaponlifesteal": 0,
         "weaponpower": 15
@@ -6426,7 +6426,7 @@
         "shield": 0,
         "speed": 0,
         "text": "ライフがフルの間、ライフ吸収で追加ライフを100得る",
-        "theoreticalflag": 1,
+        "theoreticalflag": 0,
         "uniquehero": "-",
         "weaponlifesteal": 15,
         "weaponpower": 10
@@ -6650,7 +6650,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[フォージ・ハンマー]を構えている間、移動速度が15%上がる",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "トールビョーン",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -6906,7 +6906,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[コーチ・ガン]を使用すると、移動速度が5秒間、20%上がると同時に、弾薬が最大弾薬数の25%分回復する",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "アッシュ",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -7034,7 +7034,7 @@
         "shield": 0,
         "speed": 0,
         "text": "いずれかのアビリティまたはガジェットの使用後に初めて与えた武器のダメージ/回復に、25（アビ依存）のボーナスが付く",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -7450,7 +7450,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[バイオレント・リープ]の使用後3秒間、[スパイク・ガード]のスパイクのダメージが20%増える",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "ハザード",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -7770,7 +7770,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[ディフェンス・マトリックス]で軽減したダメージの10%分、シールドを得る。最大100獲得でき、[メック]の破壊でリセットされる",
-        "theoreticalflag": 1,
+        "theoreticalflag": 0,
         "uniquehero": "D.VA",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -8026,7 +8026,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[プライマル・レイジ]発動中、 [ジャンプ・パック]の基本ダメージが電撃になる。ダメージは滞空中、最大100%まで増える",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "ウィンストン",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -8250,7 +8250,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[コンカッシブ・ブラスト]で自身をノックバックさせると3秒間、移動速度が20%上がる",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "ファラ",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -8602,7 +8602,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[メック]搭乗中に敵のバリアへ攻撃すると、与えたダメージの10%分のシールドを得る。最大200獲得でき、[メック]の破壊でリセットされる",
-        "theoreticalflag": 1,
+        "theoreticalflag": 0,
         "uniquehero": "D.VA",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -8730,7 +8730,7 @@
         "shield": 0,
         "speed": 0,
         "text": "ライフがフルの味方に[カデュケウス・スタッフ}で回復すると、その味方に追加ライフを最大25与える",
-        "theoreticalflag": 1,
+        "theoreticalflag": 0,
         "uniquehero": "マーシー",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -8826,7 +8826,7 @@
         "shield": 0,
         "speed": 0,
         "text": "アルティメット・チャージが100%溜まっている間、次の効果を得る",
-        "theoreticalflag": 1,
+        "theoreticalflag": 0,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -9050,7 +9050,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[オーバーロード]の効果が切れてから3秒間、攻撃速度が20%上がる",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "トールビョーン",
         "weaponlifesteal": 10,
         "weaponpower": 10
@@ -9242,7 +9242,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[テスラ・キャノン]のサブ攻撃のダメージが25%増える",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "ウィンストン",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -9370,7 +9370,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[風斬り]を使用すると、手裏剣が20%回復すると同時に、20%の攻撃速度ボーナスを2.5秒間得る",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "ゲンジ",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -9722,7 +9722,7 @@
         "shield": 0,
         "speed": 0,
         "text": "ノックバックを受けると、3秒間、移動速度が25%上がる",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "ジャンカー・クイーン",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -9818,7 +9818,7 @@
         "shield": 0,
         "speed": 0,
         "text": "クリティカル・ショットを当てると3秒間、攻撃速度が1%上がる。最大25回蓄積",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "ハザード",
         "weaponlifesteal": 0,
         "weaponpower": 10
@@ -10106,7 +10106,7 @@
         "shield": 0,
         "speed": 0,
         "text": "3メートル以上の高度で空中にいる敵にダメージを与えると、10の追加ダメージが発生し、その敵の移動速度が3秒間25%下がる(クールダウン：15秒)",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -10170,7 +10170,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[飛流歩]発動中、攻撃速度が35％上がる",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "ウーヤン",
         "weaponlifesteal": 0,
         "weaponpower": 15
@@ -10490,7 +10490,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[レイス・フォーム]の使用中、飛行できるようになり、移動速度が20%上がる",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "リーパー",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -10554,7 +10554,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[モルテン・コア]のマグマの上にいる間、自身の移動速度が20%上がる",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "トールビョーン",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -11034,7 +11034,7 @@
         "shield": 0,
         "speed": 0,
         "text": "アルティメット・チャージの消費後3秒間、追加ライフを100得る",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -11546,7 +11546,7 @@
         "shield": 0,
         "speed": 0,
         "text": "ラウンド開始後とリスポーン後10秒間、移動速度が非交戦中に限り30%上がる(オーバータイム中のリスポーンを除く)",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -12218,7 +12218,7 @@
         "shield": 0,
         "speed": 0,
         "text": "追加ライフを自力で獲得した際、1秒間かけてその獲得量15%回復すると同時に、15%の移動速度ボーナスを3秒間得る",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "ドゥームフィスト",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -12250,7 +12250,7 @@
         "shield": 0,
         "speed": 0,
         "text": "[エンジェリック・ディセント]の使用中、移動速度が1秒ごとに10%上がる。最大60%上昇",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "マーシー",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -12410,7 +12410,7 @@
         "shield": 0,
         "speed": 0,
         "text": "凍結した地面上でのメイの移動速度が35％上がる",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "メイ",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -12602,7 +12602,7 @@
         "shield": 0,
         "speed": 0,
         "text": "敵または味方1人に[バイオティック・グレネード]の影響が及ぶごとに、攻撃速度が5％上がる。最大25％上昇",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "アナ",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -12826,7 +12826,7 @@
         "shield": 0,
         "speed": 0,
         "text": "ライフが50%未満の間、移動速度が20%上がる",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "リーパー",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -12890,7 +12890,7 @@
         "shield": 0,
         "speed": 0,
         "text": "空中の敵に対する[バイオレント・リープ]のスラッシュ攻撃のダメージが25%増える",
-        "theoreticalflag": 0,
+        "theoreticalflag": 1,
         "uniquehero": "ハザード",
         "weaponlifesteal": 0,
         "weaponpower": 0

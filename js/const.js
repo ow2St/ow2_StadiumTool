@@ -138,6 +138,10 @@ window.UPDATECATEGORY = {
  * 専用処理があるアイテム
  */
 ashItemID = "8661860d-a170-4682-9e94-da0fdfbf9522";   // トライポッド
+mekaZName = "MEKA Zシリーズ";
+hukutuName = "不屈の獅子";
+overClockName = "オーバークロック・バリア";
+resourceManagementName = "リソース・マネジメント";
 
 /**
  * ヒーロー名
@@ -148,7 +152,15 @@ window.HERONAME = {
     dva: "DVA",
     zaria: "ザリア",
     juno: "ジュノ",
-    moira: "モイラ"
+    moira: "モイラ",
+    queen: "ジャンカー・クイーン",
+    genji: "ゲンジ",
+    soldier76: "ソルジャー76",
+    mercy: "マーシー",
+    reinhardt: "ラインハルト",
+    sigma: "シグマ",
+    kiriko: "キリコ",
+    freya: "フレイヤ"
 };
 
 /**
@@ -156,7 +168,9 @@ window.HERONAME = {
  */
 window.UNIQUEHEROWORD = {
     zaria: "エネルギー0%",
+    zaria100: "エネルギー100%",
     damage: "ダメージ",
+    heal: "ヒール",
     scratch: 15
 };
 

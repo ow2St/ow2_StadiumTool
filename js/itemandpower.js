@@ -178,6 +178,20 @@ let sortDirection = new Array(8).fill(null);
 //アイテム表、コストのキャッシュアイコン等初期表示
 addCostDivAndSpan();
 
+//
+document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("item_search-input");
+
+    if (!input) return;
+
+    input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();   // フォーム送信防止（重要）
+            item_searchWords();   // 検索ボタンと同じ処理
+        }
+    });
+});
+
 // ------------------------------
 // 関数部
 // ------------------------------
@@ -446,7 +460,7 @@ function linkItemList(itemList) {
                         statusIcons.push(STATUSICON.critical);
                         break;
                 }
-            
+
             //その他（特殊効果）の場合
             }else if(status.includes(STATUSELEMENTS.others_sign)){
                 statusIcons.push(STATUSICON.others);
@@ -457,7 +471,7 @@ function linkItemList(itemList) {
         });
 
     tbody.appendChild(appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, textText, statusLists, statusIcons));
-    
+
     tr.classList.add("table-on");
     }
 }
@@ -506,7 +520,7 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
     td.textContent = uniqueHeroText;
     td.classList.add("hidden-column");
     tr.appendChild(td);
-    
+
 
     // ステータス列
     var td = document.createElement("td");
@@ -736,7 +750,7 @@ function itemSortClick(id){
     });
 
     let arrows = "";
-    
+
     if(sortDirection[columnIndex]){
         arrows = "▲"
     }else if(!sortDirection[columnIndex]){
@@ -757,7 +771,7 @@ function addCostDivAndSpan() {
 
     //costのth内innerTextはいらないので消去
     document.getElementById("cost").innerText = "";
-    
+
     // costのthを取得
     const cost_th = document.querySelector("th#cost.item-th");
 
@@ -832,14 +846,14 @@ function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
             if (valA < valB) comparison = -1;
             else if (valA > valB) comparison = 1;
         }
-        
+
         // ソート順序を適用し、結果が0でない場合はここで終了
         return sorting ? comparison : -comparison;
 
         // 全てのキーが同じ場合
         return 0;
     };
-        
+
 
     // 配列のソート
     rows.sort(comparator);
@@ -897,7 +911,7 @@ function linkPowerList(powerList) {
                 textText = powerList[i][key];
             }
         })
-    
+
     tbody.appendChild(appendChildPowerList(tr, powerNameText, iconText, heroText, textText));
     tr.classList.add("table-off"); //アイテムテーブルと違い、パワーテーブルは初期表示が非表示の為（D.VA以外）
     }
@@ -1044,7 +1058,7 @@ function filterPowerTable(elem){
 
         //タンク
         heroes_tank.forEach(img =>{
-            
+
             // ボタンがOFFの場合
             if(img.className == "power-hero-icon-off" && shouldShow){
                 shouldShow = !(cells[heroNumber]?.innerText == img.id);
@@ -1098,9 +1112,9 @@ function powerSortClick(id){
     sortingCriteria.forEach(row => {
         document.getElementById(row.column).innerText = labelMap[row.column];
     });
-    
+
     let arrows = "";
-    
+
     if(sortDirection[columnIndex]){
         arrows = "▲"
     }else if(!sortDirection[columnIndex]){
@@ -1156,7 +1170,7 @@ function powerTableSort(headers, tbody, sortingCriteria,index,sorting) {
             if (valA < valB) comparison = -1;
             else if (valA > valB) comparison = 1;
         }
-        
+
         // ソート順序を適用し、結果が0でない場合はここで終了
         return sorting ? comparison : -comparison;
 
@@ -1177,11 +1191,11 @@ function powerTableSort(headers, tbody, sortingCriteria,index,sorting) {
 function applyPatchNotesIfReady() {
     // 一度適用したら再実行しない
     if (patchNotesApplied) return;
-    
+
     // 必要なテーブルとデータが揃っているかを確認
     const itemTableTr = document.getElementById("item-table")?.querySelector("tbody").querySelectorAll('tr');
     const powerTableTr = document.getElementById("power-table")?.querySelector("tbody").querySelectorAll('tr');
-    
+
     // アイテム、パワーのテーブルが存在し、かつパッチノートデータが読み込まれていれば実行
     if (itemTableTr.length > 0 && powerTableTr.length > 0 && patchNoteAllData.length > 0) {
         applyPatchNotesToTables();
@@ -1197,7 +1211,7 @@ function processPatchNotes() {
 
         const name = note.name;
         if (!name || name == "-") return;
-        
+
         const changeEntry = {
             category: note.category,
             hero: note.hero,
@@ -1205,7 +1219,7 @@ function processPatchNotes() {
             content: note.content.replaceAll("/", "<br>・"),
             updatecategory: note.updatecategory
         };
-        
+
         if (!changesMap.has(name)) {
             changesMap.set(name, []);
         }
@@ -1236,10 +1250,10 @@ function applyPatchNotesToTables() {
     if (patchNoteAllData.length == 0) return;
 
     const changesMap = processPatchNotes();
-    
+
     // アイテムテーブルへの適用
     applyChangesToTable("item-table", 0, changesMap);
-    
+
     // パワーテーブルへの適用
     applyChangesToTable("power-table", 0, changesMap);
 
@@ -1253,7 +1267,7 @@ function applyChangesToTable(tableId, nameColIndex, changesMap) {
 
     const rows = tbody.querySelectorAll("tr");
     const HISTORY_COLUMN_INDEX = rows.length > 0 ? rows[0].cells.length - 1 : -1;
-    
+
     if (HISTORY_COLUMN_INDEX == -1) {
         console.warn(`テーブルID: ${tableId} に行が見つかりません。`);
         return;
@@ -1261,7 +1275,7 @@ function applyChangesToTable(tableId, nameColIndex, changesMap) {
 
     rows.forEach(tr => {
         const nameCell = tr.cells[nameColIndex];
-        
+
         // テーブルのアイテム/パワー名を取得
         const itemNameText = nameCell.textContent.trim().split('\n')[0].trim().replace("ヒーロー：", "/");
         const itemName = itemNameText.substring(0,itemNameText.indexOf("/"));
@@ -1278,14 +1292,14 @@ function applyChangesToTable(tableId, nameColIndex, changesMap) {
                 }else{
                     return change.updatecategory && change.updatecategory == UPDATECATEGORY.update;
                 }
-                
+
             });
         }
-        
+
         // 描画済み最終列の「変更履歴」セルを取得
         const historyCell = tr.cells[HISTORY_COLUMN_INDEX];
         historyCell.classList.add("patch-history-content");
-        
+
         if (filteredChanges && filteredChanges.length > 0) {
             // 変更履歴の内容をHTMLでセルに書き込む
             historyCell.innerHTML = createHistoryHtml(filteredChanges);
