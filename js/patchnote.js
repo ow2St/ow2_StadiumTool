@@ -18,16 +18,8 @@ fetch("patchNoteData.json")
         const result = organizeData(allData);
         const organizedData = result.organizedData;
 
-        const dateToExpand = getUrlParameter("date");
-        const shouldAutoExpand = getUrlParameter("autoExpand") == "true";
-
-        // autoExpand=trueかつdateパラメータがあれば、その日付を展開
-        if (shouldAutoExpand && dateToExpand) {
-            buildAccordion(organizedData, dateToExpand);
-        } else {
-            // それ以外の場合は全て閉じた状態で表示
-            buildAccordion(organizedData);
-        }
+        // パッチ情報を構築して表示
+        buildAccordion(organizedData);
     })
     .catch(error => {
         console.error("データの読み込み中にエラーが発生しました:", error);
@@ -38,7 +30,11 @@ fetch("patchNoteData.json")
 // 関数部
 // ------------------------------
 
-// データを年、月、日、キャラクターで階層整理する関数
+/**
+ * データを年、月、日、キャラクターで階層整理する関数
+ * @param {any[]} data パッチノートデータの配列
+ * @return {organizedData: object, latestData: object, latestDateString: string} 整理されたデータと最新日付のデータ
+ */
 function organizeData(data) {
     const organized = {};
     // 最終日付データ退避用変数
@@ -91,17 +87,15 @@ function organizeData(data) {
     };
 }
 
-// アイテムの詳細情報（カテゴリ、サブカテゴリ、レアリティ、名前、内容）を生成する関数
-function createItemDetailsElement(item,invoker) {
+/**
+ * アイテムの詳細情報（カテゴリ、サブカテゴリ、レアリティ、名前、内容）を生成する関数
+ * @param {any[]} item パッチ対象のアイテムデータ
+ * @return {HTMLElement} アイテムの詳細情報を含むHTML要素
+ */
+function createItemDetailsElement(item) {
     const itemDiv = document.createElement("div");
-
-    if(invoker == "toppage"){
-        itemDiv.classList.add("item-details_toppage");
-    }else{
-        itemDiv.classList.add("item-details");
-    }
+    itemDiv.classList.add("item-details");
     
-
     const p = document.createElement("p");
 
     // 内容を除く情報を1行で表示
@@ -133,28 +127,13 @@ function createItemDetailsElement(item,invoker) {
     return itemDiv;
 }
 
-// URLパラメータを取得する関数
-function getUrlParameter(name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    const regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-    const results = regex.exec(location.search);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-
-// 全体の表示を構築する関数
-function buildAccordion(organizedData, targetDateString = null) {
+/**
+ * 全体の表示を構築する関数
+ * @param {object} organizedData 階層整理されたパッチノートデータ
+ * @return {HTMLElement} アイテムの詳細情報を含むHTML要素
+ */
+function buildAccordion(organizedData) {
     const sortedYears = Object.keys(organizedData).sort((a, b) => parseInt(b) - parseInt(a));
-
-    let targetYear = null;
-    let targetMonth = null;
-    let targetDay = null;
-
-    if (targetDateString) {
-        [targetYear, targetMonth, targetDay] = targetDateString.split("/");
-    }
-
-    // 展開するヘッダーを保持する配列
-    const headersToExpand = [];
 
     sortedYears.forEach(year => {
         // ▶年見出し
@@ -222,13 +201,13 @@ function buildAccordion(organizedData, targetDateString = null) {
 
                     // そのキャラクターの全情報を追加
                     organizedData[year][month][day][character].forEach(item => {
-                        characterDataContainer.appendChild(createItemDetailsElement(item,"patchnote"));
+                        characterDataContainer.appendChild(createItemDetailsElement(item));
                     });
                 });
 
                 // 日見出しのクリックイベント
                 dayHeader.addEventListener("click", () => {
-                    const isHidden = dayContent.style.display === "none";
+                    const isHidden = dayContent.style.display == "none";
                     
                     // 同じ月の他の日のコンテンツを閉じる
                     Array.from(monthContent.children).forEach(child => {
@@ -244,15 +223,11 @@ function buildAccordion(organizedData, targetDateString = null) {
                     dayContent.style.display = isHidden ? "block" : "none";
                     dayHeader.textContent = isHidden ? dayHeader.textContent.replace("▶", "▼") : dayHeader.textContent.replace("▼", "▶");
                 });
-                // URLパラメータで指定された日付であれば展開
-                if (targetDateString && year === targetYear && month === targetMonth && day === targetDay) {
-                    headersToExpand.push(yearHeader, monthHeader, dayHeader);
-                }
             });
 
             // 月見出しのクリックイベント
             monthHeader.addEventListener("click", () => {
-                const isHidden = monthContent.style.display === "none";
+                const isHidden = monthContent.style.display == "none";
                 // 同じ年の他の月のコンテンツを閉じる
                 Array.from(yearContent.children).forEach(child => {
                     if (child.classList.contains("month-content") && child !== monthContent) {
@@ -300,7 +275,7 @@ function buildAccordion(organizedData, targetDateString = null) {
         // 年見出しのクリックイベント
         yearHeader.addEventListener("click", () => {
             
-            const isHidden = yearContent.style.display === "none";
+            const isHidden = yearContent.style.display == "none";
             yearContent.style.display = isHidden ? "block" : "none";
             yearHeader.textContent = isHidden ? yearHeader.textContent.replace("▶", "▼") : yearHeader.textContent.replace("▼", "▶");
 
@@ -329,17 +304,13 @@ function buildAccordion(organizedData, targetDateString = null) {
             }
         });
     });
-
-    // 最新パッチノートのURLから飛んだ場合に、最新日付の情報を非同期処理で表示
-    if (headersToExpand.length > 0) {
-        setTimeout(() => {
-            headersToExpand.forEach(header => {
-                header.click();
-            });
-        }, 0);
-    }
 }
 
+/**
+ * 日付を日本語形式に変換する関数
+ * @param {string} dateString スラッシュ区切りの日付文字列 (例: "2024/01/01")
+ * @return {string} 日本語形式の日付文字列 (例: "2024年1月1日")
+ */
 function formatSlashDateToJapanese(dateString) {
     const parts = dateString.split('/');
     const year = parts[0];
@@ -348,9 +319,17 @@ function formatSlashDateToJapanese(dateString) {
     return `${year}年${month}月${day}日`;
 }
 
-// 最新日付の全データを専用領域に表示する関数
+/**
+ * 最新日付の全データを専用領域に表示する関数
+ * @param {object} latestData 最新日付のパッチノートデータ
+ * @param {string} latestDateString スラッシュ区切りの日付文字列 (例: "2024/01/01")
+ * @return {void}
+ */
 function displayLatestData(latestData, latestDateString) {
+    // 表示コンテナの取得
     const displayContainer = document.getElementById('latest-data-display');
+    
+    // データが存在しない場合
     if (!displayContainer || !latestData) {
         displayContainer.textContent = '最新情報がありません。';
         return;
@@ -371,19 +350,19 @@ function displayLatestData(latestData, latestDateString) {
     charactersInLatest.forEach(character => {
         // キャラクター名表示
         const characterNameDiv = document.createElement("div");
-        characterNameDiv.classList.add("character_name_toppage");
+        characterNameDiv.classList.add("character-name");
         characterNameDiv.style.marginTop = '15px';
-        characterNameDiv.textContent = character == "-" ? "システム" : character; 
+        characterNameDiv.textContent = character == "-" ? "システム" : character;
         displayContainer.appendChild(characterNameDiv);
 
         // コンテンツを配置
         const dataContainer = document.createElement("div");
-        dataContainer.classList.add("character_data_toppage");
+        dataContainer.classList.add("character-data-container");
         displayContainer.appendChild(dataContainer);
 
         // そのキャラクターの全情報を追加
         latestData[character].forEach(item => {
-            dataContainer.appendChild(createItemDetailsElement(item,"toppage"));
+            dataContainer.appendChild(createItemDetailsElement(item));
         });
     });
 }

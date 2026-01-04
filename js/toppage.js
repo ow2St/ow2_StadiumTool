@@ -2,9 +2,7 @@
 // 処理部
 // ------------------------------
 
-const linkContainer = document.getElementById("latest-info-link-container");
-
-// patchNoteData.jsonを読み込み、リンクを生成
+// patchNoteData.jsonを読み込み、最新日付を特定して表示する処理
 fetch("patchNoteData.json")
     .then(response => {
         if (!response.ok) {
