@@ -569,10 +569,15 @@ function initStatus(selectedHero){
 
         // 選択中のヒーローの場合
         if (initStatusList[i][STATUSLISTKEY.heroNameKey] == selectedHero){
+            // ヒーロー固有のボタンを非表示にする
+            document.getElementById("dva-button").style.display = "none";
+            document.getElementById("zaria-button").style.display = "none";
+            document.getElementById("juno-button").style.display = "none";
+            document.getElementById("moira-button").style.display = "none";
             switch(selectedHero){
 
                 // DVAの場合 メック人切り替えボタンを表示
-                case HERONAME.dvaMech: 
+                case HERONAME.dvaMech:
                 case HERONAME.dvaHuman:
                     document.getElementById("dva-button").style.display = "flex";
                     break;
@@ -593,10 +598,6 @@ function initStatus(selectedHero){
                     break;
 
                 default:
-                    document.getElementById("dva-button").style.display = "none";
-                    document.getElementById("zaria-button").style.display = "none";
-                    document.getElementById("juno-button").style.display = "none";
-                    document.getElementById("moira-button").style.display = "none";
                     break;
             }
 
@@ -627,7 +628,6 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
     }else{
         document.getElementById("movespeed").innerText = "";
     }
-    
     const container = document.getElementById('status-container');
     container.innerHTML = '';
 
@@ -1904,7 +1904,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                         if(thItemID == itemID){
                             
                             // 特別フラグがOFFの場合そのままステータスに反映
-                            if(!theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_SpecialFlgKey] == 1){
+                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_SpecialFlgKey] == 0){
                                 // 各パラメータを抽出
                                 const thLifeTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_LifeKey];
                                 const thArmorTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_ArmorKey];
