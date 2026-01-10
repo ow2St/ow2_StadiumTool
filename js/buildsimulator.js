@@ -25,7 +25,9 @@ var zariaFlg = UNIQUEHEROWORD.zaria;  // ザリア計算用フラグ
 var junoFlg = UNIQUEHEROWORD.damage;  // ジュノ計算用フラグ
 var moiraFlg = UNIQUEHEROWORD.damage;  // モイラ計算用フラグ
 
-var queenScratch = UNIQUEHEROWORD.scratch;  // クイーン傷ダメージ用変数
+var queenScratch = 0;  // 傷ダメージ
+var itemSelectMaxNumber = 0;   // アイテム選択上限数
+var powerSelectMaxNumber = 0;  // パワー選択上限数
 
 // 表示用のステータスリストを初期化
 var showStatusList = {};
@@ -221,6 +223,11 @@ async function loadAndInitBuildData() {
         parameterList = convertKeys(organizeParameterData(paramterData), parameterKeyMap);
         // #endregion
 
+        // パラメータ設定
+        queenScratch = Number(parameterData.find(param => param.name === "scratch")?.value);
+        itemSelectMaxNumber = Number(parameterData.find(param => param.name === "itemSelectMaxNumber")?.value);
+        powerSelectMaxNumber = Number(parameterData.find(param => param.name === "powerSelectMaxNumber")?.value);
+
         // テーブルに紐付け
         linkItemList(itemList, selectedHero);
         linkPowerList(powerList, selectedHero);
@@ -252,10 +259,10 @@ async function loadAndInitBuildData() {
 
                 const selectedItemRowsDataAfterLength = selectedItemRowsData.length;
 
-                if(selectedItemRowsDataBeforeLength == MAXNUMBER.selectMaxItem && selectedItemRowsDataAfterLength < MAXNUMBER.selectMaxItem){
+                if(selectedItemRowsDataBeforeLength == itemSelectMaxNumber && selectedItemRowsDataAfterLength < itemSelectMaxNumber){
                     // 選択できないようにしたチェックボックスを入力可に戻す
                     disableCheckbox(false, ITEMORPOWER.item);
-                }else if(selectedItemRowsDataAfterLength == MAXNUMBER.selectMaxItem){
+                }else if(selectedItemRowsDataAfterLength == itemSelectMaxNumber){
                     //　選択済みのアイテムが6個になった場合、未選択チェックボックスを入力不可にする
                     disableCheckbox(true, ITEMORPOWER.item);
                 }
@@ -276,10 +283,10 @@ async function loadAndInitBuildData() {
 
                 const selectedPowerRowsDataAfterLength = selectedPowerRowsData.length;
 
-                if(selectedPowerRowsDataBeforeLength == MAXNUMBER.selectMaxPower && selectedPowerRowsDataAfterLength < MAXNUMBER.selectMaxPower){
+                if(selectedPowerRowsDataBeforeLength == powerSelectMaxNumber && selectedPowerRowsDataAfterLength < powerSelectMaxNumber){
                     // 選択できないようにしたチェックボックスを入力可に戻す
                     disableCheckbox(false, ITEMORPOWER.power);
-                }else if(selectedPowerRowsDataAfterLength == MAXNUMBER.selectMaxPower){
+                }else if(selectedPowerRowsDataAfterLength == powerSelectMaxNumber){
                     //　選択済みのパワーが4個になった場合、未選択チェックボックスを入力不可にする
                     disableCheckbox(true, ITEMORPOWER.power);
                 }
