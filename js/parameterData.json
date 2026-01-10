@@ -1,0 +1,17 @@
+[
+    {
+        "id": "31944f23-a684-42c9-9454-068f120ec357",
+        "name": "powerSelectMaxNumber",
+        "value": 4
+    },
+    {
+        "id": "3f405564-940c-409e-a91d-132d5753bcf9",
+        "name": "itemSelectMaxNUmber",
+        "value": 6
+    },
+    {
+        "id": "945b6791-a158-4b76-9ee2-9019e4581594",
+        "name": "scratch",
+        "value": 15
+    }
+]

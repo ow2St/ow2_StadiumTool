@@ -126,6 +126,15 @@ window.STATUSLISTKEY = {
 };
 
 /**
+ * パラメータのキー
+ */
+window.PARAMETERKEY = {
+    idKey: "パラメータID",
+    nameKey: "パラメータ名",
+    valueKey: "値"
+};
+
+/**
  * パッチノート更新区分
  */
 window.UPDATECATEGORY = {
@@ -164,14 +173,13 @@ window.HERONAME = {
 };
 
 /**
- * ヒーロー専用文言・数値
+ * ヒーロー専用文言
  */
 window.UNIQUEHEROWORD = {
     zaria: "エネルギー0%",
     zaria100: "エネルギー100%",
     damage: "ダメージ",
-    heal: "ヒール",
-    scratch: 15
+    heal: "ヒール"
 };
 
 /**
@@ -290,3 +298,10 @@ window.EXTENSION = {
     png: ".png"
 };
 
+/**
+ * アイテムかパワーか
+ */
+window.ITEMORPOWER = {
+    item: "アイテム",
+    power: "パワー"
+};

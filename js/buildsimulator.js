@@ -143,6 +143,13 @@ const statusKeyMap = {
     ability3ctflag: STATUSLISTKEY.ability3ctflag
 };
 
+// パラメータキー対応マッピング（英語 → 日本語）
+const parameterKeyMap = {
+    id: PARAMETERKEY.idKey,
+    name: PARAMETERKEY.nameKey,
+    value: PARAMETERKEY.valueKey
+};
+
 const accordionContainer = document.getElementById("accordion-container");
 
 let itemAllData = []; // 全てのアイテムデータを保持
@@ -154,6 +161,8 @@ var powerList = {};  // 整形後
 let theoreticalItem = []; // 全ての理論値アイテムデータを保持
 var theoreticalItemList = {}; // 整形後
 
+let paramterData = []; // 全てのパラメータデータを保持
+
 // チェックされた行のデータを格納する配列
 var selectedItemRowsData = [];
 var selectedPowerRowsData = [];
@@ -163,7 +172,7 @@ var selectedTheoreticalItemData = [];
 var itemCheckboxes = [];
 var powerCheckboxes = [];
 var theoreticalItemCheckboxes = [];
-// #endregion 
+// #endregion
 
 // ビルド関連データの読み込みと初期化
 loadAndInitBuildData();
@@ -178,10 +187,10 @@ loadAndInitBuildData();
  * @return {void}
  */
 async function loadAndInitBuildData() {
-    try 
+    try
     {
         // #region データの読み込み
-        const [itemData, powerData, statusData, theoreticalItemData] = await Promise.all([
+        const [itemData, powerData, statusData, theoreticalItemData, parameterData] = await Promise.all([
             // データの読み込み(itemList)
             fetch("itemListData.json").then(response => response.json()),
 
@@ -192,19 +201,24 @@ async function loadAndInitBuildData() {
             fetch("statusListData.json").then(response => response.json()),
 
             // データの読み込み(theoreticalItem)
-            fetch("theoreticalItemData.json").then(response => response.json())
+            fetch("theoreticalItemData.json").then(response => response.json()),
+
+            // データの読み込み(parameter)
+            fetch("parameterData.json").then(response => response.json())
         ]);
 
         itemAllData = itemData;
         powerAllData = powerData;
         theoreticalItem = theoreticalItemData;
         statusAllData = statusData;
+        paramterData = parameterData;
 
         // 整形 → キー変換
         itemList = convertKeys(organizeItemData(itemAllData), itemKeyMap);
         powerList = convertKeys(organizePowerData(powerAllData), powerKeyMap);
         theoreticalItemList = convertKeys(organizeTheoreticalItemData(theoreticalItem), theoreticalItemKeyMap);
         initStatusList = convertKeys(organizeStatusData(statusAllData), statusKeyMap);
+        parameterList = convertKeys(organizeParameterData(paramterData), parameterKeyMap);
         // #endregion
 
         // テーブルに紐付け
@@ -240,10 +254,10 @@ async function loadAndInitBuildData() {
 
                 if(selectedItemRowsDataBeforeLength == MAXNUMBER.selectMaxItem && selectedItemRowsDataAfterLength < MAXNUMBER.selectMaxItem){
                     // 選択できないようにしたチェックボックスを入力可に戻す
-                    disableItemTableCheckbox(false);
+                    disableCheckbox(false, ITEMORPOWER.item);
                 }else if(selectedItemRowsDataAfterLength == MAXNUMBER.selectMaxItem){
                     //　選択済みのアイテムが6個になった場合、未選択チェックボックスを入力不可にする
-                    disableItemTableCheckbox(true);
+                    disableCheckbox(true, ITEMORPOWER.item);
                 }
             });
         });
@@ -264,10 +278,10 @@ async function loadAndInitBuildData() {
 
                 if(selectedPowerRowsDataBeforeLength == MAXNUMBER.selectMaxPower && selectedPowerRowsDataAfterLength < MAXNUMBER.selectMaxPower){
                     // 選択できないようにしたチェックボックスを入力可に戻す
-                    disablePowerTableCheckbox(false);
+                    disableCheckbox(false, ITEMORPOWER.power);
                 }else if(selectedPowerRowsDataAfterLength == MAXNUMBER.selectMaxPower){
                     //　選択済みのパワーが4個になった場合、未選択チェックボックスを入力不可にする
-                    disablePowerTableCheckbox(true);
+                    disableCheckbox(true, ITEMORPOWER.power);
                 }
             });
         });
@@ -462,6 +476,24 @@ function organizeStatusData(statusAllData) {
 
 
 /**
+ * paramterData に　parameterData.json　から貰うデータの形を決める
+ * @param {object} parameterData 読み込んだ全てのパラメータデータ
+ * @return {object}　selectedData　整形後のパラメータデータ
+ */
+function organizeParameterData(parameterData) {
+    const selectedData = parameterData
+    .map(Plist => {
+        return {
+            id: Plist.id,
+            name: Plist.name,
+            value: Plist.value
+        };
+    })
+    return selectedData;
+}
+
+
+/**
  * 英名キーを日本名キーへ変換処理
  * @param {object} dataArray 変換対象のデータ配列
  * @param {object} keyMap キー対応マッピングオブジェクト
@@ -530,8 +562,8 @@ function selectHero(id){
     initStatus(id);
 
     // アイテムリスト、パワーリストの初期化や絞り込み
-    disableItemTableCheckbox(false);
-    disablePowerTableCheckbox(false);
+    disableCheckbox(false, ITEMORPOWER.item);
+    disableCheckbox(false, ITEMORPOWER.power);
     filterTable(id);
 
     // 選択済みアイテム、選択済みパワーについて初期化
@@ -2521,7 +2553,7 @@ function clickDeleteButton(spanId,selectedRows) {
         updateBuild_Item(selectedRows);
         if(selectedRowsBeforeLength == 6){
             //元々アイテムが6個選ばれていた場合、選択されていないアイテムのチェックボックスを入力可
-            disableItemTableCheckbox(false);
+            disableCheckbox(false, ITEMORPOWER.item);
         }
         return selectedRows;
     }
@@ -2548,7 +2580,7 @@ function clickDeleteButton(spanId,selectedRows) {
         updateBuild_Power(selectedRows);
         if(selectedRowsBeforeLength == 4){
             //元々パワーが4個選ばれていた場合、選択されていないパワーのチェックボックスを入力可
-            disablePowerTableCheckbox(false);
+            disableCheckbox(false, ITEMORPOWER.power);
         }
         return selectedRows;
     }
@@ -2556,38 +2588,24 @@ function clickDeleteButton(spanId,selectedRows) {
 
 
 /**
- * アイテムテーブルのチェックボックス管理の関数
+ * チェックボックス管理の関数
  * @param {boolean} flag true:無効化、false:有効化
  * @return {void}
  */
-function disableItemTableCheckbox(flag){
-    const checkboxes = document.querySelectorAll(".item-checkbox");
+function disableCheckbox(flag, type){
+    let checkboxes = [];
+    if(type == "パワー"){
+        checkboxes = document.querySelectorAll(".power-checkbox");
+    }else if(type == "アイテム"){
+        checkboxes = document.querySelectorAll(".item-checkbox");
+    }
     checkboxes.forEach(checkbox =>{
         if(!checkbox.checked){
             if(flag){
-                checkbox.disabled = true;    
+                checkbox.disabled = true;
             }else{
                 checkbox.disabled = false;
-            }           
-        }
-    });
-}
-
-
-/**
- * パワーテーブルのチェックボックス管理の関数
- * @param {boolean} flag true:無効化、false:有効化
- * @return {void}
- */
-function disablePowerTableCheckbox(flag){
-    const checkboxes = document.querySelectorAll(".power-checkbox");
-    checkboxes.forEach(checkbox =>{
-        if(!checkbox.checked){
-            if(flag){
-                checkbox.disabled = true;    
-            }else{
-                checkbox.disabled = false;
-            }           
+            }
         }
     });
 }
@@ -2607,11 +2625,9 @@ function filterTable(id){
 
     // アイテムテーブルのカテゴリ
     const tableCategory = ["weapon","ability","survival"];
-
     for(let i=0; i<tableCategory.length; i++){
         var tbody_item = document.getElementById("item-table-" + tableCategory[i]).querySelector("tbody");
         var rows_item = tbody_item.querySelectorAll("tr");
-
         rows_item.forEach(row =>{
             const cells = row.querySelectorAll("td");
             const checkbox =  cells[0].querySelector(".item-checkbox");
@@ -2630,11 +2646,9 @@ function filterTable(id){
             }
         });
     }
-
     var tbody_power = document.getElementById("power-table").querySelector("tbody");
     var rows_power = Array.from(tbody_power.querySelectorAll("tr"));
     rows_power.shift();
-
     rows_power.forEach(row =>{
         const cells = row.querySelectorAll("td");
         const checkbox =  cells[0].querySelector(".power-checkbox");
@@ -2652,20 +2666,4 @@ function filterTable(id){
             row.classList.add("hidden-column");
         }
     });
-}
-
-
-/**
- * 理論値ON/OFF切り替え
- * @return {void}
- */
-function theoreticalValueClick(){
-    const theoreticalValueButton = document.getElementById("theoreticalvalue-button");
-
-    // エネルギー表示を入れ替える
-    if(theoreticalValueButton.innerText == "理論値OFF"){
-        theoreticalValueButton.innerText = "理論値ON";
-    }else if(theoreticalValueButton.innerText == "理論値ON"){
-        theoreticalValueButton.innerText = "理論値OFF";
-    }
 }
