@@ -2261,6 +2261,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         // 表示用ステータスリストに反映
         showStatusList[STATUSLISTKEY.mainDamageKey] = Math.round(showStatusList[STATUSLISTKEY.mainDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         showStatusList[STATUSLISTKEY.subDamageKey] = Math.round(showStatusList[STATUSLISTKEY.subDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+        showStatusList[STATUSLISTKEY.status_meleeDamageKey] = Math.round(showStatusList[STATUSLISTKEY.status_meleeDamageKey] * (weaponPowerTmp / 100 + 1) * 10 ** 2) / 10 ** 2;
 
         // ゲンジ・ソルジャー・マーシーの場合はULTにも武器パワーが乗るので対応
         if(showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.genji || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.soldier76 || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.mercy){
