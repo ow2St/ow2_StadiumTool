@@ -166,6 +166,7 @@ const itemContent = document.getElementById('item-content');
 const tabPower = document.getElementById('tabPower');
 const powerContent = document.getElementById('power-content');
 
+// ソート基準の定義
 const sortingCriteria = [
         { column: "itemName", type: "string" },
         { column: "powerName", type: "string" },
@@ -178,7 +179,7 @@ let sortDirection = new Array(8).fill(null);
 //アイテム表、コストのキャッシュアイコン等初期表示
 addCostDivAndSpan();
 
-//
+//テキスト検索にて、エンターキーと検索ボタンのクリックを紐づける
 document.addEventListener("DOMContentLoaded", () => {
     const input = document.getElementById("item_search-input");
 
@@ -196,7 +197,10 @@ document.addEventListener("DOMContentLoaded", () => {
 // 関数部
 // ------------------------------
 
-//itemList に　itemListData.json　から貰うデータの形を決める
+/**itemList に　itemListData.json　から貰うデータの形を決める
+ * @param {object} itemAllData - 全てのアイテムデータ
+ * @return {object} 選択・並び替え後のアイテムデータ
+ */
 function organizeItemData(itemAllData) {
     const selectedData = itemAllData
     .map(Ilist => {
@@ -233,7 +237,10 @@ function organizeItemData(itemAllData) {
     return selectedData;
 }
 
-// 英名キーを日本名キーへ変換処理
+/**英名キーを日本名キーへ変換処理（アイテム版）
+ * @param {object} dataArray - 選択・並び替え後のアイテムデータ
+ * @return {object} 日本名キーに変換後のアイテムデータ
+ */
 function convertItemKeys(dataArray) {
     return dataArray.map(obj => {
         let newObj = {};
@@ -245,7 +252,11 @@ function convertItemKeys(dataArray) {
     });
 }
 
-//powerList に　powerListData.json　から貰うデータの形を決める
+/**powerList に　powerListData.json　から貰うデータの形を決める
+ * @param {object} powerAllData - 全てのパワーデータ
+ * @return {object} 選択・並び替え後のパワーデータ
+ */
+
 function organizePowerData(powerAllData) {
     const selectedData = powerAllData
     .map(Plist => {
@@ -259,7 +270,10 @@ function organizePowerData(powerAllData) {
     return selectedData;
 }
 
-// 英名キーを日本名キーへ変換処理
+/**英名キーを日本名キーへ変換処理（パワー版）
+ * @param {object} dataArray - 選択・並び替え後のパワーデータ
+ * @return {object} 日本名キーに変換後のパワーデータ
+ */
 function convertPowerKeys(dataArray) {
     return dataArray.map(obj => {
         let newObj = {};
@@ -273,7 +287,8 @@ function convertPowerKeys(dataArray) {
 
 
 //タブ切り替え
-// アイテムタブに遷移
+
+/**アイテムタブに遷移 */
 function changeTabItem() {
 itemContent.style.display = "block";
 powerContent.style.display = "none";
@@ -285,7 +300,7 @@ tabPower.style.borderLeft = "none";
 tabItem.style.border = "1px solid black";
 tabItem.style.borderBottom = "none";
 }
-// パワータブに遷移
+/**パワータブに遷移 */
 function changeTabPower() {
     powerContent.style.display = "block";
     itemContent.style.display = "none";
@@ -302,7 +317,10 @@ function changeTabPower() {
     filterPowerTable(defaultHero);
 }
 
-// アイテムリストをテーブルに紐づける関数
+/**アイテムリストをテーブルに紐づける関数
+ * @param {object} itemList - アイテムデータの配列
+ * @return {void}
+ */
 function linkItemList(itemList) {
     let tbody = document.getElementById("item-table").querySelector("tbody");
 
@@ -366,9 +384,9 @@ function linkItemList(itemList) {
             }
 
             // キー名がステータス関連のキーの場合
-            if([item_lifeKey, item_armorKey, item_shieldKey, weaponPowerKey, abilityPowerKey, 
-                attackSpeedKey, ctReducationKey, ammoKey, weapon_LifeStealKey, 
-                ability_LifeStealKey, speedKey, reloadSpeedKey, item_meleeDamageKey, 
+            if([item_lifeKey, item_armorKey, item_shieldKey, weaponPowerKey, abilityPowerKey,
+                attackSpeedKey, ctReducationKey, ammoKey, weapon_LifeStealKey,
+                ability_LifeStealKey, speedKey, reloadSpeedKey, item_meleeDamageKey,
                 criticalKey].includes(key)) {
 
                 // 値が0でない場合
@@ -476,7 +494,19 @@ function linkItemList(itemList) {
     }
 }
 
-// アイテムリスト用子要素作成関数
+/**アイテムリスト用子要素作成関数
+ * @param {object} tr - 行要素
+ * @param {string} itemNameText - アイテム名
+ * @param {string} iconText - アイコン
+ * @param {string} categoryText - カテゴリー
+ * @param {string} rarityText - レアリティ
+ * @param {number} costText - コスト
+ * @param {string} uniqueHeroText - 固有ヒーロー
+ * @param {string} textText - 説明文
+ * @param {Array} statusLists - ステータスリスト
+ * @param {Array} statusIcons - ステータスアイコンリスト
+ * @return {object} - 作成した行要素
+ */
 function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, textText, statusLists, statusIcons){
 
     // アイテム名列
@@ -564,7 +594,10 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
     return tr;
 }
 
-// 絞り込み条件を更新する関数（アイテム）
+/** 絞り込み条件を更新する関数（アイテム）
+ * @param {HTMLElement} elem - 変更対象の要素(押されたボタンやチェックボックス)
+ * @return {void}
+ */
 function filterItemTable(elem){
 
     // 絞り込みボタンのON/OFF切り替え
@@ -679,7 +712,9 @@ function filterItemTable(elem){
     });
 }
 
-//　検索ボックスで絞り込み（アイテム）
+/** 検索ボックスで絞り込み（アイテム）
+ * @return {void}
+ */
 function item_searchWords() {
 
     // 検索ワードを取得
@@ -725,7 +760,10 @@ function item_searchWords() {
 
 }
 
-//アイテムテーブルソートの前提準備
+/**アイテムテーブルソートの前提準備
+ * @param {string} id - ソート対象の列ID
+ * @return {void}
+ */
 function itemSortClick(id){
     const tHeader=document.getElementById("item-table").querySelectorAll("th");
     const tBody = document.getElementById("item-table").querySelector("tbody");
@@ -767,6 +805,9 @@ function itemSortClick(id){
     }
 }
 
+/**コスト列のth内に、キャッシュアイコンとspan要素を追加する関数
+ * @return {void}
+ */
 function addCostDivAndSpan() {
 
     //costのth内innerTextはいらないので消去
@@ -803,7 +844,14 @@ function addCostDivAndSpan() {
     cost_div.appendChild(costArrow_span);
 }
 
-// アイテムテーブルをソートする関数
+/** アイテムテーブルをソートする関数
+ * @param {object} headers - テーブルヘッダー要素
+ * @param {object} tbody - テーブルボディ要素
+ * @param {Object} sortingCriteria - ソート基準
+ * @param {number} index - ソート対象の列インデックス
+ * @param {boolean} sorting - 昇順か降順か
+ * @return {void}
+ */
 function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
 
     //レア度の並び替えの基準を設定
@@ -866,7 +914,8 @@ function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
 }
 
 /** パワーリストをテーブルに紐づける関数
- * @param {object} powerList - キー変換・編集済パワーデータ
+ * @param {object} powerList - パワーデータの配列
+ * @return {void}
  */
 function linkPowerList(powerList) {
     let tbody = document.getElementById("power-table").querySelector("tbody");
@@ -917,7 +966,9 @@ function linkPowerList(powerList) {
     }
 }
 
-//　検索ボックスで絞り込み（パワー）
+/** 検索ボックスで絞り込み（パワー）
+ * @return {void}
+ */
 function power_searchWords() {
 
     // 検索ワードを取得
@@ -963,10 +1014,15 @@ function power_searchWords() {
 
 }
 
-
-// パワーリスト用子要素作成関数
+/** パワーリスト用子要素作成関数
+ * @param {object} tr - 対象の行要素
+ * @param {string} powerNameText - パワー名
+ * @param {string} iconText - アイコン
+ * @param {string} heroText - ヒーロー
+ * @param {string} textText - 説明文
+ * @return {object} - 作成した行要素
+ */
 function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
-
 
     // パワー名列
     var td = document.createElement("td");
@@ -1006,7 +1062,10 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
     return tr;
 }
 
-// 絞り込み条件を更新する関数（パワー）
+/** 絞り込み条件を更新する関数（パワー）
+ * @param {HTMLElement} elem - 対象の要素(押されたヒーローアイコン)
+ * @return {void}
+ */
 function filterPowerTable(elem){
 
     // 絞り込みイメージのON/OFF切り替え
@@ -1091,7 +1150,10 @@ function filterPowerTable(elem){
     });
 }
 
-//パワーテーブルソートの前提準備
+/** パワーテーブルソートの前提準備
+ * @param {string} id - ソート対象の列ID
+ * @return {void}
+ */
 function powerSortClick(id){
     const tHeader=document.getElementById("power-table").querySelectorAll("th");
     const tBody = document.getElementById("power-table").querySelector("tbody");
@@ -1126,7 +1188,14 @@ function powerSortClick(id){
 
 }
 
-// パワーテーブルをソートする関数
+/** パワーテーブルをソートする関数
+ * @param {object} headers - テーブルヘッダー要素の配列
+ * @param {object} tbody - テーブルボディ要素
+ * @param {object} sortingCriteria - ソート基準
+ * @param {number} index - ソート対象の列インデックス
+ * @param {boolean} sorting - 昇順か降順か
+ * @return {void}
+ */
 function powerTableSort(headers, tbody, sortingCriteria,index,sorting) {
 
     //レア度の並び替えの基準を設定
@@ -1188,6 +1257,9 @@ function powerTableSort(headers, tbody, sortingCriteria,index,sorting) {
     rows.forEach(row => tbody.appendChild(row));
 }
 
+/** パッチノートが適用可能か確認し、適用する関数
+ * @return {void}
+ */
 function applyPatchNotesIfReady() {
     // 一度適用したら再実行しない
     if (patchNotesApplied) return;
@@ -1203,6 +1275,9 @@ function applyPatchNotesIfReady() {
     }
 }
 
+/** パッチノートを処理し、変更点をマップに整理する関数
+ * @return {Map} - アイテム名をキーとした変更点のマップ
+ */
 function processPatchNotes() {
     const changesMap = new Map();
 
@@ -1234,6 +1309,10 @@ function processPatchNotes() {
     return changesMap;
 }
 
+/** 変更履歴のHTMLを生成する関数
+ * @param {object} changes - 変更点の配列
+ * @return {string} - 生成したHTML文字列
+ */
 function createHistoryHtml(changes) {
 
     let html = "";
@@ -1246,6 +1325,9 @@ function createHistoryHtml(changes) {
     return `<div class="history-content-wrapper">${html}</div>`;
 }
 
+/** パッチノートをアイテム・パワーテーブルに適用する関数
+ * @return {void}
+ */
 function applyPatchNotesToTables() {
     if (patchNoteAllData.length == 0) return;
 
@@ -1260,6 +1342,12 @@ function applyPatchNotesToTables() {
     patchNotesApplied = true;
 }
 
+/** テーブルに変更を適用する関数
+ * @param {string} tableId - テーブルのID
+ * @param {number} nameColIndex - 名前列のインデックス
+ * @param {Map} changesMap - 変更点のマップ
+ * @return {void}
+ */
 function applyChangesToTable(tableId, nameColIndex, changesMap) {
     const tableElement = document.getElementById(tableId);
     const tbody = tableElement?.querySelector("tbody");
