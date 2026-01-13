@@ -622,10 +622,6 @@ function filterItemTable(elem){
 
         // カテゴリー関連
         buttons_category.forEach(button =>{
-            // ボタンがONの場合
-            if(button.className == "button-on" && shouldShow){
-                shouldShow = (cells[categoryNumber]?.innerText == button.innerText);
-            }
             // ボタンがOFFの場合
             if(button.className == "button-off" && shouldShow){
                 shouldShow = !(cells[categoryNumber]?.innerText == button.innerText);
