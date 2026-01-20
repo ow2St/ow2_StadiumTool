@@ -179,6 +179,21 @@ let sortDirection = new Array(8).fill(null);
 //アイテム表、コストのキャッシュアイコン等初期表示
 addCostDivAndSpan();
 
+//ヒーロー専用アイテム　初期状態OFF   TODO:出来てない
+window.set
+document.addEventListener("DOMContentLoaded", () => {
+    const heroIds = document.getElementById("button-hero");
+
+    for (const icon of heroIds.children) {
+        icon.click();
+/*         icon.classList.remove("item-hero-icon-on");
+        icon.classList.add("item-hero-icon-off");
+        filterItemTable(icon);
+ */    };
+});
+
+
+
 //テキスト検索にて、エンターキーと検索ボタンのクリックを紐づける
 document.addEventListener("DOMContentLoaded", () => {
     const input = document.getElementById("item_search-input");
@@ -313,7 +328,7 @@ function changeTabPower() {
     tabPower.style.borderBottom = "none";
 
     //パワー一覧　D.VAアイコンをONにする
-    let defaultHero = document.getElementById("D.VA");
+    let defaultHero = document.getElementById("D.VA-power");
     filterPowerTable(defaultHero);
 }
 
@@ -607,17 +622,17 @@ function filterItemTable(elem){
         isNowOn = elem.classList.contains("button-on");
         elem.classList.toggle("button-on", !isNowOn);
         elem.classList.toggle("button-off", isNowOn);
-    } else if (tag === "input" && elem.type === "checkbox") {
-        isNowOn = elem.checked;
-        elem.classList.toggle("checkbox-on", isNowOn);
-        elem.classList.toggle("checkbox-off", !isNowOn);
+    } else if (tag === "img") {
+        isNowOn = elem.classList.contains("item-hero-icon-on");
+        elem.classList.toggle("item-hero-icon-on", !isNowOn);
+        elem.classList.toggle("item-hero-icon-off", isNowOn);
     }
 
     // 各絞り込み一覧を取得
     const buttons_category = document.querySelectorAll("#button-category button");
     const buttons_rarity = document.querySelectorAll("#button-rarity button");
     const buttons_status = document.querySelectorAll("#button-status button");
-    const uniqueHero = document.getElementById("uniqueHero");
+    const buttons_hero = document.querySelectorAll("#button-hero img");
 
     // テーブルのヘッダー行（<tr>）を取得
     const headerRow = document.querySelector("#item-table thead tr");
@@ -629,7 +644,7 @@ function filterItemTable(elem){
     const categoryNumber = headers.findIndex(th => th.textContent == THTEXT.category);
     const rarityNumber = headers.findIndex(th => th.textContent == THTEXT.rarity);
     const statusNumber = headers.findIndex(th => th.textContent == THTEXT.status);
-    const uniqueHeroNumber = headers.findIndex(th => th.textContent == THTEXT.uniqueHero);
+    const heroNumber = headers.findIndex(th => th.textContent == THTEXT.uniqueHero);
 
     //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_item に配列のように格納。各行を1つのアイテムとする。
     var tbody_item = document.getElementById("item-table").querySelector("tbody");
@@ -647,11 +662,13 @@ function filterItemTable(elem){
         let shouldShow = true;  // 表示判定フラグ
         let shouldShowStatus = false;  // ステータス判定用フラグ
 
-        // 非表示にするアイテムを探す
-        // 固有ヒーロー関連
-        if (!uniqueHero.checked) {
-            shouldShow = !(cells[uniqueHeroNumber]?.innerText != "-");
-        }
+        // ヒーロー関連
+        buttons_hero.forEach(button =>{
+            // アイコンがOFFの場合
+            if(button.className == "item-hero-icon-off" && shouldShow){
+                shouldShow = !(cells[heroNumber]?.innerText + "-item" == button.id);
+            }
+        });
 
         // カテゴリー関連
         buttons_category.forEach(button =>{
@@ -1116,7 +1133,7 @@ function filterPowerTable(elem){
 
             // ボタンがOFFの場合
             if(img.className == "power-hero-icon-off" && shouldShow){
-                shouldShow = !(cells[heroNumber]?.innerText == img.id);
+                shouldShow = !(cells[heroNumber]?.innerText + "-power" == img.id);
             }
         });
 
@@ -1125,7 +1142,7 @@ function filterPowerTable(elem){
 
             // ボタンがOFFの場合
             if(img.className == "power-hero-icon-off" && shouldShow){
-                shouldShow = !(cells[heroNumber]?.innerText == img.id);
+                shouldShow = !(cells[heroNumber]?.innerText + "-power" == img.id);
             }
         });
 
@@ -1133,7 +1150,7 @@ function filterPowerTable(elem){
         heroes_support.forEach(img => {
             // ボタンがOFFの場合
             if(img.className == "power-hero-icon-off" && shouldShow){
-                shouldShow = !(cells[heroNumber]?.innerText == img.id);
+                shouldShow = !(cells[heroNumber]?.innerText + "-power" == img.id);
             }
         });
 
