@@ -74,143 +74,105 @@ const accordionContainer = document.getElementById("accordion-container");
 let patchNotesApplied = false;
 
 let itemAllData = []; // 全てのアイテムデータを保持
-
-// データの読み込み(itemList)
-fetch("itemListData.json")
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        itemAllData = data;
-
-        //初期データをカテゴリー順に並び替え
-        // 並び替え優先順位を定義
-        const categoryOrder = [CATEGORYELEMENTS.weapon, CATEGORYELEMENTS.ability, CATEGORYELEMENTS.survival];
-
-        itemAllData.sort((a, b) => {
-        // categoryOrder内でのインデックスを取得
-        const indexA = categoryOrder.indexOf(a.category);
-        const indexB = categoryOrder.indexOf(b.category);
-
-        // indexが見つからない（＝該当しないカテゴリ）場合は末尾へ
-        const orderA = indexA === -1 ? categoryOrder.length : indexA;
-        const orderB = indexB === -1 ? categoryOrder.length : indexB;
-
-        // 比較して順序を返す
-        return orderA - orderB;
-        });
-
-        // 整形 → キー変換
-        const itemList = convertItemKeys(organizeItemData(itemAllData));
-
-        linkItemList(itemList);
-
-        applyPatchNotesIfReady();
-    })
-    .catch(error => {
-        console.error("データの読み込み中にエラーが発生しました:", error);
-        accordionContainer.textContent = "データの読み込みに失敗しました。";
-    });
-
 let powerAllData = []; // 全てのアイテムデータを保持
-
-// データの読み込み(powerList)
-fetch("powerListData.json")
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        powerAllData = data;
-
-        // 整形 → キー変換
-        const powerList = convertPowerKeys(organizePowerData(powerAllData));
-
-        linkPowerList(powerList);
-
-        applyPatchNotesIfReady();
-    })
-    .catch(error => {
-        console.error("データの読み込み中にエラーが発生しました:", error);
-        accordionContainer.textContent = "データの読み込みに失敗しました。";
-    });
-
 let patchNoteAllData = []; // 全てのパッチノートデータを保持
 
-// データの読み込み(patchNoteData)
-fetch("patchNoteData.json")
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        patchNoteAllData = data;
-
-        applyPatchNotesIfReady();
-    })
-    .catch(error => {
-        console.error("データの読み込み中にエラーが発生しました:", error);
-        accordionContainer.textContent = "データの読み込みに失敗しました。";
-    });
-
-//タブ切り替え初期化
-const tabItem = document.getElementById('tabItem');
-const itemContent = document.getElementById('item-content');
-const tabPower = document.getElementById('tabPower');
-const powerContent = document.getElementById('power-content');
-
-// ソート基準の定義
-const sortingCriteria = [
-        { column: "itemName", type: "string" },
-        { column: "powerName", type: "string" },
-        { column: "rarity", type: "string" },
-        { column: "cost", type: "number" }
-    ]
-
-let sortDirection = new Array(8).fill(null);
-
-//アイテム表、コストのキャッシュアイコン等初期表示
-addCostDivAndSpan();
-
-//ヒーロー専用アイテム　初期状態OFF   TODO:出来てない
-window.set
-document.addEventListener("DOMContentLoaded", () => {
-    const heroIds = document.getElementById("button-hero");
-
-    for (const icon of heroIds.children) {
-        icon.click();
-/*         icon.classList.remove("item-hero-icon-on");
-        icon.classList.add("item-hero-icon-off");
-        filterItemTable(icon);
- */    };
-});
-
-
-
-//テキスト検索にて、エンターキーと検索ボタンのクリックを紐づける
-document.addEventListener("DOMContentLoaded", () => {
-    const input = document.getElementById("item_search-input");
-
-    if (!input) return;
-
-    input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            e.preventDefault();   // フォーム送信防止（重要）
-            item_searchWords();   // 検索ボタンと同じ処理
-        }
-    });
-});
+loadAndInitData();
 
 // ------------------------------
 // 関数部
 // ------------------------------
+
+/** データの読み込みと初期化を行う非同期関数
+ * @return {Promise<void>} - 非同期処理の完了を示すPromise
+*/
+async function loadAndInitData() {
+    // データの読み込み(itemList)
+    const [itemData, powerData, parameterData, patchNoteData] = await Promise.all([
+        // データの読み込み(itemList)
+        fetch("itemListData.json").then(response => response.json()),
+
+        // データの読み込み(powerList)
+        fetch("powerListData.json").then(response => response.json()),
+
+        // データの読み込み(parameter)
+        fetch("parameterData.json").then(response => response.json()),
+
+        // データの読み込み(patchNoteData)
+        fetch("patchNoteData.json").then(response => response.json())
+    ]);
+    itemAllData = itemData;
+    powerAllData = powerData;
+    patchNoteAllData = patchNoteData;
+
+    //初期データをカテゴリー順に並び替え
+    // 並び替え優先順位を定義
+    const categoryOrder = [CATEGORYELEMENTS.weapon, CATEGORYELEMENTS.ability, CATEGORYELEMENTS.survival];
+
+    itemAllData.sort((a, b) => {
+    // categoryOrder内でのインデックスを取得
+    const indexA = categoryOrder.indexOf(a.category);
+    const indexB = categoryOrder.indexOf(b.category);
+
+    // indexが見つからない（＝該当しないカテゴリ）場合は末尾へ
+    const orderA = indexA === -1 ? categoryOrder.length : indexA;
+    const orderB = indexB === -1 ? categoryOrder.length : indexB;
+
+    // 比較して順序を返す
+    return orderA - orderB;
+    });
+
+    // 整形 → キー変換
+    const itemList = convertItemKeys(organizeItemData(itemAllData));
+
+    linkItemList(itemList);
+
+    applyPatchNotesIfReady();
+
+    // 整形 → キー変換
+    const powerList = convertPowerKeys(organizePowerData(powerAllData));
+
+    linkPowerList(powerList);
+
+    applyPatchNotesIfReady();
+
+    //タブ切り替え初期化
+    const tabItem = document.getElementById('tabItem');
+    const itemContent = document.getElementById('item-content');
+    const tabPower = document.getElementById('tabPower');
+    const powerContent = document.getElementById('power-content');
+
+    // ソート基準の定義
+    const sortingCriteria = [
+            { column: "itemName", type: "string" },
+            { column: "powerName", type: "string" },
+            { column: "rarity", type: "string" },
+            { column: "cost", type: "number" }
+        ]
+
+    let sortDirection = new Array(8).fill(null);
+
+    //アイテム表、コストのキャッシュアイコン等初期表示
+    addCostDivAndSpan();
+
+    //ヒーロー専用アイテム　初期状態OFF
+    const heroButtonDva = document.getElementById("D.VA-item");
+    heroButtonDva.onclick();
+
+    //テキスト検索にて、エンターキーと検索ボタンのクリックを紐づける
+    document.addEventListener("DOMContentLoaded", () => {
+        const input = document.getElementById("item_search-input");
+
+        if (!input) return;
+
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();   // フォーム送信防止（重要）
+                item_searchWords();   // 検索ボタンと同じ処理
+            }
+        });
+    });
+}
 
 /**itemList に　itemListData.json　から貰うデータの形を決める
  * @param {object} itemAllData - 全てのアイテムデータ
