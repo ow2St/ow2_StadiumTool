@@ -70,12 +70,27 @@ const powerKeyMap = {
 
 
 const accordionContainer = document.getElementById("accordion-container");
+//タブ切り替え初期化
+const tabItem = document.getElementById('tabItem');
+const itemContent = document.getElementById('item-content');
+const tabPower = document.getElementById('tabPower');
+const powerContent = document.getElementById('power-content');
 
 let patchNotesApplied = false;
 
 let itemAllData = []; // 全てのアイテムデータを保持
 let powerAllData = []; // 全てのアイテムデータを保持
 let patchNoteAllData = []; // 全てのパッチノートデータを保持
+
+// ソート基準の定義
+const sortingCriteria = [
+    { column: "itemName", type: "string" },
+    { column: "powerName", type: "string" },
+    { column: "rarity", type: "string" },
+    { column: "cost", type: "number" }
+]
+
+let sortDirection = new Array(8).fill(null);
 
 loadAndInitData();
 
@@ -135,22 +150,6 @@ async function loadAndInitData() {
     linkPowerList(powerList);
 
     applyPatchNotesIfReady();
-
-    //タブ切り替え初期化
-    const tabItem = document.getElementById('tabItem');
-    const itemContent = document.getElementById('item-content');
-    const tabPower = document.getElementById('tabPower');
-    const powerContent = document.getElementById('power-content');
-
-    // ソート基準の定義
-    const sortingCriteria = [
-            { column: "itemName", type: "string" },
-            { column: "powerName", type: "string" },
-            { column: "rarity", type: "string" },
-            { column: "cost", type: "number" }
-        ]
-
-    let sortDirection = new Array(8).fill(null);
 
     //アイテム表、コストのキャッシュアイコン等初期表示
     addCostDivAndSpan();
@@ -270,7 +269,7 @@ function changeTabItem() {
 itemContent.style.display = "block";
 powerContent.style.display = "none";
 tabPower.style.backgroundColor = "white";
-tabItem.style.backgroundColor = "lightgray";
+tabItem.style.backgroundColor = "lightgrey";
 tabPower.style.border = "1px dashed black";
 tabPower.style.borderBottom = "none";
 tabPower.style.borderLeft = "none";
@@ -282,7 +281,7 @@ function changeTabPower() {
     powerContent.style.display = "block";
     itemContent.style.display = "none";
     tabItem.style.backgroundColor = "white";
-    tabPower.style.backgroundColor = "lightgray";
+    tabPower.style.backgroundColor = "lightgrey";
     tabItem.style.border = "1px dashed black";
     tabItem.style.borderBottom = "none";
     tabItem.style.borderRight = "none";
