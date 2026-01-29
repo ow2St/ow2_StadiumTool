@@ -135,6 +135,19 @@ window.PARAMETERKEY = {
 };
 
 /**
+ * パラメータのID
+ */
+window.PARAMETERID = {
+    itemSelectMaxNumberID: '31944f23-a684-42c9-9454-068f120ec357',
+    powerSelectMaxNumberID: '3f405564-940c-409e-a91d-132d5753bcf9',
+    scratchID: '945b6791-a158-4b76-9ee2-9019e4581594',
+    bioticorbhealID: '9bb7b362-3829-4b63-96ed-dd02c3f19031',
+    coalescencehealID: 'ce50c767-6399-4e0e-8f84-fb63f8ac41d7',
+    takeaimID: 'd58b6aa7-2f05-495a-8c60-e7b18ee7217c',
+    TracerHPUPscalefactorID: 'f377ad17-3528-4f25-a822-f77df93aef76',
+};
+
+/**
  * パッチノート更新区分
  */
 window.UPDATECATEGORY = {
