@@ -264,7 +264,7 @@ function convertPowerKeys(dataArray) {
 
 //タブ切り替え
 
-/**アイテムタブに遷移 */
+/**アイテムタブへ移動 */
 function changeTabItem() {
 itemContent.style.display = "block";
 powerContent.style.display = "none";
@@ -276,7 +276,7 @@ tabPower.style.borderLeft = "none";
 tabItem.style.border = "1px solid black";
 tabItem.style.borderBottom = "none";
 }
-/**パワータブに遷移 */
+/**パワータブへ移動 */
 function changeTabPower() {
     powerContent.style.display = "block";
     itemContent.style.display = "none";

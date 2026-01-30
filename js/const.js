@@ -158,7 +158,6 @@ resourceManagementName = "リソース・マネジメント";
 window.HERONAME = {
     dvaMech: "D.VA（メック）",
     dvaHuman: "D.VA（人）",
-    dva: "DVA",
     zaria: "ザリア",
     juno: "ジュノ",
     moira: "モイラ",

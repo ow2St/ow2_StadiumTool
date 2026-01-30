@@ -556,7 +556,7 @@ function selectHero(id){
     // 選択中ヒーローアイコンを変更
     // D.VAチェック
     if(id == HERONAME.dvaMech || id == HERONAME.dvaHuman){
-        imgPath = HERONAME.dva + EXTENSION.png;
+        imgPath = HERONAME.dvaHuman.slice(0,-3) + EXTENSION.png;
     }else{
         imgPath = id + EXTENSION.png;
     }
@@ -2626,7 +2626,7 @@ function disableCheckbox(flag, type){
  */
 function filterTable(id){
 
-    // 選択ヒーローがDVAの場合、絞り込み条件と合致させるために値を変更
+    // 選択ヒーローがD.VAの場合、絞り込み条件と合致させるために値を変更
     if(id == "D.VA（メック）" || id == "D.VA（人）"){
         id = "D.VA";
     }
