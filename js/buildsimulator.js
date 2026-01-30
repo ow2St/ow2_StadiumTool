@@ -28,6 +28,7 @@ var moiraFlg = UNIQUEHEROWORD.damage;  // モイラ計算用フラグ
 var queenScratch = 0;  // 傷ダメージ
 var itemSelectMaxNumber = 0;   // アイテム選択上限数
 var powerSelectMaxNumber = 0;  // パワー選択上限数
+var takeAimBombDamage = 0; // テイクエイム爆風ダメージ
 
 // 表示用のステータスリストを初期化
 var showStatusList = {};
@@ -163,7 +164,7 @@ var powerList = {};  // 整形後
 let theoreticalItem = []; // 全ての理論値アイテムデータを保持
 var theoreticalItemList = {}; // 整形後
 
-let paramterData = []; // 全てのパラメータデータを保持
+let parameterAllData = []; // 全てのパラメータデータを保持
 
 // チェックされた行のデータを格納する配列
 var selectedItemRowsData = [];
@@ -213,20 +214,22 @@ async function loadAndInitBuildData() {
         powerAllData = powerData;
         theoreticalItem = theoreticalItemData;
         statusAllData = statusData;
-        paramterData = parameterData;
+        parameterAllData = parameterData;
 
         // 整形 → キー変換
         itemList = convertKeys(organizeItemData(itemAllData), itemKeyMap);
         powerList = convertKeys(organizePowerData(powerAllData), powerKeyMap);
         theoreticalItemList = convertKeys(organizeTheoreticalItemData(theoreticalItem), theoreticalItemKeyMap);
         initStatusList = convertKeys(organizeStatusData(statusAllData), statusKeyMap);
-        parameterList = convertKeys(organizeParameterData(paramterData), parameterKeyMap);
+        parameterList = convertKeys(organizeParameterData(parameterAllData), parameterKeyMap);
         // #endregion
 
-        // パラメータ設定
-        queenScratch = Number(parameterData.find(param => param.name === "scratch")?.value);
-        itemSelectMaxNumber = Number(parameterData.find(param => param.name === "itemSelectMaxNumber")?.value);
-        powerSelectMaxNumber = Number(parameterData.find(param => param.name === "powerSelectMaxNumber")?.value);
+        // #region パラメータ設定
+        queenScratch = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.scratchID)?.[PARAMETERKEY.valueKey]);
+        itemSelectMaxNumber = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.itemSelectMaxNumberID)?.[PARAMETERKEY.valueKey]);
+        powerSelectMaxNumber = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.powerSelectMaxNumberID)?.[PARAMETERKEY.valueKey]);
+        takeAimBombDamage = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.takeaimID)?.[PARAMETERKEY.valueKey]);
+        // #endregion
 
         // テーブルに紐付け
         linkItemList(itemList, selectedHero);

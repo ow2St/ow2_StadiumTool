@@ -1,17 +1,37 @@
 [
     {
         "id": "31944f23-a684-42c9-9454-068f120ec357",
-        "name": "powerSelectMaxNumber",
-        "value": 4
+        "name": "itemSelectMaxNumber",
+        "value": 6
     },
     {
         "id": "3f405564-940c-409e-a91d-132d5753bcf9",
-        "name": "itemSelectMaxNumber",
-        "value": 6
+        "name": "powerSelectMaxNumber",
+        "value": 4
     },
     {
         "id": "945b6791-a158-4b76-9ee2-9019e4581594",
         "name": "scratch",
         "value": 15
+    },
+    {
+        "id": "9bb7b362-3829-4b63-96ed-dd02c3f19031",
+        "name": "bioticorbheal",
+        "value": 300
+    },
+    {
+        "id": "ce50c767-6399-4e0e-8f84-fb63f8ac41d7",
+        "name": "coalescenceheal",
+        "value": 1120
+    },
+    {
+        "id": "d58b6aa7-2f05-495a-8c60-e7b18ee7217c",
+        "name": "takeaim",
+        "value": 80
+    },
+    {
+        "id": "f377ad17-3528-4f25-a822-f77df93aef76",
+        "name": "TracerHPUPscalefactor",
+        "value": 0.65
     }
 ]
