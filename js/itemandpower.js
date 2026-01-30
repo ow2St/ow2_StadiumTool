@@ -30,7 +30,7 @@ var durationFlgKey = "持続時間フラグ";
 var durationKey = "持続時間";
 var theoreticalFlgKey = "理論値フラグ";
 
-// キー対応マッピング（英語 → 日本語）
+// アイテムキー対応マッピング（英語 → 日本語）
 const itemKeyMap = {
     id: itemIdKey,
     itemname: item_nameKey,
@@ -60,7 +60,7 @@ const itemKeyMap = {
     theoreticalflag: theoreticalFlgKey
 };
 
-// キー対応マッピング（英語 → 日本語）
+// パワーキー対応マッピング（英語 → 日本語）
 const powerKeyMap = {
     powername: POWERLISTKEY.power_nameKey,
     hero: POWERLISTKEY.heroKey,
@@ -68,6 +68,12 @@ const powerKeyMap = {
     text: POWERLISTKEY.power_textKey,
 };
 
+// パラメータキー対応マッピング（英語 → 日本語）
+const parameterKeyMap = {
+    id: PARAMETERKEY.idKey,
+    name: PARAMETERKEY.nameKey,
+    value: PARAMETERKEY.valueKey
+};
 
 const accordionContainer = document.getElementById("accordion-container");
 //タブ切り替え初期化
@@ -119,6 +125,7 @@ async function loadAndInitData() {
     itemAllData = itemData;
     powerAllData = powerData;
     patchNoteAllData = patchNoteData;
+    parameterAllData = parameterData;
 
     //初期データをカテゴリー順に並び替え
     // 並び替え優先順位を定義
@@ -138,17 +145,18 @@ async function loadAndInitData() {
     });
 
     // 整形 → キー変換
-    const itemList = convertItemKeys(organizeItemData(itemAllData));
+    const itemList = convertKeys(organizeItemData(itemAllData), itemKeyMap);
+    const powerList = convertKeys(organizePowerData(powerAllData), powerKeyMap);
+    const parameterList = convertKeys(organizeParameterData(parameterAllData), parameterKeyMap);
 
+    //パラメータ設定
+    tracerHPUPscalefactor = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.TracerHPUPscalefactorID)?.[PARAMETERKEY.valueKey]);
+
+    // アイテムリスト・パワーリストをテーブルに紐づけ
     linkItemList(itemList);
-
-    applyPatchNotesIfReady();
-
-    // 整形 → キー変換
-    const powerList = convertPowerKeys(organizePowerData(powerAllData));
-
     linkPowerList(powerList);
 
+    // パッチノート適用
     applyPatchNotesIfReady();
 
     //アイテム表、コストのキャッシュアイコン等初期表示
@@ -213,21 +221,6 @@ function organizeItemData(itemAllData) {
     return selectedData;
 }
 
-/**英名キーを日本名キーへ変換処理（アイテム版）
- * @param {object} dataArray - 選択・並び替え後のアイテムデータ
- * @return {object} 日本名キーに変換後のアイテムデータ
- */
-function convertItemKeys(dataArray) {
-    return dataArray.map(obj => {
-        let newObj = {};
-        for (let key in obj) {
-            let newKey = itemKeyMap[key] || key; // 対応がないキーはそのまま
-            newObj[newKey] = obj[key];
-        }
-        return newObj;
-    });
-}
-
 /**powerList に　powerListData.json　から貰うデータの形を決める
  * @param {object} powerAllData - 全てのパワーデータ
  * @return {object} 選択・並び替え後のパワーデータ
@@ -246,20 +239,40 @@ function organizePowerData(powerAllData) {
     return selectedData;
 }
 
-/**英名キーを日本名キーへ変換処理（パワー版）
- * @param {object} dataArray - 選択・並び替え後のパワーデータ
- * @return {object} 日本名キーに変換後のパワーデータ
+/**
+ * paramterData に　parameterData.json　から貰うデータの形を決める
+ * @param {object} parameterData 読み込んだ全てのパラメータデータ
+ * @return {object}　selectedData　整形後のパラメータデータ
  */
-function convertPowerKeys(dataArray) {
+function organizeParameterData(parameterData) {
+    const selectedData = parameterData
+    .map(Plist => {
+        return {
+            id: Plist.id,
+            name: Plist.name,
+            value: Plist.value
+        };
+    })
+    return selectedData;
+}
+
+
+/**英名キーを日本名キーへ変換処理
+ * @param {object} dataArray - 選択・並び替え後のデータ
+ * @param {object} keyMap - キー対応マッピング
+ * @return {object} 日本名キーに変換後のデータ
+ */
+function convertKeys(dataArray, keyMap) {
     return dataArray.map(obj => {
         let newObj = {};
         for (let key in obj) {
-            let newKey = powerKeyMap[key] || key; // 対応がないキーはそのまま
+            let newKey = keyMap[key] || key; // 対応がないキーはそのまま
             newObj[newKey] = obj[key];
         }
         return newObj;
     });
 }
+
 
 
 //タブ切り替え
@@ -464,6 +477,42 @@ function linkItemList(itemList) {
             }
         });
 
+        //体力アップ系トレーサー専用アイテムの数値減算処理
+        if(uniqueHeroText == HERONAME.tracer){
+            statusLists.forEach((status, i) => {
+                switch(true){
+
+                    //ライフ+の場合
+                    case status.includes(STATUSELEMENTS.life_includes):
+                        //文字列→数値変換＆減算
+                        status = Number(status.replace(STATUSELEMENTS.life_includes, "")) * tracerHPUPscalefactor;
+                        //四捨五入
+                        status = String(Math.round(status));
+                        //文字列へ再結合
+                        statusLists[i] = STATUSELEMENTS.life_includes + status;
+                        break;
+
+                    case status.includes(STATUSELEMENTS.armor):
+                        //文字列→数値変換＆減算
+                        status = Number(status.replace(STATUSELEMENTS.armor,"+", "")) * tracerHPUPscalefactor;
+                        //四捨五入
+                        status = String(Math.round(status));
+                        //文字列へ再結合
+                        statusLists[i] = STATUSELEMENTS.armor + "+" + status;
+                        break;
+
+                    case status.includes(STATUSELEMENTS.shield):
+                        //文字列→数値変換＆減算
+                        status = Number(status.replace(STATUSELEMENTS.shield,"+", "")) * tracerHPUPscalefactor;
+                        //四捨五入
+                        status = String(Math.round(status));
+                        //文字列へ再結合
+                        statusLists[i] = STATUSELEMENTS.shield + "+" + status;
+                        break;
+                }
+            });
+        }
+
     tbody.appendChild(appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, textText, statusLists, statusIcons));
 
     tr.classList.add("table-on");
@@ -655,9 +704,11 @@ function filterItemTable(elem){
             // ボタンがONの場合
             if(button.className == "button-on" && !shouldShowStatus){
 
-                // ステータスのセルになにもない場合はtrueに
+                // ステータスのセルになにもないアイテムはその他ボタンと連動
                 if(cells[statusNumber].innerText === "" || cells[statusNumber].innerText === null || cells[statusNumber].innerText === undefined){
-                    shouldShowStatus = true;
+                    if(button.innerText == "その他"){
+                        shouldShowStatus = true;
+                    }
 
                 // ライフはライフ吸収と重複するので専用処理
                 }else if(button.innerText == "ライフ"){

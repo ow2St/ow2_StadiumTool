@@ -181,7 +181,8 @@ window.HERONAME = {
     reinhardt: "ラインハルト",
     sigma: "シグマ",
     kiriko: "キリコ",
-    freya: "フレイヤ"
+    freya: "フレイヤ",
+    tracer: "トレーサー"
 };
 
 /**
