@@ -229,6 +229,7 @@ async function loadAndInitBuildData() {
         itemSelectMaxNumber = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.itemSelectMaxNumberID)?.[PARAMETERKEY.valueKey]);
         powerSelectMaxNumber = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.powerSelectMaxNumberID)?.[PARAMETERKEY.valueKey]);
         takeAimBombDamage = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.takeaimID)?.[PARAMETERKEY.valueKey]);
+        tracerHPUPscalefactor = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.TracerHPUPscalefactorID)?.[PARAMETERKEY.valueKey]);
         // #endregion
 
         // テーブルに紐付け
@@ -1851,6 +1852,14 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         textTmp = selectedItemRows[i][ITEMLISTKEY.item_textKey];
         durationFlgTmp = selectedItemRows[i][ITEMLISTKEY.durationFlgKey];
         durationTmp = selectedItemRows[i][ITEMLISTKEY.durationKey];
+
+        //トレーサーが選択されている場合、体力アイテムを減算処理
+        //最後のループ一回のみ実行
+        if(selectedHero == HERONAME.tracer && i == selectedItemRows.length - 1){
+        lifeTmp = Math.round(lifeTmp * tracerHPUPscalefactor);
+        armorTmp = Math.round(armorTmp * tracerHPUPscalefactor);
+        shieldTmp = Math.round(shieldTmp * tracerHPUPscalefactor);
+        }
 
         // #region 特殊計算・持続時間計算　計算順序①
         // ライフ割合上昇アイテムの場合は倍率変数に保管後、追加効果に乗らないようハイフンにする

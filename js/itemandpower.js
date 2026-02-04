@@ -491,7 +491,7 @@ function linkItemList(itemList) {
                         //文字列へ再結合
                         statusLists[i] = STATUSELEMENTS.life_includes + status;
                         break;
-
+                    //アーマー
                     case status.includes(STATUSELEMENTS.armor):
                         //文字列→数値変換＆減算
                         status = Number(status.replace(STATUSELEMENTS.armor,"+", "")) * tracerHPUPscalefactor;
@@ -500,7 +500,7 @@ function linkItemList(itemList) {
                         //文字列へ再結合
                         statusLists[i] = STATUSELEMENTS.armor + "+" + status;
                         break;
-
+                    //シールド
                     case status.includes(STATUSELEMENTS.shield):
                         //文字列→数値変換＆減算
                         status = Number(status.replace(STATUSELEMENTS.shield,"+", "")) * tracerHPUPscalefactor;
