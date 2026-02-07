@@ -229,6 +229,7 @@ async function loadAndInitBuildData() {
         itemSelectMaxNumber = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.itemSelectMaxNumberID)?.[PARAMETERKEY.valueKey]);
         powerSelectMaxNumber = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.powerSelectMaxNumberID)?.[PARAMETERKEY.valueKey]);
         takeAimBombDamage = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.takeaimID)?.[PARAMETERKEY.valueKey]);
+        tracerHPUPscalefactor = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.TracerHPUPscalefactorID)?.[PARAMETERKEY.valueKey]);
         // #endregion
 
         // テーブルに紐付け
@@ -559,7 +560,7 @@ function selectHero(id){
     // 選択中ヒーローアイコンを変更
     // D.VAチェック
     if(id == HERONAME.dvaMech || id == HERONAME.dvaHuman){
-        imgPath = HERONAME.dva + EXTENSION.png;
+        imgPath = HERONAME.dvaHuman.slice(0,-3) + EXTENSION.png;
     }else{
         imgPath = id + EXTENSION.png;
     }
@@ -1852,6 +1853,14 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         durationFlgTmp = selectedItemRows[i][ITEMLISTKEY.durationFlgKey];
         durationTmp = selectedItemRows[i][ITEMLISTKEY.durationKey];
 
+        //トレーサーが選択されている場合、体力アイテムを減算処理
+        //最後のループ一回のみ実行
+        if(selectedHero == HERONAME.tracer && i == selectedItemRows.length - 1){
+        lifeTmp = Math.round(lifeTmp * tracerHPUPscalefactor);
+        armorTmp = Math.round(armorTmp * tracerHPUPscalefactor);
+        shieldTmp = Math.round(shieldTmp * tracerHPUPscalefactor);
+        }
+
         // #region 特殊計算・持続時間計算　計算順序①
         // ライフ割合上昇アイテムの場合は倍率変数に保管後、追加効果に乗らないようハイフンにする
         if(nameTmp == mekaZName){
@@ -2629,7 +2638,7 @@ function disableCheckbox(flag, type){
  */
 function filterTable(id){
 
-    // 選択ヒーローがDVAの場合、絞り込み条件と合致させるために値を変更
+    // 選択ヒーローがD.VAの場合、絞り込み条件と合致させるために値を変更
     if(id == "D.VA（メック）" || id == "D.VA（人）"){
         id = "D.VA";
     }

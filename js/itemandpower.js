@@ -30,7 +30,7 @@ var durationFlgKey = "持続時間フラグ";
 var durationKey = "持続時間";
 var theoreticalFlgKey = "理論値フラグ";
 
-// キー対応マッピング（英語 → 日本語）
+// アイテムキー対応マッピング（英語 → 日本語）
 const itemKeyMap = {
     id: itemIdKey,
     itemname: item_nameKey,
@@ -60,7 +60,7 @@ const itemKeyMap = {
     theoreticalflag: theoreticalFlgKey
 };
 
-// キー対応マッピング（英語 → 日本語）
+// パワーキー対応マッピング（英語 → 日本語）
 const powerKeyMap = {
     powername: POWERLISTKEY.power_nameKey,
     hero: POWERLISTKEY.heroKey,
@@ -68,134 +68,118 @@ const powerKeyMap = {
     text: POWERLISTKEY.power_textKey,
 };
 
+// パラメータキー対応マッピング（英語 → 日本語）
+const parameterKeyMap = {
+    id: PARAMETERKEY.idKey,
+    name: PARAMETERKEY.nameKey,
+    value: PARAMETERKEY.valueKey
+};
 
 const accordionContainer = document.getElementById("accordion-container");
-
-let patchNotesApplied = false;
-
-let itemAllData = []; // 全てのアイテムデータを保持
-
-// データの読み込み(itemList)
-fetch("itemListData.json")
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        itemAllData = data;
-
-        //初期データをカテゴリー順に並び替え
-        // 並び替え優先順位を定義
-        const categoryOrder = [CATEGORYELEMENTS.weapon, CATEGORYELEMENTS.ability, CATEGORYELEMENTS.survival];
-
-        itemAllData.sort((a, b) => {
-        // categoryOrder内でのインデックスを取得
-        const indexA = categoryOrder.indexOf(a.category);
-        const indexB = categoryOrder.indexOf(b.category);
-
-        // indexが見つからない（＝該当しないカテゴリ）場合は末尾へ
-        const orderA = indexA === -1 ? categoryOrder.length : indexA;
-        const orderB = indexB === -1 ? categoryOrder.length : indexB;
-
-        // 比較して順序を返す
-        return orderA - orderB;
-        });
-
-        // 整形 → キー変換
-        const itemList = convertItemKeys(organizeItemData(itemAllData));
-
-        linkItemList(itemList);
-
-        applyPatchNotesIfReady();
-    })
-    .catch(error => {
-        console.error("データの読み込み中にエラーが発生しました:", error);
-        accordionContainer.textContent = "データの読み込みに失敗しました。";
-    });
-
-let powerAllData = []; // 全てのアイテムデータを保持
-
-// データの読み込み(powerList)
-fetch("powerListData.json")
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        powerAllData = data;
-
-        // 整形 → キー変換
-        const powerList = convertPowerKeys(organizePowerData(powerAllData));
-
-        linkPowerList(powerList);
-
-        applyPatchNotesIfReady();
-    })
-    .catch(error => {
-        console.error("データの読み込み中にエラーが発生しました:", error);
-        accordionContainer.textContent = "データの読み込みに失敗しました。";
-    });
-
-let patchNoteAllData = []; // 全てのパッチノートデータを保持
-
-// データの読み込み(patchNoteData)
-fetch("patchNoteData.json")
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        patchNoteAllData = data;
-
-        applyPatchNotesIfReady();
-    })
-    .catch(error => {
-        console.error("データの読み込み中にエラーが発生しました:", error);
-        accordionContainer.textContent = "データの読み込みに失敗しました。";
-    });
-
 //タブ切り替え初期化
 const tabItem = document.getElementById('tabItem');
 const itemContent = document.getElementById('item-content');
 const tabPower = document.getElementById('tabPower');
 const powerContent = document.getElementById('power-content');
 
+let patchNotesApplied = false;
+
+let itemAllData = []; // 全てのアイテムデータを保持
+let powerAllData = []; // 全てのアイテムデータを保持
+let patchNoteAllData = []; // 全てのパッチノートデータを保持
+
 // ソート基準の定義
 const sortingCriteria = [
-        { column: "itemName", type: "string" },
-        { column: "powerName", type: "string" },
-        { column: "rarity", type: "string" },
-        { column: "cost", type: "number" }
-    ]
+    { column: "itemName", type: "string" },
+    { column: "powerName", type: "string" },
+    { column: "rarity", type: "string" },
+    { column: "cost", type: "number" }
+]
 
 let sortDirection = new Array(8).fill(null);
 
-//アイテム表、コストのキャッシュアイコン等初期表示
-addCostDivAndSpan();
-
-//テキスト検索にて、エンターキーと検索ボタンのクリックを紐づける
-document.addEventListener("DOMContentLoaded", () => {
-    const input = document.getElementById("item_search-input");
-
-    if (!input) return;
-
-    input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            e.preventDefault();   // フォーム送信防止（重要）
-            item_searchWords();   // 検索ボタンと同じ処理
-        }
-    });
-});
+loadAndInitData();
 
 // ------------------------------
 // 関数部
 // ------------------------------
+
+/** データの読み込みと初期化を行う非同期関数
+ * @return {Promise<void>} - 非同期処理の完了を示すPromise
+*/
+async function loadAndInitData() {
+    // データの読み込み(itemList)
+    const [itemData, powerData, parameterData, patchNoteData] = await Promise.all([
+        // データの読み込み(itemList)
+        fetch("itemListData.json").then(response => response.json()),
+
+        // データの読み込み(powerList)
+        fetch("powerListData.json").then(response => response.json()),
+
+        // データの読み込み(parameter)
+        fetch("parameterData.json").then(response => response.json()),
+
+        // データの読み込み(patchNoteData)
+        fetch("patchNoteData.json").then(response => response.json())
+    ]);
+    itemAllData = itemData;
+    powerAllData = powerData;
+    patchNoteAllData = patchNoteData;
+    parameterAllData = parameterData;
+
+    //初期データをカテゴリー順に並び替え
+    // 並び替え優先順位を定義
+    const categoryOrder = [CATEGORYELEMENTS.weapon, CATEGORYELEMENTS.ability, CATEGORYELEMENTS.survival];
+
+    itemAllData.sort((a, b) => {
+    // categoryOrder内でのインデックスを取得
+    const indexA = categoryOrder.indexOf(a.category);
+    const indexB = categoryOrder.indexOf(b.category);
+
+    // indexが見つからない（＝該当しないカテゴリ）場合は末尾へ
+    const orderA = indexA === -1 ? categoryOrder.length : indexA;
+    const orderB = indexB === -1 ? categoryOrder.length : indexB;
+
+    // 比較して順序を返す
+    return orderA - orderB;
+    });
+
+    // 整形 → キー変換
+    const itemList = convertKeys(organizeItemData(itemAllData), itemKeyMap);
+    const powerList = convertKeys(organizePowerData(powerAllData), powerKeyMap);
+    const parameterList = convertKeys(organizeParameterData(parameterAllData), parameterKeyMap);
+
+    //パラメータ設定
+    tracerHPUPscalefactor = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.TracerHPUPscalefactorID)?.[PARAMETERKEY.valueKey]);
+
+    // アイテムリスト・パワーリストをテーブルに紐づけ
+    linkItemList(itemList);
+    linkPowerList(powerList);
+
+    // パッチノート適用
+    applyPatchNotesIfReady();
+
+    //アイテム表、コストのキャッシュアイコン等初期表示
+    addCostDivAndSpan();
+
+    //ヒーロー専用アイテム　初期状態OFF
+    const heroButtonDva = document.getElementById("D.VA-item");
+    heroButtonDva.onclick();
+
+    //テキスト検索にて、エンターキーと検索ボタンのクリックを紐づける
+    document.addEventListener("DOMContentLoaded", () => {
+        const input = document.getElementById("item_search-input");
+
+        if (!input) return;
+
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();   // フォーム送信防止（重要）
+                item_searchWords();   // 検索ボタンと同じ処理
+            }
+        });
+    });
+}
 
 /**itemList に　itemListData.json　から貰うデータの形を決める
  * @param {object} itemAllData - 全てのアイテムデータ
@@ -237,21 +221,6 @@ function organizeItemData(itemAllData) {
     return selectedData;
 }
 
-/**英名キーを日本名キーへ変換処理（アイテム版）
- * @param {object} dataArray - 選択・並び替え後のアイテムデータ
- * @return {object} 日本名キーに変換後のアイテムデータ
- */
-function convertItemKeys(dataArray) {
-    return dataArray.map(obj => {
-        let newObj = {};
-        for (let key in obj) {
-            let newKey = itemKeyMap[key] || key; // 対応がないキーはそのまま
-            newObj[newKey] = obj[key];
-        }
-        return newObj;
-    });
-}
-
 /**powerList に　powerListData.json　から貰うデータの形を決める
  * @param {object} powerAllData - 全てのパワーデータ
  * @return {object} 選択・並び替え後のパワーデータ
@@ -270,15 +239,34 @@ function organizePowerData(powerAllData) {
     return selectedData;
 }
 
-/**英名キーを日本名キーへ変換処理（パワー版）
- * @param {object} dataArray - 選択・並び替え後のパワーデータ
- * @return {object} 日本名キーに変換後のパワーデータ
+/**
+ * paramterData に　parameterData.json　から貰うデータの形を決める
+ * @param {object} parameterData 読み込んだ全てのパラメータデータ
+ * @return {object}　selectedData　整形後のパラメータデータ
  */
-function convertPowerKeys(dataArray) {
+function organizeParameterData(parameterData) {
+    const selectedData = parameterData
+    .map(Plist => {
+        return {
+            id: Plist.id,
+            name: Plist.name,
+            value: Plist.value
+        };
+    })
+    return selectedData;
+}
+
+
+/**英名キーを日本名キーへ変換処理
+ * @param {object} dataArray - 選択・並び替え後のデータ
+ * @param {object} keyMap - キー対応マッピング
+ * @return {object} 日本名キーに変換後のデータ
+ */
+function convertKeys(dataArray, keyMap) {
     return dataArray.map(obj => {
         let newObj = {};
         for (let key in obj) {
-            let newKey = powerKeyMap[key] || key; // 対応がないキーはそのまま
+            let newKey = keyMap[key] || key; // 対応がないキーはそのまま
             newObj[newKey] = obj[key];
         }
         return newObj;
@@ -286,26 +274,27 @@ function convertPowerKeys(dataArray) {
 }
 
 
+
 //タブ切り替え
 
-/**アイテムタブに遷移 */
+/**アイテムタブへ移動 */
 function changeTabItem() {
 itemContent.style.display = "block";
 powerContent.style.display = "none";
 tabPower.style.backgroundColor = "white";
-tabItem.style.backgroundColor = "lightgray";
+tabItem.style.backgroundColor = "lightgrey";
 tabPower.style.border = "1px dashed black";
 tabPower.style.borderBottom = "none";
 tabPower.style.borderLeft = "none";
 tabItem.style.border = "1px solid black";
 tabItem.style.borderBottom = "none";
 }
-/**パワータブに遷移 */
+/**パワータブへ移動 */
 function changeTabPower() {
     powerContent.style.display = "block";
     itemContent.style.display = "none";
     tabItem.style.backgroundColor = "white";
-    tabPower.style.backgroundColor = "lightgray";
+    tabPower.style.backgroundColor = "lightgrey";
     tabItem.style.border = "1px dashed black";
     tabItem.style.borderBottom = "none";
     tabItem.style.borderRight = "none";
@@ -313,7 +302,7 @@ function changeTabPower() {
     tabPower.style.borderBottom = "none";
 
     //パワー一覧　D.VAアイコンをONにする
-    let defaultHero = document.getElementById("D.VA");
+    let defaultHero = document.getElementById("D.VA-power");
     filterPowerTable(defaultHero);
 }
 
@@ -488,6 +477,42 @@ function linkItemList(itemList) {
             }
         });
 
+        //体力アップ系トレーサー専用アイテムの数値減算処理
+        if(uniqueHeroText == HERONAME.tracer){
+            statusLists.forEach((status, i) => {
+                switch(true){
+
+                    //ライフ+の場合
+                    case status.includes(STATUSELEMENTS.life_includes):
+                        //文字列→数値変換＆減算
+                        status = Number(status.replace(STATUSELEMENTS.life_includes, "")) * tracerHPUPscalefactor;
+                        //四捨五入
+                        status = String(Math.round(status));
+                        //文字列へ再結合
+                        statusLists[i] = STATUSELEMENTS.life_includes + status;
+                        break;
+                    //アーマー
+                    case status.includes(STATUSELEMENTS.armor):
+                        //文字列→数値変換＆減算
+                        status = Number(status.replace(STATUSELEMENTS.armor,"+", "")) * tracerHPUPscalefactor;
+                        //四捨五入
+                        status = String(Math.round(status));
+                        //文字列へ再結合
+                        statusLists[i] = STATUSELEMENTS.armor + "+" + status;
+                        break;
+                    //シールド
+                    case status.includes(STATUSELEMENTS.shield):
+                        //文字列→数値変換＆減算
+                        status = Number(status.replace(STATUSELEMENTS.shield,"+", "")) * tracerHPUPscalefactor;
+                        //四捨五入
+                        status = String(Math.round(status));
+                        //文字列へ再結合
+                        statusLists[i] = STATUSELEMENTS.shield + "+" + status;
+                        break;
+                }
+            });
+        }
+
     tbody.appendChild(appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, textText, statusLists, statusIcons));
 
     tr.classList.add("table-on");
@@ -607,17 +632,17 @@ function filterItemTable(elem){
         isNowOn = elem.classList.contains("button-on");
         elem.classList.toggle("button-on", !isNowOn);
         elem.classList.toggle("button-off", isNowOn);
-    } else if (tag === "input" && elem.type === "checkbox") {
-        isNowOn = elem.checked;
-        elem.classList.toggle("checkbox-on", isNowOn);
-        elem.classList.toggle("checkbox-off", !isNowOn);
+    } else if (tag === "img") {
+        isNowOn = elem.classList.contains("item-hero-icon-on");
+        elem.classList.toggle("item-hero-icon-on", !isNowOn);
+        elem.classList.toggle("item-hero-icon-off", isNowOn);
     }
 
     // 各絞り込み一覧を取得
     const buttons_category = document.querySelectorAll("#button-category button");
     const buttons_rarity = document.querySelectorAll("#button-rarity button");
     const buttons_status = document.querySelectorAll("#button-status button");
-    const uniqueHero = document.getElementById("uniqueHero");
+    const buttons_hero = document.querySelectorAll("#button-hero img");
 
     // テーブルのヘッダー行（<tr>）を取得
     const headerRow = document.querySelector("#item-table thead tr");
@@ -629,7 +654,7 @@ function filterItemTable(elem){
     const categoryNumber = headers.findIndex(th => th.textContent == THTEXT.category);
     const rarityNumber = headers.findIndex(th => th.textContent == THTEXT.rarity);
     const statusNumber = headers.findIndex(th => th.textContent == THTEXT.status);
-    const uniqueHeroNumber = headers.findIndex(th => th.textContent == THTEXT.uniqueHero);
+    const heroNumber = headers.findIndex(th => th.textContent == THTEXT.uniqueHero);
 
     //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_item に配列のように格納。各行を1つのアイテムとする。
     var tbody_item = document.getElementById("item-table").querySelector("tbody");
@@ -647,11 +672,13 @@ function filterItemTable(elem){
         let shouldShow = true;  // 表示判定フラグ
         let shouldShowStatus = false;  // ステータス判定用フラグ
 
-        // 非表示にするアイテムを探す
-        // 固有ヒーロー関連
-        if (!uniqueHero.checked) {
-            shouldShow = !(cells[uniqueHeroNumber]?.innerText != "-");
-        }
+        // ヒーロー関連
+        buttons_hero.forEach(button =>{
+            // アイコンがOFFの場合
+            if(button.className == "item-hero-icon-off" && shouldShow){
+                shouldShow = !(cells[heroNumber]?.innerText + "-item" == button.id);
+            }
+        });
 
         // カテゴリー関連
         buttons_category.forEach(button =>{
@@ -677,9 +704,11 @@ function filterItemTable(elem){
             // ボタンがONの場合
             if(button.className == "button-on" && !shouldShowStatus){
 
-                // ステータスのセルになにもない場合はtrueに
+                // ステータスのセルになにもないアイテムはその他ボタンと連動
                 if(cells[statusNumber].innerText === "" || cells[statusNumber].innerText === null || cells[statusNumber].innerText === undefined){
-                    shouldShowStatus = true;
+                    if(button.innerText == "その他"){
+                        shouldShowStatus = true;
+                    }
 
                 // ライフはライフ吸収と重複するので専用処理
                 }else if(button.innerText == "ライフ"){
@@ -1116,7 +1145,7 @@ function filterPowerTable(elem){
 
             // ボタンがOFFの場合
             if(img.className == "power-hero-icon-off" && shouldShow){
-                shouldShow = !(cells[heroNumber]?.innerText == img.id);
+                shouldShow = !(cells[heroNumber]?.innerText + "-power" == img.id);
             }
         });
 
@@ -1125,7 +1154,7 @@ function filterPowerTable(elem){
 
             // ボタンがOFFの場合
             if(img.className == "power-hero-icon-off" && shouldShow){
-                shouldShow = !(cells[heroNumber]?.innerText == img.id);
+                shouldShow = !(cells[heroNumber]?.innerText + "-power" == img.id);
             }
         });
 
@@ -1133,7 +1162,7 @@ function filterPowerTable(elem){
         heroes_support.forEach(img => {
             // ボタンがOFFの場合
             if(img.className == "power-hero-icon-off" && shouldShow){
-                shouldShow = !(cells[heroNumber]?.innerText == img.id);
+                shouldShow = !(cells[heroNumber]?.innerText + "-power" == img.id);
             }
         });
 

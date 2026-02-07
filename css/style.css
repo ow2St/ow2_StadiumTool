@@ -751,6 +751,26 @@ main-IAP{
     cursor: pointer;
 }
 
+.item-hero-icon-off {
+    cursor: pointer;
+    margin-left: 8px;
+    margin-bottom: 3px;
+    width: 70px;
+    height: 70px;
+    filter: saturate(0%); /*アイコンを白黒にする*/
+    border: 2px solid transparent;
+    opacity: 0.5;
+}
+.item-hero-icon-on {
+    cursor: pointer;
+    margin-left: 8px;
+    margin-bottom: 3px;
+    width: 70px;
+    height: 70px;
+    filter: saturate(100%); /* アイコンをカラーにする */
+    border: 2px solid yellow;
+}
+
 .power-hero-icon-off {
     cursor: pointer;
     margin-left: 8px;
