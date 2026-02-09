@@ -161,7 +161,9 @@ window.UPDATECATEGORY = {
  */
 ashItemID = "8661860d-a170-4682-9e94-da0fdfbf9522";   // トライポッド
 mekaZName = "MEKA Zシリーズ";
+mekaZID = "fd383456-0ea5-4d89-9ba6-279cc31906f8"; // MEKA ZシリーズID
 hukutuName = "不屈の獅子";
+hukutuID = "c3c79e34-ee06-4c73-b637-0574f9322f2d"; // 不屈の獅子ID
 overClockName = "オーバークロック・バリア";
 resourceManagementName = "リソース・マネジメント";
 
@@ -227,7 +229,8 @@ window.ITEMTHINDEX = {
     uniqueHero: "4",
     status: "5",
     text: "6",
-    ChangeHistory: "7"
+    id: "7",
+    ChangeHistory: "8"
 };
 
 /**
