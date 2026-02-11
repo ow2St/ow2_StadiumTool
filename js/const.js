@@ -122,7 +122,19 @@ window.STATUSLISTKEY = {
     ultHealDamageUpFlg: "ULT上昇フラグ",
     ability1ctflag: "アビリティ1CTフラグ",
     ability2ctflag: "アビリティ2CTフラグ",
-    ability3ctflag: "アビリティ3CTフラグ"
+    ability3ctflag: "アビリティ3CTフラグ",
+    main2WeaponNameKey: "メイン2武器名",
+    main2DamageKey: "メイン2武器",
+    main2ReloadKey: "メイン2リロード速度",
+    main2AmmoKey: "メイン2弾薬数",
+    main2HSRateKey: "メイン2HS倍率",
+    main2LifeStealRateKey: "メイン2ライフ吸収",
+    sub2WeaponNameKey: "サブ2武器名",
+    sub2DamageKey: "サブ2武器",
+    sub2ReloadKey: "サブ2リロード速度",
+    sub2AmmoKey: "サブ2弾薬数",
+    sub2HSRateKey: "サブ2HS倍率",
+    sub2LifeStealRateKey: "サブ2ライフ吸収"
 };
 
 /**
