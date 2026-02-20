@@ -31,6 +31,34 @@ window.ITEMLISTKEY = {
 };
 
 /**
+ * ガジェットリストのキー
+ */
+window.GADGETLISTKEY = {
+    gadget_idKey: "ガジェットID",
+    gadget_nameKey: "ガジェット名",
+    gadget_rarityKey: "レア度",
+    gadget_costKey: "コスト",
+    gadget_coolTimeKey: "クールタイム",
+    gadget_iconKey: "アイコン",
+    gadget_textKey: "テキスト",
+    gadget_lifeKey: "ライフ",
+    gadget_armorKey: "アーマー",
+    gadget_shieldKey: "シールド",
+    gadget_weaponPowerKey: "武器パワー",
+    gadget_abilityPowerKey: "アビリティパワー",
+    gadget_attackSpeedKey: "攻撃速度",
+    gadget_ctReducationKey: "CT短縮",
+    gadget_ammoKey: "弾薬",
+    gadget_weapon_LifeStealKey: "ライフ吸収（武器）",
+    gadget_ability_LifeStealKey: "ライフ吸収（アビリティ）",
+    gadget_speedKey: "移動速度",
+    gadget_othersKey: "その他",
+    gadget_durationFlgKey: "持続時間フラグ",
+    gadget_durationKey: "持続時間",
+    gadget_theoreticalFlgKey: "理論値フラグ"
+};
+
+/**
  * パワーリストのキー
  */
 window.POWERLISTKEY = {

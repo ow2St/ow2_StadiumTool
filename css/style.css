@@ -637,33 +637,73 @@ main-IAP{
     margin-left: 30px;
     display: flex;
 }
-.tabItem {
-  padding-left: 20px;
-  padding-right: 20px;
-  border: 1px solid black; /* タブのボーダー */
-  border-bottom: none; /* 下のボーダーを消す */
-  cursor: pointer;
-  background-color: lightgray;
+.tabItem-on {
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 1px solid black; /* タブのボーダー */
+    border-bottom: none; /* 下のボーダーを消す */
+    cursor: pointer;
+    background-color: lightgray;
 }
-.tabPower {
-  padding-left: 20px;
-  padding-right: 20px;
-  border: 1px dashed black; /* タブのボーダー */
-  border-bottom: none; /* 下のボーダーを消す */
-  border-left: none; /* 左のボーダーを消す */
-  cursor: pointer;
-  background-color: white;
+.tabItem-off {
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 1px dashed black; /* タブのボーダー */
+    border-bottom: none; /* 下のボーダーを消す */
+    cursor: pointer;
+    background-color: white;
+}
+.tabGadget-on {
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 1px solid black; /* タブのボーダー */
+    border-bottom: none; /* 下のボーダーを消す */
+    cursor: pointer;
+    background-color: lightgray;
+}
+.tabGadget-off {
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 1px dashed black; /* タブのボーダー */
+    border-bottom: none; /* 下のボーダーを消す */
+    border-right: none; /* 右のボーダーを消す */
+    cursor: pointer;
+    background-color: white;
+}
+.tabPower-on {
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 1px solid black; /* タブのボーダー */
+    border-bottom: none; /* 下のボーダーを消す */
+    cursor: pointer;
+    background-color: lightgray;
+}
+.tabPower-off {
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 1px dashed black; /* タブのボーダー */
+    border-bottom: none; /* 下のボーダーを消す */
+    border-left: none; /* 左のボーダーを消す */
+    cursor: pointer;
+    background-color: white;
 }
 
 .tabItem:hover {
-  background-color: lightgray; /* ホバー時の背景色 */
+    background-color: lightgray; /* ホバー時の背景色 */
+}
+.tabGadget:hover {
+    background-color: lightgray; /* ホバー時の背景色 */
 }
 .tabPower:hover {
-  background-color: lightgray; /* ホバー時の背景色 */
+    background-color: lightgray; /* ホバー時の背景色 */
 }
 
 .item-content{
     display: block;
+    border-top: 1px solid black;
+}
+.gadget-content{
+    display: none;
     border-top: 1px solid black;
 }
 .power-content{
@@ -675,8 +715,6 @@ main-IAP{
     width: 75px;
     display: flex;
     margin-right: 5px;
-    
-
 }
 
 .button-only{
@@ -733,7 +771,19 @@ main-IAP{
     margin-bottom: 20px;
 
 }
-.power-title {
+.gadgetlist-title {
+    display: block;
+    width: 100%;
+    text-indent: 1em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 25px;
+    height: 30px;
+    white-space: nowrap;
+    background-color: #e6f0ff;
+    margin-bottom: 20px;
+}
+.powerlist-title {
     display: block;
     width: 100%;
     text-indent: 1em;
@@ -791,8 +841,28 @@ main-IAP{
     border: 2px solid yellow;
 }
 
-.power-table {
-    margin-bottom: 30px;
+.IGP_gadget-table {
+    border-collapse: collapse;
+    width: 95%;
+    margin: auto;
+}
+
+.IGP_gadget-thead {
+    background-color: #f2f2f2;
+}
+
+.IGP_gadget-tr {
+    border: 1px solid #999;
+    padding: 8px 12px;
+    text-align: center;
+}
+
+.IGP_gadget-th {
+    border-right: 1px solid lightgray;
+}
+
+.IGP_gadget-td {
+    border: 1px solid lightgray;
 }
 
 .itemandpower-itemicon {

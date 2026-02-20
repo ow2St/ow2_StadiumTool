@@ -2,62 +2,60 @@
 // 処理部
 // ------------------------------
 
-// アイテムリストのキー
-var itemIdKey = "アイテムID";
-var item_nameKey = "アイテム名";
-var categoryKey = "カテゴリー";
-var rarityKey = "レア度";
-var costKey = "コスト";
-var item_iconKey = "アイコン";
-var uniqueHeroKey = "固有ヒーロー";
-var item_textKey = "テキスト";
-var item_lifeKey = "ライフ";
-var item_armorKey = "アーマー";
-var item_shieldKey = "シールド";
-var weaponPowerKey = "武器パワー";
-var abilityPowerKey = "アビリティパワー";
-var attackSpeedKey = "攻撃速度";
-var ctReducationKey = "CT短縮";
-var ammoKey = "弾薬";
-var weapon_LifeStealKey = "ライフ吸収（武器）";
-var ability_LifeStealKey = "ライフ吸収（アビリティ）";
-var speedKey = "移動速度";
-var reloadSpeedKey = "リロード速度";
-var item_meleeDamageKey = "近接ダメージ";
-var criticalKey = "クリティカル";
-var othersKey = "その他";
-var durationFlgKey = "持続時間フラグ";
-var durationKey = "持続時間";
-var theoreticalFlgKey = "理論値フラグ";
-
 // アイテムキー対応マッピング（英語 → 日本語）
 const itemKeyMap = {
-    id: itemIdKey,
-    itemname: item_nameKey,
-    category: categoryKey,
-    rarity: rarityKey,
-    cost: costKey,
-    icon: item_iconKey,
-    uniquehero: uniqueHeroKey,
-    text: item_textKey,
-    life: item_lifeKey,
-    armor: item_armorKey,
-    shield: item_shieldKey,
-    weaponpower: weaponPowerKey,
-    abilitypower: abilityPowerKey,
-    attackspeed: attackSpeedKey,
-    ctreducation: ctReducationKey,
-    ammo: ammoKey,
-    weaponlifesteal: weapon_LifeStealKey,
-    abilitylifesteal: ability_LifeStealKey,
-    speed: speedKey,
-    reloadspeed: reloadSpeedKey,
-    meleedamage: item_meleeDamageKey,
-    critical: criticalKey,
-    others: othersKey,
-    durationflg: durationFlgKey,
-    duration: durationKey,
-    theoreticalflag: theoreticalFlgKey
+    id: ITEMLISTKEY.itemIdKey,
+    itemname: ITEMLISTKEY.item_nameKey,
+    category: ITEMLISTKEY.categoryKey,
+    rarity: ITEMLISTKEY.rarityKey,
+    cost: ITEMLISTKEY.costKey,
+    icon: ITEMLISTKEY.item_iconKey,
+    uniquehero: ITEMLISTKEY.uniqueHeroKey,
+    text: ITEMLISTKEY.item_textKey,
+    life: ITEMLISTKEY.item_lifeKey,
+    armor: ITEMLISTKEY.item_armorKey,
+    shield: ITEMLISTKEY.item_shieldKey,
+    weaponpower: ITEMLISTKEY.weaponPowerKey,
+    abilitypower: ITEMLISTKEY.abilityPowerKey,
+    attackspeed: ITEMLISTKEY.attackSpeedKey,
+    ctreducation: ITEMLISTKEY.ctReducationKey,
+    ammo: ITEMLISTKEY.ammoKey,
+    weaponlifesteal: ITEMLISTKEY.weapon_LifeStealKey,
+    abilitylifesteal: ITEMLISTKEY.ability_LifeStealKey,
+    speed: ITEMLISTKEY.speedKey,
+    reloadspeed: ITEMLISTKEY.reloadSpeedKey,
+    meleedamage: ITEMLISTKEY.item_meleeDamageKey,
+    critical: ITEMLISTKEY.criticalKey,
+    others: ITEMLISTKEY.othersKey,
+    durationflg: ITEMLISTKEY.durationFlgKey,
+    duration: ITEMLISTKEY.durationKey,
+    theoreticalflag: ITEMLISTKEY.theoreticalFlgKey
+};
+
+// ガジェットキー対応マッピング
+const gadgetKeyMap = {
+    id: GADGETLISTKEY.gadget_idKey,
+    gadgetname: GADGETLISTKEY.gadget_nameKey,
+    rarity: GADGETLISTKEY.gadget_rarityKey,
+    cost: GADGETLISTKEY.gadget_costKey,
+    CT: GADGETLISTKEY.gadget_coolTimeKey,
+    icon: GADGETLISTKEY.gadget_iconKey,
+    text: GADGETLISTKEY.gadget_textKey,
+    life: GADGETLISTKEY.gadget_lifeKey,
+    armor: GADGETLISTKEY.gadget_armorKey,
+    shield: GADGETLISTKEY.gadget_shieldKey,
+    weaponpower: GADGETLISTKEY.gadget_weaponPowerKey,
+    abilitypower: GADGETLISTKEY.gadget_abilityPowerKey,
+    attackspeed: GADGETLISTKEY.gadget_attackSpeedKey,
+    ctreducation: GADGETLISTKEY.gadget_ctReducationKey,
+    ammo: GADGETLISTKEY.gadget_ammoKey,
+    weaponlifesteal: GADGETLISTKEY.gadget_weapon_LifeStealKey,
+    abilitylifesteal: GADGETLISTKEY.gadget_ability_LifeStealKey,
+    speed: GADGETLISTKEY.gadget_speedKey,
+    others: GADGETLISTKEY.gadget_othersKey,
+    durationflg: GADGETLISTKEY.gadget_durationFlgKey,
+    duration: GADGETLISTKEY.gadget_durationKey,
+    theoreticalflag: GADGETLISTKEY.gadget_theoreticalFlgKey
 };
 
 // パワーキー対応マッピング（英語 → 日本語）
@@ -65,7 +63,7 @@ const powerKeyMap = {
     powername: POWERLISTKEY.power_nameKey,
     hero: POWERLISTKEY.heroKey,
     icon: POWERLISTKEY.power_iconKey,
-    text: POWERLISTKEY.power_textKey,
+    text: POWERLISTKEY.power_textKey
 };
 
 // パラメータキー対応マッピング（英語 → 日本語）
@@ -76,15 +74,20 @@ const parameterKeyMap = {
 };
 
 const accordionContainer = document.getElementById("accordion-container");
+
 //タブ切り替え初期化
 const tabItem = document.getElementById('tabItem');
-const itemContent = document.getElementById('item-content');
+const tabGadget = document.getElementById('tabGadget');
 const tabPower = document.getElementById('tabPower');
-const powerContent = document.getElementById('power-content');
+
+const itemContent = document.getElementById("item-content");
+const gadgetContent = document.getElementById("gadget-content");
+const powerContent = document.getElementById("power-content");
 
 let patchNotesApplied = false;
 
 let itemAllData = []; // 全てのアイテムデータを保持
+let gadgetAllData = []; // 全てのガジェットデータを保持
 let powerAllData = []; // 全てのアイテムデータを保持
 let patchNoteAllData = []; // 全てのパッチノートデータを保持
 
@@ -109,9 +112,12 @@ loadAndInitData();
 */
 async function loadAndInitData() {
     // データの読み込み(itemList)
-    const [itemData, powerData, parameterData, patchNoteData] = await Promise.all([
+    const [itemData, gadgetData, powerData, parameterData, patchNoteData] = await Promise.all([
         // データの読み込み(itemList)
         fetch("itemListData.json").then(response => response.json()),
+
+        // データの読み込み(gadgetList)
+        fetch("gadgetListData.json").then(response => response.json()),
 
         // データの読み込み(powerList)
         fetch("powerListData.json").then(response => response.json()),
@@ -123,6 +129,7 @@ async function loadAndInitData() {
         fetch("patchNoteData.json").then(response => response.json())
     ]);
     itemAllData = itemData;
+    gadgetAllData = gadgetData;
     powerAllData = powerData;
     patchNoteAllData = patchNoteData;
     parameterAllData = parameterData;
@@ -146,14 +153,16 @@ async function loadAndInitData() {
 
     // 整形 → キー変換
     const itemList = convertKeys(organizeItemData(itemAllData), itemKeyMap);
+    const gadgetList = convertKeys(organizeGadgetData(gadgetAllData), gadgetKeyMap);
     const powerList = convertKeys(organizePowerData(powerAllData), powerKeyMap);
     const parameterList = convertKeys(organizeParameterData(parameterAllData), parameterKeyMap);
 
     //パラメータ設定
     tracerHPUPscalefactor = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.TracerHPUPscalefactorID)?.[PARAMETERKEY.valueKey]);
 
-    // アイテムリスト・パワーリストをテーブルに紐づけ
+    // 各リストをテーブルに紐づけ
     linkItemList(itemList);
+    linkGadgetList(gadgetList);
     linkPowerList(powerList);
 
     // パッチノート適用
@@ -221,6 +230,42 @@ function organizeItemData(itemAllData) {
     return selectedData;
 }
 
+/**gadgetList に　gadgetListData.json　から貰うデータの形を決める
+ * @param {object} gadgetAllData - 全てのガジェットデータ
+ * @return {object} 選択・並び替え後のガジェットデータ
+ */
+function organizeGadgetData(gadgetAllData) {
+    const selectedData = gadgetAllData
+    .map(Glist => {
+        return {
+            id: Glist.id,
+            gadgetname: Glist.gadgetname,
+            rarity: Glist.rarity,
+            cost: Glist.cost,
+            CT: Glist.CT,
+            icon: Glist.icon,
+            text: Glist.text,
+            life: Glist.life,
+            armor: Glist.armor,
+            shield: Glist.shield,
+            weaponpower: Glist.weaponpower,
+            abilitypower: Glist.abilitypower,
+            attackspeed: Glist.attackspeed,
+            ctreducation: Glist.ctreducation,
+            ammo: Glist.ammo,
+            weaponlifesteal: Glist.weaponlifesteal,
+            abilitylifesteal: Glist.abilitylifesteal,
+            speed: Glist.speed,
+            others: (Glist.others === "-") ? Glist.others : STATUSELEMENTS.others_sign + Glist.others,
+            durationflg: Glist.durationflg,
+            duration: Glist.duration,
+            theoreticalflag: Glist.theoreticalflag
+        };
+    })
+    return selectedData;
+}
+
+
 /**powerList に　powerListData.json　から貰うデータの形を決める
  * @param {object} powerAllData - 全てのパワーデータ
  * @return {object} 選択・並び替え後のパワーデータ
@@ -279,27 +324,45 @@ function convertKeys(dataArray, keyMap) {
 
 /**アイテムタブへ移動 */
 function changeTabItem() {
-itemContent.style.display = "block";
-powerContent.style.display = "none";
-tabPower.style.backgroundColor = "white";
-tabItem.style.backgroundColor = "lightgrey";
-tabPower.style.border = "1px dashed black";
-tabPower.style.borderBottom = "none";
-tabPower.style.borderLeft = "none";
-tabItem.style.border = "1px solid black";
-tabItem.style.borderBottom = "none";
+    tabItem.classList.add("tabItem-on");
+    tabItem.classList.remove("tabItem-off");
+    itemContent.style.display = "block";
+
+    tabGadget.classList.add("tabGadget-off");
+    tabGadget.classList.remove("tabGadget-on");
+    gadgetContent.style.display = "none";
+
+    tabPower.classList.add("tabPower-off");
+    tabPower.classList.remove("tabPower-on");
+    powerContent.style.display = "none";
+}
+/**ガジェットタブへ移動 */
+function changeTabGadget() {
+    tabGadget.classList.add("tabGadget-on");
+    tabGadget.classList.remove("tabGadget-off");
+    gadgetContent.style.display = "block";
+
+    tabItem.classList.add("tabItem-off");
+    tabItem.classList.remove("tabItem-on");
+    itemContent.style.display = "none";
+
+    tabPower.classList.add("tabPower-off");
+    tabPower.classList.remove("tabPower-on");
+    powerContent.style.display = "none";
 }
 /**パワータブへ移動 */
 function changeTabPower() {
+    tabPower.classList.add("tabPower-on");
+    tabPower.classList.remove("tabPower-off");
     powerContent.style.display = "block";
+
+    tabItem.classList.add("tabItem-off");
+    tabItem.classList.remove("tabItem-on");
     itemContent.style.display = "none";
-    tabItem.style.backgroundColor = "white";
-    tabPower.style.backgroundColor = "lightgrey";
-    tabItem.style.border = "1px dashed black";
-    tabItem.style.borderBottom = "none";
-    tabItem.style.borderRight = "none";
-    tabPower.style.border = "1px solid black";
-    tabPower.style.borderBottom = "none";
+
+    tabGadget.classList.add("tabGadget-off");
+    tabGadget.classList.remove("tabGadget-on");
+    gadgetContent.style.display = "none";
 
     //パワー一覧　D.VAアイコンをONにする
     let defaultHero = document.getElementById("D.VA-power");
@@ -332,66 +395,66 @@ function linkItemList(itemList) {
         Object.keys(itemList[i]).forEach(key => {
 
             // キー名がアイテム名キーの場合
-            if(item_nameKey == key) {
+            if(ITEMLISTKEY.item_nameKey == key) {
 
                 // アイテム名用変数に値を代入
                 itemNameText = itemList[i][key];
             }
 
             // キー名がアイコンキーの場合
-            if(item_iconKey == key) {
+            if(ITEMLISTKEY.item_iconKey == key) {
 
                 // アイコン用変数に値を代入
                 iconText = itemList[i][key];
             }
 
             // キー名がカテゴリーキーの場合
-            if(categoryKey == key) {
+            if(ITEMLISTKEY.categoryKey == key) {
 
                 // カテゴリー用変数に値を代入
                 categoryText = itemList[i][key];
             }
 
             // キー名がレアリティキーの場合
-            if(rarityKey == key) {
+            if(ITEMLISTKEY.rarityKey == key) {
 
                 // レアリティ用変数に値を代入
                 rarityText = itemList[i][key];
             }
 
              // キー名がコストキーの場合
-            if(costKey == key) {
+            if(ITEMLISTKEY.costKey == key) {
 
                 // コスト用変数に値を代入
                 costText = itemList[i][key];
             }
 
              // キー名が固有ヒーローキーの場合
-            if(uniqueHeroKey == key) {
+            if(ITEMLISTKEY.uniqueHeroKey == key) {
 
                 // 固有ヒーロー用変数に値を代入
                 uniqueHeroText = itemList[i][key];
             }
 
             // キー名がIDキーの場合
-            if(itemIdKey == key) {
+            if(ITEMLISTKEY.itemIdKey == key) {
 
                 // ID用変数に値を代入
                 idText = itemList[i][key];
             }
 
             // キー名がテキストキーの場合
-            if(item_textKey == key) {
+            if(ITEMLISTKEY.item_textKey == key) {
 
                 // テキスト用変数に値を代入
                 textText = itemList[i][key];
             }
 
             // キー名がステータス関連のキーの場合
-            if([item_lifeKey, item_armorKey, item_shieldKey, weaponPowerKey, abilityPowerKey,
-                attackSpeedKey, ctReducationKey, ammoKey, weapon_LifeStealKey,
-                ability_LifeStealKey, speedKey, reloadSpeedKey, item_meleeDamageKey,
-                criticalKey].includes(key)) {
+            if([ITEMLISTKEY.item_lifeKey, ITEMLISTKEY.item_armorKey, ITEMLISTKEY.item_shieldKey, ITEMLISTKEY.weaponPowerKey, ITEMLISTKEY.abilityPowerKey,
+                ITEMLISTKEY.attackSpeedKey, ITEMLISTKEY.ctReducationKey, ITEMLISTKEY.ammoKey, ITEMLISTKEY.weapon_LifeStealKey,
+                ITEMLISTKEY.ability_LifeStealKey, ITEMLISTKEY.speedKey, ITEMLISTKEY.reloadSpeedKey, ITEMLISTKEY.item_meleeDamageKey,
+                ITEMLISTKEY.criticalKey].includes(key)) {
 
                 // 値が0でない場合
                 if(itemList[i][key] != 0) {
@@ -400,7 +463,7 @@ function linkItemList(itemList) {
             }
 
             // キー名がその他キーの場合
-            if(othersKey == key) {
+            if(ITEMLISTKEY.othersKey == key) {
 
                 // 値が"-"でない場合
                 if(itemList[i][key] != "-") {
@@ -410,7 +473,7 @@ function linkItemList(itemList) {
             }
 
             // キー名がテキストキーの場合
-            if(item_textKey == key) {
+            if(ITEMLISTKEY.item_textKey == key) {
 
                 // テキスト用変数に値を代入
                 textText = itemList[i][key];
@@ -636,6 +699,286 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
     // 変更履歴列
     var td = document.createElement("td");
     td.classList.add("item-td", "itemandpower-history");
+    tr.appendChild(td);
+
+    return tr;
+}
+
+/**ガジェットリストをテーブルに紐づける関数
+ * @param {object} gadgetList - ガジェットデータの配列
+ * @return {void}
+ */
+function linkGadgetList(gadgetList) {
+    let tbody = document.getElementById("gadget-table").querySelector("tbody");
+
+    // 各ガジェットごとにループ
+    for(let i=0; i<gadgetList.length; i++) {
+        var tr = document.createElement("tr");
+
+        // 必要な列ごとの変数を初期化
+        let gadgetNameText = "";
+        let iconText = "";
+        let rarityText = "";
+        let costText = "";
+        let coolTimeText = "";
+        let statusText = "";
+        let textText = "";
+        let idText = "";
+
+        // 各キーペアごとにループ
+        Object.keys(gadgetList[i]).forEach(key => {
+
+            // キー名がガジェット名キーの場合
+            if(GADGETLISTKEY.gadget_nameKey == key) {
+
+                // ガジェット名用変数に値を代入
+                gadgetNameText = gadgetList[i][key];
+            }
+
+            // キー名がアイコンキーの場合
+            if(GADGETLISTKEY.gadget_iconKey == key) {
+                // アイコン用変数に値を代入
+                iconText = gadgetList[i][key];
+            }
+
+            // キー名がレアリティキーの場合
+            if(GADGETLISTKEY.gadget_rarityKey == key) {
+
+                // レアリティ用変数に値を代入
+                rarityText = gadgetList[i][key];
+            }
+
+             // キー名がコストキーの場合
+            if(GADGETLISTKEY.gadget_costKey == key) {
+                // コスト用変数に値を代入
+                costText = gadgetList[i][key];
+            }
+
+             // キー名がクールタイムキーの場合
+            if(GADGETLISTKEY.gadget_coolTimeKey == key) {
+
+                // クールタイム用変数に値を代入
+                coolTimeText = gadgetList[i][key];
+            }
+
+            // キー名がIDキーの場合
+            if(GADGETLISTKEY.gadget_idKey == key) {
+                // ID用変数に値を代入
+                idText = gadgetList[i][key];
+            }
+
+            // キー名がテキストキーの場合
+            if(GADGETLISTKEY.gadget_textKey == key) {
+
+                // テキスト用変数に値を代入
+                textText = gadgetList[i][key];
+            }
+
+            // キー名がステータス関連のキーの場合
+            if([GADGETLISTKEY.gadget_lifeKey, GADGETLISTKEY.gadget_armorKey, GADGETLISTKEY.gadget_shieldKey, GADGETLISTKEY.gadget_weaponPowerKey, GADGETLISTKEY.gadget_abilityPowerKey,
+                GADGETLISTKEY.gadget_attackSpeedKey, GADGETLISTKEY.gadget_ctreducationKey, GADGETLISTKEY.gadget_ammoKey, GADGETLISTKEY.gadget_weapon_LifeStealKey,
+                GADGETLISTKEY.gadget_ability_LifeStealKey, GADGETLISTKEY.gadget_speedKey].includes(key)) {
+
+                // 値が0でない場合
+                if(gadgetList[i][key] != 0) {
+                    statusText = statusText + key + "+" + String(gadgetList[i][key]) + "\n";
+                }
+            }
+
+            // キー名がその他キーの場合
+            if(GADGETLISTKEY.gadget_othersKey == key) {
+
+                // 値が"-"でない場合
+                if(gadgetList[i][key] != "-") {
+                    statusText = statusText + String(gadgetList[i][key]);
+                    statusText = statusText.replaceAll(",", "\n");
+                }
+            }
+
+            // キー名がテキストキーの場合
+            if(GADGETLISTKEY.gadget_textKey == key) {
+
+                // テキスト用変数に値を代入
+                textText = gadgetList[i][key];
+            }
+        })
+
+        //ステータスアイコン設定
+        let statusIcons = [];
+        let statusLists = (statusText || "").split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+
+        statusLists.forEach((status, i) => {
+
+            //その他（特殊効果）以外のアイコン付与
+            if(!status.includes(STATUSELEMENTS.others_sign)){
+                switch(true) {
+                    case status.includes(STATUSELEMENTS.life_includes):
+                        statusIcons.push(STATUSICON.life);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.armor):
+                        statusIcons.push(STATUSICON.armor);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.shield):
+                        statusIcons.push(STATUSICON.shield);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.weaponPower):
+                        statusIcons.push(STATUSICON.weaponPower);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.abilityPower):
+                        statusIcons.push(STATUSICON.abilityPower);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.attackSpeed):
+                        statusIcons.push(STATUSICON.attackSpeed);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.ctReducation):
+                        statusIcons.push(STATUSICON.ctReducation);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.ammo):
+                        statusIcons.push(STATUSICON.ammo);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.weapon_LifeSteal):
+                        statusIcons.push(STATUSICON.weapon_LifeSteal);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.ability_LifeSteal):
+                        statusIcons.push(STATUSICON.ability_LifeSteal);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.speed):
+                        statusIcons.push(STATUSICON.speed);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.reloadSpeed):
+                        statusIcons.push(STATUSICON.reloadSpeed);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.meleeDamage):
+                        statusIcons.push(STATUSICON.meleeDamage);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.critical):
+                        statusIcons.push(STATUSICON.critical);
+                        break;
+                }
+
+            //その他（特殊効果）の場合
+            }else if(status.includes(STATUSELEMENTS.others_sign)){
+                statusIcons.push(STATUSICON.others);
+
+                //テキストから※を削除
+                statusLists[i] = status.replace(STATUSELEMENTS.others_sign,"");
+            }
+        });
+
+    tbody.appendChild(appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costText, coolTimeText, textText, idText, statusLists, statusIcons));
+
+    tr.classList.add("table-on");
+    }
+}
+
+/**ガジェットリスト用子要素作成関数
+ * @param {object} tr - 行要素
+ * @param {string} gadgetNameText - ガジェット名
+ * @param {string} iconText - アイコン
+ * @param {string} rarityText - レアリティ
+ * @param {number} costText - コスト
+ * @param {string} coolTimeText - クールタイム
+ * @param {string} textText - 説明文
+ * @param {string} idText - アイテムID（非表示）
+ * @param {Array} statusLists - ステータスリスト
+ * @param {Array} statusIcons - ステータスアイコンリスト
+ * @return {object} - 作成した行要素
+ */
+function appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costText, coolTimeText, textText, idText, statusLists, statusIcons){
+
+    // ガジェット名列
+    var td = document.createElement("td");
+    var div = document.createElement("div");
+    // 中のアイコン
+    var iconImg = document.createElement("img");
+    iconImg.src = "assets/images/icons/gadget/" + iconText;
+    iconImg.classList.add("itemandpower-itemicon");
+    // 中のガジェット名
+    var text = document.createElement("span");
+    text.innerText = gadgetNameText;
+
+    div.appendChild(iconImg);
+    div.appendChild(text);
+    div.classList.add("name-table");
+    td.appendChild(div);
+    td.classList.add("IGP_gadget-td");
+    tr.appendChild(td);
+
+    // レアリティ列
+    var td = document.createElement("td");
+    td.textContent = rarityText;
+    td.classList.add("IGP_gadget-td");
+    tr.appendChild(td);
+
+    // コスト列
+    var td = document.createElement("td");
+    td.textContent = costText;
+    td.classList.add("IGP_gadget-td");
+    tr.appendChild(td);
+
+    // クールタイム列
+    var td = document.createElement("td");
+    td.textContent = coolTimeText + "秒";
+    td.classList.add("IGP_gadget-td");
+    tr.appendChild(td);
+
+
+    // ステータス列
+    var td = document.createElement("td");
+
+    for (let i = 0; i < statusLists.length; i++) {
+        // ステータスごとのdiv
+        let statusDiv = document.createElement("div");
+
+        // アイコン作成
+        let iconImg = document.createElement("img");
+        iconImg.src = statusIcons[i];
+        iconImg.classList.add("itemandpower-statusicon");
+
+        // テキスト作成
+        let textSpan = document.createElement("span");
+        textSpan.innerText = statusLists[i];
+
+        // まとめて追加
+        statusDiv.appendChild(iconImg);
+        statusDiv.appendChild(textSpan);
+
+        // tdに追加
+        td.appendChild(statusDiv);
+    }
+
+    td.classList.add("IGP_gadget-td");
+    tr.appendChild(td);
+
+
+    // テキスト列
+    var td = document.createElement("td");
+    td.textContent = textText;
+    td.classList.add("IGP_gadget-td");
+    tr.appendChild(td);
+
+    // アイテムID列（非表示）
+    var td = document.createElement("td");
+    td.textContent = idText;
+    td.classList.add("hidden-column");
+    tr.appendChild(td);
+
+    // 変更履歴列
+    var td = document.createElement("td");
+    td.classList.add("IGP_gadget-td", "itemandpower-history");
     tr.appendChild(td);
 
     return tr;
