@@ -103,6 +103,8 @@ function createItemDetailsElement(item) {
         p.innerHTML = item["name"]  + " - " + item["category"];
     }else if(item["category"] == "アイテム"){
         p.innerHTML = item["name"] + " - " + item["subcategory"]  + "・" + item["category"] + "(" + item["rarity"] + ")";
+    }else if(item["category"] == "ガジェット"){
+        p.innerHTML = item["name"] + " - " + item["category"] + "(" + item["rarity"] + ")";
     }else if(item["category"] == "システム"){
         p.innerHTML = item["name"];
     }
