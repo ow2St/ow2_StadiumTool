@@ -27,7 +27,11 @@ window.ITEMLISTKEY = {
     othersKey: "その他",
     durationFlgKey: "持続時間フラグ",
     durationKey: "持続時間",
-    theoreticalFlgKey: "理論値フラグ"
+    theoreticalFlgKey: "理論値フラグ",
+    changeFlgKey: "変換フラグ",
+    change_lifeKey: "ライフ変換量",
+    change_armorKey: "アーマー変換量",
+    change_shieldKey: "シールド変換量"
 };
 
 /**
