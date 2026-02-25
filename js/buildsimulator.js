@@ -29,6 +29,9 @@ var queenScratch = 0;  // 傷ダメージ
 var itemSelectMaxNumber = 0;   // アイテム選択上限数
 var powerSelectMaxNumber = 0;  // パワー選択上限数
 var takeAimBombDamage = 0; // テイクエイム爆風ダメージ
+var takeAimBombDamageCalc = 0; // テイクエイム爆風ダメージ計算用
+var bioticorbHealingRate = 0; // バイオティックオーブ回復量倍率
+var coalescenceHealingRate = 0; // コアレッセンス回復量倍率
 
 // 表示用のステータスリストを初期化
 var showStatusList = {};
@@ -60,7 +63,11 @@ const itemKeyMap = {
     others: ITEMLISTKEY.othersKey,
     durationflg: ITEMLISTKEY.durationFlgKey,
     duration: ITEMLISTKEY.durationKey,
-    theoreticalflag: ITEMLISTKEY.theoreticalFlgKey
+    theoreticalflag: ITEMLISTKEY.theoreticalFlgKey,
+    changeflag: ITEMLISTKEY.changeFlgKey,
+    change_life: ITEMLISTKEY.change_lifeKey,
+    change_armor: ITEMLISTKEY.change_armorKey,
+    change_shield: ITEMLISTKEY.change_shieldKey
 };
 
 // パワーキー対応マッピング（英語 → 日本語）
@@ -241,7 +248,10 @@ async function loadAndInitBuildData() {
         itemSelectMaxNumber = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.itemSelectMaxNumberID)?.[PARAMETERKEY.valueKey]);
         powerSelectMaxNumber = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.powerSelectMaxNumberID)?.[PARAMETERKEY.valueKey]);
         takeAimBombDamage = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.takeaimID)?.[PARAMETERKEY.valueKey]);
+        takeAimBombDamageCalc = takeAimBombDamage; // テイクエイム爆風ダメージ計算用変数に初期値を設定
         tracerHPUPscalefactor = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.TracerHPUPscalefactorID)?.[PARAMETERKEY.valueKey]);
+        bioticorbHealingRate = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.bioticorbhealID)?.[PARAMETERKEY.valueKey]);
+        coalescenceHealingRate = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.coalescencehealID)?.[PARAMETERKEY.valueKey]);
         // #endregion
 
         // テーブルに紐付け
@@ -375,7 +385,11 @@ function organizeItemData(itemAllData) {
             others: (Ilist.others === "-") ? Ilist.others : "※" + Ilist.others,
             durationflg: Ilist.durationflg,
             duration: Ilist.duration,
-            theoreticalflag: Ilist.theoreticalflag
+            theoreticalflag: Ilist.theoreticalflag,
+            changeflag: Ilist.changeflag,
+            change_life: Ilist.change_life,
+            change_armor: Ilist.change_armor,
+            change_shield: Ilist.change_shield
         };
     })
     return selectedData;
@@ -871,7 +885,11 @@ function processWeapon(statuslist,weaponNameKey,attackPointKey,HSRateKey,attackS
 
     // HS倍率
     if(HSRateKey != "" && statuslist[HSRateKey] != 1){
-        HSValue = Math.round(statuslist[attackPointKey] * statuslist[HSRateKey]);
+        if(selectedHero == HERONAME.freya && weaponNameKey == STATUSLISTKEY.main2WeaponNameKey){
+            HSValue = Math.round(Number(statuslist[attackPointKey] - takeAimBombDamageCalc) * statuslist[HSRateKey]);
+        }else{
+            HSValue = Math.round(statuslist[attackPointKey] * statuslist[HSRateKey]);
+        }
     }
 
     // 攻撃速度
@@ -980,13 +998,13 @@ function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,life
         if(selectedHero == HERONAME.juno && junoFlg == UNIQUEHEROWORD.heal) {
             attackValue = Number(statuslist[attackPointKey]) + 50;
         }else if(selectedHero == HERONAME.moira && moiraFlg == UNIQUEHEROWORD.heal){
-            attackValue = Math.round((statuslist[attackPointKey] * 1.5 * 10 ** 2) / 10 ** 2);
+            attackValue = Math.round((statuslist[attackPointKey] * bioticorbHealingRate * 10 ** 2) / 10 ** 2);
         }
     }
 
     if(attackPointKey == STATUSLISTKEY.ultDamageKey){
         if(selectedHero == HERONAME.moira && moiraFlg == UNIQUEHEROWORD.heal){
-            attackValue = Math.round((statuslist[STATUSLISTKEY.ultDamageKey] / 18 * 27 * 10 ** 2) / 10 ** 2);
+            attackValue = Math.round((statuslist[STATUSLISTKEY.ultDamageKey] * coalescenceHealingRate * 10 ** 2) / 10 ** 2);
         }
     }
 
@@ -1436,8 +1454,8 @@ function linkItemList(itemList, id) {
 
                 //テキストから※を削除
                 statusLists[i] = status.replace("※","");
-            }            
-        });           
+            }
+        });
 
         // 取得した各値をテーブルに紐付け
         // カテゴリー別に紐付け先のテーブルを分ける
@@ -1845,6 +1863,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     ability1AddDamageAbility = 0;
     ability2AddDamageAbility = 0;
     ability3AddDamageAbility = 0;
+    takeAimBombDamageCalc = takeAimBombDamage;
     initStatusValue(showStatusList,"init","-");
 
     // 最後に計算する倍率変数
@@ -2335,6 +2354,9 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         if(showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.genji || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.soldier76 || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.mercy){
             showStatusList[STATUSLISTKEY.ultDamageKey] = Math.round(showStatusList[STATUSLISTKEY.ultDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         }
+
+        // フレイヤ減算処理
+        takeAimBombDamageCalc = Math.round(takeAimBombDamageCalc * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
     }
 
     // アビリティパワーに記載がある場合
