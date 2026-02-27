@@ -38,6 +38,7 @@ const gadgetKeyMap = {
     gadgetname: GADGETLISTKEY.gadget_nameKey,
     rarity: GADGETLISTKEY.gadget_rarityKey,
     cost: GADGETLISTKEY.gadget_costKey,
+    uniquehero: GADGETLISTKEY.gadget_uniqueHeroKey,
     CT: GADGETLISTKEY.gadget_coolTimeKey,
     icon: GADGETLISTKEY.gadget_iconKey,
     text: GADGETLISTKEY.gadget_textKey,
@@ -94,6 +95,7 @@ let patchNoteAllData = []; // 全てのパッチノートデータを保持
 // ソート基準の定義
 const sortingCriteria = [
     { column: "itemName", type: "string" },
+    { column: "gadgetName", type: "string" },
     { column: "powerName", type: "string" },
     { column: "rarity", type: "string" },
     { column: "cost", type: "number" }
@@ -169,7 +171,10 @@ async function loadAndInitData() {
     applyPatchNotesIfReady();
 
     //アイテム表、コストのキャッシュアイコン等初期表示
-    addCostDivAndSpan();
+    const cost_itemTh = document.querySelector("th#cost.item-th");
+    const cost_gadgetTh = document.querySelector("th#cost.IGP_gadget-th");
+    addCostDivAndSpan(cost_itemTh);
+    addCostDivAndSpan(cost_gadgetTh);
 
     //ヒーロー専用アイテム　初期状態OFF
     const heroButtonDva = document.getElementById("D.VA-item");
@@ -242,6 +247,7 @@ function organizeGadgetData(gadgetAllData) {
             gadgetname: Glist.gadgetname,
             rarity: Glist.rarity,
             cost: Glist.cost,
+            uniquehero: Glist.uniquehero,
             CT: Glist.CT,
             icon: Glist.icon,
             text: Glist.text,
@@ -319,9 +325,7 @@ function convertKeys(dataArray, keyMap) {
 }
 
 
-
-//タブ切り替え
-
+//#region タブ切り替え
 /**アイテムタブへ移動 */
 function changeTabItem() {
     tabItem.classList.add("tabItem-on");
@@ -352,6 +356,11 @@ function changeTabGadget() {
 }
 /**パワータブへ移動 */
 function changeTabPower() {
+    if(document.getElementById("tabPower").classList.contains("tabPower-on")) {
+        //すでにパワータブがONのときは何も処理しない
+        return;
+    }
+
     tabPower.classList.add("tabPower-on");
     tabPower.classList.remove("tabPower-off");
     powerContent.style.display = "block";
@@ -366,9 +375,16 @@ function changeTabPower() {
 
     //パワー一覧　D.VAアイコンをONにする
     let defaultHero = document.getElementById("D.VA-power");
+    if(defaultHero.classList.contains("power-hero-icon-on")) {
+        //すでにアイコンがONのときは何も処理しない
+        return;
+    }
+
     filterPowerTable(defaultHero);
 }
+//#endregion タブ切り替え
 
+//#region 各テーブル紐づけ
 /**アイテムリストをテーブルに紐づける関数
  * @param {object} itemList - アイテムデータの配列
  * @return {void}
@@ -754,6 +770,13 @@ function linkGadgetList(gadgetList) {
                 costText = gadgetList[i][key];
             }
 
+             // キー名が固有ヒーローキーの場合
+            if(GADGETLISTKEY.gadget_uniqueHeroKey == key) {
+
+                // 固有ヒーロー用変数に値を代入
+                uniqueHeroText = gadgetList[i][key];
+            }
+
              // キー名がクールタイムキーの場合
             if(GADGETLISTKEY.gadget_coolTimeKey == key) {
 
@@ -776,7 +799,7 @@ function linkGadgetList(gadgetList) {
 
             // キー名がステータス関連のキーの場合
             if([GADGETLISTKEY.gadget_lifeKey, GADGETLISTKEY.gadget_armorKey, GADGETLISTKEY.gadget_shieldKey, GADGETLISTKEY.gadget_weaponPowerKey, GADGETLISTKEY.gadget_abilityPowerKey,
-                GADGETLISTKEY.gadget_attackSpeedKey, GADGETLISTKEY.gadget_ctreducationKey, GADGETLISTKEY.gadget_ammoKey, GADGETLISTKEY.gadget_weapon_LifeStealKey,
+                GADGETLISTKEY.gadget_attackSpeedKey, GADGETLISTKEY.gadget_ctReducationKey, GADGETLISTKEY.gadget_ammoKey, GADGETLISTKEY.gadget_weapon_LifeStealKey,
                 GADGETLISTKEY.gadget_ability_LifeStealKey, GADGETLISTKEY.gadget_speedKey].includes(key)) {
 
                 // 値が0でない場合
@@ -878,7 +901,7 @@ function linkGadgetList(gadgetList) {
             }
         });
 
-    tbody.appendChild(appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costText, coolTimeText, textText, idText, statusLists, statusIcons));
+    tbody.appendChild(appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costText, uniqueHeroText, coolTimeText, textText, idText, statusLists, statusIcons));
 
     tr.classList.add("table-on");
     }
@@ -890,6 +913,7 @@ function linkGadgetList(gadgetList) {
  * @param {string} iconText - アイコン
  * @param {string} rarityText - レアリティ
  * @param {number} costText - コスト
+ * @param {string} uniqueHeroText - 固有ヒーロー(非表示)
  * @param {string} coolTimeText - クールタイム
  * @param {string} textText - 説明文
  * @param {string} idText - アイテムID（非表示）
@@ -897,7 +921,7 @@ function linkGadgetList(gadgetList) {
  * @param {Array} statusIcons - ステータスアイコンリスト
  * @return {object} - 作成した行要素
  */
-function appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costText, coolTimeText, textText, idText, statusLists, statusIcons){
+function appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costText, uniqueHeroText, coolTimeText, textText, idText, statusLists, statusIcons){
 
     // ガジェット名列
     var td = document.createElement("td");
@@ -906,9 +930,16 @@ function appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costTex
     var iconImg = document.createElement("img");
     iconImg.src = "assets/images/icons/gadget/" + iconText;
     iconImg.classList.add("itemandpower-itemicon");
-    // 中のガジェット名
+    // 中のガジェット名とヒーロー名
     var text = document.createElement("span");
-    text.innerText = gadgetNameText;
+    var textTmp = gadgetNameText + "\n\n" + "ヒーロー：" + uniqueHeroText;
+    text.innerHTML = textTmp.replace(/\n/g, "<br>");;
+    div.appendChild(iconImg);
+    div.appendChild(text);
+    div.classList.add("name-table");
+    td.appendChild(div);
+    td.classList.add("IGP_gadget-td");
+    tr.appendChild(td);
 
     div.appendChild(iconImg);
     div.appendChild(text);
@@ -927,6 +958,11 @@ function appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costTex
     var td = document.createElement("td");
     td.textContent = costText;
     td.classList.add("IGP_gadget-td");
+    tr.appendChild(td);
+
+    // 固有ヒーロー列（非表示）
+    var td = document.createElement("td");
+    td.classList.add("hidden-column");
     tr.appendChild(td);
 
     // クールタイム列
@@ -984,6 +1020,109 @@ function appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costTex
     return tr;
 }
 
+/** パワーリストをテーブルに紐づける関数
+ * @param {object} powerList - パワーデータの配列
+ * @return {void}
+ */
+function linkPowerList(powerList) {
+    let tbody = document.getElementById("power-table").querySelector("tbody");
+
+    // 各アイテムごとにループ
+    for(let i=0; i<powerList.length; i++) {
+        var tr = document.createElement("tr");
+
+        // 必要な列ごとの変数を初期化
+        let powerNameText = "";
+        let iconText = "";
+        let heroText = "";
+        let textText = "";
+
+        // 各キーペアごとにループ
+        Object.keys(powerList[i]).forEach(key => {
+
+            // キー名がパワー名キーの場合
+            if(POWERLISTKEY.power_nameKey == key) {
+
+                // パワー名用変数に値を代入
+                powerNameText = powerList[i][key];
+            }
+
+            // キー名がアイコンキーの場合
+            if(POWERLISTKEY.power_iconKey == key) {
+
+                // アイコン用変数に値を代入
+                iconText = powerList[i][key];
+            }
+
+            // キー名がヒーローキーの場合
+            if(POWERLISTKEY.heroKey == key) {
+
+                // ヒーロー用変数に値を代入
+                heroText = powerList[i][key];
+            }
+            // キー名がテキストキーの場合
+            if(POWERLISTKEY.power_textKey == key) {
+
+                // テキスト用変数に値を代入
+                textText = powerList[i][key];
+            }
+        })
+
+    tbody.appendChild(appendChildPowerList(tr, powerNameText, iconText, heroText, textText));
+    tr.classList.add("table-off"); //アイテムテーブルと違い、パワーテーブルは初期表示が非表示の為（D.VA以外）
+    }
+}
+
+/** パワーリスト用子要素作成関数
+ * @param {object} tr - 対象の行要素
+ * @param {string} powerNameText - パワー名
+ * @param {string} iconText - アイコン
+ * @param {string} heroText - ヒーロー
+ * @param {string} textText - 説明文
+ * @return {object} - 作成した行要素
+ */
+function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
+
+    // パワー名列
+    var td = document.createElement("td");
+    var div = document.createElement("div");
+    // 中のアイコン
+    var iconImg = document.createElement("img");
+    iconImg.src = "assets/images/icons/power/" + iconText;
+    iconImg.classList.add("itemandpower-powericon");
+    // 中のパワー名とヒーロー名
+    var text = document.createElement("span");
+    var textTmp = powerNameText + "\n\n" + "ヒーロー：" + heroText;
+    text.innerHTML = textTmp.replace(/\n/g, "<br>");;
+    div.appendChild(iconImg);
+    div.appendChild(text);
+    div.classList.add("name-table");
+    td.appendChild(div);
+    td.classList.add("item-td");
+    tr.appendChild(td);
+
+    // ヒーロー列(非表示)
+    var td = document.createElement("td");
+    td.textContent = heroText;
+    td.classList.add("hidden-column");
+    tr.appendChild(td);
+
+    // テキスト列
+    var td = document.createElement("td");
+    td.textContent = textText;
+    td.classList.add("item-td");
+    tr.appendChild(td);
+
+    // 変更履歴列
+    var td = document.createElement("td");
+    td.classList.add("item-td", "itemandpower-history");
+    tr.appendChild(td);
+
+    return tr;
+}
+//#endregion 各テーブル紐づけ
+
+// #region 絞り込み
 /** 絞り込み条件を更新する関数（アイテム）
  * @param {HTMLElement} elem - 変更対象の要素(押されたボタンやアイコン)
  * @return {void}
@@ -1005,8 +1144,8 @@ function filterItemTable(elem){
 
     // 各絞り込み一覧を取得
     const buttons_category = document.querySelectorAll("#button-category button");
-    const buttons_rarity = document.querySelectorAll("#button-rarity button");
-    const buttons_status = document.querySelectorAll("#button-status button");
+    const buttons_rarity = document.querySelectorAll("#item_button-rarity button");
+    const buttons_status = document.querySelectorAll("#item_button-status button");
     const buttons_hero = document.querySelectorAll("#button-hero img");
 
     // テーブルのヘッダー行（<tr>）を取得
@@ -1101,354 +1240,90 @@ function filterItemTable(elem){
     });
 }
 
-/** 検索ボックスで絞り込み（アイテム）
+/** 絞り込み条件を更新する関数（ガジェット）
+ * @param {HTMLElement} elem - 変更対象の要素(押されたボタン)
  * @return {void}
  */
-function item_searchWords() {
+function filterGadgetTable(elem){
 
-    // 検索ワードを取得
-    const keyword = document.getElementById("item_search-input").value.trim();
+    // 絞り込みボタンのON/OFF切り替え
+    let isNowOn;
+    isNowOn = elem.classList.contains("button-on");
+    elem.classList.toggle("button-on", !isNowOn);
+    elem.classList.toggle("button-off", isNowOn);
 
-    //検索ワードなしなら何もしない
-    if(keyword === "" || keyword === null || keyword === undefined){
-        return;
-    }
+    // 各絞り込み一覧を取得
+    const buttons_rarity = document.querySelectorAll("#gadget_button-rarity button");
+    const buttons_status = document.querySelectorAll("#gadget_button-status button");
 
-    //ボタンを全てOFFにした状態に
-    let activeButtons = document.querySelectorAll("button.button-on");
-    activeButtons.forEach(btn => filterItemTable(btn));
+    // テーブルのヘッダー行（<tr>）を取得
+    const headerRow = document.querySelector("#gadget-table thead tr");
 
-    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_item に配列のように格納。各行を1つのアイテムとする。
-    var tbody_item = document.getElementById("item-table").querySelector("tbody");
-    var rows_item = tbody_item.querySelectorAll("tr");
+    // 各 <th> 要素を配列として取得
+    const headers = Array.from(headerRow.querySelectorAll("th"));
+
+    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_gadget に配列のように格納。各行を1つのガジェットとする。
+    var tbody_gadget = document.getElementById("gadget-table").querySelector("tbody");
+    var rows_gadget = tbody_gadget.querySelectorAll("tr");
 
     // 行ごとの絞り込み
-    // アイテム行をループ
-    rows_item.forEach(tr => {
+    // ガジェット行をループ
+    rows_gadget.forEach(tr => {
         const cells = tr.querySelectorAll("td");
 
         // 毎回クラスを初期化
         tr.classList.remove("table-on");
         tr.classList.remove("table-off");
 
-        // 非表示にするアイテムを探す
+        let shouldShow = true;  // 表示判定フラグ (レアリティ)
+        let shouldShowStatus = false;  // ステータス判定用フラグ （ステータスは複数選択可能なため別途管理）
 
-        const itemName = cells[ITEMTHINDEX.itemName]?.textContent.trim() || "";
-        const textColumn = cells[ITEMTHINDEX.text]?.textContent.trim() || "";
+        // レアリティ関連
+        buttons_rarity.forEach(button =>{
 
-        // 非表示フラグ　keywordが空の場合は全て非表示、
-        const shouldShow = keyword !== "" && (itemName.includes(keyword) || textColumn.includes(keyword));
+            // ボタンがOFFの場合
+            if(button.className == "button-off" && shouldShow){
+                shouldShow = !(cells[GADGETTHINDEX.rarity]?.innerText == button.innerText);
+            }
+        });
 
-        // 非表示対応
-        if(shouldShow == true){
+        // ステータス関連
+        buttons_status.forEach(button => {
+            const statusList = cells[GADGETTHINDEX.status]?.innerText.split("\n").map(s => s.trim());
+
+            // ボタンがONの場合
+            if(button.className == "button-on" && !shouldShowStatus){
+
+                // ライフはライフ吸収と重複するので専用処理
+                if(button.innerText == "ライフ"){
+                    shouldShowStatus = statusList.some(status => status.includes("ライフ+"));
+                // その他専用処理
+                }else if(button.innerText == "その他"){
+                    const imgs = cells[GADGETTHINDEX.status].querySelectorAll("img");
+                    const otherImg = Array.from(imgs).map(img => decodeURIComponent(img.src.split('/').pop()));
+
+                    if (otherImg.some(src => src.includes(STATUSICON.sort_others))) {
+                        shouldShowStatus = true;
+                    } else {
+                        shouldShowStatus = false;
+                    }
+                    // ステータスのセルになにもないアイテムはその他ボタンと連動
+                    if(cells[GADGETTHINDEX.status].innerText === "" || cells[GADGETTHINDEX.status].innerText === null
+                        || cells[GADGETTHINDEX.status].innerText === undefined){
+                        shouldShowStatus = true;
+                    }
+                }else{
+                    shouldShowStatus = statusList.some(status => status.includes(button.innerText));
+                }
+            }
+        });
+
+        if(shouldShow && shouldShowStatus){
             tr.classList.add("table-on");
         }else{
             tr.classList.add("table-off");
         }
     });
-
-}
-
-/**アイテムテーブルソートの前提準備
- * @param {string} id - ソート対象の列ID
- * @return {void}
- */
-function itemSortClick(id){
-    const tHeader=document.getElementById("item-table").querySelectorAll("th");
-    const tBody = document.getElementById("item-table").querySelector("tbody");
-    const criteria = Array.from(sortingCriteria.entries()).find(([key,row]) => row.column === id);
-    const columnIndex = Array.from(tHeader).findIndex(th => th.dataset.column == id);
-    const currentDirection = sortDirection[columnIndex] == true ? false:true;
-    sortDirection = new Array(8).fill(null);
-    sortDirection[columnIndex] = currentDirection
-
-    itemTableSort(tHeader,tBody,criteria[1],columnIndex,currentDirection);
-
-    // 表示テキスト更新
-    const labelMap = {
-        itemName: THTEXT.itemName,
-        rarity: THTEXT.rarity,
-        cost: THTEXT.cost
-    };
-
-    // テーブル列名初期化
-    sortingCriteria.forEach(row => {
-        document.getElementById(row.column).innerText = labelMap[row.column];
-    });
-
-    let arrows = "";
-
-    if(sortDirection[columnIndex]){
-        arrows = "▲"
-    }else if(!sortDirection[columnIndex]){
-        arrows = "▼"
-    }
-
-    if(id == "cost"){
-        addCostDivAndSpan();
-        document.getElementById("span-cost").innerText = labelMap[id];
-        document.getElementById("span-costArrow").innerText = arrows;
-    }else{
-        // ソート結果に応じた列名に更新
-        document.getElementById(id).innerText = labelMap[id] + arrows;
-    }
-}
-
-/**コスト列のth内に、キャッシュアイコンとspan要素を追加する関数
- * @return {void}
- */
-function addCostDivAndSpan() {
-
-    //costのth内innerTextはいらないので消去
-    document.getElementById("cost").innerText = "";
-
-    // costのthを取得
-    const cost_th = document.querySelector("th#cost.item-th");
-
-    // div を作成
-    const cost_div = document.createElement("div");
-    cost_div.id = "div-cost";
-
-    // th の子要素として追加
-    cost_th.appendChild(cost_div);
-
-    //span を作成
-    const cost_span = document.createElement("span");
-    cost_span.innerText = "コスト";
-    cost_span.id = "span-cost";
-
-    const costArrow_span = document.createElement("span");
-    costArrow_span.id = "span-costArrow";
-
-    // img要素を作成
-    let img = document.createElement("img");
-    img.src = "assets/images/icons/status/キャッシュアイコン.png";
-    img.classList.add("itemandpower-statusicon");
-
-    // divの中に追加
-    document.getElementById("div-cost").appendChild(img);
-
-    // div の子要素として追加
-    cost_div.appendChild(cost_span);
-    cost_div.appendChild(costArrow_span);
-}
-
-/** アイテムテーブルをソートする関数
- * @param {object} headers - テーブルヘッダー要素
- * @param {object} tbody - テーブルボディ要素
- * @param {Object} sortingCriteria - ソート基準
- * @param {number} index - ソート対象の列インデックス
- * @param {boolean} sorting - 昇順か降順か
- * @return {void}
- */
-function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
-
-    //レア度の並び替えの基準を設定
-    const rarityOrder = [RARITYELEMENTS.common, RARITYELEMENTS.rare, RARITYELEMENTS.epic]
-
-    const rows = Array.from(tbody.querySelectorAll("tr"));
-
-    // 日本語ロケールに基づいた比較器（五十音順）
-    const collator = new Intl.Collator('ja-JP', { sensitivity: 'base' });
-    // 比較
-    const comparator = (rowA, rowB) => {
-        const { column, type } = sortingCriteria;
-
-        const cellA = rowA.children[index].textContent.trim();
-        const cellB = rowB.children[index].textContent.trim();
-
-        let valA, valB;
-
-        // データの型に応じて比較対象の値を変換（デフォルトはString型）
-        if (type == "number") {
-            valA = parseFloat(cellA);
-            valB = parseFloat(cellB);
-        } else {
-            valA = cellA;
-            valB = cellB;
-        }
-
-        // レア度を比較用に数値変換
-        if (column == "rarity") {
-            valA = rarityOrder.indexOf(valA);
-            valB = rarityOrder.indexOf(valB);
-        }
-
-        let comparison = 0;
-
-        // 文字列は日本語ロケールで比較
-        if (type === "string" && column !== "rarity") {
-            comparison = collator.compare(valA, valB);
-        } else {
-            if (valA < valB) comparison = -1;
-            else if (valA > valB) comparison = 1;
-        }
-
-        // ソート順序を適用し、結果が0でない場合はここで終了
-        return sorting ? comparison : -comparison;
-
-        // 全てのキーが同じ場合
-        return 0;
-    };
-
-
-    // 配列のソート
-    rows.sort(comparator);
-    // 既存の行をすべて削除
-    while (tbody.firstChild) {
-        tbody.removeChild(tbody.firstChild);
-    }
-    // ソートされた順序で行を追加
-    rows.forEach(row => tbody.appendChild(row));
-}
-
-/** パワーリストをテーブルに紐づける関数
- * @param {object} powerList - パワーデータの配列
- * @return {void}
- */
-function linkPowerList(powerList) {
-    let tbody = document.getElementById("power-table").querySelector("tbody");
-
-    // 各アイテムごとにループ
-    for(let i=0; i<powerList.length; i++) {
-        var tr = document.createElement("tr");
-
-        // 必要な列ごとの変数を初期化
-        let powerNameText = "";
-        let iconText = "";
-        let heroText = "";
-        let textText = "";
-
-        // 各キーペアごとにループ
-        Object.keys(powerList[i]).forEach(key => {
-
-            // キー名がパワー名キーの場合
-            if(POWERLISTKEY.power_nameKey == key) {
-
-                // パワー名用変数に値を代入
-                powerNameText = powerList[i][key];
-            }
-
-            // キー名がアイコンキーの場合
-            if(POWERLISTKEY.power_iconKey == key) {
-
-                // アイコン用変数に値を代入
-                iconText = powerList[i][key];
-            }
-
-            // キー名がヒーローキーの場合
-            if(POWERLISTKEY.heroKey == key) {
-
-                // ヒーロー用変数に値を代入
-                heroText = powerList[i][key];
-            }
-            // キー名がテキストキーの場合
-            if(POWERLISTKEY.power_textKey == key) {
-
-                // テキスト用変数に値を代入
-                textText = powerList[i][key];
-            }
-        })
-
-    tbody.appendChild(appendChildPowerList(tr, powerNameText, iconText, heroText, textText));
-    tr.classList.add("table-off"); //アイテムテーブルと違い、パワーテーブルは初期表示が非表示の為（D.VA以外）
-    }
-}
-
-/** 検索ボックスで絞り込み（パワー）
- * @return {void}
- */
-function power_searchWords() {
-
-    // 検索ワードを取得
-    const keyword = document.getElementById("power_search-input").value.trim();
-
-    //検索ワードなしなら何もしない
-    if(keyword === "" || keyword === null || keyword === undefined){
-        return;
-    }
-
-    //ボタンを全てOFFにした状態に
-    let activeImages = document.querySelectorAll("img.power-hero-icon-on");
-    activeImages.forEach(img => filterPowerTable(img));
-
-    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_power に配列のように格納。各行を1つのパワーとする。
-    var tbody_power = document.getElementById("power-table").querySelector("tbody");
-    var rows_power = tbody_power.querySelectorAll("tr");
-
-    // 行ごとの絞り込み
-    // パワー行をループ
-    rows_power.forEach(tr => {
-        const cells = tr.querySelectorAll("td");
-
-        // 毎回クラスを初期化
-        tr.classList.remove("table-on");
-        tr.classList.remove("table-off");
-
-        // 非表示にするパワーを探す
-
-        const powerName = cells[POWERTHINDEX.powerName]?.textContent.trim() || "";
-        const textColumn = cells[POWERTHINDEX.text]?.textContent.trim() || "";
-
-        // 非表示フラグ　keywordが空の場合は全て非表示、
-        const shouldShow = keyword !== "" && (powerName.includes(keyword) || textColumn.includes(keyword));
-
-        // 非表示対応
-        if(shouldShow == true){
-            tr.classList.add("table-on");
-        }else{
-            tr.classList.add("table-off");
-        }
-    });
-
-}
-
-/** パワーリスト用子要素作成関数
- * @param {object} tr - 対象の行要素
- * @param {string} powerNameText - パワー名
- * @param {string} iconText - アイコン
- * @param {string} heroText - ヒーロー
- * @param {string} textText - 説明文
- * @return {object} - 作成した行要素
- */
-function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
-
-    // パワー名列
-    var td = document.createElement("td");
-    var div = document.createElement("div");
-    // 中のアイコン
-    var iconImg = document.createElement("img");
-    iconImg.src = "assets/images/icons/power/" + iconText;
-    iconImg.classList.add("itemandpower-powericon");
-    // 中のパワー名とヒーロー名
-    var text = document.createElement("span");
-    var textTmp = powerNameText + "\n\n" + "ヒーロー：" + heroText;
-    text.innerHTML = textTmp.replace(/\n/g, "<br>");;
-    div.appendChild(iconImg);
-    div.appendChild(text);
-    div.classList.add("name-table");
-    td.appendChild(div);
-    td.classList.add("item-td");
-    tr.appendChild(td);
-
-    // ヒーロー列(非表示)
-    var td = document.createElement("td");
-    td.textContent = heroText;
-    td.classList.add("hidden-column");
-    tr.appendChild(td);
-
-    // テキスト列
-    var td = document.createElement("td");
-    td.textContent = textText;
-    td.classList.add("item-td");
-    tr.appendChild(td);
-
-    // 変更履歴列
-    var td = document.createElement("td");
-    td.classList.add("item-td", "itemandpower-history");
-    tr.appendChild(td);
-
-    return tr;
 }
 
 /** 絞り込み条件を更新する関数（パワー）
@@ -1537,6 +1412,380 @@ function filterPowerTable(elem){
             tr.classList.add("table-off");
         }
     });
+}
+// #endregion 絞り込み
+
+// #region キーワード検索
+/** 検索ボックスで絞り込み（アイテム）
+ * @return {void}
+ */
+function item_searchWords() {
+
+    // 検索ワードを取得
+    const keyword = document.getElementById("item_search-input").value.trim();
+
+    //検索ワードなしなら何もしない
+    if(keyword === "" || keyword === null || keyword === undefined){
+        return;
+    }
+
+    //ボタンを全てOFFにした状態に
+    let activeButtons = document.querySelectorAll("button.button-on");
+    activeButtons.forEach(btn => filterItemTable(btn));
+
+    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_item に配列のように格納。各行を1つのアイテムとする。
+    var tbody_item = document.getElementById("item-table").querySelector("tbody");
+    var rows_item = tbody_item.querySelectorAll("tr");
+
+    // 行ごとの絞り込み
+    // アイテム行をループ
+    rows_item.forEach(tr => {
+        const cells = tr.querySelectorAll("td");
+
+        // 毎回クラスを初期化
+        tr.classList.remove("table-on");
+        tr.classList.remove("table-off");
+
+        // 非表示にするアイテムを探す
+
+        const itemName = cells[ITEMTHINDEX.itemName]?.textContent.trim() || "";
+        const textColumn = cells[ITEMTHINDEX.text]?.textContent.trim() || "";
+
+        // 非表示フラグ　keywordが空の場合は全て非表示、
+        const shouldShow = keyword !== "" && (itemName.includes(keyword) || textColumn.includes(keyword));
+
+        // 非表示対応
+        if(shouldShow == true){
+            tr.classList.add("table-on");
+        }else{
+            tr.classList.add("table-off");
+        }
+    });
+}
+
+/** 検索ボックスで絞り込み（ガジェット）
+ * @return {void}
+ */
+function gadget_searchWords() {
+
+    // 検索ワードを取得
+    const keyword = document.getElementById("gadget_search-input").value.trim();
+
+    //検索ワードなしなら何もしない
+    if(keyword === "" || keyword === null || keyword === undefined){
+        return;
+    }
+
+    //ボタンを全てOFFにした状態に
+    let activeButtons = document.querySelectorAll("button.button-on");
+    activeButtons.forEach(btn => filterGadgetTable(btn));
+
+    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_gadget に配列のように格納。各行を1つのガジェットとする。
+    var tbody_gadget = document.getElementById("gadget-table").querySelector("tbody");
+    var rows_gadget = tbody_gadget.querySelectorAll("tr");
+
+    // 行ごとの絞り込み
+    // ガジェット行をループ
+    rows_gadget.forEach(tr => {
+        const cells = tr.querySelectorAll("td");
+
+        // 毎回クラスを初期化
+        tr.classList.remove("table-on");
+        tr.classList.remove("table-off");
+
+        // 非表示にするガジェットを探す
+
+        const gadgetName = cells[GADGETTHINDEX.gadgetName]?.textContent.trim() || "";
+        const textColumn = cells[GADGETTHINDEX.text]?.textContent.trim() || "";
+
+        // 非表示フラグ　keywordが空の場合は全て非表示、
+        const shouldShow = keyword !== "" && (gadgetName.includes(keyword) || textColumn.includes(keyword));
+        // 非表示対応
+        if(shouldShow == true){
+            tr.classList.add("table-on");
+        }else{
+            tr.classList.add("table-off");
+        }
+    });
+}
+
+/** 検索ボックスで絞り込み（パワー）
+ * @return {void}
+ */
+function power_searchWords() {
+
+    // 検索ワードを取得
+    const keyword = document.getElementById("power_search-input").value.trim();
+
+    //検索ワードなしなら何もしない
+    if(keyword === "" || keyword === null || keyword === undefined){
+        return;
+    }
+
+    //ボタンを全てOFFにした状態に
+    let activeImages = document.querySelectorAll("img.power-hero-icon-on");
+    activeImages.forEach(img => filterPowerTable(img));
+
+    //データ行を全て読み込み、<tbody> 内のすべての行を取得して、rows_power に配列のように格納。各行を1つのパワーとする。
+    var tbody_power = document.getElementById("power-table").querySelector("tbody");
+    var rows_power = tbody_power.querySelectorAll("tr");
+
+    // 行ごとの絞り込み
+    // パワー行をループ
+    rows_power.forEach(tr => {
+        const cells = tr.querySelectorAll("td");
+
+        // 毎回クラスを初期化
+        tr.classList.remove("table-on");
+        tr.classList.remove("table-off");
+
+        // 非表示にするパワーを探す
+
+        const powerName = cells[POWERTHINDEX.powerName]?.textContent.trim() || "";
+        const textColumn = cells[POWERTHINDEX.text]?.textContent.trim() || "";
+
+        // 非表示フラグ　keywordが空の場合は全て非表示、
+        const shouldShow = keyword !== "" && (powerName.includes(keyword) || textColumn.includes(keyword));
+
+        // 非表示対応
+        if(shouldShow == true){
+            tr.classList.add("table-on");
+        }else{
+            tr.classList.add("table-off");
+        }
+    });
+}
+// #endregion キーワード検索
+
+// #region ソート
+/**アイテムテーブルソートの前提準備
+ * @param {string} id - ソート対象の列ID
+ * @return {void}
+ */
+function itemSortClick(id){
+    const tHeader=document.getElementById("item-table").querySelectorAll("th");
+    const tBody = document.getElementById("item-table").querySelector("tbody");
+    const criteria = Array.from(sortingCriteria.entries()).find(([key,row]) => row.column === id);
+    const columnIndex = Array.from(tHeader).findIndex(th => th.dataset.column == id);
+    const currentDirection = sortDirection[columnIndex] == true ? false:true;
+    sortDirection = new Array(8).fill(null);
+    sortDirection[columnIndex] = currentDirection
+
+    itemTableSort(tHeader,tBody,criteria[1],columnIndex,currentDirection);
+
+    // 表示テキスト更新
+    const labelMap = {
+        itemName: THTEXT.itemName,
+        rarity: THTEXT.rarity,
+        cost: THTEXT.cost
+    };
+
+    // テーブル列名初期化
+    sortingCriteria.forEach(row => {
+        document.getElementById(row.column).innerText = labelMap[row.column];
+    });
+
+    let arrows = "";
+
+    if(sortDirection[columnIndex]){
+        arrows = "▲"
+    }else if(!sortDirection[columnIndex]){
+        arrows = "▼"
+    }
+
+    if(id == "cost"){
+        let cost_itemTh = document.querySelector("th#cost.item-th");
+        addCostDivAndSpan(cost_itemTh);
+        document.getElementById("span-cost").innerText = labelMap[id];
+        document.getElementById("span-costArrow").innerText = arrows;
+    }else{
+        // ソート結果に応じた列名に更新
+        document.getElementById(id).innerText = labelMap[id] + arrows;
+    }
+}
+
+/** アイテムテーブルをソートする関数
+ * @param {object} headers - テーブルヘッダー要素
+ * @param {object} tbody - テーブルボディ要素
+ * @param {Object} sortingCriteria - ソート基準
+ * @param {number} index - ソート対象の列インデックス
+ * @param {boolean} sorting - 昇順か降順か
+ * @return {void}
+ */
+function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
+
+    //レア度の並び替えの基準を設定
+    const rarityOrder = [RARITYELEMENTS.common, RARITYELEMENTS.rare, RARITYELEMENTS.epic]
+
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    // 日本語ロケールに基づいた比較器（五十音順）
+    const collator = new Intl.Collator('ja-JP', { sensitivity: 'base' });
+    // 比較
+    const comparator = (rowA, rowB) => {
+        const { column, type } = sortingCriteria;
+
+        const cellA = rowA.children[index].textContent.trim();
+        const cellB = rowB.children[index].textContent.trim();
+
+        let valA, valB;
+
+        // データの型に応じて比較対象の値を変換（デフォルトはString型）
+        if (type == "number") {
+            valA = parseFloat(cellA);
+            valB = parseFloat(cellB);
+        } else {
+            valA = cellA;
+            valB = cellB;
+        }
+
+        // レア度を比較用に数値変換
+        if (column == "rarity") {
+            valA = rarityOrder.indexOf(valA);
+            valB = rarityOrder.indexOf(valB);
+        }
+
+        let comparison = 0;
+
+        // 文字列は日本語ロケールで比較
+        if (type === "string" && column !== "rarity") {
+            comparison = collator.compare(valA, valB);
+        } else {
+            if (valA < valB) comparison = -1;
+            else if (valA > valB) comparison = 1;
+        }
+
+        // ソート順序を適用し、結果が0でない場合はここで終了
+        return sorting ? comparison : -comparison;
+
+        // 全てのキーが同じ場合
+        return 0;
+    };
+
+
+    // 配列のソート
+    rows.sort(comparator);
+    // 既存の行をすべて削除
+    while (tbody.firstChild) {
+        tbody.removeChild(tbody.firstChild);
+    }
+    // ソートされた順序で行を追加
+    rows.forEach(row => tbody.appendChild(row));
+}
+
+/**ガジェットテーブルソートの前提準備
+ * @param {string} id - ソート対象の列ID
+ * @return {void}
+ */
+function gadgetSortClick(id){
+    const tHeader=document.getElementById("gadget-table").querySelectorAll("th");
+    const tBody = document.getElementById("gadget-table").querySelector("tbody");
+    const criteria = Array.from(sortingCriteria.entries()).find(([key,row]) => row.column === id);
+    const columnIndex = Array.from(tHeader).findIndex(th => th.dataset.column == id);
+    const currentDirection = sortDirection[columnIndex] == true ? false:true;
+    sortDirection = new Array(8).fill(null);
+    sortDirection[columnIndex] = currentDirection
+
+    gadgetTableSort(tHeader,tBody,criteria[1],columnIndex,currentDirection);
+
+    // 表示テキスト更新
+    const labelMap = {
+        gadgetName: THTEXT.gadgetName,
+        rarity: THTEXT.rarity,
+        cost: THTEXT.cost
+    };
+
+    // テーブル列名初期化
+    sortingCriteria.forEach(row => {
+        document.getElementById(row.column).innerText = labelMap[row.column];
+    });
+
+    let arrows = "";
+
+    if(sortDirection[columnIndex]){
+        arrows = "▲"
+    }else if(!sortDirection[columnIndex]){
+        arrows = "▼"
+    }
+
+    if(id == "cost"){
+        let cost_gadgetTh = document.querySelector("th#cost.IGP_gadget-th");
+        addCostDivAndSpan(cost_gadgetTh);
+        document.getElementById("span-cost").innerText = labelMap[id];
+        document.getElementById("span-costArrow").innerText = arrows;
+    }else{
+        // ソート結果に応じた列名に更新
+        document.getElementById(id).innerText = labelMap[id] + arrows;
+    }
+}
+
+/** ガジェットテーブルをソートする関数
+ * @param {object} headers - テーブルヘッダー要素
+ * @param {object} tbody - テーブルボディ要素
+ * @param {Object} sortingCriteria - ソート基準
+ * @param {number} index - ソート対象の列インデックス
+ * @param {boolean} sorting - 昇順か降順か
+ * @return {void}
+ */
+function gadgetTableSort(headers, tbody, sortingCriteria,index,sorting) {
+
+    //レア度の並び替えの基準を設定
+    const rarityOrder = [RARITYELEMENTS.common, RARITYELEMENTS.rare, RARITYELEMENTS.epic]
+
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    // 日本語ロケールに基づいた比較器（五十音順）
+    const collator = new Intl.Collator('ja-JP', { sensitivity: 'base' });
+    // 比較
+    const comparator = (rowA, rowB) => {
+        const { column, type } = sortingCriteria;
+
+        const cellA = rowA.children[index].textContent.trim();
+        const cellB = rowB.children[index].textContent.trim();
+
+        let valA, valB;
+
+        // データの型に応じて比較対象の値を変換（デフォルトはString型）
+        if (type == "number") {
+            valA = parseFloat(cellA);
+            valB = parseFloat(cellB);
+        } else {
+            valA = cellA;
+            valB = cellB;
+        }
+
+        // レア度を比較用に数値変換
+        if (column == "rarity") {
+            valA = rarityOrder.indexOf(valA);
+            valB = rarityOrder.indexOf(valB);
+        }
+
+        let comparison = 0;
+
+        // 文字列は日本語ロケールで比較
+        if (type === "string" && column !== "rarity") {
+            comparison = collator.compare(valA, valB);
+        } else {
+            if (valA < valB) comparison = -1;
+            else if (valA > valB) comparison = 1;
+        }
+
+        // ソート順序を適用し、結果が0でない場合はここで終了
+        return sorting ? comparison : -comparison;
+
+        // 全てのキーが同じ場合
+        return 0;
+    };
+
+
+    // 配列のソート
+    rows.sort(comparator);
+    // 既存の行をすべて削除
+    while (tbody.firstChild) {
+        tbody.removeChild(tbody.firstChild);
+    }
+    // ソートされた順序で行を追加
+    rows.forEach(row => tbody.appendChild(row));
 }
 
 /** パワーテーブルソートの前提準備
@@ -1645,7 +1894,46 @@ function powerTableSort(headers, tbody, sortingCriteria,index,sorting) {
     // ソートされた順序で行を追加
     rows.forEach(row => tbody.appendChild(row));
 }
+//#endregion ソート
 
+/**コスト列のth内に、キャッシュアイコンとspan要素を追加する関数
+ * @param {HTMLElement} cost_Th - コスト列の<th>要素
+ * @return {void}
+ */
+function addCostDivAndSpan(cost_Th) {
+
+    //costのth内innerTextはいらないので消去
+    cost_Th.innerText = "";
+
+    // div を作成
+    const cost_div = document.createElement("div");
+    cost_div.id = "div-cost";
+
+    // img要素を作成
+    let img = document.createElement("img");
+    img.src = "assets/images/icons/status/キャッシュアイコン.png";
+    img.classList.add("itemandpower-statusicon");
+
+    // divの中に追加
+    cost_div.appendChild(img);
+
+    // th の子要素として追加
+    cost_Th.appendChild(cost_div);
+
+    //span を作成
+    const cost_span = document.createElement("span");
+    cost_span.innerText = "コスト";
+    cost_span.id = "span-cost";
+
+    const costArrow_span = document.createElement("span");
+    costArrow_span.id = "span-costArrow";
+
+    // div の子要素として追加
+    cost_div.appendChild(cost_span);
+    cost_div.appendChild(costArrow_span);
+}
+
+// #region パッチノート関係
 /** パッチノートが適用可能か確認し、適用する関数
  * @return {void}
  */
@@ -1655,10 +1943,11 @@ function applyPatchNotesIfReady() {
 
     // 必要なテーブルとデータが揃っているかを確認
     const itemTableTr = document.getElementById("item-table")?.querySelector("tbody").querySelectorAll('tr');
+    const gadgetTableTr = document.getElementById("gadget-table")?.querySelector("tbody").querySelectorAll('tr');
     const powerTableTr = document.getElementById("power-table")?.querySelector("tbody").querySelectorAll('tr');
 
-    // アイテム、パワーのテーブルが存在し、かつパッチノートデータが読み込まれていれば実行
-    if (itemTableTr.length > 0 && powerTableTr.length > 0 && patchNoteAllData.length > 0) {
+    // アイテム、ガジェット、パワーのテーブルが存在し、かつパッチノートデータが読み込まれていれば実行
+    if (itemTableTr.length > 0 && gadgetTableTr.length > 0 && powerTableTr.length > 0 && patchNoteAllData.length > 0) {
         applyPatchNotesToTables();
         patchNotesApplied = true;
     }
@@ -1671,7 +1960,7 @@ function processPatchNotes() {
     const changesMap = new Map();
 
     patchNoteAllData.forEach(note => {
-        if (note.category != "アイテム" && note.category != "パワー") return;
+        if (note.category != "アイテム" &&note.category != "ガジェット" && note.category != "パワー") return;
 
         const name = note.name;
         if (!name || name == "-") return;
@@ -1718,12 +2007,14 @@ function createHistoryHtml(changes) {
  * @return {void}
  */
 function applyPatchNotesToTables() {
-    if (patchNoteAllData.length == 0) return;
 
     const changesMap = processPatchNotes();
 
     // アイテムテーブルへの適用
     applyChangesToTable("item-table", 0, changesMap);
+
+    // ガジェットテーブルへの適用
+    applyChangesToTable("gadget-table", 0, changesMap);
 
     // パワーテーブルへの適用
     applyChangesToTable("power-table", 0, changesMap);
@@ -1731,7 +2022,7 @@ function applyPatchNotesToTables() {
     patchNotesApplied = true;
 }
 
-/** テーブルに変更を適用する関数
+/** テーブルにパッチノートの変更を適用する関数
  * @param {string} tableId - テーブルのID
  * @param {number} nameColIndex - 名前列のインデックス
  * @param {Map} changesMap - 変更点のマップ
@@ -1788,3 +2079,4 @@ function applyChangesToTable(tableId, nameColIndex, changesMap) {
         }
     });
 }
+// #endregion パッチノート関係

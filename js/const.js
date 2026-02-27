@@ -38,6 +38,7 @@ window.GADGETLISTKEY = {
     gadget_nameKey: "ガジェット名",
     gadget_rarityKey: "レア度",
     gadget_costKey: "コスト",
+    gadget_uniqueHeroKey: "固有ヒーロー",
     gadget_coolTimeKey: "クールタイム",
     gadget_iconKey: "アイコン",
     gadget_textKey: "テキスト",
@@ -238,6 +239,7 @@ window.MAXNUMBER = {
  */
 window.THTEXT = {
     itemName: "アイテム名",
+    gadgetName: "ガジェット名",
     powerName: "パワー名",
     category: "カテゴリー",
     rarity: "レアリティ",
@@ -255,6 +257,21 @@ window.ITEMTHINDEX = {
     rarity: "2",
     cost: "3",
     uniqueHero: "4",
+    status: "5",
+    text: "6",
+    id: "7",
+    ChangeHistory: "8"
+};
+
+/**
+ * ガジェットテーブル見出しナンバー管理
+ */
+window.GADGETTHINDEX = {
+    gadgetName: "0",
+    rarity: "1",
+    cost: "2",
+    uniqueHero: "3",
+    coolTime: "4",
     status: "5",
     text: "6",
     id: "7",

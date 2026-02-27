@@ -16,7 +16,7 @@
         </div>
         <div class="header-bottom">
             <!--ボタン後ろに空白が入るため改行しない-->
-            <a href="index.html" class="header-button">トップページ</a><a href="itemAndPower.html" class="header-button-selected">アイテム/ガジェット/パワー一覧</a><a href="buildSimulator.html" class="header-button">ビルドシミュレーター</a><a href="patchNote.html" class="header-button">パッチノート</a>
+            <a href="index.html" class="header-button">トップページ</a><a href="itemAndPower.html" class="header-button-selected" >アイテム/ガジェット/パワー一覧</a><a href="buildSimulator.html" class="header-button">ビルドシミュレーター</a><a href="patchNote.html" class="header-button">パッチノート</a>
         </div>
     </header>
     <body>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="button-list">
                         <span class="button-category">レアリティ</span>
-                        <div class="button-only" id="button-rarity">
+                        <div class="button-only" id="item_button-rarity">
                             <button class="button-on" id="common" onclick="filterItemTable(this)">コモン</button>
                             <button class="button-on" id="rare" onclick="filterItemTable(this)">レア</button>
                             <button class="button-on" id="epic" onclick="filterItemTable(this)">エピック</button>
@@ -46,7 +46,7 @@
                     </div>
                     <div class="button-list">
                         <span class="button-category">ステータス</span>
-                        <div class="button-only" id="button-status">
+                        <div class="button-only" id="item_button-status">
                             <button class="button-on" id="life" onclick="filterItemTable(this)">ライフ</button>
                             <button class="button-on" id="armor" onclick="filterItemTable(this)">アーマー</button>
                             <button class="button-on" id="shield" onclick="filterItemTable(this)">シールド</button>
@@ -132,7 +132,7 @@
                     <!--ガジェットタブの内容-->
                     <div class="button-list">
                         <span class="button-category">レアリティ</span>
-                        <div class="button-only" id="button-rarity">
+                        <div class="button-only" id="gadget_button-rarity">
                             <button class="button-on" id="common" onclick="filterGadgetTable(this)">コモン</button>
                             <button class="button-on" id="rare" onclick="filterGadgetTable(this)">レア</button>
                             <button class="button-on" id="epic" onclick="filterGadgetTable(this)">エピック</button>
@@ -140,7 +140,7 @@
                     </div>
                     <div class="button-list">
                         <span class="button-category">ステータス</span>
-                        <div class="button-only" id="button-status">
+                        <div class="button-only" id="gadget_button-status">
                             <button class="button-on" id="life" onclick="filterGadgetTable(this)">ライフ</button>
                             <button class="button-on" id="armor" onclick="filterGadgetTable(this)">アーマー</button>
                             <button class="button-on" id="shield" onclick="filterGadgetTable(this)">シールド</button>
