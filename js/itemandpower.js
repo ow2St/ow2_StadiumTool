@@ -181,15 +181,23 @@ async function loadAndInitData() {
     heroButtonDva.onclick();
 
     //テキスト検索にて、エンターキーと検索ボタンのクリックを紐づける
-    document.addEventListener("DOMContentLoaded", () => {
-        const input = document.getElementById("item_search-input");
-
-        if (!input) return;
-
-        input.addEventListener("keydown", (e) => {
+    const searches = document.querySelectorAll('input[type="search"]');
+    searches.forEach(input => {
+        input.addEventListener("keyup", (e) => {
             if (e.key === "Enter") {
                 e.preventDefault();   // フォーム送信防止（重要）
-                item_searchWords();   // 検索ボタンと同じ処理
+
+                switch (input.id) {
+                    case "item_search-input":
+                        item_searchWords();
+                        break;
+                    case "gadget_search-input":
+                        gadget_searchWords();
+                        break;
+                    case "power_search-input":
+                        power_searchWords();
+                        break;
+                }
             }
         });
     });
