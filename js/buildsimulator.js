@@ -1891,6 +1891,8 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     let textTmp = "";
     let durationFlgTmp = -1;
     let durationTmp = 0;
+    let change_armorTmp = 0;
+    let change_shieldTmp = 0;
 
     // #region ステータス反映
     for(let i=0; i<selectedItemRows.length; i++) {
@@ -1915,6 +1917,8 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         textTmp = selectedItemRows[i][ITEMLISTKEY.item_textKey];
         durationFlgTmp = selectedItemRows[i][ITEMLISTKEY.durationFlgKey];
         durationTmp = selectedItemRows[i][ITEMLISTKEY.durationKey];
+        change_armorTmp += Number(selectedItemRows[i][ITEMLISTKEY.change_armorKey]);
+        change_shieldTmp += Number(selectedItemRows[i][ITEMLISTKEY.change_shieldKey]);
 
         //トレーサーが選択されている場合、体力アイテムを減算処理
         //最後のループ一回のみ実行
@@ -2338,6 +2342,25 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
 
         // 表示用ステータスリストに反映
         showStatusList[STATUSLISTKEY.status_shieldKey] = showStatusList[STATUSLISTKEY.status_shieldKey] + shieldTmp;
+    }
+
+    // 変換値がある場合は表示用ステータスリストに反映
+    if(change_armorTmp != 0 && showStatusList[STATUSLISTKEY.status_lifeKey] > 0){
+        showStatusList[STATUSLISTKEY.status_lifeKey] = showStatusList[STATUSLISTKEY.status_lifeKey] - change_armorTmp;
+        if (showStatusList[STATUSLISTKEY.status_lifeKey] < 0){
+            change_armorTmp = change_armorTmp +  showStatusList[STATUSLISTKEY.status_lifeKey];
+            showStatusList[STATUSLISTKEY.status_lifeKey] = 0;
+        }
+        showStatusList[STATUSLISTKEY.status_armorKey] = showStatusList[STATUSLISTKEY.status_armorKey] + change_armorTmp;
+    }
+
+    if(change_shieldTmp != 0 && showStatusList[STATUSLISTKEY.status_lifeKey] > 0){
+        showStatusList[STATUSLISTKEY.status_lifeKey] = showStatusList[STATUSLISTKEY.status_lifeKey] - change_shieldTmp;
+        if (showStatusList[STATUSLISTKEY.status_lifeKey] < 0){
+            change_shieldTmp = change_shieldTmp +  showStatusList[STATUSLISTKEY.status_lifeKey];
+            showStatusList[STATUSLISTKEY.status_lifeKey] = 0;
+        }
+        showStatusList[STATUSLISTKEY.status_shieldKey] = showStatusList[STATUSLISTKEY.status_shieldKey] + change_shieldTmp;
     }
 
     // 武器パワーに記載がある場合
