@@ -35,6 +35,35 @@ window.ITEMLISTKEY = {
 };
 
 /**
+ * ガジェットリストのキー
+ */
+window.GADGETLISTKEY = {
+    gadget_idKey: "ガジェットID",
+    gadget_nameKey: "ガジェット名",
+    gadget_rarityKey: "レア度",
+    gadget_costKey: "コスト",
+    gadget_uniqueHeroKey: "固有ヒーロー",
+    gadget_coolTimeKey: "クールタイム",
+    gadget_iconKey: "アイコン",
+    gadget_textKey: "テキスト",
+    gadget_lifeKey: "ライフ",
+    gadget_armorKey: "アーマー",
+    gadget_shieldKey: "シールド",
+    gadget_weaponPowerKey: "武器パワー",
+    gadget_abilityPowerKey: "アビリティパワー",
+    gadget_attackSpeedKey: "攻撃速度",
+    gadget_ctReducationKey: "CT短縮",
+    gadget_ammoKey: "弾薬",
+    gadget_weapon_LifeStealKey: "ライフ吸収（武器）",
+    gadget_ability_LifeStealKey: "ライフ吸収（アビリティ）",
+    gadget_speedKey: "移動速度",
+    gadget_othersKey: "その他",
+    gadget_durationFlgKey: "持続時間フラグ",
+    gadget_durationKey: "持続時間",
+    gadget_theoreticalFlgKey: "理論値フラグ"
+};
+
+/**
  * パワーリストのキー
  */
 window.POWERLISTKEY = {
@@ -177,7 +206,9 @@ window.UPDATECATEGORY = {
  */
 ashItemID = "8661860d-a170-4682-9e94-da0fdfbf9522";   // トライポッド
 mekaZName = "MEKA Zシリーズ";
+mekaZID = "fd383456-0ea5-4d89-9ba6-279cc31906f8"; // MEKA ZシリーズID
 hukutuName = "不屈の獅子";
+hukutuID = "c3c79e34-ee06-4c73-b637-0574f9322f2d"; // 不屈の獅子ID
 overClockName = "オーバークロック・バリア";
 resourceManagementName = "リソース・マネジメント";
 
@@ -224,6 +255,7 @@ window.MAXNUMBER = {
  */
 window.THTEXT = {
     itemName: "アイテム名",
+    gadgetName: "ガジェット名",
     powerName: "パワー名",
     category: "カテゴリー",
     rarity: "レアリティ",
@@ -243,7 +275,23 @@ window.ITEMTHINDEX = {
     uniqueHero: "4",
     status: "5",
     text: "6",
-    ChangeHistory: "7"
+    id: "7",
+    ChangeHistory: "8"
+};
+
+/**
+ * ガジェットテーブル見出しナンバー管理
+ */
+window.GADGETTHINDEX = {
+    gadgetName: "0",
+    rarity: "1",
+    cost: "2",
+    uniqueHero: "3",
+    coolTime: "4",
+    status: "5",
+    text: "6",
+    id: "7",
+    ChangeHistory: "8"
 };
 
 /**
