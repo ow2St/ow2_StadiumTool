@@ -64,8 +64,6 @@ const itemKeyMap = {
     durationflg: ITEMLISTKEY.durationFlgKey,
     duration: ITEMLISTKEY.durationKey,
     theoreticalflag: ITEMLISTKEY.theoreticalFlgKey,
-    changeflag: ITEMLISTKEY.changeFlgKey,
-    change_life: ITEMLISTKEY.change_lifeKey,
     change_armor: ITEMLISTKEY.change_armorKey,
     change_shield: ITEMLISTKEY.change_shieldKey
 };
@@ -386,8 +384,6 @@ function organizeItemData(itemAllData) {
             durationflg: Ilist.durationflg,
             duration: Ilist.duration,
             theoreticalflag: Ilist.theoreticalflag,
-            changeflag: Ilist.changeflag,
-            change_life: Ilist.change_life,
             change_armor: Ilist.change_armor,
             change_shield: Ilist.change_shield
         };
@@ -2345,20 +2341,26 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     }
 
     // 変換値がある場合は表示用ステータスリストに反映
-    if(change_armorTmp != 0 && showStatusList[STATUSLISTKEY.status_lifeKey] > 0){
+    if(change_armorTmp != 0 && showStatusList[STATUSLISTKEY.status_lifeKey] > 1){
         showStatusList[STATUSLISTKEY.status_lifeKey] = showStatusList[STATUSLISTKEY.status_lifeKey] - change_armorTmp;
-        if (showStatusList[STATUSLISTKEY.status_lifeKey] < 0){
-            change_armorTmp = change_armorTmp +  showStatusList[STATUSLISTKEY.status_lifeKey];
-            showStatusList[STATUSLISTKEY.status_lifeKey] = 0;
+        if (showStatusList[STATUSLISTKEY.status_lifeKey] == 0){
+            change_armorTmp = change_armorTmp - 1;
+            showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
+        }else if (showStatusList[STATUSLISTKEY.status_lifeKey] < 0){
+            change_armorTmp = change_armorTmp + showStatusList[STATUSLISTKEY.status_lifeKey] + 1;
+            showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
         }
         showStatusList[STATUSLISTKEY.status_armorKey] = showStatusList[STATUSLISTKEY.status_armorKey] + change_armorTmp;
     }
 
     if(change_shieldTmp != 0 && showStatusList[STATUSLISTKEY.status_lifeKey] > 0){
         showStatusList[STATUSLISTKEY.status_lifeKey] = showStatusList[STATUSLISTKEY.status_lifeKey] - change_shieldTmp;
-        if (showStatusList[STATUSLISTKEY.status_lifeKey] < 0){
-            change_shieldTmp = change_shieldTmp +  showStatusList[STATUSLISTKEY.status_lifeKey];
-            showStatusList[STATUSLISTKEY.status_lifeKey] = 0;
+        if (showStatusList[STATUSLISTKEY.status_lifeKey] == 0){
+            change_shieldTmp = change_shieldTmp - 1;
+            showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
+        }else if (showStatusList[STATUSLISTKEY.status_lifeKey] < 0){
+            change_shieldTmp = change_shieldTmp +  showStatusList[STATUSLISTKEY.status_lifeKey] + 1;
+            showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
         }
         showStatusList[STATUSLISTKEY.status_shieldKey] = showStatusList[STATUSLISTKEY.status_shieldKey] + change_shieldTmp;
     }
