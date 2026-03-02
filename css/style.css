@@ -41,7 +41,7 @@ header {
     white-space: nowrap;
 }
 
-.ow2-icon{
+.ow-icon{
     float: left;
     width: 200px;
     height: 200px;
@@ -1004,6 +1004,7 @@ main-IAP{
     list-style-type: disc;
     padding-left: 30px;
     margin: 5px 0 0 0;
+    white-space: normal;
 }
 
 .item-details ul li {
