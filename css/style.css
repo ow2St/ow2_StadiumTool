@@ -635,55 +635,52 @@ main-IAP{
 .tabs {
     padding-top: 20px;
     margin-left: 30px;
-    display: flex;
 }
 .tabItem-on {
     padding-left: 20px;
     padding-right: 20px;
-    border: 1px solid black; /* タブのボーダー */
-    border-bottom: none; /* 下のボーダーを消す */
+    border: 1px solid black;
+    border-bottom: none;
     cursor: pointer;
     background-color: lightgray;
 }
 .tabItem-off {
     padding-left: 20px;
     padding-right: 20px;
-    border: 1px dashed black; /* タブのボーダー */
-    border-bottom: none; /* 下のボーダーを消す */
+    border: 1px dashed black;
+    border-bottom: none;
     cursor: pointer;
     background-color: white;
 }
 .tabGadget-on {
     padding-left: 20px;
     padding-right: 20px;
-    border: 1px solid black; /* タブのボーダー */
-    border-bottom: none; /* 下のボーダーを消す */
+    border: 1px solid black;
+    border-bottom: none;
     cursor: pointer;
     background-color: lightgray;
 }
 .tabGadget-off {
     padding-left: 20px;
     padding-right: 20px;
-    border: 1px dashed black; /* タブのボーダー */
-    border-bottom: none; /* 下のボーダーを消す */
-    border-right: none; /* 右のボーダーを消す */
+    border: 1px dashed black;
+    border-bottom: none;
     cursor: pointer;
     background-color: white;
 }
 .tabPower-on {
     padding-left: 20px;
     padding-right: 20px;
-    border: 1px solid black; /* タブのボーダー */
-    border-bottom: none; /* 下のボーダーを消す */
+    border: 1px solid black;
+    border-bottom: none;
     cursor: pointer;
     background-color: lightgray;
 }
 .tabPower-off {
     padding-left: 20px;
     padding-right: 20px;
-    border: 1px dashed black; /* タブのボーダー */
-    border-bottom: none; /* 下のボーダーを消す */
-    border-left: none; /* 左のボーダーを消す */
+    border: 1px dashed black;
+    border-bottom: none;
     cursor: pointer;
     background-color: white;
 }
