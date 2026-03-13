@@ -89,16 +89,9 @@ let patchNotesApplied = false;
 
 let itemAllData = []; // 全てのアイテムデータを保持
 let gadgetAllData = []; // 全てのガジェットデータを保持
-let powerAllData = []; // 全てのアイテムデータを保持
+let powerAllData = []; // 全てのパワーデータを保持
 let patchNoteAllData = []; // 全てのパッチノートデータを保持
 let parameterAllData = []; // 全てのパラメータデータを保持
-
-//リスト初期化
-let itemList = [];
-let gadgetList = [];
-let powerList = [];
-let parameterList = [];
-
 
 // ソート基準の定義
 const sortingCriteria = [
@@ -114,7 +107,7 @@ let sortDirection = new Array(8).fill(null);
 try {
     loadAndInitData();
 } catch(error) {
-    console.error("データの読み込みまたは初期化中にエラーが発生しました:", error);
+    console.error(ERRORMESSAGEKEY.dataRoadError);
 }
 
 // ------------------------------
@@ -152,23 +145,24 @@ async function loadAndInitData() {
     // 並び替え優先順位を定義
     const categoryOrder = [CATEGORYELEMENTS.weapon, CATEGORYELEMENTS.ability, CATEGORYELEMENTS.survival];
 
-    if(itemAllData.length > 0 ) {
-        itemAllData.sort((a, b) => {
-        // categoryOrder内でのインデックスを取得
-        const indexA = categoryOrder.indexOf(a.category);
-        const indexB = categoryOrder.indexOf(b.category);
+    itemAllData.sort((a, b) => {
+    // categoryOrder内でのインデックスを取得
+    const indexA = categoryOrder.indexOf(a.category);
+    const indexB = categoryOrder.indexOf(b.category);
 
-        // indexが見つからない（＝該当しないカテゴリ）場合は末尾へ
-        const orderA = indexA === -1 ? categoryOrder.length : indexA;
-        const orderB = indexB === -1 ? categoryOrder.length : indexB;
+    // indexが見つからない（＝該当しないカテゴリ）場合は末尾へ
+    const orderA = indexA === -1 ? categoryOrder.length : indexA;
+    const orderB = indexB === -1 ? categoryOrder.length : indexB;
 
-        // 比較して順序を返す
-        return orderA - orderB;
-        });
-    }
-    else {
-        console.error("アイテムデータの読み込みに失敗した為、初期表示の並び替えをスキップします。");
-    }
+    // 比較して順序を返す
+    return orderA - orderB;
+    });
+
+    //リスト初期化
+    let itemList = [];
+    let gadgetList = [];
+    let powerList = [];
+    let parameterList = [];
 
     // 整形 → キー変換
     try {
@@ -177,7 +171,7 @@ async function loadAndInitData() {
         powerList = convertKeys(organizePowerData(powerAllData), powerKeyMap);
         parameterList = convertKeys(organizeParameterData(parameterAllData), parameterKeyMap);
     } catch(error) {
-        console.error("データの変換中にエラーが発生しました:", error);
+        console.error(ERRORMESSAGEKEY.dataConvertError, error);
     }
     //パラメータ設定
     tracerHPUPscalefactor = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.TracerHPUPscalefactorID)?.[PARAMETERKEY.valueKey]);
@@ -188,7 +182,7 @@ async function loadAndInitData() {
         linkGadgetList(gadgetList);
         linkPowerList(powerList);
     } catch(error) {
-        console.error("テーブル作成中にエラーが発生しました:", error);
+        console.error(ERRORMESSAGEKEY.dataLinkError, error);
     }
     // パッチノート適用
     applyPatchNotesIfReady();
@@ -200,7 +194,7 @@ async function loadAndInitData() {
         addCostDivAndSpan(cost_itemTh);
         addCostDivAndSpan(cost_gadgetTh);
     } catch(error) {
-        console.error("初期表示のキャッシュアイコン設定中にエラーが発生しました:", error);
+        console.error(ERRORMESSAGEKEY.cashIconError, error);
     }
 
     //ヒーロー専用アイテム　初期状態OFF
@@ -225,13 +219,14 @@ async function loadAndInitData() {
                         power_searchWords();
                         break;
                     default:
-                        console.error("想定していないステータスが入っています: " + input.id);
+                        console.error(ERRORMESSAGEKEY.unexpectedStatus, input.id);
                 }
             }
         });
     });
 }
 
+//#region データ変換
 /**itemList に　itemListData.json　から貰うデータの形を決める
  * @param {object} itemAllData - 全てのアイテムデータ
  * @return {object} 選択・並び替え後のアイテムデータ
@@ -308,7 +303,6 @@ function organizeGadgetData(gadgetAllData) {
     return selectedData;
 }
 
-
 /**powerList に　powerListData.json　から貰うデータの形を決める
  * @param {object} powerAllData - 全てのパワーデータ
  * @return {object} 選択・並び替え後のパワーデータ
@@ -344,7 +338,6 @@ function organizeParameterData(parameterData) {
     return selectedData;
 }
 
-
 /**英名キーを日本名キーへ変換処理
  * @param {object} dataArray - 選択・並び替え後のデータ
  * @param {object} keyMap - キー対応マッピング
@@ -360,7 +353,7 @@ function convertKeys(dataArray, keyMap) {
         return newObj;
     });
 }
-
+//#endregion データ変換
 
 //#region タブ切り替え
 /**アイテムタブへ移動 */
@@ -540,81 +533,72 @@ function linkItemList(itemList) {
         statusLists.forEach((status, i) => {
 
             //アイコン付与
-            if(!status.includes(STATUSELEMENTS.others_sign)){
-                switch(true) {
-                    case status.includes(STATUSELEMENTS.life_includes):
-                        statusIcons.push(STATUSICON.life);
-                        break;
+            switch(true) {
+                case status.includes(STATUSELEMENTS.life_includes):
+                    statusIcons.push(STATUSICON.life);
+                    break;
 
-                    case status.includes(STATUSELEMENTS.armor):
-                        statusIcons.push(STATUSICON.armor);
-                        break;
+                case status.includes(STATUSELEMENTS.armor):
+                    statusIcons.push(STATUSICON.armor);
+                    break;
 
-                    case status.includes(STATUSELEMENTS.shield):
-                        statusIcons.push(STATUSICON.shield);
-                        break;
+                case status.includes(STATUSELEMENTS.shield):
+                    statusIcons.push(STATUSICON.shield);
+                    break;
 
-                    case status.includes(STATUSELEMENTS.weaponPower):
-                        statusIcons.push(STATUSICON.weaponPower);
-                        break;
+                case status.includes(STATUSELEMENTS.weaponPower):
+                    statusIcons.push(STATUSICON.weaponPower);
+                    break;
 
-                    case status.includes(STATUSELEMENTS.abilityPower):
-                        statusIcons.push(STATUSICON.abilityPower);
-                        break;
+                case status.includes(STATUSELEMENTS.abilityPower):
+                    statusIcons.push(STATUSICON.abilityPower);
+                    break;
 
-                    case status.includes(STATUSELEMENTS.attackSpeed):
-                        statusIcons.push(STATUSICON.attackSpeed);
-                        break;
+                case status.includes(STATUSELEMENTS.attackSpeed):
+                    statusIcons.push(STATUSICON.attackSpeed);
+                    break;
 
-                    case status.includes(STATUSELEMENTS.ctReducation):
-                        statusIcons.push(STATUSICON.ctReducation);
-                        break;
+                case status.includes(STATUSELEMENTS.ctReducation):
+                    statusIcons.push(STATUSICON.ctReducation);
+                    break;
 
-                    case status.includes(STATUSELEMENTS.ammo):
-                        statusIcons.push(STATUSICON.ammo);
-                        break;
+                case status.includes(STATUSELEMENTS.ammo):
+                    statusIcons.push(STATUSICON.ammo);
+                    break;
 
-                    case status.includes(STATUSELEMENTS.weapon_LifeSteal):
-                        statusIcons.push(STATUSICON.weapon_LifeSteal);
-                        break;
+                case status.includes(STATUSELEMENTS.weapon_LifeSteal):
+                    statusIcons.push(STATUSICON.weapon_LifeSteal);
+                    break;
 
-                    case status.includes(STATUSELEMENTS.ability_LifeSteal):
-                        statusIcons.push(STATUSICON.ability_LifeSteal);
-                        break;
+                case status.includes(STATUSELEMENTS.ability_LifeSteal):
+                    statusIcons.push(STATUSICON.ability_LifeSteal);
+                    break;
 
-                    case status.includes(STATUSELEMENTS.speed):
-                        statusIcons.push(STATUSICON.speed);
-                        break;
+                case status.includes(STATUSELEMENTS.speed):
+                    statusIcons.push(STATUSICON.speed);
+                    break;
 
-                    case status.includes(STATUSELEMENTS.reloadSpeed):
-                        statusIcons.push(STATUSICON.reloadSpeed);
-                        break;
+                case status.includes(STATUSELEMENTS.reloadSpeed):
+                    statusIcons.push(STATUSICON.reloadSpeed);
+                    break;
 
-                    case status.includes(STATUSELEMENTS.meleeDamage):
-                        statusIcons.push(STATUSICON.meleeDamage);
-                        break;
+                case status.includes(STATUSELEMENTS.meleeDamage):
+                    statusIcons.push(STATUSICON.meleeDamage);
+                    break;
 
-                    case status.includes(STATUSELEMENTS.critical):
-                        statusIcons.push(STATUSICON.critical);
-                        break;
+                case status.includes(STATUSELEMENTS.critical):
+                    statusIcons.push(STATUSICON.critical);
+                    break;
 
-                    case status.includes(STATUSELEMENTS.others_sign):
-                        statusIcons.push(STATUSICON.others);
-                        //テキストから※を削除
-                        statusLists[i] = status.replace(STATUSELEMENTS.others_sign,"");
-                        break;
+                case status.includes(STATUSELEMENTS.others_sign):
+                    statusIcons.push(STATUSICON.others);
+                    //テキストから※を削除
+                    statusLists[i] = status.replace(STATUSELEMENTS.others_sign,"");
+                    break;
 
-                    default:
-                        console.error("想定していないステータスが入っています: " + status);
-                }
-
-/*             //その他（特殊効果）の場合
-            }else if(status.includes(STATUSELEMENTS.others_sign)){
-                statusIcons.push(STATUSICON.others);
-
-                //テキストから※を削除
-                statusLists[i] = status.replace(STATUSELEMENTS.others_sign,"");
- */            }
+                default:
+                    console.error(ERRORMESSAGEKEY.unexpectedStatus, status);
+            }
         });
 
         //体力アップ系トレーサー専用アイテムの数値減算処理
@@ -1285,18 +1269,18 @@ function filterItemTable(elem){
                 tr.classList.add("table-off");
             }
         });
-        } catch (error) {
-            console.error("フィルタリング(アイテム)中にエラーが発生しました:" + elem.id, error);
-        }
+    } catch (error) {
+        console.error(ERRORMESSAGEKEY.dataFilterError + " : item : " + elem.id, error);
     }
+}
 
-    /** 絞り込み条件を更新する関数（ガジェット）
-     * @param {HTMLElement} elem - 変更対象の要素(押されたボタン)
-     * @return {void}
-     */
-    function filterGadgetTable(elem){
+/** 絞り込み条件を更新する関数（ガジェット）
+ * @param {HTMLElement} elem - 変更対象の要素(押されたボタン)
+ * @return {void}
+ */
+function filterGadgetTable(elem){
 
-        try {
+    try {
         // 絞り込みボタンのON/OFF切り替え
         let isNowOn;
         isNowOn = elem.classList.contains("button-on");
@@ -1376,7 +1360,7 @@ function filterItemTable(elem){
             }
         });
     } catch (error) {
-        console.error("フィルタリング(ガジェット)中にエラーが発生しました:" + elem.id, error);
+        console.error(ERRORMESSAGEKEY.dataFilterError + " : gadget : " + elem.id, error);
     }
 }
 
@@ -1467,19 +1451,19 @@ function filterPowerTable(elem){
                 tr.classList.add("table-off");
             }
         });
-        } catch (error) {
-            console.error("フィルタリング(パワー)中にエラーが発生しました:" + elem.id, error);
-        }
+    } catch (error) {
+        console.error(ERRORMESSAGEKEY.dataFilterError + " : power : " + elem.id, error);
     }
-    // #endregion 絞り込み
+}
+// #endregion 絞り込み
 
-    // #region キーワード検索
-    /** 検索ボックスで絞り込み（アイテム）
-     * @return {void}
-     */
-    function item_searchWords() {
+// #region キーワード検索
+/** 検索ボックスで絞り込み（アイテム）
+ * @return {void}
+ */
+function item_searchWords() {
 
-        try {
+    try {
         // 検索ワードを取得
         const keyword = document.getElementById("item_search-input").value.trim();
 
@@ -1520,17 +1504,17 @@ function filterPowerTable(elem){
                 tr.classList.add("table-off");
             }
         });
-        } catch (error) {
-            console.error("キーワード検索(アイテム)中にエラーが発生しました:", error);
-        }
+    } catch (error) {
+        console.error(ERRORMESSAGEKEY.keywordSearchError + " : item", error);
     }
+}
 
     /** 検索ボックスで絞り込み（ガジェット）
      * @return {void}
      */
     function gadget_searchWords() {
 
-        try {
+    try {
         // 検索ワードを取得
         const keyword = document.getElementById("gadget_search-input").value.trim();
 
@@ -1571,7 +1555,7 @@ function filterPowerTable(elem){
             }
         });
     } catch (error) {
-        console.error("キーワード検索(ガジェット)中にエラーが発生しました:", error);
+        console.error(ERRORMESSAGEKEY.keywordSearchError + " : gadget", error);
     }
 }
 
@@ -1622,7 +1606,7 @@ function power_searchWords() {
             }
         });
     } catch (error) {
-        console.error("キーワード検索(パワー)中にエラーが発生しました:", error);
+        console.error(ERRORMESSAGEKEY.keywordSearchError + " : power", error);
     }
 }
 // #endregion キーワード検索
@@ -1675,7 +1659,7 @@ function itemSortClick(id){
             document.getElementById(id).innerText = labelMap[id] + arrows;
         }
     } catch (error) {
-        console.error("ソート(アイテム)中にエラーが発生しました:" + id, error);
+        console.error(ERRORMESSAGEKEY.dataSortError + " : item : " + id, error);
     }
 }
 
@@ -1795,7 +1779,7 @@ function gadgetSortClick(id){
         document.getElementById(id).innerText = labelMap[id] + arrows;
     }
     } catch (error) {
-        console.error("ソート(ガジェット)中にエラーが発生しました:" + id, error);
+        console.error(ERRORMESSAGEKEY.dataSortError + " : gadget : " + id, error);
     }
 }
 
@@ -1906,7 +1890,7 @@ function powerSortClick(id){
     // ソート結果に応じた列名に更新
     document.getElementById(id).innerText = labelMap[id] + arrows;
     } catch (error) {
-        console.error("ソート(パワー)中にエラーが発生しました:" + id, error);
+        console.error(ERRORMESSAGEKEY.dataSortError + " : power : " + id, error);
     }
 }
 
@@ -2121,7 +2105,7 @@ function applyChangesToTable(tableId, nameColIndex, changesMap) {
     const HISTORY_COLUMN_INDEX = rows.length > 0 ? rows[0].cells.length - 1 : -1;
 
     if (HISTORY_COLUMN_INDEX == -1) {
-        console.warn(`テーブルID: ${tableId} に行が見つかりません。`);
+        console.warn(ERRORMESSAGEKEY.dataRoadError + " : " + tableId);
         return;
     }
 
