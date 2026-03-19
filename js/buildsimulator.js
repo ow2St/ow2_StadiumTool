@@ -264,17 +264,17 @@ async function loadAndInitBuildData() {
         powerCheckboxes = document.querySelectorAll(".power-checkbox");
 
         // 初期表示のために一度実行
-        updateSelectedList(itemCheckboxes, itemList, true);
-        updateSelectedList(powerCheckboxes, powerList, false);
+        selectedItemRowsData =  updateSelectedList(itemList, true, selectedItemRowsData, null, false);
+        selectedPowerRowsData = updateSelectedList(powerList, false, selectedPowerRowsData, null, false);
 
         // #region イベントリスナー設定
         // 各アイテムのチェックボックスにイベントリスナーを追加
         itemCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener("change", () => {
+            checkbox.addEventListener("change", (e) => {
                 const selectedItemRowsDataBeforeLength = selectedItemRowsData.length;
 
                 // チェックボックスの状態が変わる毎に選択リストを更新
-                selectedItemRowsData = updateSelectedList(itemCheckboxes, itemList, true);
+                selectedItemRowsData = updateSelectedList(itemList, true, selectedItemRowsData, e.target.parentElement.parentElement.cells[1].innerText, e.target.checked);
 
                 // ビルド欄の表示を更新
                 updateBuild_Item(selectedItemRowsData);
@@ -299,8 +299,8 @@ async function loadAndInitBuildData() {
                 const selectedPowerRowsDataBeforeLength = selectedPowerRowsData.length;
 
                 // チェックボックスの状態が変わる毎に選択リストを更新
-                selectedPowerRowsData = updateSelectedList(powerCheckboxes, powerList, false);
-                // ビルド欄の表示を更新 
+                selectedPowerRowsData = updateSelectedList(powerList, false, selectedPowerRowsData, e.target.parentElement.parentElement.cells[1].innerText, e.target.checked);
+                // ビルド欄の表示を更新
                 updateBuild_Power(selectedPowerRowsData);
                 // ステータスに反映
                 updateStatus_Power(selectedPowerRowsData);
@@ -612,8 +612,8 @@ function selectHero(id){
     filterTable(id);
 
     // 選択済みアイテム、選択済みパワーについて初期化
-    selectedItemRowsData = updateSelectedList(itemCheckboxes, itemList, true);
-    selectedPowerRowsData = updateSelectedList(powerCheckboxes, powerList, false);
+    selectedItemRowsData = [];
+    selectedPowerRowsData = [];
     updateBuild_Item(selectedItemRowsData);
     updateBuild_Power(selectedPowerRowsData);
 
@@ -1754,25 +1754,26 @@ function TableSort(headers, tbody, sortingCriteria) {
 
 /**
  * チェックされたアイテムまたはパワーを配列に格納する関数
+ * @param {array} list アイテムまたはパワーのリスト
+ * @param {boolean} isItem アイテムかパワーかのフラグ
+ * @param {array} selectedRows 現在選択されているアイテムまたはパワーの配列
+ * @param {text} targetName チェックされたアイテムまたはパワーの名前
+ * @param {boolean} isChecked チェックされたかどうかのフラグ
  * @return {array} selectedRows - 選択されたアイテム情報配列
  */
-function updateSelectedList(checkboxes, list, isItem) {
-    var selectedRows = [];
+function updateSelectedList(list, isItem, selectedRows, targetName, isChecked) {
     var judgeKey = isItem ? ITEMLISTKEY.item_nameKey : POWERLISTKEY.power_nameKey;
-    checkboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-            const row = checkbox.closest('tr');
-            const cells = row.querySelectorAll('td');
-            
-            //選択されたものの名前
-            const name = cells[1].textContent;
-            for(let i=0; i<list.length; i++) {
-                if(list[i][judgeKey] == name){
-                    selectedRows.push(list[i]);
-                }
+    for(let i=0; i<list.length; i++) {
+        if(list[i][judgeKey] == targetName){
+            if(isChecked){
+                // チェックされた場合、selectedRowsに該当するアイテムを追加
+                selectedRows.push(list[i]);
+            } else {
+                // チェックが外された場合、selectedRowsから該当するアイテムを削除
+                selectedRows = selectedRows.filter(row => row[judgeKey] !== targetName);
             }
         }
-    });
+    }
     return selectedRows;
 }
 
@@ -1853,7 +1854,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     // 選択中のヒーローのステータスを初期化
     const showStatusListTmp = initStatusList.filter(heroStatus => heroStatus[STATUSLISTKEY.heroNameKey] === selectedHero);
     showStatusList = JSON.parse(JSON.stringify(showStatusListTmp[0]));
-    
+
     // 傷ダメージと追加ダメージも初期化
     queenScratch = 15;
     ability1AddDamageAbility = 0;
@@ -1887,8 +1888,6 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     let textTmp = "";
     let durationFlgTmp = -1;
     let durationTmp = 0;
-    let change_armorTmp = 0;
-    let change_shieldTmp = 0;
 
     // #region ステータス反映
     for(let i=0; i<selectedItemRows.length; i++) {
@@ -1913,8 +1912,6 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         textTmp = selectedItemRows[i][ITEMLISTKEY.item_textKey];
         durationFlgTmp = selectedItemRows[i][ITEMLISTKEY.durationFlgKey];
         durationTmp = selectedItemRows[i][ITEMLISTKEY.durationKey];
-        change_armorTmp += Number(selectedItemRows[i][ITEMLISTKEY.change_armorKey]);
-        change_shieldTmp += Number(selectedItemRows[i][ITEMLISTKEY.change_shieldKey]);
 
         //トレーサーが選択されている場合、体力アイテムを減算処理
         //最後のループ一回のみ実行
@@ -2341,30 +2338,35 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     }
 
     // 変換値がある場合は表示用ステータスリストに反映
-    if(change_armorTmp != 0 && showStatusList[STATUSLISTKEY.status_lifeKey] > 1){
-        showStatusList[STATUSLISTKEY.status_lifeKey] = showStatusList[STATUSLISTKEY.status_lifeKey] - change_armorTmp;
-        if (showStatusList[STATUSLISTKEY.status_lifeKey] == 0){
-            change_armorTmp = change_armorTmp - 1;
-            showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
-        }else if (showStatusList[STATUSLISTKEY.status_lifeKey] < 0){
-            change_armorTmp = change_armorTmp + showStatusList[STATUSLISTKEY.status_lifeKey] + 1;
-            showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
-        }
-        showStatusList[STATUSLISTKEY.status_armorKey] = showStatusList[STATUSLISTKEY.status_armorKey] + change_armorTmp;
-    }
+    for(let i=0; i<selectedItemRows.length; i++) {
+        change_armorTmp = Number(selectedItemRows[i][ITEMLISTKEY.change_armorKey]);
+        change_shieldTmp = Number(selectedItemRows[i][ITEMLISTKEY.change_shieldKey]);
 
-    if(change_shieldTmp != 0 && showStatusList[STATUSLISTKEY.status_lifeKey] > 0){
-        showStatusList[STATUSLISTKEY.status_lifeKey] = showStatusList[STATUSLISTKEY.status_lifeKey] - change_shieldTmp;
-        if (showStatusList[STATUSLISTKEY.status_lifeKey] == 0){
-            change_shieldTmp = change_shieldTmp - 1;
-            showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
-        }else if (showStatusList[STATUSLISTKEY.status_lifeKey] < 0){
-            change_shieldTmp = change_shieldTmp +  showStatusList[STATUSLISTKEY.status_lifeKey] + 1;
-            showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
+        if(change_armorTmp != 0 && showStatusList[STATUSLISTKEY.status_lifeKey] > 1){
+            showStatusList[STATUSLISTKEY.status_lifeKey] = showStatusList[STATUSLISTKEY.status_lifeKey] - change_armorTmp;
+            if (showStatusList[STATUSLISTKEY.status_lifeKey] == 0){
+                change_armorTmp = change_armorTmp - 1;
+                showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
+            }else if (showStatusList[STATUSLISTKEY.status_lifeKey] < 0){
+                change_armorTmp = change_armorTmp + showStatusList[STATUSLISTKEY.status_lifeKey] - 1;
+                showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
+            }
+            showStatusList[STATUSLISTKEY.status_armorKey] = showStatusList[STATUSLISTKEY.status_armorKey] + change_armorTmp;
         }
-        showStatusList[STATUSLISTKEY.status_shieldKey] = showStatusList[STATUSLISTKEY.status_shieldKey] + change_shieldTmp;
-    }
 
+        if(change_shieldTmp != 0 && showStatusList[STATUSLISTKEY.status_lifeKey] > 0){
+            showStatusList[STATUSLISTKEY.status_lifeKey] = showStatusList[STATUSLISTKEY.status_lifeKey] - change_shieldTmp;
+            if (showStatusList[STATUSLISTKEY.status_lifeKey] == 0){
+                change_shieldTmp = change_shieldTmp - 1;
+                showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
+            }else if (showStatusList[STATUSLISTKEY.status_lifeKey] < 0){
+                change_shieldTmp = change_shieldTmp +  showStatusList[STATUSLISTKEY.status_lifeKey] - 1;
+                showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
+            }
+            showStatusList[STATUSLISTKEY.status_shieldKey] = showStatusList[STATUSLISTKEY.status_shieldKey] + change_shieldTmp;
+        }
+    }
+    
     // 武器パワーに記載がある場合
     if(weaponPowerTmp != 0){
 
@@ -2687,7 +2689,7 @@ function clickDeleteButton(spanId,selectedRows) {
         });
 
         // アイテムリスト、ビルド欄を更新
-        selectedRows = updateSelectedList(itemCheckboxes, itemList, true);
+        selectedRows = updateSelectedList(itemList, true, selectedRows, itemName, false);
         updateBuild_Item(selectedRows);
         if(selectedRowsBeforeLength == 6){
             //元々アイテムが6個選ばれていた場合、選択されていないアイテムのチェックボックスを入力可
@@ -2714,7 +2716,7 @@ function clickDeleteButton(spanId,selectedRows) {
         });
 
         // パワーリスト、ビルド欄を更新
-        selectedRows = updateSelectedList(powerCheckboxes, powerList, false);
+        selectedRows = updateSelectedList(powerList, false, selectedRows, powerName, false);
         updateBuild_Power(selectedRows);
         if(selectedRowsBeforeLength == 4){
             //元々パワーが4個選ばれていた場合、選択されていないパワーのチェックボックスを入力可
