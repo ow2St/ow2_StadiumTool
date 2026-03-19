@@ -107,7 +107,7 @@ let sortDirection = new Array(8).fill(null);
 try {
     loadAndInitData();
 } catch(error) {
-    console.error(ERRORMESSAGEKEY.dataRoadError);
+    console.error(error.message, error.stack);
 }
 
 // ------------------------------
@@ -115,115 +115,115 @@ try {
 // ------------------------------
 
 /** データの読み込みと初期化を行う非同期関数
+ * ＜使用箇所＞
+ * ・loadAndInitData()
  * @return {Promise<void>} - 非同期処理の完了を示すPromise
 */
 async function loadAndInitData() {
-    // データの読み込み(itemList)
-    const [itemData, gadgetData, powerData, parameterData, patchNoteData] = await Promise.all([
-        // データの読み込み(itemList)
-        fetch("itemListData.json").then(response => response.json()),
-
-        // データの読み込み(gadgetList)
-        fetch("gadgetListData.json").then(response => response.json()),
-
-        // データの読み込み(powerList)
-        fetch("powerListData.json").then(response => response.json()),
-
-        // データの読み込み(parameter)
-        fetch("parameterData.json").then(response => response.json()),
-
-        // データの読み込み(patchNoteData)
-        fetch("patchNoteData.json").then(response => response.json())
-    ]);
-    itemAllData = itemData;
-    gadgetAllData = gadgetData;
-    powerAllData = powerData;
-    patchNoteAllData = patchNoteData;
-    parameterAllData = parameterData;
-
-    //初期データをカテゴリー順に並び替え
-    // 並び替え優先順位を定義
-    const categoryOrder = [CATEGORYELEMENTS.weapon, CATEGORYELEMENTS.ability, CATEGORYELEMENTS.survival];
-
-    itemAllData.sort((a, b) => {
-    // categoryOrder内でのインデックスを取得
-    const indexA = categoryOrder.indexOf(a.category);
-    const indexB = categoryOrder.indexOf(b.category);
-
-    // indexが見つからない（＝該当しないカテゴリ）場合は末尾へ
-    const orderA = indexA === -1 ? categoryOrder.length : indexA;
-    const orderB = indexB === -1 ? categoryOrder.length : indexB;
-
-    // 比較して順序を返す
-    return orderA - orderB;
-    });
-
-    //リスト初期化
-    let itemList = [];
-    let gadgetList = [];
-    let powerList = [];
-    let parameterList = [];
-
-    // 整形 → キー変換
     try {
+        // データの読み込み(itemList)
+        const [itemData, gadgetData, powerData, parameterData, patchNoteData] = await Promise.all([
+            // データの読み込み(itemList)
+            fetch("itemListData.json").then(response => response.json()),
+
+            // データの読み込み(gadgetList)
+            fetch("gadgetListData.json").then(response => response.json()),
+
+            // データの読み込み(powerList)
+            fetch("powerListData.json").then(response => response.json()),
+
+            // データの読み込み(parameter)
+            fetch("parameterData.json").then(response => response.json()),
+
+            // データの読み込み(patchNoteData)
+            fetch("patchNoteData.json").then(response => response.json())
+        ]);
+        itemAllData = itemData;
+        gadgetAllData = gadgetData;
+        powerAllData = powerData;
+        patchNoteAllData = patchNoteData;
+        parameterAllData = parameterData;
+
+        //初期データをカテゴリー順に並び替え
+        // 並び替え優先順位を定義
+        const categoryOrder = [CATEGORYELEMENTS.weapon, CATEGORYELEMENTS.ability, CATEGORYELEMENTS.survival];
+
+        itemAllData.sort((a, b) => {
+        // categoryOrder内でのインデックスを取得
+        const indexA = categoryOrder.indexOf(a.category);
+        const indexB = categoryOrder.indexOf(b.category);
+
+        // indexが見つからない（＝該当しないカテゴリ）場合は末尾へ
+        const orderA = indexA === -1 ? categoryOrder.length : indexA;
+        const orderB = indexB === -1 ? categoryOrder.length : indexB;
+
+        // 比較して順序を返す
+        return orderA - orderB;
+        });
+
+        //リスト初期化
+        let itemList = [];
+        let gadgetList = [];
+        let powerList = [];
+        let parameterList = [];
+
+        // 整形 → キー変換
         itemList = convertKeys(organizeItemData(itemAllData), itemKeyMap);
         gadgetList = convertKeys(organizeGadgetData(gadgetAllData), gadgetKeyMap);
         powerList = convertKeys(organizePowerData(powerAllData), powerKeyMap);
         parameterList = convertKeys(organizeParameterData(parameterAllData), parameterKeyMap);
-    } catch(error) {
-        console.error(ERRORMESSAGEKEY.dataConvertError, error);
-    }
-    //パラメータ設定
-    tracerHPUPscalefactor = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.TracerHPUPscalefactorID)?.[PARAMETERKEY.valueKey]);
 
-    // 各リストをテーブルに紐づけ
-    try {
+        //パラメータ設定
+        tracerHPUPscalefactor = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.TracerHPUPscalefactorID)?.[PARAMETERKEY.valueKey]);
+
+        // 各リストをテーブルに紐づけ
         linkItemList(itemList);
         linkGadgetList(gadgetList);
         linkPowerList(powerList);
-    } catch(error) {
-        console.error(ERRORMESSAGEKEY.dataLinkError, error);
-    }
-    // パッチノート適用
-    applyPatchNotesIfReady();
 
-    //アイテム・ガジェットリスト、コストのキャッシュアイコン等初期表示
-    try {
+        // パッチノート適用
+        applyPatchNotesIfReady();
+
+        //アイテム・ガジェットリスト、コストのキャッシュアイコン初期表示
         const cost_itemTh = document.querySelector("th#cost.item-th");
         const cost_gadgetTh = document.querySelector("th#cost.IGP_gadget-th");
         addCostDivAndSpan(cost_itemTh);
         addCostDivAndSpan(cost_gadgetTh);
-    } catch(error) {
-        console.error(ERRORMESSAGEKEY.cashIconError, error);
-    }
 
-    //ヒーロー専用アイテム　初期状態OFF
-    const heroButtonDva = document.getElementById("D.VA-item");
-    heroButtonDva.onclick();
+        //ヒーロー専用アイテム　初期状態OFF
+        const heroButtonDva = document.getElementById("D.VA-item");
+        heroButtonDva.onclick();
 
-    //テキスト検索にて、エンターキーと検索ボタンのクリックを紐づける
-    const searches = document.querySelectorAll('input[type="search"]');
-    searches.forEach(input => {
-        input.addEventListener("keyup", (e) => {
-            if (e.key === "Enter") {
-                e.preventDefault();   // フォーム送信防止（重要）
+        //テキスト検索にて、エンターキーと検索ボタンのクリックを紐づける
+        const searches = document.querySelectorAll('input[type="search"]');
+        searches.forEach(input => {
+            input.addEventListener("keyup", (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();   // フォーム送信防止（重要）
 
-                switch (input.id) {
-                    case "item_search-input":
-                        item_searchWords();
-                        break;
-                    case "gadget_search-input":
-                        gadget_searchWords();
-                        break;
-                    case "power_search-input":
-                        power_searchWords();
-                        break;
-                    default:
-                        console.error(ERRORMESSAGEKEY.unexpectedStatus, input.id);
+                    switch (input.id) {
+                        case "item_search-input":
+                            item_searchWords();
+                            break;
+                        case "gadget_search-input":
+                            gadget_searchWords();
+                            break;
+                        case "power_search-input":
+                            power_searchWords();
+                            break;
+                        default:
+                            console.error(ERRORMESSAGEKEY.unexpectedStatus, input.id);
+                    }
                 }
-            }
+            });
         });
-    });
+    }catch (error) {
+        if(error.message != ""){
+            throw error;
+        }else{
+            throw new Error(ERRORMESSAGEKEY.dataRoadError);
+        }
+    }
 }
 
 //#region データ変換
@@ -232,39 +232,43 @@ async function loadAndInitData() {
  * @return {object} 選択・並び替え後のアイテムデータ
  */
 function organizeItemData(itemAllData) {
-    const selectedData = itemAllData
-    .map(Ilist => {
-        return {
-            id: Ilist.id,
-            itemname: Ilist.itemname,
-            category: Ilist.category,
-            rarity: Ilist.rarity,
-            cost: Ilist.cost,
-            icon: Ilist.icon,
-            uniquehero: Ilist.uniquehero,
-            text: Ilist.text,
-            life: Ilist.life,
-            armor: Ilist.armor,
-            shield: Ilist.shield,
-            weaponpower: Ilist.weaponpower,
-            abilitypower: Ilist.abilitypower,
-            attackspeed: Ilist.attackspeed,
-            ctreducation: Ilist.ctreducation,
-            ammo: Ilist.ammo,
-            weaponlifesteal: Ilist.weaponlifesteal,
-            abilitylifesteal: Ilist.abilitylifesteal,
-            speed: Ilist.speed,
-            reloadspeed: Ilist.reloadspeed,
-            meleedamage: Ilist.meleedamage,
-            critical: Ilist.critical,
-            others: (Ilist.others === "-") ? Ilist.others : STATUSELEMENTS.others_sign + Ilist.others,
-            durationflg: Ilist.durationflg,
-            duration: Ilist.duration,
-            theoreticalflag: Ilist.theoreticalflag
+    try {
+        const selectedData = itemAllData
+        .map(Ilist => {
+            return {
+                id: Ilist.id,
+                itemname: Ilist.itemname,
+                category: Ilist.category,
+                rarity: Ilist.rarity,
+                cost: Ilist.cost,
+                icon: Ilist.icon,
+                uniquehero: Ilist.uniquehero,
+                text: Ilist.text,
+                life: Ilist.life,
+                armor: Ilist.armor,
+                shield: Ilist.shield,
+                weaponpower: Ilist.weaponpower,
+                abilitypower: Ilist.abilitypower,
+                attackspeed: Ilist.attackspeed,
+                ctreducation: Ilist.ctreducation,
+                ammo: Ilist.ammo,
+                weaponlifesteal: Ilist.weaponlifesteal,
+                abilitylifesteal: Ilist.abilitylifesteal,
+                speed: Ilist.speed,
+                reloadspeed: Ilist.reloadspeed,
+                meleedamage: Ilist.meleedamage,
+                critical: Ilist.critical,
+                others: (Ilist.others === "-") ? Ilist.others : STATUSELEMENTS.others_sign + Ilist.others,
+                durationflg: Ilist.durationflg,
+                duration: Ilist.duration,
+                theoreticalflag: Ilist.theoreticalflag
 
-        };
-    })
-    return selectedData;
+            };
+        })
+        return selectedData;
+    } catch (error) {
+        throw new Error(ERRORMESSAGEKEY.itemDataOrganizeError);
+    }
 }
 
 /**gadgetList に　gadgetListData.json　から貰うデータの形を決める
@@ -272,9 +276,10 @@ function organizeItemData(itemAllData) {
  * @return {object} 選択・並び替え後のガジェットデータ
  */
 function organizeGadgetData(gadgetAllData) {
-    const selectedData = gadgetAllData
-    .map(Glist => {
-        return {
+    try {
+        const selectedData = gadgetAllData
+        .map(Glist => {
+            return {
             id: Glist.id,
             gadgetname: Glist.gadgetname,
             rarity: Glist.rarity,
@@ -298,9 +303,12 @@ function organizeGadgetData(gadgetAllData) {
             durationflg: Glist.durationflg,
             duration: Glist.duration,
             theoreticalflag: Glist.theoreticalflag
-        };
-    })
-    return selectedData;
+            };
+        })
+        return selectedData;
+    } catch (error) {
+        throw new Error(ERRORMESSAGEKEY.gadgetDataOrganizeError);
+    }
 }
 
 /**powerList に　powerListData.json　から貰うデータの形を決める
@@ -309,16 +317,20 @@ function organizeGadgetData(gadgetAllData) {
  */
 
 function organizePowerData(powerAllData) {
-    const selectedData = powerAllData
-    .map(Plist => {
-        return {
-            powername: Plist.powername,
-            hero: Plist.hero,
-            icon: Plist.icon,
-            text: Plist.text,
-        };
-    })
-    return selectedData;
+    try {
+        const selectedData = powerAllData
+        .map(Plist => {
+            return {
+                powername: Plist.powername,
+                hero: Plist.hero,
+                icon: Plist.icon,
+                text: Plist.text,
+            };
+        })
+        return selectedData;
+    } catch (error) {
+        throw new Error(ERRORMESSAGEKEY.powerDataOrganizeError);
+    }
 }
 
 /**
@@ -327,15 +339,19 @@ function organizePowerData(powerAllData) {
  * @return {object}　selectedData　整形後のパラメータデータ
  */
 function organizeParameterData(parameterData) {
-    const selectedData = parameterData
-    .map(Plist => {
-        return {
-            id: Plist.id,
-            name: Plist.name,
-            value: Plist.value
-        };
-    })
-    return selectedData;
+    try {
+        const selectedData = parameterData
+        .map(Plist => {
+            return {
+                id: Plist.id,
+                name: Plist.name,
+                value: Plist.value
+            };
+        })
+        return selectedData;
+    } catch (error) {
+        throw new Error(ERRORMESSAGEKEY.parameterDataOrganizeError);
+    }
 }
 
 /**英名キーを日本名キーへ変換処理
@@ -344,19 +360,31 @@ function organizeParameterData(parameterData) {
  * @return {object} 日本名キーに変換後のデータ
  */
 function convertKeys(dataArray, keyMap) {
-    return dataArray.map(obj => {
-        let newObj = {};
-        for (let key in obj) {
-            let newKey = keyMap[key] || key; // 対応がないキーはそのまま
-            newObj[newKey] = obj[key];
+    try {
+        return dataArray.map(obj => {
+            let newObj = {};
+            for (let key in obj) {
+                let newKey = keyMap[key] || key; // 対応がないキーはそのまま
+                newObj[newKey] = obj[key];
+            }
+            return newObj;
+        });
+    } catch (error) {
+        if(error.message != ""){
+            error.message += ERRORMESSAGEKEY.dataConvert;
+            throw error;
+        }else{
+            throw new Error(ERRORMESSAGEKEY.dataConvertError);
         }
-        return newObj;
-    });
+    }
 }
 //#endregion データ変換
 
 //#region タブ切り替え
-/**アイテムタブへ移動 */
+/**アイテムタブへ移動
+ * ＜使用箇所＞
+ * ・itemAndPower.html - tabsのonclickイベント
+ */
 function changeTabItem() {
     tabItem.classList.add("tabItem-on");
     tabItem.classList.remove("tabItem-off");
@@ -370,7 +398,10 @@ function changeTabItem() {
     tabPower.classList.remove("tabPower-on");
     powerContent.style.display = "none";
 }
-/**ガジェットタブへ移動 */
+/**ガジェットタブへ移動
+ * ＜使用箇所＞
+ * ・itemAndPower.html - tabsのonclickイベント
+ */
 function changeTabGadget() {
     tabGadget.classList.add("tabGadget-on");
     tabGadget.classList.remove("tabGadget-off");
@@ -384,7 +415,10 @@ function changeTabGadget() {
     tabPower.classList.remove("tabPower-on");
     powerContent.style.display = "none";
 }
-/**パワータブへ移動 */
+/**パワータブへ移動
+ * ＜使用箇所＞
+ * ・itemAndPower.html - tabsのonclickイベント
+ */
 function changeTabPower() {
     if(document.getElementById("tabPower").classList.contains("tabPower-on")) {
         //すでにパワータブがONのときは何も処理しない
@@ -416,6 +450,8 @@ function changeTabPower() {
 
 //#region 各テーブル紐づけ
 /**アイテムリストをテーブルに紐づける関数
+ * ＜使用箇所＞
+ * ・loadAndInitData()
  * @param {object} itemList - アイテムデータの配列
  * @return {void}
  */
@@ -644,6 +680,8 @@ function linkItemList(itemList) {
 }
 
 /**アイテムリスト用子要素作成関数
+ * ＜使用箇所＞
+ * ・linkItemList()
  * @param {object} tr - 行要素
  * @param {string} itemNameText - アイテム名
  * @param {string} iconText - アイコン
@@ -751,6 +789,8 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
 }
 
 /**ガジェットリストをテーブルに紐づける関数
+ * ＜使用箇所＞
+ * ・loadAndInitData()
  * @param {object} gadgetList - ガジェットデータの配列
  * @return {void}
  */
@@ -938,6 +978,8 @@ function linkGadgetList(gadgetList) {
 }
 
 /**ガジェットリスト用子要素作成関数
+ * ＜使用箇所＞
+ * ・linkGadgetList()
  * @param {object} tr - 行要素
  * @param {string} gadgetNameText - ガジェット名
  * @param {string} iconText - アイコン
@@ -1051,6 +1093,8 @@ function appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costTex
 }
 
 /** パワーリストをテーブルに紐づける関数
+ * ＜使用箇所＞
+ * ・loadAndInitData()
  * @param {object} powerList - パワーデータの配列
  * @return {void}
  */
@@ -1104,6 +1148,8 @@ function linkPowerList(powerList) {
 }
 
 /** パワーリスト用子要素作成関数
+ * ＜使用箇所＞
+ * ・linkPowerList()
  * @param {object} tr - 対象の行要素
  * @param {string} powerNameText - パワー名
  * @param {string} iconText - アイコン
@@ -1154,6 +1200,9 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
 
 // #region 絞り込み
 /** 絞り込み条件を更新する関数（アイテム）
+ * ＜使用箇所＞
+ * ・itemAndPower.html - button-listのonclickイベント
+ * ・item_searchWords()
  * @param {HTMLElement} elem - 変更対象の要素(押されたボタンやアイコン)
  * @return {void}
  */
@@ -1275,6 +1324,9 @@ function filterItemTable(elem){
 }
 
 /** 絞り込み条件を更新する関数（ガジェット）
+ * ＜使用箇所＞
+ * ・itemAndPower.html - button-listのonclickイベント
+ * ・gadget_searchWords()
  * @param {HTMLElement} elem - 変更対象の要素(押されたボタン)
  * @return {void}
  */
@@ -1365,6 +1417,9 @@ function filterGadgetTable(elem){
 }
 
 /** 絞り込み条件を更新する関数（パワー）
+ * ＜使用箇所＞
+ * ・itemAndPower.html - button-listのonclickイベント
+ * ・power_searchWords()
  * @param {HTMLElement} elem - 対象の要素(押されたヒーローアイコン)
  * @return {void}
  */
@@ -1459,6 +1514,9 @@ function filterPowerTable(elem){
 
 // #region キーワード検索
 /** 検索ボックスで絞り込み（アイテム）
+ * ＜使用箇所＞
+ * ・itemAndPower.html - search-input横の検索ボタンクリックイベント
+ * ・loadAndInitData() エンターキー紐づけ（searches.forEach内）
  * @return {void}
  */
 function item_searchWords() {
@@ -1509,10 +1567,13 @@ function item_searchWords() {
     }
 }
 
-    /** 検索ボックスで絞り込み（ガジェット）
-     * @return {void}
-     */
-    function gadget_searchWords() {
+/** 検索ボックスで絞り込み（ガジェット）
+ * ＜使用箇所＞
+ * ・itemAndPower.html - search-input横の検索ボタンクリックイベント
+ * ・loadAndInitData() エンターキー紐づけ（searches.forEach内）
+ * @return {void}
+ */
+function gadget_searchWords() {
 
     try {
         // 検索ワードを取得
@@ -1560,6 +1621,9 @@ function item_searchWords() {
 }
 
 /** 検索ボックスで絞り込み（パワー）
+ * ＜使用箇所＞
+ * ・itemAndPower.html - search-input横の検索ボタンクリックイベント
+ * ・loadAndInitData() エンターキー紐づけ（searches.forEach内）
  * @return {void}
  */
 function power_searchWords() {
@@ -1613,6 +1677,8 @@ function power_searchWords() {
 
 // #region ソート
 /**アイテムテーブルソートの前提準備
+ * ＜使用箇所＞
+ * ・itemAndPower.html - thのonclickイベント
  * @param {string} id - ソート対象の列ID
  * @return {void}
  */
@@ -1664,6 +1730,8 @@ function itemSortClick(id){
 }
 
 /** アイテムテーブルをソートする関数
+ * ＜使用箇所＞
+ * ・itemSortClick()
  * @param {object} headers - テーブルヘッダー要素
  * @param {object} tbody - テーブルボディ要素
  * @param {Object} sortingCriteria - ソート基準
@@ -1733,6 +1801,8 @@ function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
 }
 
 /**ガジェットテーブルソートの前提準備
+ * ＜使用箇所＞
+ * ・itemAndPower.html - thのonclickイベント
  * @param {string} id - ソート対象の列ID
  * @return {void}
  */
@@ -1784,6 +1854,8 @@ function gadgetSortClick(id){
 }
 
 /** ガジェットテーブルをソートする関数
+ * ＜使用箇所＞
+ * ・gadgetSortClick()
  * @param {object} headers - テーブルヘッダー要素
  * @param {object} tbody - テーブルボディ要素
  * @param {Object} sortingCriteria - ソート基準
@@ -1853,6 +1925,8 @@ function gadgetTableSort(headers, tbody, sortingCriteria,index,sorting) {
 }
 
 /** パワーテーブルソートの前提準備
+ * ＜使用箇所＞
+ * ・itemAndPower.html - thのonclickイベント
  * @param {string} id - ソート対象の列ID
  * @return {void}
  */
@@ -1895,6 +1969,8 @@ function powerSortClick(id){
 }
 
 /** パワーテーブルをソートする関数
+ * ＜使用箇所＞
+ * ・powerSortClick()
  * @param {object} headers - テーブルヘッダー要素の配列
  * @param {object} tbody - テーブルボディ要素
  * @param {object} sortingCriteria - ソート基準
@@ -1965,6 +2041,10 @@ function powerTableSort(headers, tbody, sortingCriteria,index,sorting) {
 //#endregion ソート
 
 /**コスト列のth内に、キャッシュアイコンとspan要素を追加する関数
+ * ＜使用箇所＞
+ * ・itemSortClick()
+ * ・gadgetSortClick()
+ * ・loadAndInitData() - キャッシュアイコン初期表示
  * @param {HTMLElement} cost_Th - コスト列の<th>要素
  * @return {void}
  */
@@ -2003,6 +2083,8 @@ function addCostDivAndSpan(cost_Th) {
 
 // #region パッチノート関係
 /** パッチノートが適用可能か確認し、適用する関数
+ * ＜使用箇所＞
+ * ・loadAndInitData()
  * @return {void}
  */
 function applyPatchNotesIfReady() {
@@ -2022,6 +2104,8 @@ function applyPatchNotesIfReady() {
 }
 
 /** パッチノートを処理し、変更点をマップに整理する関数
+ * ＜使用箇所＞
+ * ・applyPatchNotesToTables()
  * @return {Map} - アイテム名をキーとした変更点のマップ
  */
 function processPatchNotes() {
@@ -2056,6 +2140,8 @@ function processPatchNotes() {
 }
 
 /** 変更履歴のHTMLを生成する関数
+ * ＜使用箇所＞
+ * ・applyChangesToTable()
  * @param {object} changes - 変更点の配列
  * @return {string} - 生成したHTML文字列
  */
@@ -2072,6 +2158,8 @@ function createHistoryHtml(changes) {
 }
 
 /** パッチノートをアイテム・パワーテーブルに適用する関数
+ * ＜使用箇所＞
+ * ・applyPatchNotesIfReady()
  * @return {void}
  */
 function applyPatchNotesToTables() {
@@ -2091,6 +2179,8 @@ function applyPatchNotesToTables() {
 }
 
 /** テーブルにパッチノートの変更を適用する関数
+ * ＜使用箇所＞
+ * ・applyPatchNotesToTables()
  * @param {string} tableId - テーブルのID
  * @param {number} nameColIndex - 名前列のインデックス
  * @param {Map} changesMap - 変更点のマップ
