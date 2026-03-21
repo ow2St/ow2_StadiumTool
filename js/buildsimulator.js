@@ -310,18 +310,18 @@ async function loadAndInitBuildData() {
         const itemAndGadgetCheckboxes = [...itemCheckboxes, ...gadgetCheckboxes];
 
         // 初期表示のために一度実行
-        updateSelectedList(itemAndGadgetCheckboxes, itemAndGadgetList, true);
-        updateSelectedList(powerCheckboxes, powerList, false);
+        selectedItemRowsData =  updateSelectedList(itemAndGadgetList, true, selectedItemRowsData, null, false);
+        selectedPowerRowsData = updateSelectedList(powerList, false, selectedPowerRowsData, null, false);
 
         // #region イベントリスナー設定
         // 各アイテムのチェックボックスにイベントリスナーを追加
         itemAndGadgetCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener("change", () => {
+            checkbox.addEventListener("change", (e) => {
                 const selectedItemRowsDataBeforeLength = selectedItemRowsData.length;
                 const beforeSelectedGadgetCount = selectedItemRowsData.filter(item => item[GADGETLISTKEY.gadget_categoryKey] == "ガジェット").length;
 
                 // チェックボックスの状態が変わる毎に選択リストを更新
-                selectedItemRowsData = updateSelectedList(itemAndGadgetCheckboxes, itemAndGadgetList, true);
+                selectedItemRowsData = updateSelectedList(itemAndGadgetList, true, selectedItemRowsData, e.target.parentElement.parentElement.cells[1].innerText, e.target.checked);
 
                 // ビルド欄の表示を更新
                 updateBuild_Item(selectedItemRowsData);
@@ -366,8 +366,8 @@ async function loadAndInitBuildData() {
                 const selectedPowerRowsDataBeforeLength = selectedPowerRowsData.length;
 
                 // チェックボックスの状態が変わる毎に選択リストを更新
-                selectedPowerRowsData = updateSelectedList(powerCheckboxes, powerList, false);
-                // ビルド欄の表示を更新 
+                selectedPowerRowsData = updateSelectedList(powerList, false, selectedPowerRowsData, e.target.parentElement.parentElement.cells[1].innerText, e.target.checked);
+                // ビルド欄の表示を更新
                 updateBuild_Power(selectedPowerRowsData);
                 // ステータスに反映
                 updateStatus_Power(selectedPowerRowsData);
@@ -392,7 +392,7 @@ async function loadAndInitBuildData() {
             // 削除ボタンをクリックされた場合
             if(event.target.classList.contains("selectedbuild-delete-button") && event.target.tagName =="SPAN"){
                 // アイコンを削除する
-                selectedItemRowsData = clickDeleteButton(event.target.id,selectedItemRowsData);
+                selectedItemRowsData = clickDeleteButton(event.target.id,selectedItemRowsData,itemAndGadgetList);
                 // ステータスに反映
                 updateStatus_Item(selectedItemRowsData);
             }
@@ -403,7 +403,7 @@ async function loadAndInitBuildData() {
             // 削除ボタンをクリックされた場合
             if(event.target.classList.contains("selectedbuild-delete-button") && event.target.tagName =="SPAN"){
                 // アイコンを削除する
-                selectedPowerRowsData = clickDeleteButton(event.target.id,selectedPowerRowsData);
+                selectedPowerRowsData = clickDeleteButton(event.target.id,selectedPowerRowsData,powerList);
                 // ステータスに反映
                 updateStatus_Power(selectedPowerRowsData);
             }
@@ -718,8 +718,8 @@ function selectHero(id){
     filterTable(id);
 
     // 選択済みアイテム、選択済みパワーについて初期化
-    selectedItemRowsData = updateSelectedList(itemCheckboxes, itemList, true);
-    selectedPowerRowsData = updateSelectedList(powerCheckboxes, powerList, false);
+    selectedItemRowsData = [];
+    selectedPowerRowsData = [];
     updateBuild_Item(selectedItemRowsData);
     updateBuild_Power(selectedPowerRowsData);
 
@@ -785,7 +785,7 @@ function initStatus(selectedHero){
             }
 
             // 選択中のヒーローのステータスを設定
-            initStatusValue(initStatusList[i],"init","-");
+            initStatusValue(initStatusList[i],"init","-","-","-");
             
             // 表示用のステータスリストを初期化
             showStatusList = JSON.parse(JSON.stringify(initStatusList[i]));
@@ -799,9 +799,11 @@ function initStatus(selectedHero){
  * @param {Object} statuslist ステータスリスト
  * @param {text} addItemText 追加効果(アイテム)テキスト
  * @param {text} addItemOthers 追加効果(その他)テキスト
+ * @param {text} gadgetName 選択ガジェット名
+ * @param {text} gadgetText 選択ガジェットの効果テキスト
  * @return {void}
  */
-function initStatusValue(statuslist, addItemText, addItemOthers){
+function initStatusValue(statuslist, addItemText, addItemOthers, gadgetName, gadgetText){
     // 選択中のヒーローのステータスを設定
     document.getElementById("life").innerText = STATUSLISTKEY.status_lifeKey + " :" + statuslist[STATUSLISTKEY.status_lifeKey];
     document.getElementById("armor").innerText = STATUSLISTKEY.status_armorKey + " :" + statuslist[STATUSLISTKEY.status_armorKey];
@@ -944,7 +946,14 @@ function initStatusValue(statuslist, addItemText, addItemOthers){
         // 追加効果欄に羅列
         document.getElementById("additem").innerText = document.getElementById("additem").innerText + addItemText;
         document.getElementById("additem").innerText = document.getElementById("additem").innerText + addItemOthers;
-    }    
+    }
+
+    // ガジェットが選択されている場合
+    if(gadgetName != "-"){
+        document.getElementById("addgadget").innerText = gadgetName + "：" + gadgetText;
+    }else if(gadgetName == "-"){
+        document.getElementById("addgadget").innerText = "";
+    }
 }
 
 
@@ -1206,7 +1215,7 @@ function zariaButtonClick(){
         zariaButton.innerText = zariaFlg;
     }
     // ステータスボックス初期化
-    initStatusValue(showStatusList,"-","-");
+    initStatusValue(showStatusList,"-","-","-","-");
 
     // ビルドを反映
     if(selectedItemRowsData.length > 0) updateStatus_Item(selectedItemRowsData);
@@ -1230,7 +1239,7 @@ function junoButtonClick(){
         junoButton.innerText = junoFlg;
     }
     // ステータスボックス初期化
-    initStatusValue(showStatusList,"-","-");
+    initStatusValue(showStatusList,"-","-","-","-");
 
     // ビルドを反映
     if(selectedItemRowsData.length > 0) updateStatus_Item(selectedItemRowsData);
@@ -1254,7 +1263,7 @@ function moiraButtonClick(){
         moiraButton.innerText = moiraFlg;
     }
     // ステータスボックス初期化
-    initStatusValue(showStatusList,"-","-");
+    initStatusValue(showStatusList,"-","-","-","-");
 
         // ビルドを反映
     if(selectedItemRowsData.length > 0) updateStatus_Item(selectedItemRowsData);
@@ -2136,30 +2145,30 @@ function TableSort(headers, tbody, sortingCriteria) {
 
 /**
  * チェックされたアイテムまたはパワーまたはガジェットを配列に格納する関数
+ * @param {array} list アイテムまたはパワーのリスト
+ * @param {boolean} isItem アイテムかパワーかのフラグ
+ * @param {array} selectedRows 現在選択されているアイテムまたはパワーの配列
+ * @param {text} targetName チェックされたアイテムまたはパワーの名前
+ * @param {boolean} isChecked チェックされたかどうかのフラグ
  * @return {array} selectedRows - 選択されたアイテム情報配列
  */
-function updateSelectedList(checkboxes, list, isItem) {
-    var selectedRows = [];
+function updateSelectedList(list, isItem, selectedRows, targetName, isChecked) {
     var judgeKey = isItem ? ITEMLISTKEY.item_nameKey : POWERLISTKEY.power_nameKey;
-    checkboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-            const row = checkbox.closest('tr');
-            const cells = row.querySelectorAll('td');
-
-            if (checkbox.classList.contains("gadget-checkbox")) {
-                // ガジェットの場合はガジェット名キーを使用
-                judgeKey = GADGETLISTKEY.gadget_nameKey;
-            }
-
-            //選択されたものの名前
-            const name = cells[1].textContent;
-            for(let i=0; i<list.length; i++) {
-                if(list[i][judgeKey] == name){
-                    selectedRows.push(list[i]);
-                }
+    for(let i=0; i<list.length; i++) {
+        if(list[i][GADGETLISTKEY.gadget_categoryKey] == "ガジェット"){
+            // ガジェットの場合はガジェット名キーで判定
+            judgeKey = GADGETLISTKEY.gadget_nameKey;
+        }
+        if(list[i][judgeKey] == targetName){
+            if(isChecked){
+                // チェックされた場合、selectedRowsに該当するアイテムを追加
+                selectedRows.push(list[i]);
+            } else {
+                // チェックが外された場合、selectedRowsから該当するアイテムを削除
+                selectedRows = selectedRows.filter(row => row[judgeKey] !== targetName);
             }
         }
-    });
+    }
     return selectedRows;
 }
 
@@ -2244,14 +2253,14 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     // 選択中のヒーローのステータスを初期化
     const showStatusListTmp = initStatusList.filter(heroStatus => heroStatus[STATUSLISTKEY.heroNameKey] === selectedHero);
     showStatusList = JSON.parse(JSON.stringify(showStatusListTmp[0]));
-    
+
     // 傷ダメージと追加ダメージも初期化
     queenScratch = 15;
     ability1AddDamageAbility = 0;
     ability2AddDamageAbility = 0;
     ability3AddDamageAbility = 0;
     takeAimBombDamageCalc = takeAimBombDamage;
-    initStatusValue(showStatusList,"init","-");
+    initStatusValue(showStatusList,"init","-","-","-");
 
     // 最後に計算する倍率変数
     let lifeRate = 1;
@@ -2278,8 +2287,8 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     let textTmp = "";
     let durationFlgTmp = -1;
     let durationTmp = 0;
-    let change_armorTmp = 0;
-    let change_shieldTmp = 0;
+    let gadgetNameTmp = "-";
+    let gadgetTextTmp = "-";
 
     // #region ステータス反映
     for(let i=0; i<selectedItemRows.length; i++) {
@@ -2287,6 +2296,8 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         // 各パラメータを抽出
         if (selectedItemRows[i][GADGETLISTKEY.gadget_categoryKey] == "ガジェット"){
             nameTmp = selectedItemRows[i][GADGETLISTKEY.gadget_nameKey];
+            // ループ外にて使用するために、ガジェット名を保持する変数に値を退避
+            gadgetNameTmp = nameTmp;
             lifeTmp += selectedItemRows[i][GADGETLISTKEY.gadget_lifeKey];
             armorTmp += selectedItemRows[i][GADGETLISTKEY.gadget_armorKey];
             shieldTmp += selectedItemRows[i][GADGETLISTKEY.gadget_shieldKey];
@@ -2302,7 +2313,9 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
             meleeDamageTmp += selectedItemRows[i][GADGETLISTKEY.gadget_meleeDamageKey];
             criticalTmp += selectedItemRows[i][GADGETLISTKEY.gadget_criticalKey];
             othersTmp = selectedItemRows[i][GADGETLISTKEY.gadget_othersKey];
-            textTmp = selectedItemRows[i][GADGETLISTKEY.gadget_textKey];
+            gadgetTextTmp = selectedItemRows[i][GADGETLISTKEY.gadget_textKey];
+            // ガジェットのテキストはアイテムのテキストと別に管理するため、アイテムのテキストはハイフンにする
+            textTmp = "-";
         }else{
             nameTmp = selectedItemRows[i][ITEMLISTKEY.item_nameKey];
             lifeTmp += selectedItemRows[i][ITEMLISTKEY.item_lifeKey];
@@ -2323,8 +2336,6 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
             textTmp = selectedItemRows[i][ITEMLISTKEY.item_textKey];
             durationFlgTmp = selectedItemRows[i][ITEMLISTKEY.durationFlgKey];
             durationTmp = selectedItemRows[i][ITEMLISTKEY.durationKey];
-            change_armorTmp += Number(selectedItemRows[i][ITEMLISTKEY.change_armorKey]);
-            change_shieldTmp += Number(selectedItemRows[i][ITEMLISTKEY.change_shieldKey]);
         }
 
         //トレーサーが選択されている場合、体力アイテムを減算処理
@@ -2752,30 +2763,37 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     }
 
     // 変換値がある場合は表示用ステータスリストに反映
-    if(change_armorTmp != 0 && showStatusList[STATUSLISTKEY.status_lifeKey] > 1){
-        showStatusList[STATUSLISTKEY.status_lifeKey] = showStatusList[STATUSLISTKEY.status_lifeKey] - change_armorTmp;
-        if (showStatusList[STATUSLISTKEY.status_lifeKey] == 0){
-            change_armorTmp = change_armorTmp - 1;
-            showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
-        }else if (showStatusList[STATUSLISTKEY.status_lifeKey] < 0){
-            change_armorTmp = change_armorTmp + showStatusList[STATUSLISTKEY.status_lifeKey] + 1;
-            showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
-        }
-        showStatusList[STATUSLISTKEY.status_armorKey] = showStatusList[STATUSLISTKEY.status_armorKey] + change_armorTmp;
-    }
+    for(let i=0; i<selectedItemRows.length; i++) {
+        // ガジェットは除外
+        if(selectedItemRows[i][GADGETLISTKEY.gadget_categoryKey] == "ガジェット") continue;
+        change_armorTmp = Number(selectedItemRows[i][ITEMLISTKEY.change_armorKey]);
+        change_shieldTmp = Number(selectedItemRows[i][ITEMLISTKEY.change_shieldKey]);
 
-    if(change_shieldTmp != 0 && showStatusList[STATUSLISTKEY.status_lifeKey] > 0){
-        showStatusList[STATUSLISTKEY.status_lifeKey] = showStatusList[STATUSLISTKEY.status_lifeKey] - change_shieldTmp;
-        if (showStatusList[STATUSLISTKEY.status_lifeKey] == 0){
-            change_shieldTmp = change_shieldTmp - 1;
-            showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
-        }else if (showStatusList[STATUSLISTKEY.status_lifeKey] < 0){
-            change_shieldTmp = change_shieldTmp +  showStatusList[STATUSLISTKEY.status_lifeKey] + 1;
-            showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
+        if(change_armorTmp != 0 && showStatusList[STATUSLISTKEY.status_lifeKey] > 1){
+            showStatusList[STATUSLISTKEY.status_lifeKey] = showStatusList[STATUSLISTKEY.status_lifeKey] - change_armorTmp;
+            if (showStatusList[STATUSLISTKEY.status_lifeKey] == 0){
+                change_armorTmp = change_armorTmp - 1;
+                showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
+            }else if (showStatusList[STATUSLISTKEY.status_lifeKey] < 0){
+                change_armorTmp = change_armorTmp + showStatusList[STATUSLISTKEY.status_lifeKey] - 1;
+                showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
+            }
+            showStatusList[STATUSLISTKEY.status_armorKey] = showStatusList[STATUSLISTKEY.status_armorKey] + change_armorTmp;
         }
-        showStatusList[STATUSLISTKEY.status_shieldKey] = showStatusList[STATUSLISTKEY.status_shieldKey] + change_shieldTmp;
-    }
 
+        if(change_shieldTmp != 0 && showStatusList[STATUSLISTKEY.status_lifeKey] > 0){
+            showStatusList[STATUSLISTKEY.status_lifeKey] = showStatusList[STATUSLISTKEY.status_lifeKey] - change_shieldTmp;
+            if (showStatusList[STATUSLISTKEY.status_lifeKey] == 0){
+                change_shieldTmp = change_shieldTmp - 1;
+                showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
+            }else if (showStatusList[STATUSLISTKEY.status_lifeKey] < 0){
+                change_shieldTmp = change_shieldTmp +  showStatusList[STATUSLISTKEY.status_lifeKey] - 1;
+                showStatusList[STATUSLISTKEY.status_lifeKey] = 1;
+            }
+            showStatusList[STATUSLISTKEY.status_shieldKey] = showStatusList[STATUSLISTKEY.status_shieldKey] + change_shieldTmp;
+        }
+    }
+    
     // 武器パワーに記載がある場合
     if(weaponPowerTmp != 0){
 
@@ -2997,7 +3015,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     // #endregion
 
     // ステータス表に反映
-    initStatusValue(showStatusList, text, others);
+    initStatusValue(showStatusList, text, others, gadgetNameTmp, gadgetTextTmp);
 }
 
 
@@ -3064,11 +3082,13 @@ function updateStatus_Power(selectedPowerRows){
  * ✖ボタンクリック時にアイコンを削除する関数
  * @param {string} spanId クリックされた✖ボタンのID
  * @param {Array} selectedRows 選択されている行データ配列
+ * @param {string} list アイテムリスト（ガジェット含む）またはパワーリスト
  * @return {void}
  */
-function clickDeleteButton(spanId,selectedRows) {
+function clickDeleteButton(spanId, selectedRows, list) {
     let index = Number(spanId.slice(-1)) - 1;
-    const selectedRowsBeforeLength = selectedRows.length
+    const selectedRowsBeforeLength = selectedRows.length;
+    let targetName = "";
 
     // IDに「item」が含まれる場合
     if(spanId.includes("item")){
@@ -3093,6 +3113,8 @@ function clickDeleteButton(spanId,selectedRows) {
             const cells = row.querySelectorAll("td");
             const cellText = cells[targetColumnIndex].textContent;
             if(cellText == itemOrGadgetName){
+                // 削除対象の名称を退避
+                targetName = cellText;
                 // 選択したアイテムまたはガジェットのチェックボックスのチェックを解除
                 const checkbox =  (category == "ガジェット") ? cells[changeColumnIndex].querySelector(".gadget-checkbox") : cells[changeColumnIndex].querySelector(".item-checkbox");
                 checkbox.checked = false;
@@ -3100,7 +3122,7 @@ function clickDeleteButton(spanId,selectedRows) {
         });
 
         // アイテムリスト、ビルド欄を更新
-        selectedRows = updateSelectedList(itemCheckboxes, itemList, true);
+        selectedRows = updateSelectedList(list, true, selectedRows, targetName, false);
         updateBuild_Item(selectedRows);
         if(selectedRowsBeforeLength == 6){
             //元々アイテムが6個選ばれていた場合、選択されていないアイテムのチェックボックスを入力可
@@ -3130,6 +3152,8 @@ function clickDeleteButton(spanId,selectedRows) {
             const cells = row.querySelectorAll("td");
             const cellText = cells[targetColumnIndex].textContent;
             if(cellText == powerName){
+                // 削除対象の名称を退避
+                targetName = cellText;
                 // 選択したパワーのチェックボックスのチェックを解除
                 const checkbox =  cells[changeColumnIndex].querySelector(".power-checkbox");
                 checkbox.checked = false;
@@ -3137,7 +3161,7 @@ function clickDeleteButton(spanId,selectedRows) {
         });
 
         // パワーリスト、ビルド欄を更新
-        selectedRows = updateSelectedList(powerCheckboxes, powerList, false);
+        selectedRows = updateSelectedList(list, false, selectedRows, targetName, false);
         updateBuild_Power(selectedRows);
         if(selectedRowsBeforeLength == 4){
             //元々パワーが4個選ばれていた場合、選択されていないパワーのチェックボックスを入力可
