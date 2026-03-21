@@ -68,6 +68,35 @@ const itemKeyMap = {
     change_shield: ITEMLISTKEY.change_shieldKey
 };
 
+// ガジェットキー対応マッピング （英語 → 日本語）
+const gadgetKeyMap = {
+    id: GADGETLISTKEY.gadget_idKey,
+    gadgetname: GADGETLISTKEY.gadget_nameKey,
+    category: GADGETLISTKEY.gadget_categoryKey,
+    rarity: GADGETLISTKEY.gadget_rarityKey,
+    cost: GADGETLISTKEY.gadget_costKey,
+    uniquehero: GADGETLISTKEY.gadget_uniqueHeroKey,
+    CT: GADGETLISTKEY.gadget_coolTimeKey,
+    icon: GADGETLISTKEY.gadget_iconKey,
+    text: GADGETLISTKEY.gadget_textKey,
+    life: GADGETLISTKEY.gadget_lifeKey,
+    armor: GADGETLISTKEY.gadget_armorKey,
+    shield: GADGETLISTKEY.gadget_shieldKey,
+    weaponpower: GADGETLISTKEY.gadget_weaponPowerKey,
+    abilitypower: GADGETLISTKEY.gadget_abilityPowerKey,
+    attackspeed: GADGETLISTKEY.gadget_attackSpeedKey,
+    ctreducation: GADGETLISTKEY.gadget_ctReducationKey,
+    ammo: GADGETLISTKEY.gadget_ammoKey,
+    weaponlifesteal: GADGETLISTKEY.gadget_weapon_LifeStealKey,
+    abilitylifesteal: GADGETLISTKEY.gadget_ability_LifeStealKey,
+    speed: GADGETLISTKEY.gadget_speedKey,
+    reloadspeed: GADGETLISTKEY.gadget_reloadSpeedKey,
+    meleedamage: GADGETLISTKEY.gadget_meleeDamageKey,
+    critical: GADGETLISTKEY.gadget_criticalKey,
+    others: GADGETLISTKEY.gadget_othersKey,
+    theoreticalflag: GADGETLISTKEY.gadget_theoreticalFlgKey
+};
+
 // パワーキー対応マッピング（英語 → 日本語）
 const powerKeyMap = {
     powername: POWERLISTKEY.power_nameKey,
@@ -190,8 +219,12 @@ var selectedTheoreticalItemData = [];
 
 // チェックボックス
 var itemCheckboxes = [];
+var gadgetCheckboxes = [];
 var powerCheckboxes = [];
 var theoreticalItemCheckboxes = [];
+
+// ガジェットの選択有無フラグ
+var gadgetSelectedFlg = false;
 // #endregion
 
 // ビルド関連データの読み込みと初期化
@@ -210,14 +243,17 @@ async function loadAndInitBuildData() {
     try
     {
         // #region データの読み込み
-        const [itemData, powerData, statusData, theoreticalItemData, parameterData] = await Promise.all([
+        const [itemData, gadgetData, powerData, statusData, theoreticalItemData, parameterData] = await Promise.all([
             // データの読み込み(itemList)
             fetch("itemListData.json").then(response => response.json()),
+
+            // データの読み込み(gadgetList)
+            fetch("gadgetListData.json").then(response => response.json()),
 
             // データの読み込み(powerList)
             fetch("powerListData.json").then(response => response.json()),
 
-            // データの読み込み(powerList)
+            // データの読み込み(statusList)
             fetch("statusListData.json").then(response => response.json()),
 
             // データの読み込み(theoreticalItem)
@@ -228,6 +264,7 @@ async function loadAndInitBuildData() {
         ]);
 
         itemAllData = itemData;
+        gadgetAllData = gadgetData;
         powerAllData = powerData;
         theoreticalItem = theoreticalItemData;
         statusAllData = statusData;
@@ -235,6 +272,7 @@ async function loadAndInitBuildData() {
 
         // 整形 → キー変換
         itemList = convertKeys(organizeItemData(itemAllData), itemKeyMap);
+        gadgetList = convertKeys(organizeGadgetData(gadgetAllData), gadgetKeyMap);
         powerList = convertKeys(organizePowerData(powerAllData), powerKeyMap);
         theoreticalItemList = convertKeys(organizeTheoreticalItemData(theoreticalItem), theoreticalItemKeyMap);
         initStatusList = convertKeys(organizeStatusData(statusAllData), statusKeyMap);
@@ -254,27 +292,36 @@ async function loadAndInitBuildData() {
 
         // テーブルに紐付け
         linkItemList(itemList, selectedHero);
+        linkGadgetList(gadgetList, selectedHero);
         linkPowerList(powerList, selectedHero);
+
+        // アイテムリスト、ガジェットリストの結合
+        const itemAndGadgetList = [...itemList, ...gadgetList];
 
         // ステータスボックス設定
         initStatus(selectedHero);
 
         // 各イベント発生対象取得
         itemCheckboxes = document.querySelectorAll(".item-checkbox");
+        gadgetCheckboxes = document.querySelectorAll(".gadget-checkbox");
         powerCheckboxes = document.querySelectorAll(".power-checkbox");
 
+        // アイテムとガジェットのイベント発生対象を結合
+        const itemAndGadgetCheckboxes = [...itemCheckboxes, ...gadgetCheckboxes];
+
         // 初期表示のために一度実行
-        updateSelectedList(itemCheckboxes, itemList, true);
+        updateSelectedList(itemAndGadgetCheckboxes, itemAndGadgetList, true);
         updateSelectedList(powerCheckboxes, powerList, false);
 
         // #region イベントリスナー設定
         // 各アイテムのチェックボックスにイベントリスナーを追加
-        itemCheckboxes.forEach(checkbox => {
+        itemAndGadgetCheckboxes.forEach(checkbox => {
             checkbox.addEventListener("change", () => {
                 const selectedItemRowsDataBeforeLength = selectedItemRowsData.length;
+                const beforeSelectedGadgetCount = selectedItemRowsData.filter(item => item[GADGETLISTKEY.gadget_categoryKey] == "ガジェット").length;
 
                 // チェックボックスの状態が変わる毎に選択リストを更新
-                selectedItemRowsData = updateSelectedList(itemCheckboxes, itemList, true);
+                selectedItemRowsData = updateSelectedList(itemAndGadgetCheckboxes, itemAndGadgetList, true);
 
                 // ビルド欄の表示を更新
                 updateBuild_Item(selectedItemRowsData);
@@ -282,13 +329,33 @@ async function loadAndInitBuildData() {
                 updateStatus_Item(selectedItemRowsData);
 
                 const selectedItemRowsDataAfterLength = selectedItemRowsData.length;
+                const afterSelectedGadgetCount = selectedItemRowsData.filter(item => item[GADGETLISTKEY.gadget_categoryKey] == "ガジェット").length;
+                // ガジェットの選択有無フラグの更新
+                if (afterSelectedGadgetCount > 0) {
+                    gadgetSelectedFlg = true;
+                }else{
+                    gadgetSelectedFlg = false;
+                }
 
                 if(selectedItemRowsDataBeforeLength == itemSelectMaxNumber && selectedItemRowsDataAfterLength < itemSelectMaxNumber){
                     // 選択できないようにしたチェックボックスを入力可に戻す
                     disableCheckbox(false, ITEMORPOWER.item);
+                    if(!gadgetSelectedFlg){
+                        // ガジェットが選択されていない場合、ガジェットのチェックボックスも入力可に戻す
+                        disableCheckbox(false, ITEMORPOWER.gadget);
+                    }
                 }else if(selectedItemRowsDataAfterLength == itemSelectMaxNumber){
                     //　選択済みのアイテムが6個になった場合、未選択チェックボックスを入力不可にする
                     disableCheckbox(true, ITEMORPOWER.item);
+                    disableCheckbox(true, ITEMORPOWER.gadget);
+                }
+
+                if(beforeSelectedGadgetCount == 1 && afterSelectedGadgetCount == 0){
+                    // ガジェットの選択数が0になった場合、選択できないようにしたガジェットのチェックボックスを入力可に戻す
+                    disableCheckbox(false, ITEMORPOWER.gadget);
+                } else if(afterSelectedGadgetCount == 1){
+                    // ガジェットの選択数が1になった場合、未選択ガジェットのチェックボックスを入力不可にする
+                    disableCheckbox(true, ITEMORPOWER.gadget);
                 }
             });
         });
@@ -386,6 +453,45 @@ function organizeItemData(itemAllData) {
             theoreticalflag: Ilist.theoreticalflag,
             change_armor: Ilist.change_armor,
             change_shield: Ilist.change_shield
+        };
+    })
+    return selectedData;
+}
+
+
+/**
+ * gadgetList に　gadgetListData.json　から貰うデータの形を決める
+ * @param {object} gadgetAllData 読み込んだ全てのガジェットデータ
+ * @return {object}　selectedData　整形後のガジェットデータ
+ */
+function organizeGadgetData(gadgetAllData) {
+    const selectedData = gadgetAllData
+    .map(Glist => {
+        return {
+            id: Glist.id,
+            gadgetname: Glist.gadgetname,
+            category: Glist.category,
+            rarity: Glist.rarity,
+            cost: Glist.cost,
+            icon: Glist.icon,
+            uniquehero: Glist.uniquehero,
+            text: Glist.text,
+            life: Glist.life,
+            armor: Glist.armor,
+            shield: Glist.shield,
+            weaponpower: Glist.weaponpower,
+            abilitypower: Glist.abilitypower,
+            attackspeed: Glist.attackspeed,
+            ctreducation: Glist.ctreducation,
+            ammo: Glist.ammo,
+            weaponlifesteal: Glist.weaponlifesteal,
+            abilitylifesteal: Glist.abilitylifesteal,
+            speed: Glist.speed,
+            reloadspeed: Glist.reloadspeed,
+            meleedamage: Glist.meleedamage,
+            critical: Glist.critical,
+            others: (Glist.others === "-") ? Glist.others : "※" + Glist.others,
+            theoreticalflag: Glist.theoreticalflag
         };
     })
     return selectedData;
@@ -1267,6 +1373,28 @@ function closePowerList(){
 
 
 /**
+ * ガジェットリストを開く
+ * @return {void}
+ */
+function openGadgetList(){
+    document.getElementById("gadgetlist-title-open").style.display = "block";
+    document.getElementById("gadgetlist-title-close").style.display = "none";
+    document.getElementById("gadgetlist").style.display = "block";
+}
+
+
+/**
+ * ガジェットリストを閉じる
+ * @return {void}
+ */
+function closeGadgetList(){
+    document.getElementById("gadgetlist-title-open").style.display = "none";
+    document.getElementById("gadgetlist-title-close").style.display = "block";
+    document.getElementById("gadgetlist").style.display = "none";
+}
+
+
+/**
  * アイテムリストをテーブルに紐づける関数
  * @param {object} itemList アイテムリストデータ
  * @param {text} id 選択したヒーロー名
@@ -1577,6 +1705,260 @@ function appendChildItemList(tr, isCheck, itemNameText, iconText, textText, rari
 
 
 /**
+ * ガジェットリストをテーブルに紐づける関数
+ * @param {object} gadgetList ガジェットリストデータ
+ * @param {text} id 選択したヒーロー名
+ * @return {void}
+ */
+function linkGadgetList(gadgetList, id) {
+    let tbody = document.getElementById("gadget-table").querySelector("tbody");
+    let header = document.getElementById("gadget-table").querySelectorAll("th");
+
+    // 選択ヒーローがDVAの場合、絞り込み条件と合致させるために値を変更
+    if(id == HERONAME.dvaMech || id == HERONAME.dvaHuman){
+        id = "D.VA";
+    }
+
+    // 各ガジェットごとにループ
+    for(let i=0; i<gadgetList.length; i++) {
+        var tr = document.createElement("tr");
+
+        // 必要な列ごとの変数を初期化
+        let isCheck = false;  // 選択列はガジェット情報になく、初期時必ずfalseを入れる
+        let gadgetNameText = "";
+        let iconText = "-";
+        let statusText = "";
+        let textText = "";
+        let rarityText = "";
+        let costText = "";
+        let uniqueHeroText = "";
+
+        // 各キーペアごとにループ
+        Object.keys(gadgetList[i]).forEach(key => {
+
+            // キー名がガジェット名キーの場合
+            if(GADGETLISTKEY.gadget_nameKey == key) {
+
+                // ガジェット名用変数に値を代入
+                gadgetNameText = gadgetList[i][key];
+            }
+
+            // キー名がアイコンキーの場合
+            if(GADGETLISTKEY.gadget_iconKey == key) {
+
+                // アイコン用変数に値を代入
+                iconText = gadgetList[i][key];
+            }
+
+            // キー名がステータス関連のキーの場合
+            if([GADGETLISTKEY.gadget_lifeKey, GADGETLISTKEY.gadget_armorKey, GADGETLISTKEY.gadget_shieldKey, GADGETLISTKEY.gadget_weaponPowerKey, GADGETLISTKEY.gadget_abilityPowerKey,
+                GADGETLISTKEY.gadget_attackSpeedKey, GADGETLISTKEY.gadget_ctReducationKey, GADGETLISTKEY.gadget_ammoKey, GADGETLISTKEY.gadget_weapon_LifeStealKey,
+                GADGETLISTKEY.gadget_ability_LifeStealKey, GADGETLISTKEY.gadget_speedKey, GADGETLISTKEY.gadget_reloadSpeedKey, GADGETLISTKEY.gadget_item_meleeDamageKey,
+                GADGETLISTKEY.gadget_criticalKey].includes(key)) {
+
+                // 値が0でない場合
+                if(gadgetList[i][key] != 0) {
+                    statusText = statusText + key + "+" + String(gadgetList[i][key]) + "\n";
+                }
+            }
+
+            // キー名がテキストキーの場合
+            if(GADGETLISTKEY.gadget_textKey == key) {
+
+                // テキスト用変数に値を代入
+                textText = gadgetList[i][key];
+            }
+
+            // キー名がレア度キーの場合
+            if(GADGETLISTKEY.gadget_rarityKey == key) {
+
+                // レア度用変数に値を代入
+                rarityText = gadgetList[i][key];
+            }
+
+            // キー名がコストキーの場合
+            if(GADGETLISTKEY.gadget_costKey == key) {
+
+                //コスト用変数に値を代入
+                costText = gadgetList[i][key];
+            }
+
+            // キー名が固有ヒーローキーの場合
+            if(GADGETLISTKEY.gadget_uniqueHeroKey == key){
+
+                // 固有ヒーロー用変数に値を代入
+                uniqueHeroText = gadgetList[i][key];
+            }
+        })
+
+        //ステータスアイコン設定
+        let statusIcons = [];
+        let statusLists = (statusText || "").split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+        statusLists.forEach((status, i) => {
+
+            //その他（特殊効果）以外のアイコン付与
+            if(!status.includes("※")){
+                switch(true) {
+                    case status.includes("ライフ+"):
+                        statusIcons.push("assets/images/icons/status/ライフアイコン.png");
+                        break;
+
+                    case status.includes("アーマー"):
+                        statusIcons.push("assets/images/icons/status/アーマーアイコン.png");
+                        break;
+
+                    case status.includes("シールド"):
+                        statusIcons.push("assets/images/icons/status/シールドアイコン.png");
+                        break;
+
+                    case status.includes("武器パワー"):
+                        statusIcons.push("assets/images/icons/status/武器パワーアイコン.png");
+                        break;
+
+                    case status.includes("アビリティパワー"):
+                        statusIcons.push("assets/images/icons/status/アビリティパワーアイコン.png");
+                        break;
+
+                    case status.includes("攻撃速度"):
+                        statusIcons.push("assets/images/icons/status/攻撃速度アイコン.png");
+                        break;
+
+                    case status.includes("CT短縮"):
+                        statusIcons.push("assets/images/icons/status/クールダウンアイコン.png");
+                        break;
+
+                    case status.includes("弾薬"):
+                        statusIcons.push("assets/images/icons/status/最大弾薬数アイコン.png");
+                        break;
+
+                    case status.includes("ライフ吸収（武器）"):
+                        statusIcons.push("assets/images/icons/status/ライフ吸収(武器)アイコン.png");
+                        break;
+
+                    case status.includes("ライフ吸収（アビリティ）"):
+                        statusIcons.push("assets/images/icons/status/ライフ吸収(アビリティ)アイコン.png");
+                        break;
+
+                    case status.includes("移動速度"):
+                        statusIcons.push("assets/images/icons/status/移動速度アイコン.png");
+                        break;
+
+                    case status.includes("リロード速度"):
+                        statusIcons.push("assets/images/icons/status/リロード速度アイコン.png");
+                        break;
+
+                    case status.includes("近接ダメージ"):
+                        statusIcons.push("assets/images/icons/status/近接攻撃ダメージアイコン.png");
+                        break;
+
+                    case status.includes("クリティカル"):
+                        statusIcons.push("assets/images/icons/status/クリティカル・ダメージアイコン.png");
+                        break;
+                }
+
+            //その他（特殊効果）の場合
+            }else if(status.includes("※")){
+                statusIcons.push("assets/images/icons/status/特殊効果アイコン.png");
+
+                //テキストから※を削除
+                statusLists[i] = status.replace("※","");
+            }
+        });
+
+        // 取得した各値をテーブルに紐付け
+        // 選択列
+        var td = document.createElement("td");
+        td.classList.add("gadget-td");
+        var input = document.createElement("input");
+        input.type = "checkbox";
+        input.checked = isCheck;
+        input.classList.add("gadget-checkbox");
+        td.appendChild(input);
+        tr.appendChild(td);
+
+        // ガジェット名列
+        var td = document.createElement("td");
+        td.textContent = gadgetNameText;
+        td.classList.add("gadget-td");
+        tr.appendChild(td);
+
+        // アイコン列
+        var td = document.createElement("td");
+        var iconImg = document.createElement("img");
+        iconImg.src = "assets/images/icons/gadget/" + iconText;
+        iconImg.classList.add("buildsimulator-gadgeticon");
+        td.appendChild(iconImg);
+        td.classList.add("gadget-td");
+        tr.appendChild(td);
+
+        // ステータス列
+        var td = document.createElement("td");
+        for (let i = 0; i < statusLists.length; i++) {
+            // ステータスごとのdiv
+            let statusDiv = document.createElement("div");
+
+            // アイコン作成
+            let iconImg = document.createElement("img");
+            iconImg.src = statusIcons[i];
+            iconImg.classList.add("itemandpower-statusicon");
+
+            // テキスト作成
+            let textSpan = document.createElement("span");
+            textSpan.innerText = statusLists[i];
+
+            // まとめて追加
+            statusDiv.appendChild(iconImg);
+            statusDiv.appendChild(textSpan);
+
+            // tdに追加
+            td.appendChild(statusDiv);
+        }
+        td.classList.add("gadget-td");
+        tr.appendChild(td);
+
+        // テキスト列
+        var td = document.createElement("td");
+        td.textContent = textText;
+        td.classList.add("gadget-td");
+        tr.appendChild(td);
+
+        // レア度列（非表示）
+        var td = document.createElement("td");
+        td.textContent = rarityText;
+        td.classList.add("hidden-column");
+        tr.appendChild(td);
+
+        // コスト列（非表示）
+        var td = document.createElement("td");
+        td.textContent = costText;
+        td.classList.add("hidden-column");
+        tr.appendChild(td);
+
+        // 固有ヒーロー列（非表示）
+        var td = document.createElement("td");
+        td.textContent = uniqueHeroText;
+        td.classList.add("hidden-column");
+        td.id = "filter-target";
+        tr.appendChild(td);
+
+        if(uniqueHeroText == "-" || uniqueHeroText == id){
+            tr.classList.remove("hidden-column");
+        }else if(uniqueHeroText != "-" && uniqueHeroText != id){
+            tr.classList.add("hidden-column");
+        }
+        tbody.appendChild(tr);
+    }
+
+    const sortingCriteria = [
+        { column: "rarity", order: "asc", type: "string" },
+        { column: "cost", order: "asc", type: "number" }
+    ]
+
+    // ガジェットテーブルをソート
+    TableSort(header, tbody, sortingCriteria);
+}
+
+/**
  * パワーリストをテーブルに紐づける関数
  * @param {object} powerList パワーリストデータ
  * @param {text} id 選択したヒーロー名
@@ -1753,7 +2135,7 @@ function TableSort(headers, tbody, sortingCriteria) {
 
 
 /**
- * チェックされたアイテムまたはパワーを配列に格納する関数
+ * チェックされたアイテムまたはパワーまたはガジェットを配列に格納する関数
  * @return {array} selectedRows - 選択されたアイテム情報配列
  */
 function updateSelectedList(checkboxes, list, isItem) {
@@ -1763,7 +2145,12 @@ function updateSelectedList(checkboxes, list, isItem) {
         if (checkbox.checked) {
             const row = checkbox.closest('tr');
             const cells = row.querySelectorAll('td');
-            
+
+            if (checkbox.classList.contains("gadget-checkbox")) {
+                // ガジェットの場合はガジェット名キーを使用
+                judgeKey = GADGETLISTKEY.gadget_nameKey;
+            }
+
             //選択されたものの名前
             const name = cells[1].textContent;
             for(let i=0; i<list.length; i++) {
@@ -1801,7 +2188,11 @@ function updateBuild_Item(selectedItemRows){
         if(i < selectedItemRows.length){
             // アイコン追加部分
             var iconImg = document.createElement("img");
-            iconImg.src = "assets/images/icons/item/" + selectedItemRows[i][ITEMLISTKEY.item_iconKey];
+            if (selectedItemRows[i][GADGETLISTKEY.gadget_categoryKey] == "ガジェット"){
+                iconImg.src = "assets/images/icons/gadget/" + selectedItemRows[i][GADGETLISTKEY.gadget_iconKey];
+            } else {
+                iconImg.src = "assets/images/icons/item/" + selectedItemRows[i][ITEMLISTKEY.item_iconKey];
+            }
             iconImg.classList.add("selectedbuild-item-icon");
             iconImg.id = "item-image" + String(i + 1)
             targetDiv.appendChild(iconImg);
@@ -1819,7 +2210,7 @@ function updateBuild_Item(selectedItemRows){
             input.checked = false;
             input.classList.add("theoretical-item-checkbox");
             // 理論値フラグがfalseなら表示はするが非活性にする
-            if(selectedItemRows[i][ITEMLISTKEY.theoreticalFlgKey] == 0){
+            if(selectedItemRows[i][ITEMLISTKEY.theoreticalFlgKey] == 0 || selectedItemRows[i][GADGETLISTKEY.theoreticalFlgKey] == 0){
                 input.disabled = true;
             }
             input.classList.add("selectedbuild-theoretical-checkbox");
@@ -1894,27 +2285,47 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     for(let i=0; i<selectedItemRows.length; i++) {
 
         // 各パラメータを抽出
-        nameTmp = selectedItemRows[i][ITEMLISTKEY.item_nameKey];
-        lifeTmp += selectedItemRows[i][ITEMLISTKEY.item_lifeKey];
-        armorTmp += selectedItemRows[i][ITEMLISTKEY.item_armorKey];
-        shieldTmp += selectedItemRows[i][ITEMLISTKEY.item_shieldKey];
-        weaponPowerTmp += selectedItemRows[i][ITEMLISTKEY.weaponPowerKey];
-        abilityPowerTmp += selectedItemRows[i][ITEMLISTKEY.abilityPowerKey];
-        attackSpeedTmp += selectedItemRows[i][ITEMLISTKEY.attackSpeedKey];
-        ctReducationTmp += selectedItemRows[i][ITEMLISTKEY.ctReducationKey];
-        ammoTmp += selectedItemRows[i][ITEMLISTKEY.ammoKey];
-        weapon_LifeStealTmp += selectedItemRows[i][ITEMLISTKEY.weapon_LifeStealKey];
-        ability_LifeStealTmp += selectedItemRows[i][ITEMLISTKEY.ability_LifeStealKey];
-        speedTmp += selectedItemRows[i][ITEMLISTKEY.speedKey];
-        reloadSpeedTmp += selectedItemRows[i][ITEMLISTKEY.reloadSpeedKey];
-        meleeDamageTmp += selectedItemRows[i][ITEMLISTKEY.item_meleeDamageKey];
-        criticalTmp += selectedItemRows[i][ITEMLISTKEY.criticalKey];
-        othersTmp = selectedItemRows[i][ITEMLISTKEY.othersKey];
-        textTmp = selectedItemRows[i][ITEMLISTKEY.item_textKey];
-        durationFlgTmp = selectedItemRows[i][ITEMLISTKEY.durationFlgKey];
-        durationTmp = selectedItemRows[i][ITEMLISTKEY.durationKey];
-        change_armorTmp += Number(selectedItemRows[i][ITEMLISTKEY.change_armorKey]);
-        change_shieldTmp += Number(selectedItemRows[i][ITEMLISTKEY.change_shieldKey]);
+        if (selectedItemRows[i][GADGETLISTKEY.gadget_categoryKey] == "ガジェット"){
+            nameTmp = selectedItemRows[i][GADGETLISTKEY.gadget_nameKey];
+            lifeTmp += selectedItemRows[i][GADGETLISTKEY.gadget_lifeKey];
+            armorTmp += selectedItemRows[i][GADGETLISTKEY.gadget_armorKey];
+            shieldTmp += selectedItemRows[i][GADGETLISTKEY.gadget_shieldKey];
+            weaponPowerTmp += selectedItemRows[i][GADGETLISTKEY.gadget_weaponPowerKey];
+            abilityPowerTmp += selectedItemRows[i][GADGETLISTKEY.gadget_abilityPowerKey];
+            attackSpeedTmp += selectedItemRows[i][GADGETLISTKEY.gadget_attackSpeedKey];
+            ctReducationTmp += selectedItemRows[i][GADGETLISTKEY.gadget_ctReducationKey];
+            ammoTmp += selectedItemRows[i][GADGETLISTKEY.gadget_ammoKey];
+            weapon_LifeStealTmp += selectedItemRows[i][GADGETLISTKEY.gadget_weapon_LifeStealKey];
+            ability_LifeStealTmp += selectedItemRows[i][GADGETLISTKEY.gadget_ability_LifeStealKey];
+            speedTmp += selectedItemRows[i][GADGETLISTKEY.gadget_speedKey];
+            reloadSpeedTmp += selectedItemRows[i][GADGETLISTKEY.gadget_reloadSpeedKey];
+            meleeDamageTmp += selectedItemRows[i][GADGETLISTKEY.gadget_meleeDamageKey];
+            criticalTmp += selectedItemRows[i][GADGETLISTKEY.gadget_criticalKey];
+            othersTmp = selectedItemRows[i][GADGETLISTKEY.gadget_othersKey];
+            textTmp = selectedItemRows[i][GADGETLISTKEY.gadget_textKey];
+        }else{
+            nameTmp = selectedItemRows[i][ITEMLISTKEY.item_nameKey];
+            lifeTmp += selectedItemRows[i][ITEMLISTKEY.item_lifeKey];
+            armorTmp += selectedItemRows[i][ITEMLISTKEY.item_armorKey];
+            shieldTmp += selectedItemRows[i][ITEMLISTKEY.item_shieldKey];
+            weaponPowerTmp += selectedItemRows[i][ITEMLISTKEY.weaponPowerKey];
+            abilityPowerTmp += selectedItemRows[i][ITEMLISTKEY.abilityPowerKey];
+            attackSpeedTmp += selectedItemRows[i][ITEMLISTKEY.attackSpeedKey];
+            ctReducationTmp += selectedItemRows[i][ITEMLISTKEY.ctReducationKey];
+            ammoTmp += selectedItemRows[i][ITEMLISTKEY.ammoKey];
+            weapon_LifeStealTmp += selectedItemRows[i][ITEMLISTKEY.weapon_LifeStealKey];
+            ability_LifeStealTmp += selectedItemRows[i][ITEMLISTKEY.ability_LifeStealKey];
+            speedTmp += selectedItemRows[i][ITEMLISTKEY.speedKey];
+            reloadSpeedTmp += selectedItemRows[i][ITEMLISTKEY.reloadSpeedKey];
+            meleeDamageTmp += selectedItemRows[i][ITEMLISTKEY.item_meleeDamageKey];
+            criticalTmp += selectedItemRows[i][ITEMLISTKEY.criticalKey];
+            othersTmp = selectedItemRows[i][ITEMLISTKEY.othersKey];
+            textTmp = selectedItemRows[i][ITEMLISTKEY.item_textKey];
+            durationFlgTmp = selectedItemRows[i][ITEMLISTKEY.durationFlgKey];
+            durationTmp = selectedItemRows[i][ITEMLISTKEY.durationKey];
+            change_armorTmp += Number(selectedItemRows[i][ITEMLISTKEY.change_armorKey]);
+            change_shieldTmp += Number(selectedItemRows[i][ITEMLISTKEY.change_shieldKey]);
+        }
 
         //トレーサーが選択されている場合、体力アイテムを減算処理
         //最後のループ一回のみ実行
@@ -1999,7 +2410,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         // #endregion
 
         // #region 理論値計算
-        if(theoreticalFlag && selectedItemRows[i][ITEMLISTKEY.theoreticalFlgKey] == 1){
+        if(theoreticalFlag && (selectedItemRows[i][ITEMLISTKEY.theoreticalFlgKey] == 1 || selectedItemRows[i][GADGETLISTKEY.theoreticalFlgKey] == 1)){
             theoreticalItemCheckboxes.forEach(checkbox => {
                 const div = checkbox.closest('div');
             
@@ -2008,9 +2419,9 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                 const img = document.getElementById("item-image" + itemNumber);
                 const imgSRC = decodeURIComponent(img.src.split('/').pop());
 
-                // アイテム名が一致かつチェックがONの時はアイテムIDを抜き出す
-                if(selectedItemRows[i][ITEMLISTKEY.item_iconKey] == imgSRC && checkbox.checked){
-                    const itemID = selectedItemRows[i][ITEMLISTKEY.itemIdKey];
+                // アイテム名またはガジェット名が一致かつチェックがONの時はアイテムIDを抜き出す
+                if((selectedItemRows[i][ITEMLISTKEY.item_iconKey] == imgSRC || selectedItemRows[i][GADGETLISTKEY.gadgetnameKey] == imgSRC) && checkbox.checked){
+                    const itemID = (selectedItemRows[i][ITEMLISTKEY.itemIdKey] || selectedItemRows[i][GADGETLISTKEY.gadget_idKey]);
 
                     // アイテムIDから理論値リストのデータを検索
                     for(let j=0; j<theoreticalItemList.length; j++){
@@ -2661,8 +3072,8 @@ function clickDeleteButton(spanId,selectedRows) {
 
     // IDに「item」が含まれる場合
     if(spanId.includes("item")){
-        const itemName = selectedRows[index][ITEMLISTKEY.item_nameKey];
         const category = selectedRows[index][ITEMLISTKEY.categoryKey];
+        const itemOrGadgetName = (category == "ガジェット") ? selectedRows[index][GADGETLISTKEY.gadget_nameKey] : selectedRows[index][ITEMLISTKEY.item_nameKey];
         //初期値は武器カテゴリを設定
         var tbody = document.getElementById("item-table-weapon").querySelector("tbody");
 
@@ -2671,6 +3082,8 @@ function clickDeleteButton(spanId,selectedRows) {
             tbody = document.getElementById("item-table-ability").querySelector("tbody");
         }else if(category == "サバイバル"){
             tbody = document.getElementById("item-table-survival").querySelector("tbody");
+        }else if(category == "ガジェット"){
+            tbody = document.getElementById("gadget-table").querySelector("tbody");
         }
 
         const rows = tbody.querySelectorAll("tr");
@@ -2679,9 +3092,9 @@ function clickDeleteButton(spanId,selectedRows) {
         rows.forEach(row => {
             const cells = row.querySelectorAll("td");
             const cellText = cells[targetColumnIndex].textContent;
-            if(cellText == itemName){
-                // 選択したアイテムのチェックボックスのチェックを解除
-                const checkbox =  cells[changeColumnIndex].querySelector(".item-checkbox");
+            if(cellText == itemOrGadgetName){
+                // 選択したアイテムまたはガジェットのチェックボックスのチェックを解除
+                const checkbox =  (category == "ガジェット") ? cells[changeColumnIndex].querySelector(".gadget-checkbox") : cells[changeColumnIndex].querySelector(".item-checkbox");
                 checkbox.checked = false;
             }
         });
@@ -2692,6 +3105,16 @@ function clickDeleteButton(spanId,selectedRows) {
         if(selectedRowsBeforeLength == 6){
             //元々アイテムが6個選ばれていた場合、選択されていないアイテムのチェックボックスを入力可
             disableCheckbox(false, ITEMORPOWER.item);
+            // ガジェットが選択されていない場合はガジェットのチェックボックスも入力可
+            if(!gadgetSelectedFlg){
+                disableCheckbox(false, ITEMORPOWER.gadget);
+            }
+        }
+        if(category == "ガジェット"){
+            // ガジェットが削除された場合、ガジェットのチェックボックスを入力可
+            disableCheckbox(false, ITEMORPOWER.gadget);
+            // ガジェット選択フラグをfalseにする
+            gadgetSelectedFlg = false;
         }
         return selectedRows;
     }
@@ -2736,6 +3159,8 @@ function disableCheckbox(flag, type){
         checkboxes = document.querySelectorAll(".power-checkbox");
     }else if(type == "アイテム"){
         checkboxes = document.querySelectorAll(".item-checkbox");
+    }else if(type == "ガジェット"){
+        checkboxes = document.querySelectorAll(".gadget-checkbox");
     }
     checkboxes.forEach(checkbox =>{
         if(!checkbox.checked){
