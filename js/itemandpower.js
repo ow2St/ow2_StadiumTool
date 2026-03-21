@@ -371,7 +371,6 @@ function convertKeys(dataArray, keyMap) {
         });
     } catch (error) {
         if(error.message != ""){
-            error.message += ERRORMESSAGEKEY.dataConvert;
             throw error;
         }else{
             throw new Error(ERRORMESSAGEKEY.dataConvertError);
@@ -437,14 +436,19 @@ function changeTabPower() {
     tabGadget.classList.remove("tabGadget-on");
     gadgetContent.style.display = "none";
 
-    //パワー一覧　D.VAアイコンをONにする
-    let defaultHero = document.getElementById("D.VA-power");
-    if(defaultHero.classList.contains("power-hero-icon-on")) {
-        //すでにアイコンがONのときは何も処理しない
-        return;
-    }
+    //ここのtry-catchはfilterPowerTable(defaultHero);のエラーをキャッチするために必要
+    try {
+        //パワー一覧　D.VAアイコンをONにする
+        let defaultHero = document.getElementById("D.VA-power");
+        if(defaultHero.classList.contains("power-hero-icon-on")) {
+            //すでにアイコンがONのときは何も処理しない
+            return;
+        }
 
-    filterPowerTable(defaultHero);
+        filterPowerTable(defaultHero);
+    } catch (error) {
+        console.error(error.message, error.stack);
+    }
 }
 //#endregion タブ切り替え
 
@@ -456,226 +460,234 @@ function changeTabPower() {
  * @return {void}
  */
 function linkItemList(itemList) {
-    let tbody = document.getElementById("item-table").querySelector("tbody");
+    try {
+        let tbody = document.getElementById("item-table").querySelector("tbody");
 
-    // 各アイテムごとにループ
-    for(let i=0; i<itemList.length; i++) {
-        var tr = document.createElement("tr");
+        // 各アイテムごとにループ
+        for(let i=0; i<itemList.length; i++) {
+            var tr = document.createElement("tr");
 
-        // 必要な列ごとの変数を初期化
-        let itemNameText = "";
-        let iconText = "";
-        let categoryText = "";
-        let rarityText = "";
-        let costText = "";
-        let uniqueHeroText = "";
-        let statusText = "";
-        let textText = "";
-        let idText = "";
+            // 必要な列ごとの変数を初期化
+            let itemNameText = "";
+            let iconText = "";
+            let categoryText = "";
+            let rarityText = "";
+            let costText = "";
+            let uniqueHeroText = "";
+            let statusText = "";
+            let textText = "";
+            let idText = "";
 
-        // 各キーペアごとにループ
-        Object.keys(itemList[i]).forEach(key => {
+            // 各キーペアごとにループ
+            Object.keys(itemList[i]).forEach(key => {
 
-            // キー名がアイテム名キーの場合
-            if(ITEMLISTKEY.item_nameKey == key) {
+                // キー名がアイテム名キーの場合
+                if(ITEMLISTKEY.item_nameKey == key) {
 
-                // アイテム名用変数に値を代入
-                itemNameText = itemList[i][key];
-            }
-
-            // キー名がアイコンキーの場合
-            if(ITEMLISTKEY.item_iconKey == key) {
-
-                // アイコン用変数に値を代入
-                iconText = itemList[i][key];
-            }
-
-            // キー名がカテゴリーキーの場合
-            if(ITEMLISTKEY.categoryKey == key) {
-
-                // カテゴリー用変数に値を代入
-                categoryText = itemList[i][key];
-            }
-
-            // キー名がレアリティキーの場合
-            if(ITEMLISTKEY.rarityKey == key) {
-
-                // レアリティ用変数に値を代入
-                rarityText = itemList[i][key];
-            }
-
-             // キー名がコストキーの場合
-            if(ITEMLISTKEY.costKey == key) {
-
-                // コスト用変数に値を代入
-                costText = itemList[i][key];
-            }
-
-             // キー名が固有ヒーローキーの場合
-            if(ITEMLISTKEY.uniqueHeroKey == key) {
-
-                // 固有ヒーロー用変数に値を代入
-                uniqueHeroText = itemList[i][key];
-            }
-
-            // キー名がIDキーの場合
-            if(ITEMLISTKEY.itemIdKey == key) {
-
-                // ID用変数に値を代入
-                idText = itemList[i][key];
-            }
-
-            // キー名がテキストキーの場合
-            if(ITEMLISTKEY.item_textKey == key) {
-
-                // テキスト用変数に値を代入
-                textText = itemList[i][key];
-            }
-
-            // キー名がステータス関連のキーの場合
-            if([ITEMLISTKEY.item_lifeKey, ITEMLISTKEY.item_armorKey, ITEMLISTKEY.item_shieldKey, ITEMLISTKEY.weaponPowerKey, ITEMLISTKEY.abilityPowerKey,
-                ITEMLISTKEY.attackSpeedKey, ITEMLISTKEY.ctReducationKey, ITEMLISTKEY.ammoKey, ITEMLISTKEY.weapon_LifeStealKey,
-                ITEMLISTKEY.ability_LifeStealKey, ITEMLISTKEY.speedKey, ITEMLISTKEY.reloadSpeedKey, ITEMLISTKEY.item_meleeDamageKey,
-                ITEMLISTKEY.criticalKey].includes(key)) {
-
-                // 値が0でない場合
-                if(itemList[i][key] != 0) {
-                    statusText = statusText + key + "+" + String(itemList[i][key]) + "\n";
+                    // アイテム名用変数に値を代入
+                    itemNameText = itemList[i][key];
                 }
-            }
 
-            // キー名がその他キーの場合
-            if(ITEMLISTKEY.othersKey == key) {
+                // キー名がアイコンキーの場合
+                if(ITEMLISTKEY.item_iconKey == key) {
 
-                // 値が"-"でない場合
-                if(itemList[i][key] != "-") {
-                    statusText = statusText + String(itemList[i][key]);
-                    statusText = statusText.replaceAll(",", "\n");
+                    // アイコン用変数に値を代入
+                    iconText = itemList[i][key];
                 }
-            }
 
-            // キー名がテキストキーの場合
-            if(ITEMLISTKEY.item_textKey == key) {
+                // キー名がカテゴリーキーの場合
+                if(ITEMLISTKEY.categoryKey == key) {
 
-                // テキスト用変数に値を代入
-                textText = itemList[i][key];
-            }
-        })
+                    // カテゴリー用変数に値を代入
+                    categoryText = itemList[i][key];
+                }
 
-        //ステータスアイコン設定
-        let statusIcons = [];
-        let statusLists = (statusText || "").split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+                // キー名がレアリティキーの場合
+                if(ITEMLISTKEY.rarityKey == key) {
 
-        statusLists.forEach((status, i) => {
+                    // レアリティ用変数に値を代入
+                    rarityText = itemList[i][key];
+                }
 
-            //アイコン付与
-            switch(true) {
-                case status.includes(STATUSELEMENTS.life_includes):
-                    statusIcons.push(STATUSICON.life);
-                    break;
+                // キー名がコストキーの場合
+                if(ITEMLISTKEY.costKey == key) {
 
-                case status.includes(STATUSELEMENTS.armor):
-                    statusIcons.push(STATUSICON.armor);
-                    break;
+                    // コスト用変数に値を代入
+                    costText = itemList[i][key];
+                }
 
-                case status.includes(STATUSELEMENTS.shield):
-                    statusIcons.push(STATUSICON.shield);
-                    break;
+                // キー名が固有ヒーローキーの場合
+                if(ITEMLISTKEY.uniqueHeroKey == key) {
 
-                case status.includes(STATUSELEMENTS.weaponPower):
-                    statusIcons.push(STATUSICON.weaponPower);
-                    break;
+                    // 固有ヒーロー用変数に値を代入
+                    uniqueHeroText = itemList[i][key];
+                }
 
-                case status.includes(STATUSELEMENTS.abilityPower):
-                    statusIcons.push(STATUSICON.abilityPower);
-                    break;
+                // キー名がIDキーの場合
+                if(ITEMLISTKEY.itemIdKey == key) {
 
-                case status.includes(STATUSELEMENTS.attackSpeed):
-                    statusIcons.push(STATUSICON.attackSpeed);
-                    break;
+                    // ID用変数に値を代入
+                    idText = itemList[i][key];
+                }
 
-                case status.includes(STATUSELEMENTS.ctReducation):
-                    statusIcons.push(STATUSICON.ctReducation);
-                    break;
+                // キー名がテキストキーの場合
+                if(ITEMLISTKEY.item_textKey == key) {
 
-                case status.includes(STATUSELEMENTS.ammo):
-                    statusIcons.push(STATUSICON.ammo);
-                    break;
+                    // テキスト用変数に値を代入
+                    textText = itemList[i][key];
+                }
 
-                case status.includes(STATUSELEMENTS.weapon_LifeSteal):
-                    statusIcons.push(STATUSICON.weapon_LifeSteal);
-                    break;
+                // キー名がステータス関連のキーの場合
+                if([ITEMLISTKEY.item_lifeKey, ITEMLISTKEY.item_armorKey, ITEMLISTKEY.item_shieldKey, ITEMLISTKEY.weaponPowerKey, ITEMLISTKEY.abilityPowerKey,
+                    ITEMLISTKEY.attackSpeedKey, ITEMLISTKEY.ctReducationKey, ITEMLISTKEY.ammoKey, ITEMLISTKEY.weapon_LifeStealKey,
+                    ITEMLISTKEY.ability_LifeStealKey, ITEMLISTKEY.speedKey, ITEMLISTKEY.reloadSpeedKey, ITEMLISTKEY.item_meleeDamageKey,
+                    ITEMLISTKEY.criticalKey].includes(key)) {
 
-                case status.includes(STATUSELEMENTS.ability_LifeSteal):
-                    statusIcons.push(STATUSICON.ability_LifeSteal);
-                    break;
+                    // 値が0でない場合
+                    if(itemList[i][key] != 0) {
+                        statusText = statusText + key + "+" + String(itemList[i][key]) + "\n";
+                    }
+                }
 
-                case status.includes(STATUSELEMENTS.speed):
-                    statusIcons.push(STATUSICON.speed);
-                    break;
+                // キー名がその他キーの場合
+                if(ITEMLISTKEY.othersKey == key) {
 
-                case status.includes(STATUSELEMENTS.reloadSpeed):
-                    statusIcons.push(STATUSICON.reloadSpeed);
-                    break;
+                    // 値が"-"でない場合
+                    if(itemList[i][key] != "-") {
+                        statusText = statusText + String(itemList[i][key]);
+                        statusText = statusText.replaceAll(",", "\n");
+                    }
+                }
 
-                case status.includes(STATUSELEMENTS.meleeDamage):
-                    statusIcons.push(STATUSICON.meleeDamage);
-                    break;
+                // キー名がテキストキーの場合
+                if(ITEMLISTKEY.item_textKey == key) {
 
-                case status.includes(STATUSELEMENTS.critical):
-                    statusIcons.push(STATUSICON.critical);
-                    break;
+                    // テキスト用変数に値を代入
+                    textText = itemList[i][key];
+                }
+            })
 
-                case status.includes(STATUSELEMENTS.others_sign):
-                    statusIcons.push(STATUSICON.others);
-                    //テキストから※を削除
-                    statusLists[i] = status.replace(STATUSELEMENTS.others_sign,"");
-                    break;
+            //ステータスアイコン設定
+            let statusIcons = [];
+            let statusLists = (statusText || "").split(/\r?\n/).map(s => s.trim()).filter(Boolean);
 
-                default:
-                    console.error(ERRORMESSAGEKEY.unexpectedStatus, status);
-            }
-        });
-
-        //体力アップ系トレーサー専用アイテムの数値減算処理
-        if(uniqueHeroText == HERONAME.tracer){
             statusLists.forEach((status, i) => {
-                switch(true){
 
-                    //ライフ+の場合
+                //アイコン付与
+                switch(true) {
                     case status.includes(STATUSELEMENTS.life_includes):
-                        //文字列→数値変換＆減算
-                        status = Number(status.replace(STATUSELEMENTS.life_includes, "")) * tracerHPUPscalefactor;
-                        //四捨五入
-                        status = String(Math.round(status));
-                        //文字列へ再結合
-                        statusLists[i] = STATUSELEMENTS.life_includes + status;
+                        statusIcons.push(STATUSICON.life);
                         break;
-                    //アーマー
+
                     case status.includes(STATUSELEMENTS.armor):
-                        //文字列→数値変換＆減算
-                        status = Number(status.replace(STATUSELEMENTS.armor,"+", "")) * tracerHPUPscalefactor;
-                        //四捨五入
-                        status = String(Math.round(status));
-                        //文字列へ再結合
-                        statusLists[i] = STATUSELEMENTS.armor + "+" + status;
+                        statusIcons.push(STATUSICON.armor);
                         break;
-                    //シールド
+
                     case status.includes(STATUSELEMENTS.shield):
-                        //文字列→数値変換＆減算
-                        status = Number(status.replace(STATUSELEMENTS.shield,"+", "")) * tracerHPUPscalefactor;
-                        //四捨五入
-                        status = String(Math.round(status));
-                        //文字列へ再結合
-                        statusLists[i] = STATUSELEMENTS.shield + "+" + status;
+                        statusIcons.push(STATUSICON.shield);
                         break;
+
+                    case status.includes(STATUSELEMENTS.weaponPower):
+                        statusIcons.push(STATUSICON.weaponPower);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.abilityPower):
+                        statusIcons.push(STATUSICON.abilityPower);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.attackSpeed):
+                        statusIcons.push(STATUSICON.attackSpeed);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.ctReducation):
+                        statusIcons.push(STATUSICON.ctReducation);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.ammo):
+                        statusIcons.push(STATUSICON.ammo);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.weapon_LifeSteal):
+                        statusIcons.push(STATUSICON.weapon_LifeSteal);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.ability_LifeSteal):
+                        statusIcons.push(STATUSICON.ability_LifeSteal);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.speed):
+                        statusIcons.push(STATUSICON.speed);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.reloadSpeed):
+                        statusIcons.push(STATUSICON.reloadSpeed);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.meleeDamage):
+                        statusIcons.push(STATUSICON.meleeDamage);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.critical):
+                        statusIcons.push(STATUSICON.critical);
+                        break;
+
+                    case status.includes(STATUSELEMENTS.others_sign):
+                        statusIcons.push(STATUSICON.others);
+                        //テキストから※を削除
+                        statusLists[i] = status.replace(STATUSELEMENTS.others_sign,"");
+                        break;
+
+                    default:
+                        console.error(ERRORMESSAGEKEY.unexpectedStatus, status);
                 }
             });
+
+            //体力アップ系トレーサー専用アイテムの数値減算処理
+            if(uniqueHeroText == HERONAME.tracer){
+                statusLists.forEach((status, i) => {
+                    switch(true){
+
+                        //ライフ+の場合
+                        case status.includes(STATUSELEMENTS.life_includes):
+                            //文字列→数値変換＆減算
+                            status = Number(status.replace(STATUSELEMENTS.life_includes, "")) * tracerHPUPscalefactor;
+                            //四捨五入
+                            status = String(Math.round(status));
+                            //文字列へ再結合
+                            statusLists[i] = STATUSELEMENTS.life_includes + status;
+                            break;
+                        //アーマー
+                        case status.includes(STATUSELEMENTS.armor):
+                            //文字列→数値変換＆減算
+                            status = Number(status.replace(STATUSELEMENTS.armor,"+", "")) * tracerHPUPscalefactor;
+                            //四捨五入
+                            status = String(Math.round(status));
+                            //文字列へ再結合
+                            statusLists[i] = STATUSELEMENTS.armor + "+" + status;
+                            break;
+                        //シールド
+                        case status.includes(STATUSELEMENTS.shield):
+                            //文字列→数値変換＆減算
+                            status = Number(status.replace(STATUSELEMENTS.shield,"+", "")) * tracerHPUPscalefactor;
+                            //四捨五入
+                            status = String(Math.round(status));
+                            //文字列へ再結合
+                            statusLists[i] = STATUSELEMENTS.shield + "+" + status;
+                            break;
+                    }
+                });
+            }
+
+        tbody.appendChild(appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, textText, idText, statusLists, statusIcons));
+
+        tr.classList.add("table-on");
         }
-
-    tbody.appendChild(appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, textText, idText, statusLists, statusIcons));
-
-    tr.classList.add("table-on");
+    } catch (error) {
+        if(error.message != ""){
+            throw error;
+        }else{
+            throw new Error(ERRORMESSAGEKEY.dataLinkError);
+        }
     }
 }
 
@@ -1199,15 +1211,29 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
 //#endregion 各テーブル紐づけ
 
 // #region 絞り込み
-/** 絞り込み条件を更新する関数（アイテム）
+/**htmlのonclickとアイテムテーブルの絞り込み処理を繋ぐ関数
+ * onclickからfilterItemTableを呼び出す際に例外処理のために使用
  * ＜使用箇所＞
  * ・itemAndPower.html - button-listのonclickイベント
+ * @param {*} elem - 変更対象の要素(押されたボタンやアイコン)
+ */
+function filterItemOnclickHandler(elem){
+    try {
+        filterItemTable(elem);
+    } catch (error) {
+        console.error(error.message,error.stack);
+    }
+}
+
+/** 絞り込み条件を更新する関数（アイテム）
+ * ＜使用箇所＞
+ * ・loadAndInitData() - 絞り込みボタンをOFFにする処理（heroButtonDva.onclick();）
+ * ・filterItemOnclickHandler()
  * ・item_searchWords()
  * @param {HTMLElement} elem - 変更対象の要素(押されたボタンやアイコン)
  * @return {void}
  */
 function filterItemTable(elem){
-
     try {
         // 絞り込みボタンのON/OFF切り替え
         const tag = elem.tagName.toLowerCase();
@@ -1319,19 +1345,32 @@ function filterItemTable(elem){
             }
         });
     } catch (error) {
-        console.error(ERRORMESSAGEKEY.dataFilterError + " : item : " + elem.id, error);
+        throw new Error(ERRORMESSAGEKEY.itemDataFilterError + " : " + elem.id);
+    }
+}
+
+/**htmlのonclickとガジェットテーブルの絞り込み処理を繋ぐ関数
+ * onclickからfilterGadgetTableを呼び出す際に例外処理のために使用
+ * ＜使用箇所＞
+ * ・itemAndPower.html - button-listのonclickイベント
+ * @param {*} elem - 変更対象の要素(押されたボタンやアイコン)
+ */
+function filterGadgetOnclickHandler(elem){
+    try {
+        filterGadgetTable(elem);
+    } catch (error) {
+        console.error(error.message,error.stack);
     }
 }
 
 /** 絞り込み条件を更新する関数（ガジェット）
  * ＜使用箇所＞
- * ・itemAndPower.html - button-listのonclickイベント
+ * ・filterGadgetOnclickHandler()
  * ・gadget_searchWords()
  * @param {HTMLElement} elem - 変更対象の要素(押されたボタン)
  * @return {void}
  */
 function filterGadgetTable(elem){
-
     try {
         // 絞り込みボタンのON/OFF切り替え
         let isNowOn;
@@ -1412,19 +1451,33 @@ function filterGadgetTable(elem){
             }
         });
     } catch (error) {
-        console.error(ERRORMESSAGEKEY.dataFilterError + " : gadget : " + elem.id, error);
+        throw new Error(ERRORMESSAGEKEY.gadgetDataFilterError + " : " + elem.id);
+    }
+}
+
+/**htmlのonclickとパワーテーブルの絞り込み処理を繋ぐ関数
+ * onclickからfilterPowerTableを呼び出す際に例外処理のために使用
+ * ＜使用箇所＞
+ * ・itemAndPower.html - button-listのonclickイベント
+ * @param {*} elem - 変更対象の要素(押されたボタンやアイコン)
+ */
+function filterPowerOnclickHandler(elem){
+    try {
+        filterPowerTable(elem);
+    } catch (error) {
+        console.error(error.message,error.stack);
     }
 }
 
 /** 絞り込み条件を更新する関数（パワー）
  * ＜使用箇所＞
- * ・itemAndPower.html - button-listのonclickイベント
+ * ・changeTabPower() - D.VAアイコンOFF用
+ * ・filterPowerOnclickHandler()
  * ・power_searchWords()
  * @param {HTMLElement} elem - 対象の要素(押されたヒーローアイコン)
  * @return {void}
  */
 function filterPowerTable(elem){
-
     try {
         // 絞り込みイメージのON/OFF切り替え
         const tag = elem.tagName.toLowerCase();
@@ -1507,7 +1560,7 @@ function filterPowerTable(elem){
             }
         });
     } catch (error) {
-        console.error(ERRORMESSAGEKEY.dataFilterError + " : power : " + elem.id, error);
+        throw new Error(ERRORMESSAGEKEY.powerDataFilterError + " : " + elem.id);
     }
 }
 // #endregion 絞り込み
@@ -1520,7 +1573,6 @@ function filterPowerTable(elem){
  * @return {void}
  */
 function item_searchWords() {
-
     try {
         // 検索ワードを取得
         const keyword = document.getElementById("item_search-input").value.trim();
@@ -1563,7 +1615,12 @@ function item_searchWords() {
             }
         });
     } catch (error) {
-        console.error(ERRORMESSAGEKEY.keywordSearchError + " : item", error);
+        if(error.message != ""){
+            console.error(error.message,error.stack);
+        }
+        else{
+            console.error(ERRORMESSAGEKEY.itemKeywordSearchError);
+        }
     }
 }
 
@@ -1574,7 +1631,6 @@ function item_searchWords() {
  * @return {void}
  */
 function gadget_searchWords() {
-
     try {
         // 検索ワードを取得
         const keyword = document.getElementById("gadget_search-input").value.trim();
@@ -1616,7 +1672,12 @@ function gadget_searchWords() {
             }
         });
     } catch (error) {
-        console.error(ERRORMESSAGEKEY.keywordSearchError + " : gadget", error);
+        if(error.message != ""){
+            console.error(error.message,error.stack);
+        }
+        else{
+        console.error(ERRORMESSAGEKEY.gadgetKeywordSearchError);
+        }
     }
 }
 
@@ -1627,7 +1688,6 @@ function gadget_searchWords() {
  * @return {void}
  */
 function power_searchWords() {
-
     try {
         // 検索ワードを取得
         const keyword = document.getElementById("power_search-input").value.trim();
@@ -1670,7 +1730,12 @@ function power_searchWords() {
             }
         });
     } catch (error) {
-        console.error(ERRORMESSAGEKEY.keywordSearchError + " : power", error);
+        if(error.message != ""){
+            console.error(error.message,error.stack);
+        }
+        else{
+            console.error(ERRORMESSAGEKEY.powerKeywordSearchError);
+        }
     }
 }
 // #endregion キーワード検索
@@ -1683,7 +1748,6 @@ function power_searchWords() {
  * @return {void}
  */
 function itemSortClick(id){
-
     try {
         const tHeader=document.getElementById("item-table").querySelectorAll("th");
         const tBody = document.getElementById("item-table").querySelector("tbody");
@@ -1725,7 +1789,12 @@ function itemSortClick(id){
             document.getElementById(id).innerText = labelMap[id] + arrows;
         }
     } catch (error) {
-        console.error(ERRORMESSAGEKEY.dataSortError + " : item : " + id, error);
+        if(error.message != ""){
+            console.error(error.message,error.stack);
+        }
+        else{
+            console.error(ERRORMESSAGEKEY.itemDataSortSettingError + id);
+        }
     }
 }
 
@@ -1740,64 +1809,67 @@ function itemSortClick(id){
  * @return {void}
  */
 function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
+    try {
+        //レア度の並び替えの基準を設定
+        const rarityOrder = [RARITYELEMENTS.common, RARITYELEMENTS.rare, RARITYELEMENTS.epic]
 
-    //レア度の並び替えの基準を設定
-    const rarityOrder = [RARITYELEMENTS.common, RARITYELEMENTS.rare, RARITYELEMENTS.epic]
+        const rows = Array.from(tbody.querySelectorAll("tr"));
 
-    const rows = Array.from(tbody.querySelectorAll("tr"));
+        // 日本語ロケールに基づいた比較器（五十音順）
+        const collator = new Intl.Collator('ja-JP', { sensitivity: 'base' });
+        // 比較
+        const comparator = (rowA, rowB) => {
+            const { column, type } = sortingCriteria;
 
-    // 日本語ロケールに基づいた比較器（五十音順）
-    const collator = new Intl.Collator('ja-JP', { sensitivity: 'base' });
-    // 比較
-    const comparator = (rowA, rowB) => {
-        const { column, type } = sortingCriteria;
+            const cellA = rowA.children[index].textContent.trim();
+            const cellB = rowB.children[index].textContent.trim();
 
-        const cellA = rowA.children[index].textContent.trim();
-        const cellB = rowB.children[index].textContent.trim();
+            let valA, valB;
 
-        let valA, valB;
+            // データの型に応じて比較対象の値を変換（デフォルトはString型）
+            if (type == "number") {
+                valA = parseFloat(cellA);
+                valB = parseFloat(cellB);
+            } else {
+                valA = cellA;
+                valB = cellB;
+            }
 
-        // データの型に応じて比較対象の値を変換（デフォルトはString型）
-        if (type == "number") {
-            valA = parseFloat(cellA);
-            valB = parseFloat(cellB);
-        } else {
-            valA = cellA;
-            valB = cellB;
+            // レア度を比較用に数値変換
+            if (column == "rarity") {
+                valA = rarityOrder.indexOf(valA);
+                valB = rarityOrder.indexOf(valB);
+            }
+
+            let comparison = 0;
+
+            // 文字列は日本語ロケールで比較
+            if (type === "string" && column !== "rarity") {
+                comparison = collator.compare(valA, valB);
+            } else {
+                if (valA < valB) comparison = -1;
+                else if (valA > valB) comparison = 1;
+            }
+
+            // ソート順序を適用し、結果が0でない場合はここで終了
+            return sorting ? comparison : -comparison;
+
+            // 全てのキーが同じ場合
+            return 0;
+        };
+
+
+        // 配列のソート
+        rows.sort(comparator);
+        // 既存の行をすべて削除
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
         }
-
-        // レア度を比較用に数値変換
-        if (column == "rarity") {
-            valA = rarityOrder.indexOf(valA);
-            valB = rarityOrder.indexOf(valB);
-        }
-
-        let comparison = 0;
-
-        // 文字列は日本語ロケールで比較
-        if (type === "string" && column !== "rarity") {
-            comparison = collator.compare(valA, valB);
-        } else {
-            if (valA < valB) comparison = -1;
-            else if (valA > valB) comparison = 1;
-        }
-
-        // ソート順序を適用し、結果が0でない場合はここで終了
-        return sorting ? comparison : -comparison;
-
-        // 全てのキーが同じ場合
-        return 0;
-    };
-
-
-    // 配列のソート
-    rows.sort(comparator);
-    // 既存の行をすべて削除
-    while (tbody.firstChild) {
-        tbody.removeChild(tbody.firstChild);
+        // ソートされた順序で行を追加
+        rows.forEach(row => tbody.appendChild(row));
+    } catch (error) {
+        throw new Error(ERRORMESSAGEKEY.itemDataSortError + " : " + sortingCriteria.column);
     }
-    // ソートされた順序で行を追加
-    rows.forEach(row => tbody.appendChild(row));
 }
 
 /**ガジェットテーブルソートの前提準備
@@ -1807,49 +1879,53 @@ function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
  * @return {void}
  */
 function gadgetSortClick(id){
-
     try {
-    const tHeader=document.getElementById("gadget-table").querySelectorAll("th");
-    const tBody = document.getElementById("gadget-table").querySelector("tbody");
-    const criteria = Array.from(sortingCriteria.entries()).find(([key,row]) => row.column === id);
-    const columnIndex = Array.from(tHeader).findIndex(th => th.dataset.column == id);
-    const currentDirection = sortDirection[columnIndex] == true ? false:true;
-    sortDirection = new Array(8).fill(null);
-    sortDirection[columnIndex] = currentDirection
+        const tHeader=document.getElementById("gadget-table").querySelectorAll("th");
+        const tBody = document.getElementById("gadget-table").querySelector("tbody");
+        const criteria = Array.from(sortingCriteria.entries()).find(([key,row]) => row.column === id);
+        const columnIndex = Array.from(tHeader).findIndex(th => th.dataset.column == id);
+        const currentDirection = sortDirection[columnIndex] == true ? false:true;
+        sortDirection = new Array(8).fill(null);
+        sortDirection[columnIndex] = currentDirection
 
-    gadgetTableSort(tHeader,tBody,criteria[1],columnIndex,currentDirection);
+        gadgetTableSort(tHeader,tBody,criteria[1],columnIndex,currentDirection);
 
-    // 表示テキスト更新
-    const labelMap = {
-        gadgetName: THTEXT.gadgetName,
-        rarity: THTEXT.rarity,
-        cost: THTEXT.cost
-    };
+        // 表示テキスト更新
+        const labelMap = {
+            gadgetName: THTEXT.gadgetName,
+            rarity: THTEXT.rarity,
+            cost: THTEXT.cost
+        };
 
-    // テーブル列名初期化
-    sortingCriteria.forEach(row => {
-        document.getElementById(row.column).innerText = labelMap[row.column];
-    });
+        // テーブル列名初期化
+        sortingCriteria.forEach(row => {
+            document.getElementById(row.column).innerText = labelMap[row.column];
+        });
 
-    let arrows = "";
+        let arrows = "";
 
-    if(sortDirection[columnIndex]){
-        arrows = "▲"
-    }else if(!sortDirection[columnIndex]){
-        arrows = "▼"
-    }
+        if(sortDirection[columnIndex]){
+            arrows = "▲"
+        }else if(!sortDirection[columnIndex]){
+            arrows = "▼"
+        }
 
-    if(id == "cost"){
-        let cost_gadgetTh = document.querySelector("th#cost.IGP_gadget-th");
-        addCostDivAndSpan(cost_gadgetTh);
-        document.getElementById("span-cost").innerText = labelMap[id];
-        document.getElementById("span-costArrow").innerText = arrows;
-    }else{
-        // ソート結果に応じた列名に更新
-        document.getElementById(id).innerText = labelMap[id] + arrows;
-    }
+        if(id == "cost"){
+            let cost_gadgetTh = document.querySelector("th#cost.IGP_gadget-th");
+            addCostDivAndSpan(cost_gadgetTh);
+            document.getElementById("span-cost").innerText = labelMap[id];
+            document.getElementById("span-costArrow").innerText = arrows;
+        }else{
+            // ソート結果に応じた列名に更新
+            document.getElementById(id).innerText = labelMap[id] + arrows;
+        }
     } catch (error) {
-        console.error(ERRORMESSAGEKEY.dataSortError + " : gadget : " + id, error);
+        if(error.message != ""){
+            console.error(error.message,error.stack);
+        }
+        else{
+        console.error(ERRORMESSAGEKEY.gadgetDataSortSettingError + id);
+        }
     }
 }
 
@@ -1864,64 +1940,67 @@ function gadgetSortClick(id){
  * @return {void}
  */
 function gadgetTableSort(headers, tbody, sortingCriteria,index,sorting) {
+    try {
+        //レア度の並び替えの基準を設定
+        const rarityOrder = [RARITYELEMENTS.common, RARITYELEMENTS.rare, RARITYELEMENTS.epic]
 
-    //レア度の並び替えの基準を設定
-    const rarityOrder = [RARITYELEMENTS.common, RARITYELEMENTS.rare, RARITYELEMENTS.epic]
+        const rows = Array.from(tbody.querySelectorAll("tr"));
 
-    const rows = Array.from(tbody.querySelectorAll("tr"));
+        // 日本語ロケールに基づいた比較器（五十音順）
+        const collator = new Intl.Collator('ja-JP', { sensitivity: 'base' });
+        // 比較
+        const comparator = (rowA, rowB) => {
+            const { column, type } = sortingCriteria;
 
-    // 日本語ロケールに基づいた比較器（五十音順）
-    const collator = new Intl.Collator('ja-JP', { sensitivity: 'base' });
-    // 比較
-    const comparator = (rowA, rowB) => {
-        const { column, type } = sortingCriteria;
+            const cellA = rowA.children[index].textContent.trim();
+            const cellB = rowB.children[index].textContent.trim();
 
-        const cellA = rowA.children[index].textContent.trim();
-        const cellB = rowB.children[index].textContent.trim();
+            let valA, valB;
 
-        let valA, valB;
+            // データの型に応じて比較対象の値を変換（デフォルトはString型）
+            if (type == "number") {
+                valA = parseFloat(cellA);
+                valB = parseFloat(cellB);
+            } else {
+                valA = cellA;
+                valB = cellB;
+            }
 
-        // データの型に応じて比較対象の値を変換（デフォルトはString型）
-        if (type == "number") {
-            valA = parseFloat(cellA);
-            valB = parseFloat(cellB);
-        } else {
-            valA = cellA;
-            valB = cellB;
+            // レア度を比較用に数値変換
+            if (column == "rarity") {
+                valA = rarityOrder.indexOf(valA);
+                valB = rarityOrder.indexOf(valB);
+            }
+
+            let comparison = 0;
+
+            // 文字列は日本語ロケールで比較
+            if (type === "string" && column !== "rarity") {
+                comparison = collator.compare(valA, valB);
+            } else {
+                if (valA < valB) comparison = -1;
+                else if (valA > valB) comparison = 1;
+            }
+
+            // ソート順序を適用し、結果が0でない場合はここで終了
+            return sorting ? comparison : -comparison;
+
+            // 全てのキーが同じ場合
+            return 0;
+        };
+
+
+        // 配列のソート
+        rows.sort(comparator);
+        // 既存の行をすべて削除
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
         }
-
-        // レア度を比較用に数値変換
-        if (column == "rarity") {
-            valA = rarityOrder.indexOf(valA);
-            valB = rarityOrder.indexOf(valB);
-        }
-
-        let comparison = 0;
-
-        // 文字列は日本語ロケールで比較
-        if (type === "string" && column !== "rarity") {
-            comparison = collator.compare(valA, valB);
-        } else {
-            if (valA < valB) comparison = -1;
-            else if (valA > valB) comparison = 1;
-        }
-
-        // ソート順序を適用し、結果が0でない場合はここで終了
-        return sorting ? comparison : -comparison;
-
-        // 全てのキーが同じ場合
-        return 0;
-    };
-
-
-    // 配列のソート
-    rows.sort(comparator);
-    // 既存の行をすべて削除
-    while (tbody.firstChild) {
-        tbody.removeChild(tbody.firstChild);
+        // ソートされた順序で行を追加
+        rows.forEach(row => tbody.appendChild(row));
+    } catch (error) {
+        throw new Error(ERRORMESSAGEKEY.gadgetDataSortError + " : " + sortingCriteria.column);
     }
-    // ソートされた順序で行を追加
-    rows.forEach(row => tbody.appendChild(row));
 }
 
 /** パワーテーブルソートの前提準備
@@ -1931,40 +2010,44 @@ function gadgetTableSort(headers, tbody, sortingCriteria,index,sorting) {
  * @return {void}
  */
 function powerSortClick(id){
-
     try {
-    const tHeader=document.getElementById("power-table").querySelectorAll("th");
-    const tBody = document.getElementById("power-table").querySelector("tbody");
-    const criteria = Array.from(sortingCriteria.entries()).find(([key,row]) => row.column === id);
-    const columnIndex = Array.from(tHeader).findIndex(th => th.dataset.column == id);
-    const currentDirection = sortDirection[columnIndex] == true ? false:true;
-    sortDirection = new Array(4).fill(null);
-    sortDirection[columnIndex] = currentDirection
+        const tHeader=document.getElementById("power-table").querySelectorAll("th");
+        const tBody = document.getElementById("power-table").querySelector("tbody");
+        const criteria = Array.from(sortingCriteria.entries()).find(([key,row]) => row.column === id);
+        const columnIndex = Array.from(tHeader).findIndex(th => th.dataset.column == id);
+        const currentDirection = sortDirection[columnIndex] == true ? false:true;
+        sortDirection = new Array(4).fill(null);
+        sortDirection[columnIndex] = currentDirection
 
-    powerTableSort(tHeader,tBody,criteria[1],columnIndex,currentDirection);
+        powerTableSort(tHeader,tBody,criteria[1],columnIndex,currentDirection);
 
-    // 表示テキスト更新
-    const labelMap = {
-        powerName: THTEXT.powerName,
-    };
+        // 表示テキスト更新
+        const labelMap = {
+            powerName: THTEXT.powerName,
+        };
 
-    // テーブル列名初期化
-    sortingCriteria.forEach(row => {
-        document.getElementById(row.column).innerText = labelMap[row.column];
-    });
+        // テーブル列名初期化
+        sortingCriteria.forEach(row => {
+            document.getElementById(row.column).innerText = labelMap[row.column];
+        });
 
-    let arrows = "";
+        let arrows = "";
 
-    if(sortDirection[columnIndex]){
-        arrows = "▲"
-    }else if(!sortDirection[columnIndex]){
-        arrows = "▼"
-    }
+        if(sortDirection[columnIndex]){
+            arrows = "▲"
+        }else if(!sortDirection[columnIndex]){
+            arrows = "▼"
+        }
 
-    // ソート結果に応じた列名に更新
-    document.getElementById(id).innerText = labelMap[id] + arrows;
+        // ソート結果に応じた列名に更新
+        document.getElementById(id).innerText = labelMap[id] + arrows;
     } catch (error) {
-        console.error(ERRORMESSAGEKEY.dataSortError + " : power : " + id, error);
+        if(error.message != ""){
+            console.error(error.message,error.stack);
+        }
+        else{
+            console.error(ERRORMESSAGEKEY.powerDataSortSettingError + id);
+        }
     }
 }
 
@@ -1979,67 +2062,71 @@ function powerSortClick(id){
  * @return {void}
  */
 function powerTableSort(headers, tbody, sortingCriteria,index,sorting) {
+    try {
+        //レア度の並び替えの基準を設定
+        const rarityOrder = [RARITYELEMENTS.common, RARITYELEMENTS.rare, RARITYELEMENTS.epic]
 
-    //レア度の並び替えの基準を設定
-    const rarityOrder = [RARITYELEMENTS.common, RARITYELEMENTS.rare, RARITYELEMENTS.epic]
+        const rows = Array.from(tbody.querySelectorAll("tr"));
 
-    const rows = Array.from(tbody.querySelectorAll("tr"));
+        // 日本語ロケールに基づいた比較器（五十音順）
+        const collator = new Intl.Collator('ja', { sensitivity: 'base' });
 
-    // 日本語ロケールに基づいた比較器（五十音順）
-    const collator = new Intl.Collator('ja', { sensitivity: 'base' });
+        // 比較
+        const comparator = (rowA, rowB) => {
+            const { column, type } = sortingCriteria;
 
-    // 比較
-    const comparator = (rowA, rowB) => {
-        const { column, type } = sortingCriteria;
+            const cellA = rowA.children[index].textContent.trim();
+            const cellB = rowB.children[index].textContent.trim();
 
-        const cellA = rowA.children[index].textContent.trim();
-        const cellB = rowB.children[index].textContent.trim();
+            let valA, valB;
 
-        let valA, valB;
+            // データの型に応じて比較対象の値を変換（デフォルトはString型）
+            if (type == "number") {
+                valA = parseFloat(cellA);
+                valB = parseFloat(cellB);
+            } else {
+                valA = cellA;
+                valB = cellB;
+            }
 
-        // データの型に応じて比較対象の値を変換（デフォルトはString型）
-        if (type == "number") {
-            valA = parseFloat(cellA);
-            valB = parseFloat(cellB);
-        } else {
-            valA = cellA;
-            valB = cellB;
+            // レア度を比較用に数値変換
+            if (column == "rarity") {
+                valA = rarityOrder.indexOf(valA);
+                valB = rarityOrder.indexOf(valB);
+            }
+
+            let comparison = 0;
+
+            // 文字列は日本語ロケールで比較
+            if (type === "string" && column !== "rarity") {
+                comparison = collator.compare(valA, valB);
+            } else {
+                if (valA < valB) comparison = -1;
+                else if (valA > valB) comparison = 1;
+            }
+
+            // ソート順序を適用し、結果が0でない場合はここで終了
+            return sorting ? comparison : -comparison;
+
+            // 全てのキーが同じ場合
+            return 0;
+        };
+
+        // 配列のソート
+        rows.sort(comparator);
+        // 既存の行をすべて削除
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
         }
-
-        // レア度を比較用に数値変換
-        if (column == "rarity") {
-            valA = rarityOrder.indexOf(valA);
-            valB = rarityOrder.indexOf(valB);
-        }
-
-        let comparison = 0;
-
-        // 文字列は日本語ロケールで比較
-        if (type === "string" && column !== "rarity") {
-            comparison = collator.compare(valA, valB);
-        } else {
-            if (valA < valB) comparison = -1;
-            else if (valA > valB) comparison = 1;
-        }
-
-        // ソート順序を適用し、結果が0でない場合はここで終了
-        return sorting ? comparison : -comparison;
-
-        // 全てのキーが同じ場合
-        return 0;
-    };
-
-    // 配列のソート
-    rows.sort(comparator);
-    // 既存の行をすべて削除
-    while (tbody.firstChild) {
-        tbody.removeChild(tbody.firstChild);
+        // ソートされた順序で行を追加
+        rows.forEach(row => tbody.appendChild(row));
+    } catch (error) {
+        throw new Error(ERRORMESSAGEKEY.powerDataSortError + " : " + sortingCriteria.column);
     }
-    // ソートされた順序で行を追加
-    rows.forEach(row => tbody.appendChild(row));
 }
 //#endregion ソート
 
+//#region キャッシュ画像追加
 /**コスト列のth内に、キャッシュアイコンとspan要素を追加する関数
  * ＜使用箇所＞
  * ・itemSortClick()
@@ -2080,6 +2167,7 @@ function addCostDivAndSpan(cost_Th) {
     cost_div.appendChild(cost_span);
     cost_div.appendChild(costArrow_span);
 }
+//#endregion キャッシュ画像追加
 
 // #region パッチノート関係
 /** パッチノートが適用可能か確認し、適用する関数
@@ -2088,18 +2176,26 @@ function addCostDivAndSpan(cost_Th) {
  * @return {void}
  */
 function applyPatchNotesIfReady() {
-    // 一度適用したら再実行しない
-    if (patchNotesApplied) return;
+    try {
+        // 一度適用したら再実行しない
+        if (patchNotesApplied) return;
 
-    // 必要なテーブルとデータが揃っているかを確認
-    const itemTableTr = document.getElementById("item-table")?.querySelector("tbody").querySelectorAll('tr');
-    const gadgetTableTr = document.getElementById("gadget-table")?.querySelector("tbody").querySelectorAll('tr');
-    const powerTableTr = document.getElementById("power-table")?.querySelector("tbody").querySelectorAll('tr');
+        // 必要なテーブルとデータが揃っているかを確認
+        const itemTableTr = document.getElementById("item-table")?.querySelector("tbody").querySelectorAll('tr');
+        const gadgetTableTr = document.getElementById("gadget-table")?.querySelector("tbody").querySelectorAll('tr');
+        const powerTableTr = document.getElementById("power-table")?.querySelector("tbody").querySelectorAll('tr');
 
-    // アイテム、ガジェット、パワーのテーブルが存在し、かつパッチノートデータが読み込まれていれば実行
-    if (itemTableTr.length > 0 && gadgetTableTr.length > 0 && powerTableTr.length > 0 && patchNoteAllData.length > 0) {
-        applyPatchNotesToTables();
-        patchNotesApplied = true;
+        // アイテム、ガジェット、パワーのテーブルが存在し、かつパッチノートデータが読み込まれていれば実行
+        if (itemTableTr.length > 0 && gadgetTableTr.length > 0 && powerTableTr.length > 0 && patchNoteAllData.length > 0) {
+            applyPatchNotesToTables();
+            patchNotesApplied = true;
+        }
+    } catch (error) {
+        if(error.message != ""){
+            console.error(error.message, error.stack);
+        }else{
+            console.error(ERRORMESSAGEKEY.patchNoteApplyJudgeError);
+        }
     }
 }
 
@@ -2109,34 +2205,38 @@ function applyPatchNotesIfReady() {
  * @return {Map} - アイテム名をキーとした変更点のマップ
  */
 function processPatchNotes() {
-    const changesMap = new Map();
+    try {
+        const changesMap = new Map();
 
-    patchNoteAllData.forEach(note => {
-        if (note.category != "アイテム" &&note.category != "ガジェット" && note.category != "パワー") return;
+        patchNoteAllData.forEach(note => {
+            if (note.category != "アイテム" &&note.category != "ガジェット" && note.category != "パワー") return;
 
-        const name = note.name;
-        if (!name || name == "-") return;
+            const name = note.name;
+            if (!name || name == "-") return;
 
-        const changeEntry = {
-            category: note.category,
-            hero: note.hero,
-            date: note.date,
-            content: note.content.replaceAll("/", "<br>・"),
-            updatecategory: note.updatecategory
-        };
+            const changeEntry = {
+                category: note.category,
+                hero: note.hero,
+                date: note.date,
+                content: note.content.replaceAll("/", "<br>・"),
+                updatecategory: note.updatecategory
+            };
 
-        if (!changesMap.has(name)) {
-            changesMap.set(name, []);
-        }
-        changesMap.get(name).push(changeEntry);
-    });
+            if (!changesMap.has(name)) {
+                changesMap.set(name, []);
+            }
+            changesMap.get(name).push(changeEntry);
+        });
 
-    // 日付の新しい順（降順）にソート
-    changesMap.forEach(changes => {
-        changes.sort((a, b) => b.date.localeCompare(a.date));
-    });
+        // 日付の新しい順（降順）にソート
+        changesMap.forEach(changes => {
+            changes.sort((a, b) => b.date.localeCompare(a.date));
+        });
 
-    return changesMap;
+        return changesMap;
+    } catch (error) {
+        throw new Error(ERRORMESSAGEKEY.patchNoteChangeDataProcessError);
+    }
 }
 
 /** 変更履歴のHTMLを生成する関数
@@ -2146,15 +2246,18 @@ function processPatchNotes() {
  * @return {string} - 生成したHTML文字列
  */
 function createHistoryHtml(changes) {
+    try {
+        let html = "";
 
-    let html = "";
+        changes.forEach(change => {
+            html += `<div class="patch-date"><strong>${change.date}</strong></div>`;
+            html += `<div class="patch-content">・${change.content}</div>`;
+        });
 
-    changes.forEach(change => {
-        html += `<div class="patch-date"><strong>${change.date}</strong></div>`;
-        html += `<div class="patch-content">・${change.content}</div>`;
-    });
-
-    return `<div class="history-content-wrapper">${html}</div>`;
+        return `<div class="history-content-wrapper">${html}</div>`;
+    } catch (error) {
+        throw new Error(ERRORMESSAGEKEY.patchNoteChangeHtmlError);
+    }
 }
 
 /** パッチノートをアイテム・パワーテーブルに適用する関数
@@ -2163,19 +2266,26 @@ function createHistoryHtml(changes) {
  * @return {void}
  */
 function applyPatchNotesToTables() {
+    try {
+        const changesMap = processPatchNotes();
 
-    const changesMap = processPatchNotes();
+        // アイテムテーブルへの適用
+        applyChangesToTable("item-table", 0, changesMap);
 
-    // アイテムテーブルへの適用
-    applyChangesToTable("item-table", 0, changesMap);
+        // ガジェットテーブルへの適用
+        applyChangesToTable("gadget-table", 0, changesMap);
 
-    // ガジェットテーブルへの適用
-    applyChangesToTable("gadget-table", 0, changesMap);
+        // パワーテーブルへの適用
+        applyChangesToTable("power-table", 0, changesMap);
 
-    // パワーテーブルへの適用
-    applyChangesToTable("power-table", 0, changesMap);
-
-    patchNotesApplied = true;
+        patchNotesApplied = true;
+    } catch (error) {
+        if(error.message != ""){
+            throw Error;
+        }else{
+        console.error(ERRORMESSAGEKEY.patchNoteChangeSettingError);
+        }
+    }
 }
 
 /** テーブルにパッチノートの変更を適用する関数
@@ -2187,54 +2297,62 @@ function applyPatchNotesToTables() {
  * @return {void}
  */
 function applyChangesToTable(tableId, nameColIndex, changesMap) {
-    const tableElement = document.getElementById(tableId);
-    const tbody = tableElement?.querySelector("tbody");
-    if (!tbody) return;
+    try {
+        const tableElement = document.getElementById(tableId);
+        const tbody = tableElement?.querySelector("tbody");
+        if (!tbody) return;
 
-    const rows = tbody.querySelectorAll("tr");
-    const HISTORY_COLUMN_INDEX = rows.length > 0 ? rows[0].cells.length - 1 : -1;
+        const rows = tbody.querySelectorAll("tr");
+        const HISTORY_COLUMN_INDEX = rows.length > 0 ? rows[0].cells.length - 1 : -1;
 
-    if (HISTORY_COLUMN_INDEX == -1) {
-        console.warn(ERRORMESSAGEKEY.dataRoadError + " : " + tableId);
-        return;
+        if (HISTORY_COLUMN_INDEX == -1) {
+            console.warn(ERRORMESSAGEKEY.dataRoadError + " : " + tableId);
+            return;
+        }
+
+        rows.forEach(tr => {
+            const nameCell = tr.cells[nameColIndex];
+
+            // テーブルのアイテム/パワー名を取得
+            const itemNameText = nameCell.textContent.trim().split('\n')[0].trim().replace("ヒーロー：", "/");
+            const itemName = itemNameText.substring(0,itemNameText.indexOf("/"));
+            const heroName = itemNameText.substring(itemNameText.indexOf("/") + 1,itemNameText.length);
+
+            const changes = changesMap.get(itemName);
+            let filteredChanges = changes;
+
+            if (changes) {
+                filteredChanges = changes.filter(change => {
+                    // 更新カテゴリが更新のデータの絞り込み実施
+                    if (heroName != "-"){
+                        return change.updatecategory && change.updatecategory == UPDATECATEGORY.update && change.hero && change.hero == heroName;
+                    }else{
+                        return change.updatecategory && change.updatecategory == UPDATECATEGORY.update;
+                    }
+
+                });
+            }
+
+            // 描画済み最終列の「変更履歴」セルを取得
+            const historyCell = tr.cells[HISTORY_COLUMN_INDEX];
+            historyCell.classList.add("patch-history-content");
+
+            if (filteredChanges && filteredChanges.length > 0) {
+                // 変更履歴の内容をHTMLでセルに書き込む
+                historyCell.innerHTML = createHistoryHtml(filteredChanges);
+                // 変更があった行に目印のクラスを追加
+                tr.classList.add("row-patchnote");
+            } else {
+                // 変更がない場合
+                historyCell.textContent = "-";
+            }
+        });
+    } catch (error) {
+        if(error.message != ""){
+            throw Error;
+        }else{
+            console.error(ERRORMESSAGEKEY.patchNoteChangeApplyError + " : " + tableId);
+        }
     }
-
-    rows.forEach(tr => {
-        const nameCell = tr.cells[nameColIndex];
-
-        // テーブルのアイテム/パワー名を取得
-        const itemNameText = nameCell.textContent.trim().split('\n')[0].trim().replace("ヒーロー：", "/");
-        const itemName = itemNameText.substring(0,itemNameText.indexOf("/"));
-        const heroName = itemNameText.substring(itemNameText.indexOf("/") + 1,itemNameText.length);
-
-        const changes = changesMap.get(itemName);
-        let filteredChanges = changes;
-
-        if (changes) {
-            filteredChanges = changes.filter(change => {
-                // 更新カテゴリが更新のデータの絞り込み実施
-                if (heroName != "-"){
-                    return change.updatecategory && change.updatecategory == UPDATECATEGORY.update && change.hero && change.hero == heroName;
-                }else{
-                    return change.updatecategory && change.updatecategory == UPDATECATEGORY.update;
-                }
-
-            });
-        }
-
-        // 描画済み最終列の「変更履歴」セルを取得
-        const historyCell = tr.cells[HISTORY_COLUMN_INDEX];
-        historyCell.classList.add("patch-history-content");
-
-        if (filteredChanges && filteredChanges.length > 0) {
-            // 変更履歴の内容をHTMLでセルに書き込む
-            historyCell.innerHTML = createHistoryHtml(filteredChanges);
-            // 変更があった行に目印のクラスを追加
-            tr.classList.add("row-patchnote");
-        } else {
-            // 変更がない場合
-            historyCell.textContent = "-";
-        }
-    });
 }
 // #endregion パッチノート関係
