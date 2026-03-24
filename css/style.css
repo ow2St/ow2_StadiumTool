@@ -516,6 +516,38 @@ main-buildsimulator {
     cursor: pointer;
 }
 
+.gadgetlist-title-close {
+    display: block;
+    width: 100%;
+    text-indent: 1em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 25px;
+    height: 30px;
+    white-space: nowrap;
+    background-color: #ccfcff;
+}
+
+.gadgetlist-title-open {
+    display: none;
+    width: 100%;
+    text-indent: 1em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 25px;
+    height: 30px;
+    white-space: nowrap;
+    background-color: #ccfcff;
+}
+
+.gadgetlist-title-close:hover{
+    cursor: pointer;
+}
+
+.gadgetlist-title-open:hover{
+    cursor: pointer;
+}
+
 .item-table {
     border-collapse: collapse;
     width: 95%;
@@ -564,6 +596,30 @@ main-buildsimulator {
     border: 1px solid lightgray;
 }
 
+.gadget-table {
+    border-collapse: collapse;
+    width: 95%;
+    margin: auto;
+}
+
+.gadget-thead {
+    background-color: #f2f2f2;
+}
+
+.gadget-tr {
+    border: 1px solid #999;
+    padding: 8px 12px;
+    text-align: center;
+}
+
+.gadget-th {
+    border-right: 1px solid lightgray;
+}
+
+.gadget-td {
+    border: 1px solid lightgray;
+}
+
 .hidden-column {
     display: none;
 }
@@ -577,6 +633,14 @@ main-buildsimulator {
 }
 
 .buildsimulator-powericon {
+    margin-left: 8px;
+    margin-top: 5px;
+    width: 100px;
+    height: 100px;
+    border-radius: 15px;
+}
+
+.buildsimulator-gadgeticon {
     margin-left: 8px;
     margin-top: 5px;
     width: 100px;
@@ -614,6 +678,27 @@ main-buildsimulator {
 
 .status-div strong{
   font-weight: bold;
+}
+
+.item-checkbox {
+    display: block; 
+    width: 20px;
+    margin: 0 auto;
+    transform: scale(2.5);
+}
+
+.power-checkbox {
+    display: block; 
+    width: 20px;
+    margin: 0 auto;
+    transform: scale(2.5);
+}
+
+.gadget-checkbox {
+    display: block; 
+    width: 20px;
+    margin: 0 auto;
+    transform: scale(2.5);
 }
 
 /*
@@ -1006,20 +1091,6 @@ main-IAP{
 
 .item-details ul li {
     margin-bottom: 3px;
-}
-
-.item-checkbox {
-    display: block; 
-    width: 20px;
-    margin: 0 auto;
-    transform: scale(2.5);
-}
-
-.power-checkbox {
-    display: block; 
-    width: 20px;
-    margin: 0 auto;
-    transform: scale(2.5);
 }
 
 .weapon {
