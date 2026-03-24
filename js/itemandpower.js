@@ -219,6 +219,7 @@ async function loadAndInitData() {
         });
     }catch (error) {
         if(error.message != ""){
+            error.message += ERRORMESSAGEKEY.dataRoad;
             throw error;
         }else{
             throw new Error(ERRORMESSAGEKEY.dataRoadError);
@@ -447,6 +448,7 @@ function changeTabPower() {
 
         filterPowerTable(defaultHero);
     } catch (error) {
+        error.message += ERRORMESSAGEKEY.tabsChange;
         console.error(error.message, error.stack);
     }
 }
@@ -686,7 +688,7 @@ function linkItemList(itemList) {
         if(error.message != ""){
             throw error;
         }else{
-            throw new Error(ERRORMESSAGEKEY.dataLinkError);
+            throw new Error(ERRORMESSAGEKEY.itemDataLinkSettingError);
         }
     }
 }
@@ -708,96 +710,99 @@ function linkItemList(itemList) {
  * @return {object} - 作成した行要素
  */
 function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, textText, idText, statusLists, statusIcons){
+    try {
+        // アイテム名列
+        var td = document.createElement("td");
+        var div = document.createElement("div");
+        // 中のアイコン
+        var iconImg = document.createElement("img");
+        iconImg.src = "assets/images/icons/item/" + iconText;
+        iconImg.classList.add("itemandpower-itemicon");
+        // 中のアイテム名とヒーロー名
+        var text = document.createElement("span");
+        var textTmp = itemNameText + "\n\n" + "ヒーロー：" + uniqueHeroText;
+        text.innerHTML = textTmp.replace(/\n/g, "<br>");;
+        div.appendChild(iconImg);
+        div.appendChild(text);
+        div.classList.add("name-table");
+        td.appendChild(div);
+        td.classList.add("item-td");
+        tr.appendChild(td);
 
-    // アイテム名列
-    var td = document.createElement("td");
-    var div = document.createElement("div");
-    // 中のアイコン
-    var iconImg = document.createElement("img");
-    iconImg.src = "assets/images/icons/item/" + iconText;
-    iconImg.classList.add("itemandpower-itemicon");
-    // 中のアイテム名とヒーロー名
-    var text = document.createElement("span");
-    var textTmp = itemNameText + "\n\n" + "ヒーロー：" + uniqueHeroText;
-    text.innerHTML = textTmp.replace(/\n/g, "<br>");;
-    div.appendChild(iconImg);
-    div.appendChild(text);
-    div.classList.add("name-table");
-    td.appendChild(div);
-    td.classList.add("item-td");
-    tr.appendChild(td);
+        // カテゴリー列
+        var td = document.createElement("td");
+        td.textContent = categoryText;
+        td.classList.add("item-td");
+        tr.appendChild(td);
 
-    // カテゴリー列
-    var td = document.createElement("td");
-    td.textContent = categoryText;
-    td.classList.add("item-td");
-    tr.appendChild(td);
+        // レアリティ列
+        var td = document.createElement("td");
+        td.textContent = rarityText;
+        td.classList.add("item-td");
+        tr.appendChild(td);
 
-    // レアリティ列
-    var td = document.createElement("td");
-    td.textContent = rarityText;
-    td.classList.add("item-td");
-    tr.appendChild(td);
+        // コスト列
+        var td = document.createElement("td");
+        td.textContent = costText;
+        td.classList.add("item-td");
+        tr.appendChild(td);
 
-    // コスト列
-    var td = document.createElement("td");
-    td.textContent = costText;
-    td.classList.add("item-td");
-    tr.appendChild(td);
-
-    // 固有ヒーロー列（非表示）
-    var td = document.createElement("td");
-    td.textContent = uniqueHeroText;
-    td.classList.add("hidden-column");
-    tr.appendChild(td);
+        // 固有ヒーロー列（非表示）
+        var td = document.createElement("td");
+        td.textContent = uniqueHeroText;
+        td.classList.add("hidden-column");
+        tr.appendChild(td);
 
 
-    // ステータス列
-    var td = document.createElement("td");
+        // ステータス列
+        var td = document.createElement("td");
 
-    for (let i = 0; i < statusLists.length; i++) {
-        // ステータスごとのdiv
-        let statusDiv = document.createElement("div");
+        for (let i = 0; i < statusLists.length; i++) {
+            // ステータスごとのdiv
+            let statusDiv = document.createElement("div");
 
-        // アイコン作成
-        let iconImg = document.createElement("img");
-        iconImg.src = statusIcons[i];
-        iconImg.classList.add("itemandpower-statusicon");
+            // アイコン作成
+            let iconImg = document.createElement("img");
+            iconImg.src = statusIcons[i];
+            iconImg.classList.add("itemandpower-statusicon");
 
-        // テキスト作成
-        let textSpan = document.createElement("span");
-        textSpan.innerText = statusLists[i];
+            // テキスト作成
+            let textSpan = document.createElement("span");
+            textSpan.innerText = statusLists[i];
 
-        // まとめて追加
-        statusDiv.appendChild(iconImg);
-        statusDiv.appendChild(textSpan);
+            // まとめて追加
+            statusDiv.appendChild(iconImg);
+            statusDiv.appendChild(textSpan);
 
-        // tdに追加
-        td.appendChild(statusDiv);
+            // tdに追加
+            td.appendChild(statusDiv);
+        }
+
+        td.classList.add("item-td");
+        tr.appendChild(td);
+
+
+        // テキスト列
+        var td = document.createElement("td");
+        td.textContent = textText;
+        td.classList.add("item-td");
+        tr.appendChild(td);
+
+        // アイテムID列（非表示）
+        var td = document.createElement("td");
+        td.textContent = idText;
+        td.classList.add("hidden-column");
+        tr.appendChild(td);
+
+        // 変更履歴列
+        var td = document.createElement("td");
+        td.classList.add("item-td", "itemandpower-history");
+        tr.appendChild(td);
+
+        return tr;
+    } catch (error) {
+        throw new Error(ERRORMESSAGEKEY.itemDataLinkError);
     }
-
-    td.classList.add("item-td");
-    tr.appendChild(td);
-
-
-    // テキスト列
-    var td = document.createElement("td");
-    td.textContent = textText;
-    td.classList.add("item-td");
-    tr.appendChild(td);
-
-    // アイテムID列（非表示）
-    var td = document.createElement("td");
-    td.textContent = idText;
-    td.classList.add("hidden-column");
-    tr.appendChild(td);
-
-    // 変更履歴列
-    var td = document.createElement("td");
-    td.classList.add("item-td", "itemandpower-history");
-    tr.appendChild(td);
-
-    return tr;
 }
 
 /**ガジェットリストをテーブルに紐づける関数
@@ -807,185 +812,193 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
  * @return {void}
  */
 function linkGadgetList(gadgetList) {
-    let tbody = document.getElementById("gadget-table").querySelector("tbody");
+    try {
+        let tbody = document.getElementById("gadget-table").querySelector("tbody");
 
-    // 各ガジェットごとにループ
-    for(let i=0; i<gadgetList.length; i++) {
-        var tr = document.createElement("tr");
+        // 各ガジェットごとにループ
+        for(let i=0; i<gadgetList.length; i++) {
+            var tr = document.createElement("tr");
 
-        // 必要な列ごとの変数を初期化
-        let gadgetNameText = "";
-        let iconText = "";
-        let rarityText = "";
-        let costText = "";
-        let coolTimeText = "";
-        let statusText = "";
-        let textText = "";
-        let idText = "";
+            // 必要な列ごとの変数を初期化
+            let gadgetNameText = "";
+            let iconText = "";
+            let rarityText = "";
+            let costText = "";
+            let coolTimeText = "";
+            let statusText = "";
+            let textText = "";
+            let idText = "";
 
-        // 各キーペアごとにループ
-        Object.keys(gadgetList[i]).forEach(key => {
+            // 各キーペアごとにループ
+            Object.keys(gadgetList[i]).forEach(key => {
 
-            // キー名がガジェット名キーの場合
-            if(GADGETLISTKEY.gadget_nameKey == key) {
+                // キー名がガジェット名キーの場合
+                if(GADGETLISTKEY.gadget_nameKey == key) {
 
-                // ガジェット名用変数に値を代入
-                gadgetNameText = gadgetList[i][key];
-            }
-
-            // キー名がアイコンキーの場合
-            if(GADGETLISTKEY.gadget_iconKey == key) {
-                // アイコン用変数に値を代入
-                iconText = gadgetList[i][key];
-            }
-
-            // キー名がレアリティキーの場合
-            if(GADGETLISTKEY.gadget_rarityKey == key) {
-
-                // レアリティ用変数に値を代入
-                rarityText = gadgetList[i][key];
-            }
-
-             // キー名がコストキーの場合
-            if(GADGETLISTKEY.gadget_costKey == key) {
-                // コスト用変数に値を代入
-                costText = gadgetList[i][key];
-            }
-
-             // キー名が固有ヒーローキーの場合
-            if(GADGETLISTKEY.gadget_uniqueHeroKey == key) {
-
-                // 固有ヒーロー用変数に値を代入
-                uniqueHeroText = gadgetList[i][key];
-            }
-
-             // キー名がクールタイムキーの場合
-            if(GADGETLISTKEY.gadget_coolTimeKey == key) {
-
-                // クールタイム用変数に値を代入
-                coolTimeText = gadgetList[i][key];
-            }
-
-            // キー名がIDキーの場合
-            if(GADGETLISTKEY.gadget_idKey == key) {
-                // ID用変数に値を代入
-                idText = gadgetList[i][key];
-            }
-
-            // キー名がテキストキーの場合
-            if(GADGETLISTKEY.gadget_textKey == key) {
-
-                // テキスト用変数に値を代入
-                textText = gadgetList[i][key];
-            }
-
-            // キー名がステータス関連のキーの場合
-            if([GADGETLISTKEY.gadget_lifeKey, GADGETLISTKEY.gadget_armorKey, GADGETLISTKEY.gadget_shieldKey, GADGETLISTKEY.gadget_weaponPowerKey, GADGETLISTKEY.gadget_abilityPowerKey,
-                GADGETLISTKEY.gadget_attackSpeedKey, GADGETLISTKEY.gadget_ctReducationKey, GADGETLISTKEY.gadget_ammoKey, GADGETLISTKEY.gadget_weapon_LifeStealKey,
-                GADGETLISTKEY.gadget_ability_LifeStealKey, GADGETLISTKEY.gadget_speedKey].includes(key)) {
-
-                // 値が0でない場合
-                if(gadgetList[i][key] != 0) {
-                    statusText = statusText + key + "+" + String(gadgetList[i][key]) + "\n";
-                }
-            }
-
-            // キー名がその他キーの場合
-            if(GADGETLISTKEY.gadget_othersKey == key) {
-
-                // 値が"-"でない場合
-                if(gadgetList[i][key] != "-") {
-                    statusText = statusText + String(gadgetList[i][key]);
-                    statusText = statusText.replaceAll(",", "\n");
-                }
-            }
-
-            // キー名がテキストキーの場合
-            if(GADGETLISTKEY.gadget_textKey == key) {
-
-                // テキスト用変数に値を代入
-                textText = gadgetList[i][key];
-            }
-        })
-
-        //ステータスアイコン設定
-        let statusIcons = [];
-        let statusLists = (statusText || "").split(/\r?\n/).map(s => s.trim()).filter(Boolean);
-
-        statusLists.forEach((status, i) => {
-
-            //その他（特殊効果）以外のアイコン付与
-            if(!status.includes(STATUSELEMENTS.others_sign)){
-                switch(true) {
-                    case status.includes(STATUSELEMENTS.life_includes):
-                        statusIcons.push(STATUSICON.life);
-                        break;
-
-                    case status.includes(STATUSELEMENTS.armor):
-                        statusIcons.push(STATUSICON.armor);
-                        break;
-
-                    case status.includes(STATUSELEMENTS.shield):
-                        statusIcons.push(STATUSICON.shield);
-                        break;
-
-                    case status.includes(STATUSELEMENTS.weaponPower):
-                        statusIcons.push(STATUSICON.weaponPower);
-                        break;
-
-                    case status.includes(STATUSELEMENTS.abilityPower):
-                        statusIcons.push(STATUSICON.abilityPower);
-                        break;
-
-                    case status.includes(STATUSELEMENTS.attackSpeed):
-                        statusIcons.push(STATUSICON.attackSpeed);
-                        break;
-
-                    case status.includes(STATUSELEMENTS.ctReducation):
-                        statusIcons.push(STATUSICON.ctReducation);
-                        break;
-
-                    case status.includes(STATUSELEMENTS.ammo):
-                        statusIcons.push(STATUSICON.ammo);
-                        break;
-
-                    case status.includes(STATUSELEMENTS.weapon_LifeSteal):
-                        statusIcons.push(STATUSICON.weapon_LifeSteal);
-                        break;
-
-                    case status.includes(STATUSELEMENTS.ability_LifeSteal):
-                        statusIcons.push(STATUSICON.ability_LifeSteal);
-                        break;
-
-                    case status.includes(STATUSELEMENTS.speed):
-                        statusIcons.push(STATUSICON.speed);
-                        break;
-
-                    case status.includes(STATUSELEMENTS.reloadSpeed):
-                        statusIcons.push(STATUSICON.reloadSpeed);
-                        break;
-
-                    case status.includes(STATUSELEMENTS.meleeDamage):
-                        statusIcons.push(STATUSICON.meleeDamage);
-                        break;
-
-                    case status.includes(STATUSELEMENTS.critical):
-                        statusIcons.push(STATUSICON.critical);
-                        break;
+                    // ガジェット名用変数に値を代入
+                    gadgetNameText = gadgetList[i][key];
                 }
 
-            //その他（特殊効果）の場合
-            }else if(status.includes(STATUSELEMENTS.others_sign)){
-                statusIcons.push(STATUSICON.others);
+                // キー名がアイコンキーの場合
+                if(GADGETLISTKEY.gadget_iconKey == key) {
+                    // アイコン用変数に値を代入
+                    iconText = gadgetList[i][key];
+                }
 
-                //テキストから※を削除
-                statusLists[i] = status.replace(STATUSELEMENTS.others_sign,"");
-            }
-        });
+                // キー名がレアリティキーの場合
+                if(GADGETLISTKEY.gadget_rarityKey == key) {
 
-    tbody.appendChild(appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costText, uniqueHeroText, coolTimeText, textText, idText, statusLists, statusIcons));
+                    // レアリティ用変数に値を代入
+                    rarityText = gadgetList[i][key];
+                }
 
-    tr.classList.add("table-on");
+                // キー名がコストキーの場合
+                if(GADGETLISTKEY.gadget_costKey == key) {
+                    // コスト用変数に値を代入
+                    costText = gadgetList[i][key];
+                }
+
+                // キー名が固有ヒーローキーの場合
+                if(GADGETLISTKEY.gadget_uniqueHeroKey == key) {
+
+                    // 固有ヒーロー用変数に値を代入
+                    uniqueHeroText = gadgetList[i][key];
+                }
+
+                // キー名がクールタイムキーの場合
+                if(GADGETLISTKEY.gadget_coolTimeKey == key) {
+
+                    // クールタイム用変数に値を代入
+                    coolTimeText = gadgetList[i][key];
+                }
+
+                // キー名がIDキーの場合
+                if(GADGETLISTKEY.gadget_idKey == key) {
+                    // ID用変数に値を代入
+                    idText = gadgetList[i][key];
+                }
+
+                // キー名がテキストキーの場合
+                if(GADGETLISTKEY.gadget_textKey == key) {
+
+                    // テキスト用変数に値を代入
+                    textText = gadgetList[i][key];
+                }
+
+                // キー名がステータス関連のキーの場合
+                if([GADGETLISTKEY.gadget_lifeKey, GADGETLISTKEY.gadget_armorKey, GADGETLISTKEY.gadget_shieldKey, GADGETLISTKEY.gadget_weaponPowerKey, GADGETLISTKEY.gadget_abilityPowerKey,
+                    GADGETLISTKEY.gadget_attackSpeedKey, GADGETLISTKEY.gadget_ctReducationKey, GADGETLISTKEY.gadget_ammoKey, GADGETLISTKEY.gadget_weapon_LifeStealKey,
+                    GADGETLISTKEY.gadget_ability_LifeStealKey, GADGETLISTKEY.gadget_speedKey].includes(key)) {
+
+                    // 値が0でない場合
+                    if(gadgetList[i][key] != 0) {
+                        statusText = statusText + key + "+" + String(gadgetList[i][key]) + "\n";
+                    }
+                }
+
+                // キー名がその他キーの場合
+                if(GADGETLISTKEY.gadget_othersKey == key) {
+
+                    // 値が"-"でない場合
+                    if(gadgetList[i][key] != "-") {
+                        statusText = statusText + String(gadgetList[i][key]);
+                        statusText = statusText.replaceAll(",", "\n");
+                    }
+                }
+
+                // キー名がテキストキーの場合
+                if(GADGETLISTKEY.gadget_textKey == key) {
+
+                    // テキスト用変数に値を代入
+                    textText = gadgetList[i][key];
+                }
+            })
+
+            //ステータスアイコン設定
+            let statusIcons = [];
+            let statusLists = (statusText || "").split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+
+            statusLists.forEach((status, i) => {
+
+                //その他（特殊効果）以外のアイコン付与
+                if(!status.includes(STATUSELEMENTS.others_sign)){
+                    switch(true) {
+                        case status.includes(STATUSELEMENTS.life_includes):
+                            statusIcons.push(STATUSICON.life);
+                            break;
+
+                        case status.includes(STATUSELEMENTS.armor):
+                            statusIcons.push(STATUSICON.armor);
+                            break;
+
+                        case status.includes(STATUSELEMENTS.shield):
+                            statusIcons.push(STATUSICON.shield);
+                            break;
+
+                        case status.includes(STATUSELEMENTS.weaponPower):
+                            statusIcons.push(STATUSICON.weaponPower);
+                            break;
+
+                        case status.includes(STATUSELEMENTS.abilityPower):
+                            statusIcons.push(STATUSICON.abilityPower);
+                            break;
+
+                        case status.includes(STATUSELEMENTS.attackSpeed):
+                            statusIcons.push(STATUSICON.attackSpeed);
+                            break;
+
+                        case status.includes(STATUSELEMENTS.ctReducation):
+                            statusIcons.push(STATUSICON.ctReducation);
+                            break;
+
+                        case status.includes(STATUSELEMENTS.ammo):
+                            statusIcons.push(STATUSICON.ammo);
+                            break;
+
+                        case status.includes(STATUSELEMENTS.weapon_LifeSteal):
+                            statusIcons.push(STATUSICON.weapon_LifeSteal);
+                            break;
+
+                        case status.includes(STATUSELEMENTS.ability_LifeSteal):
+                            statusIcons.push(STATUSICON.ability_LifeSteal);
+                            break;
+
+                        case status.includes(STATUSELEMENTS.speed):
+                            statusIcons.push(STATUSICON.speed);
+                            break;
+
+                        case status.includes(STATUSELEMENTS.reloadSpeed):
+                            statusIcons.push(STATUSICON.reloadSpeed);
+                            break;
+
+                        case status.includes(STATUSELEMENTS.meleeDamage):
+                            statusIcons.push(STATUSICON.meleeDamage);
+                            break;
+
+                        case status.includes(STATUSELEMENTS.critical):
+                            statusIcons.push(STATUSICON.critical);
+                            break;
+                    }
+
+                //その他（特殊効果）の場合
+                }else if(status.includes(STATUSELEMENTS.others_sign)){
+                    statusIcons.push(STATUSICON.others);
+
+                    //テキストから※を削除
+                    statusLists[i] = status.replace(STATUSELEMENTS.others_sign,"");
+                }
+            });
+
+        tbody.appendChild(appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costText, uniqueHeroText, coolTimeText, textText, idText, statusLists, statusIcons));
+
+        tr.classList.add("table-on");
+        }
+    } catch (error) {
+        if(error.message != ""){
+            throw error;
+        }else{
+            throw new Error(ERRORMESSAGEKEY.gadgetDataLinkSettingError);
+        }
     }
 }
 
@@ -1006,102 +1019,105 @@ function linkGadgetList(gadgetList) {
  * @return {object} - 作成した行要素
  */
 function appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costText, uniqueHeroText, coolTimeText, textText, idText, statusLists, statusIcons){
+    try {
+        // ガジェット名列
+        var td = document.createElement("td");
+        var div = document.createElement("div");
+        // 中のアイコン
+        var iconImg = document.createElement("img");
+        iconImg.src = "assets/images/icons/gadget/" + iconText;
+        iconImg.classList.add("itemandpower-itemicon");
+        // 中のガジェット名とヒーロー名
+        var text = document.createElement("span");
+        var textTmp = gadgetNameText + "\n\n" + "ヒーロー：" + uniqueHeroText;
+        text.innerHTML = textTmp.replace(/\n/g, "<br>");;
+        div.appendChild(iconImg);
+        div.appendChild(text);
+        div.classList.add("name-table");
+        td.appendChild(div);
+        td.classList.add("IGP_gadget-td");
+        tr.appendChild(td);
 
-    // ガジェット名列
-    var td = document.createElement("td");
-    var div = document.createElement("div");
-    // 中のアイコン
-    var iconImg = document.createElement("img");
-    iconImg.src = "assets/images/icons/gadget/" + iconText;
-    iconImg.classList.add("itemandpower-itemicon");
-    // 中のガジェット名とヒーロー名
-    var text = document.createElement("span");
-    var textTmp = gadgetNameText + "\n\n" + "ヒーロー：" + uniqueHeroText;
-    text.innerHTML = textTmp.replace(/\n/g, "<br>");;
-    div.appendChild(iconImg);
-    div.appendChild(text);
-    div.classList.add("name-table");
-    td.appendChild(div);
-    td.classList.add("IGP_gadget-td");
-    tr.appendChild(td);
+        div.appendChild(iconImg);
+        div.appendChild(text);
+        div.classList.add("name-table");
+        td.appendChild(div);
+        td.classList.add("IGP_gadget-td");
+        tr.appendChild(td);
 
-    div.appendChild(iconImg);
-    div.appendChild(text);
-    div.classList.add("name-table");
-    td.appendChild(div);
-    td.classList.add("IGP_gadget-td");
-    tr.appendChild(td);
+        // レアリティ列
+        var td = document.createElement("td");
+        td.textContent = rarityText;
+        td.classList.add("IGP_gadget-td");
+        tr.appendChild(td);
 
-    // レアリティ列
-    var td = document.createElement("td");
-    td.textContent = rarityText;
-    td.classList.add("IGP_gadget-td");
-    tr.appendChild(td);
+        // コスト列
+        var td = document.createElement("td");
+        td.textContent = costText;
+        td.classList.add("IGP_gadget-td");
+        tr.appendChild(td);
 
-    // コスト列
-    var td = document.createElement("td");
-    td.textContent = costText;
-    td.classList.add("IGP_gadget-td");
-    tr.appendChild(td);
+        // 固有ヒーロー列（非表示）
+        var td = document.createElement("td");
+        td.classList.add("hidden-column");
+        tr.appendChild(td);
 
-    // 固有ヒーロー列（非表示）
-    var td = document.createElement("td");
-    td.classList.add("hidden-column");
-    tr.appendChild(td);
-
-    // クールタイム列
-    var td = document.createElement("td");
-    td.textContent = coolTimeText + "秒";
-    td.classList.add("IGP_gadget-td");
-    tr.appendChild(td);
+        // クールタイム列
+        var td = document.createElement("td");
+        td.textContent = coolTimeText + "秒";
+        td.classList.add("IGP_gadget-td");
+        tr.appendChild(td);
 
 
-    // ステータス列
-    var td = document.createElement("td");
+        // ステータス列
+        var td = document.createElement("td");
 
-    for (let i = 0; i < statusLists.length; i++) {
-        // ステータスごとのdiv
-        let statusDiv = document.createElement("div");
+        for (let i = 0; i < statusLists.length; i++) {
+            // ステータスごとのdiv
+            let statusDiv = document.createElement("div");
 
-        // アイコン作成
-        let iconImg = document.createElement("img");
-        iconImg.src = statusIcons[i];
-        iconImg.classList.add("itemandpower-statusicon");
+            // アイコン作成
+            let iconImg = document.createElement("img");
+            iconImg.src = statusIcons[i];
+            iconImg.classList.add("itemandpower-statusicon");
 
-        // テキスト作成
-        let textSpan = document.createElement("span");
-        textSpan.innerText = statusLists[i];
+            // テキスト作成
+            let textSpan = document.createElement("span");
+            textSpan.innerText = statusLists[i];
 
-        // まとめて追加
-        statusDiv.appendChild(iconImg);
-        statusDiv.appendChild(textSpan);
+            // まとめて追加
+            statusDiv.appendChild(iconImg);
+            statusDiv.appendChild(textSpan);
 
-        // tdに追加
-        td.appendChild(statusDiv);
+            // tdに追加
+            td.appendChild(statusDiv);
+        }
+
+        td.classList.add("IGP_gadget-td");
+        tr.appendChild(td);
+
+
+        // テキスト列
+        var td = document.createElement("td");
+        td.textContent = textText;
+        td.classList.add("IGP_gadget-td");
+        tr.appendChild(td);
+
+        // アイテムID列（非表示）
+        var td = document.createElement("td");
+        td.textContent = idText;
+        td.classList.add("hidden-column");
+        tr.appendChild(td);
+
+        // 変更履歴列
+        var td = document.createElement("td");
+        td.classList.add("IGP_gadget-td", "itemandpower-history");
+        tr.appendChild(td);
+
+        return tr;
+    } catch (error) {
+        throw new Error(ERRORMESSAGEKEY.gadgetDataLinkError);
     }
-
-    td.classList.add("IGP_gadget-td");
-    tr.appendChild(td);
-
-
-    // テキスト列
-    var td = document.createElement("td");
-    td.textContent = textText;
-    td.classList.add("IGP_gadget-td");
-    tr.appendChild(td);
-
-    // アイテムID列（非表示）
-    var td = document.createElement("td");
-    td.textContent = idText;
-    td.classList.add("hidden-column");
-    tr.appendChild(td);
-
-    // 変更履歴列
-    var td = document.createElement("td");
-    td.classList.add("IGP_gadget-td", "itemandpower-history");
-    tr.appendChild(td);
-
-    return tr;
 }
 
 /** パワーリストをテーブルに紐づける関数
@@ -1111,51 +1127,59 @@ function appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costTex
  * @return {void}
  */
 function linkPowerList(powerList) {
-    let tbody = document.getElementById("power-table").querySelector("tbody");
+    try {
+        let tbody = document.getElementById("power-table").querySelector("tbody");
 
-    // 各アイテムごとにループ
-    for(let i=0; i<powerList.length; i++) {
-        var tr = document.createElement("tr");
+        // 各アイテムごとにループ
+        for(let i=0; i<powerList.length; i++) {
+            var tr = document.createElement("tr");
 
-        // 必要な列ごとの変数を初期化
-        let powerNameText = "";
-        let iconText = "";
-        let heroText = "";
-        let textText = "";
+            // 必要な列ごとの変数を初期化
+            let powerNameText = "";
+            let iconText = "";
+            let heroText = "";
+            let textText = "";
 
-        // 各キーペアごとにループ
-        Object.keys(powerList[i]).forEach(key => {
+            // 各キーペアごとにループ
+            Object.keys(powerList[i]).forEach(key => {
 
-            // キー名がパワー名キーの場合
-            if(POWERLISTKEY.power_nameKey == key) {
+                // キー名がパワー名キーの場合
+                if(POWERLISTKEY.power_nameKey == key) {
 
-                // パワー名用変数に値を代入
-                powerNameText = powerList[i][key];
-            }
+                    // パワー名用変数に値を代入
+                    powerNameText = powerList[i][key];
+                }
 
-            // キー名がアイコンキーの場合
-            if(POWERLISTKEY.power_iconKey == key) {
+                // キー名がアイコンキーの場合
+                if(POWERLISTKEY.power_iconKey == key) {
 
-                // アイコン用変数に値を代入
-                iconText = powerList[i][key];
-            }
+                    // アイコン用変数に値を代入
+                    iconText = powerList[i][key];
+                }
 
-            // キー名がヒーローキーの場合
-            if(POWERLISTKEY.heroKey == key) {
+                // キー名がヒーローキーの場合
+                if(POWERLISTKEY.heroKey == key) {
 
-                // ヒーロー用変数に値を代入
-                heroText = powerList[i][key];
-            }
-            // キー名がテキストキーの場合
-            if(POWERLISTKEY.power_textKey == key) {
+                    // ヒーロー用変数に値を代入
+                    heroText = powerList[i][key];
+                }
+                // キー名がテキストキーの場合
+                if(POWERLISTKEY.power_textKey == key) {
 
-                // テキスト用変数に値を代入
-                textText = powerList[i][key];
-            }
-        })
+                    // テキスト用変数に値を代入
+                    textText = powerList[i][key];
+                }
+            })
 
-    tbody.appendChild(appendChildPowerList(tr, powerNameText, iconText, heroText, textText));
-    tr.classList.add("table-off"); //アイテムテーブルと違い、パワーテーブルは初期表示が非表示の為（D.VA以外）
+        tbody.appendChild(appendChildPowerList(tr, powerNameText, iconText, heroText, textText));
+        tr.classList.add("table-off"); //アイテムテーブルと違い、パワーテーブルは初期表示が非表示の為（D.VA以外）
+        }
+    } catch (error) {
+        if(error.message != ""){
+            throw error;
+        }else{
+            throw new Error(ERRORMESSAGEKEY.powerDataLinkSettingError);
+        }
     }
 }
 
@@ -1170,43 +1194,46 @@ function linkPowerList(powerList) {
  * @return {object} - 作成した行要素
  */
 function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
+    try {
+        // パワー名列
+        var td = document.createElement("td");
+        var div = document.createElement("div");
+        // 中のアイコン
+        var iconImg = document.createElement("img");
+        iconImg.src = "assets/images/icons/power/" + iconText;
+        iconImg.classList.add("itemandpower-powericon");
+        // 中のパワー名とヒーロー名
+        var text = document.createElement("span");
+        var textTmp = powerNameText + "\n\n" + "ヒーロー：" + heroText;
+        text.innerHTML = textTmp.replace(/\n/g, "<br>");;
+        div.appendChild(iconImg);
+        div.appendChild(text);
+        div.classList.add("name-table");
+        td.appendChild(div);
+        td.classList.add("item-td");
+        tr.appendChild(td);
 
-    // パワー名列
-    var td = document.createElement("td");
-    var div = document.createElement("div");
-    // 中のアイコン
-    var iconImg = document.createElement("img");
-    iconImg.src = "assets/images/icons/power/" + iconText;
-    iconImg.classList.add("itemandpower-powericon");
-    // 中のパワー名とヒーロー名
-    var text = document.createElement("span");
-    var textTmp = powerNameText + "\n\n" + "ヒーロー：" + heroText;
-    text.innerHTML = textTmp.replace(/\n/g, "<br>");;
-    div.appendChild(iconImg);
-    div.appendChild(text);
-    div.classList.add("name-table");
-    td.appendChild(div);
-    td.classList.add("item-td");
-    tr.appendChild(td);
+        // ヒーロー列(非表示)
+        var td = document.createElement("td");
+        td.textContent = heroText;
+        td.classList.add("hidden-column");
+        tr.appendChild(td);
 
-    // ヒーロー列(非表示)
-    var td = document.createElement("td");
-    td.textContent = heroText;
-    td.classList.add("hidden-column");
-    tr.appendChild(td);
+        // テキスト列
+        var td = document.createElement("td");
+        td.textContent = textText;
+        td.classList.add("item-td");
+        tr.appendChild(td);
 
-    // テキスト列
-    var td = document.createElement("td");
-    td.textContent = textText;
-    td.classList.add("item-td");
-    tr.appendChild(td);
+        // 変更履歴列
+        var td = document.createElement("td");
+        td.classList.add("item-td", "itemandpower-history");
+        tr.appendChild(td);
 
-    // 変更履歴列
-    var td = document.createElement("td");
-    td.classList.add("item-td", "itemandpower-history");
-    tr.appendChild(td);
-
-    return tr;
+        return tr;
+    } catch (error) {
+        throw new Error(ERRORMESSAGEKEY.powerDataLinkError);
+    }
 }
 //#endregion 各テーブル紐づけ
 
@@ -1221,6 +1248,7 @@ function filterItemOnclickHandler(elem){
     try {
         filterItemTable(elem);
     } catch (error) {
+        error.message += ERRORMESSAGEKEY.itemFilterClick;
         console.error(error.message,error.stack);
     }
 }
@@ -1359,6 +1387,7 @@ function filterGadgetOnclickHandler(elem){
     try {
         filterGadgetTable(elem);
     } catch (error) {
+        error.message += ERRORMESSAGEKEY.gadgetFilterClick;
         console.error(error.message,error.stack);
     }
 }
@@ -1465,6 +1494,7 @@ function filterPowerOnclickHandler(elem){
     try {
         filterPowerTable(elem);
     } catch (error) {
+        error.message += ERRORMESSAGEKEY.powerFilterClick;
         console.error(error.message,error.stack);
     }
 }
@@ -1616,6 +1646,7 @@ function item_searchWords() {
         });
     } catch (error) {
         if(error.message != ""){
+            error.message += ERRORMESSAGEKEY.itemKeywordSearch;
             console.error(error.message,error.stack);
         }
         else{
@@ -1673,6 +1704,7 @@ function gadget_searchWords() {
         });
     } catch (error) {
         if(error.message != ""){
+            error.message += ERRORMESSAGEKEY.gadgetKeywordSearch;
             console.error(error.message,error.stack);
         }
         else{
@@ -1731,6 +1763,7 @@ function power_searchWords() {
         });
     } catch (error) {
         if(error.message != ""){
+            error.message += ERRORMESSAGEKEY.powerKeywordSearch;
             console.error(error.message,error.stack);
         }
         else{
@@ -1790,6 +1823,7 @@ function itemSortClick(id){
         }
     } catch (error) {
         if(error.message != ""){
+            error.message += ERRORMESSAGEKEY.itemDataSortSetting;
             console.error(error.message,error.stack);
         }
         else{
@@ -1921,6 +1955,7 @@ function gadgetSortClick(id){
         }
     } catch (error) {
         if(error.message != ""){
+            error.message += ERRORMESSAGEKEY.gadgetDataSortSetting;
             console.error(error.message,error.stack);
         }
         else{
@@ -2043,6 +2078,7 @@ function powerSortClick(id){
         document.getElementById(id).innerText = labelMap[id] + arrows;
     } catch (error) {
         if(error.message != ""){
+            error.message += ERRORMESSAGEKEY.powerDataSortSetting;
             console.error(error.message,error.stack);
         }
         else{
@@ -2192,6 +2228,7 @@ function applyPatchNotesIfReady() {
         }
     } catch (error) {
         if(error.message != ""){
+            error.message += ERRORMESSAGEKEY.patchNoteApply;
             console.error(error.message, error.stack);
         }else{
             console.error(ERRORMESSAGEKEY.patchNoteApplyJudgeError);

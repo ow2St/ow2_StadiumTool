@@ -12,7 +12,11 @@ window.ERRORMESSAGEKEY = {
     parameterDataOrganizeError: "パラメータデータの選択及び並び替え処理でエラーが発生しました",
     dataConvertError: "データの変換処理でエラーが発生しました",
 
-    itemdataLinkError: "アイテムデータのリンク処理でエラーが発生しました",
+    itemDataLinkSettingError: "アイテムデータのリンク準備処理でエラーが発生しました",
+    gadgetDataLinkSettingError: "ガジェットデータのリンク準備処理でエラーが発生しました",
+    powerDataLinkSettingError: "パワーデータのリンク準備処理でエラーが発生しました",
+
+    itemDataLinkError: "アイテムデータのリンク処理でエラーが発生しました",
     gadgetDataLinkError: "ガジェットデータのリンク処理でエラーが発生しました",
     powerDataLinkError: "パワーデータのリンク処理でエラーが発生しました",
 
@@ -36,7 +40,21 @@ window.ERRORMESSAGEKEY = {
     patchNoteChangeSettingError: "パッチノートの変更準備処理でエラーが発生しました",
     patchNoteChangeApplyError: "パッチノートの変更適用処理でエラーが発生しました",
     patchNoteChangeHtmlError: "パッチノートの変更HTML生成処理でエラーが発生しました",
-    patchNoteChangeDataProcessError: "パッチノートの変更データ処理でエラーが発生しました"
+    patchNoteChangeDataProcessError: "パッチノートの変更データ処理でエラーが発生しました",
+
+    dataRoad: "：初期読み込み処理",
+    tabsChange: "：タブ切り替え処理",
+    itemFilterClick: "：アイテムフィルタリング処理(クリック)",
+    gadgetFilterClick: "：ガジェットフィルタリング処理(クリック)",
+    powerFilterClick: "：パワーフィルタリング処理(クリック)",
+    itemKeywordSearch: "：アイテムキーワード検索処理",
+    gadgetKeywordSearch: "：ガジェットキーワード検索処理",
+    powerKeywordSearch: "：パワーキーワード検索処理",
+    itemDataSortSetting: "：アイテムデータのソート準備及び最終工程",
+    gadgetDataSortSetting: "：ガジェットデータのソート準備及び最終工程",
+    powerDataSortSetting: "：パワーデータのソート準備及び最終工程",
+    patchNoteApply: "：パッチノートの適用処理",
+
 
 
 };
