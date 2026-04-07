@@ -157,6 +157,7 @@
             <div id="status-container"></div>
             <p class="status" id="addpower"></p>
             <p class="status" id="additem"></p>
+            <p class="status" id="addgadget"></p>
         </div>
     </div>
     <div class="buildlist">
@@ -242,6 +243,27 @@
                 </thead>
                 <tbody>
                     <tr class="power-tr"></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="gadgetlist-title-close" onclick="openGadgetList()" id="gadgetlist-title-close">▶︎ガジェット一覧</p>
+        <p class="gadgetlist-title-open" onclick="closeGadgetList()" id="gadgetlist-title-open">▼ガジェット一覧</p>
+        <div id="gadgetlist" style="display: none;">
+            <table class="gadget-table" id="gadget-table">
+                <thead class="gadget-thead">
+                    <tr class="gadget-tr">
+                        <th class="gadget-th" style="width: 40px;">選択</th>
+                        <th class="gadget-th" style="width: 180px;">ガジェット名</th>
+                        <th class="gadget-th" style="width: 60px;">アイコン</th>
+                        <th class="gadget-th" style="width: 140px;">ステータス</th>
+                        <th class="gadget-th" style="width: 300px;">テキスト</th>
+                        <th class="gadget-th" style="display: none;" data-column="rarity">レア度</th>
+                        <th class="gadget-th" style="display: none;" data-column="cost">コスト</th>
+                        <th class="gadget-th" style="display: none;" data-column="uniqueHero">固有ヒーロー</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="gadget-tr"></tr>
                 </tbody>
             </table>
         </div>

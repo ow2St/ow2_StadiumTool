@@ -40,6 +40,7 @@ window.ITEMLISTKEY = {
 window.GADGETLISTKEY = {
     gadget_idKey: "ガジェットID",
     gadget_nameKey: "ガジェット名",
+    gadget_categoryKey: "カテゴリー",
     gadget_rarityKey: "レア度",
     gadget_costKey: "コスト",
     gadget_uniqueHeroKey: "固有ヒーロー",
@@ -57,6 +58,9 @@ window.GADGETLISTKEY = {
     gadget_weapon_LifeStealKey: "ライフ吸収（武器）",
     gadget_ability_LifeStealKey: "ライフ吸収（アビリティ）",
     gadget_speedKey: "移動速度",
+    gadget_reloadSpeedKey: "リロード速度",
+    gadget_meleeDamageKey: "近接ダメージ",
+    gadget_criticalKey: "クリティカル",
     gadget_othersKey: "その他",
     gadget_durationFlgKey: "持続時間フラグ",
     gadget_durationKey: "持続時間",
@@ -376,9 +380,10 @@ window.EXTENSION = {
 };
 
 /**
- * アイテムかパワーか
+ * アイテムかパワーかガジェットか
  */
 window.ITEMORPOWER = {
     item: "アイテム",
-    power: "パワー"
+    power: "パワー",
+    gadget: "ガジェット"
 };
