@@ -706,7 +706,7 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
         // 中のアイテム名とヒーロー名
         var text = document.createElement("span");
         var textTmp = itemNameText + "\n\n" + "ヒーロー：" + uniqueHeroText;
-        text.innerHTML = textTmp.replace(/\n/g, "<br>");;
+        text.innerHTML = textTmp.replace(/\n/g, "<br>");
         div.appendChild(iconImg);
         div.appendChild(text);
         div.classList.add("name-table");
