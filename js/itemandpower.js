@@ -104,19 +104,13 @@ const sortingCriteria = [
 
 let sortDirection = new Array(8).fill(null);
 
-try {
     loadAndInitData();
-} catch(error) {
-    console.error(error.message, error.stack);
-}
 
 // ------------------------------
 // 関数部
 // ------------------------------
 
 /** データの読み込みと初期化を行う非同期関数
- * ＜使用箇所＞
- * ・loadAndInitData()
  * @return {Promise<void>} - 非同期処理の完了を示すPromise
 */
 async function loadAndInitData() {
@@ -143,23 +137,26 @@ async function loadAndInitData() {
         powerAllData = powerData;
         patchNoteAllData = patchNoteData;
         parameterAllData = parameterData;
-
         //初期データをカテゴリー順に並び替え
-        // 並び替え優先順位を定義
-        const categoryOrder = [CATEGORYELEMENTS.weapon, CATEGORYELEMENTS.ability, CATEGORYELEMENTS.survival];
+        try {
+            // 並び替え優先順位を定義
+            const categoryOrder = [CATEGORYELEMENTS.weapon, CATEGORYELEMENTS.ability, CATEGORYELEMENTS.survival];
 
-        itemAllData.sort((a, b) => {
-        // categoryOrder内でのインデックスを取得
-        const indexA = categoryOrder.indexOf(a.category);
-        const indexB = categoryOrder.indexOf(b.category);
+            itemAllData.sort((a, b) => {
+            // categoryOrder内でのインデックスを取得
+            const indexA = categoryOrder.indexOf(a.category);
+            const indexB = categoryOrder.indexOf(b.category);
 
-        // indexが見つからない（＝該当しないカテゴリ）場合は末尾へ
-        const orderA = indexA === -1 ? categoryOrder.length : indexA;
-        const orderB = indexB === -1 ? categoryOrder.length : indexB;
+            // indexが見つからない（＝該当しないカテゴリ）場合は末尾へ
+            const orderA = indexA === -1 ? categoryOrder.length : indexA;
+            const orderB = indexB === -1 ? categoryOrder.length : indexB;
 
-        // 比較して順序を返す
-        return orderA - orderB;
-        });
+            // 比較して順序を返す
+            return orderA - orderB;
+            });
+        } catch (error) {
+            console.warn(OTHERERRORMESSAGEKEY.startDataSortError);
+        }
 
         //リスト初期化
         let itemList = [];
@@ -194,7 +191,7 @@ async function loadAndInitData() {
         const heroButtonDva = document.getElementById("D.VA-item");
         heroButtonDva.onclick();
 
-        //テキスト検索にて、エンターキーと検索ボタンのクリックを紐づける
+        //キーワード検索にて、エンターキーと検索ボタンのクリックを紐づける
         const searches = document.querySelectorAll('input[type="search"]');
         searches.forEach(input => {
             input.addEventListener("keyup", (e) => {
@@ -212,18 +209,19 @@ async function loadAndInitData() {
                             power_searchWords();
                             break;
                         default:
-                            console.error(ERRORMESSAGEKEY.unexpectedStatus, input.id);
+                            console.warn(OTHERERRORMESSAGEKEY.unexpectedStatus, input.id);
                     }
                 }
             });
         });
     }catch (error) {
         if(error.message != ""){
-            error.message += ERRORMESSAGEKEY.dataRoad;
-            throw error;
+            error.message += SUBERRORMESSAGEKEY.dataRoad;
         }else{
-            throw new Error(ERRORMESSAGEKEY.dataRoadError);
+            error.message = OTHERERRORMESSAGEKEY.dataRoadError;
         }
+        console.error(error.message, error.stack);
+
     }
 }
 
@@ -268,7 +266,7 @@ function organizeItemData(itemAllData) {
         })
         return selectedData;
     } catch (error) {
-        throw new Error(ERRORMESSAGEKEY.itemDataOrganizeError);
+        throw new Error(CONVERTERRORMESSAGEKEY.itemDataOrganizeError);
     }
 }
 
@@ -308,7 +306,7 @@ function organizeGadgetData(gadgetAllData) {
         })
         return selectedData;
     } catch (error) {
-        throw new Error(ERRORMESSAGEKEY.gadgetDataOrganizeError);
+        throw new Error(CONVERTERRORMESSAGEKEY.gadgetDataOrganizeError);
     }
 }
 
@@ -330,12 +328,11 @@ function organizePowerData(powerAllData) {
         })
         return selectedData;
     } catch (error) {
-        throw new Error(ERRORMESSAGEKEY.powerDataOrganizeError);
+        throw new Error(CONVERTERRORMESSAGEKEY.powerDataOrganizeError);
     }
 }
 
-/**
- * paramterData に　parameterData.json　から貰うデータの形を決める
+/**paramterData に　parameterData.json　から貰うデータの形を決める
  * @param {object} parameterData 読み込んだ全てのパラメータデータ
  * @return {object}　selectedData　整形後のパラメータデータ
  */
@@ -351,7 +348,7 @@ function organizeParameterData(parameterData) {
         })
         return selectedData;
     } catch (error) {
-        throw new Error(ERRORMESSAGEKEY.parameterDataOrganizeError);
+        throw new Error(CONVERTERRORMESSAGEKEY.parameterDataOrganizeError);
     }
 }
 
@@ -374,17 +371,14 @@ function convertKeys(dataArray, keyMap) {
         if(error.message != ""){
             throw error;
         }else{
-            throw new Error(ERRORMESSAGEKEY.dataConvertError);
+            throw new Error(CONVERTERRORMESSAGEKEY.dataConvertError);
         }
     }
 }
 //#endregion データ変換
 
 //#region タブ切り替え
-/**アイテムタブへ移動
- * ＜使用箇所＞
- * ・itemAndPower.html - tabsのonclickイベント
- */
+/**アイテムタブへ移動 */
 function changeTabItem() {
     tabItem.classList.add("tabItem-on");
     tabItem.classList.remove("tabItem-off");
@@ -398,10 +392,7 @@ function changeTabItem() {
     tabPower.classList.remove("tabPower-on");
     powerContent.style.display = "none";
 }
-/**ガジェットタブへ移動
- * ＜使用箇所＞
- * ・itemAndPower.html - tabsのonclickイベント
- */
+/**ガジェットタブへ移動 */
 function changeTabGadget() {
     tabGadget.classList.add("tabGadget-on");
     tabGadget.classList.remove("tabGadget-off");
@@ -415,10 +406,7 @@ function changeTabGadget() {
     tabPower.classList.remove("tabPower-on");
     powerContent.style.display = "none";
 }
-/**パワータブへ移動
- * ＜使用箇所＞
- * ・itemAndPower.html - tabsのonclickイベント
- */
+/**パワータブへ移動 */
 function changeTabPower() {
     if(document.getElementById("tabPower").classList.contains("tabPower-on")) {
         //すでにパワータブがONのときは何も処理しない
@@ -448,7 +436,7 @@ function changeTabPower() {
 
         filterPowerTable(defaultHero);
     } catch (error) {
-        error.message += ERRORMESSAGEKEY.tabsChange;
+        error.message += SUBERRORMESSAGEKEY.tabsChange;
         console.error(error.message, error.stack);
     }
 }
@@ -456,13 +444,12 @@ function changeTabPower() {
 
 //#region 各テーブル紐づけ
 /**アイテムリストをテーブルに紐づける関数
- * ＜使用箇所＞
- * ・loadAndInitData()
  * @param {object} itemList - アイテムデータの配列
  * @return {void}
  */
 function linkItemList(itemList) {
     try {
+
         let tbody = document.getElementById("item-table").querySelector("tbody");
 
         // 各アイテムごとにループ
@@ -640,7 +627,7 @@ function linkItemList(itemList) {
                         break;
 
                     default:
-                        console.error(ERRORMESSAGEKEY.unexpectedStatus, status);
+                        throw new Error(OTHERERRORMESSAGEKEY.unexpectedStatus + ": " + status);
                 }
             });
 
@@ -688,14 +675,12 @@ function linkItemList(itemList) {
         if(error.message != ""){
             throw error;
         }else{
-            throw new Error(ERRORMESSAGEKEY.itemDataLinkSettingError);
+            throw new Error(LINKERRORMESSAGEKEY.itemDataLinkSettingError);
         }
     }
 }
 
 /**アイテムリスト用子要素作成関数
- * ＜使用箇所＞
- * ・linkItemList()
  * @param {object} tr - 行要素
  * @param {string} itemNameText - アイテム名
  * @param {string} iconText - アイコン
@@ -721,7 +706,7 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
         // 中のアイテム名とヒーロー名
         var text = document.createElement("span");
         var textTmp = itemNameText + "\n\n" + "ヒーロー：" + uniqueHeroText;
-        text.innerHTML = textTmp.replace(/\n/g, "<br>");;
+        text.innerHTML = textTmp.replace(/\n/g, "<br>");
         div.appendChild(iconImg);
         div.appendChild(text);
         div.classList.add("name-table");
@@ -801,13 +786,11 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
 
         return tr;
     } catch (error) {
-        throw new Error(ERRORMESSAGEKEY.itemDataLinkError);
+        throw new Error(LINKERRORMESSAGEKEY.itemDataLinkError);
     }
 }
 
 /**ガジェットリストをテーブルに紐づける関数
- * ＜使用箇所＞
- * ・loadAndInitData()
  * @param {object} gadgetList - ガジェットデータの配列
  * @return {void}
  */
@@ -978,6 +961,9 @@ function linkGadgetList(gadgetList) {
                         case status.includes(STATUSELEMENTS.critical):
                             statusIcons.push(STATUSICON.critical);
                             break;
+
+                        default:
+                            throw new Error(OTHERERRORMESSAGEKEY.unexpectedStatus + ": " + status);
                     }
 
                 //その他（特殊効果）の場合
@@ -997,14 +983,12 @@ function linkGadgetList(gadgetList) {
         if(error.message != ""){
             throw error;
         }else{
-            throw new Error(ERRORMESSAGEKEY.gadgetDataLinkSettingError);
+            throw new Error(LINKERRORMESSAGEKEY.gadgetDataLinkSettingError);
         }
     }
 }
 
 /**ガジェットリスト用子要素作成関数
- * ＜使用箇所＞
- * ・linkGadgetList()
  * @param {object} tr - 行要素
  * @param {string} gadgetNameText - ガジェット名
  * @param {string} iconText - アイコン
@@ -1116,13 +1100,11 @@ function appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costTex
 
         return tr;
     } catch (error) {
-        throw new Error(ERRORMESSAGEKEY.gadgetDataLinkError);
+        throw new Error(LINKERRORMESSAGEKEY.gadgetDataLinkError);
     }
 }
 
 /** パワーリストをテーブルに紐づける関数
- * ＜使用箇所＞
- * ・loadAndInitData()
  * @param {object} powerList - パワーデータの配列
  * @return {void}
  */
@@ -1178,14 +1160,12 @@ function linkPowerList(powerList) {
         if(error.message != ""){
             throw error;
         }else{
-            throw new Error(ERRORMESSAGEKEY.powerDataLinkSettingError);
+            throw new Error(LINKERRORMESSAGEKEY.powerDataLinkSettingError);
         }
     }
 }
 
 /** パワーリスト用子要素作成関数
- * ＜使用箇所＞
- * ・linkPowerList()
  * @param {object} tr - 対象の行要素
  * @param {string} powerNameText - パワー名
  * @param {string} iconText - アイコン
@@ -1232,7 +1212,7 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
 
         return tr;
     } catch (error) {
-        throw new Error(ERRORMESSAGEKEY.powerDataLinkError);
+        throw new Error(LINKERRORMESSAGEKEY.powerDataLinkError);
     }
 }
 //#endregion 各テーブル紐づけ
@@ -1240,24 +1220,18 @@ function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
 // #region 絞り込み
 /**htmlのonclickとアイテムテーブルの絞り込み処理を繋ぐ関数
  * onclickからfilterItemTableを呼び出す際に例外処理のために使用
- * ＜使用箇所＞
- * ・itemAndPower.html - button-listのonclickイベント
  * @param {*} elem - 変更対象の要素(押されたボタンやアイコン)
  */
 function filterItemOnclickHandler(elem){
     try {
         filterItemTable(elem);
     } catch (error) {
-        error.message += ERRORMESSAGEKEY.itemFilterClick;
+        error.message += SUBERRORMESSAGEKEY.itemFilterClick;
         console.error(error.message,error.stack);
     }
 }
 
 /** 絞り込み条件を更新する関数（アイテム）
- * ＜使用箇所＞
- * ・loadAndInitData() - 絞り込みボタンをOFFにする処理（heroButtonDva.onclick();）
- * ・filterItemOnclickHandler()
- * ・item_searchWords()
  * @param {HTMLElement} elem - 変更対象の要素(押されたボタンやアイコン)
  * @return {void}
  */
@@ -1372,30 +1346,26 @@ function filterItemTable(elem){
                 tr.classList.add("table-off");
             }
         });
+
     } catch (error) {
-        throw new Error(ERRORMESSAGEKEY.itemDataFilterError + " : " + elem.id);
+        throw new Error(FILTERERRORMESSAGEKEY.itemDataFilterError + " : " + elem.id);
     }
 }
 
 /**htmlのonclickとガジェットテーブルの絞り込み処理を繋ぐ関数
  * onclickからfilterGadgetTableを呼び出す際に例外処理のために使用
- * ＜使用箇所＞
- * ・itemAndPower.html - button-listのonclickイベント
  * @param {*} elem - 変更対象の要素(押されたボタンやアイコン)
  */
 function filterGadgetOnclickHandler(elem){
     try {
         filterGadgetTable(elem);
     } catch (error) {
-        error.message += ERRORMESSAGEKEY.gadgetFilterClick;
+        error.message += SUBERRORMESSAGEKEY.gadgetFilterClick;
         console.error(error.message,error.stack);
     }
 }
 
 /** 絞り込み条件を更新する関数（ガジェット）
- * ＜使用箇所＞
- * ・filterGadgetOnclickHandler()
- * ・gadget_searchWords()
  * @param {HTMLElement} elem - 変更対象の要素(押されたボタン)
  * @return {void}
  */
@@ -1480,30 +1450,24 @@ function filterGadgetTable(elem){
             }
         });
     } catch (error) {
-        throw new Error(ERRORMESSAGEKEY.gadgetDataFilterError + " : " + elem.id);
+        throw new Error(FILTERERRORMESSAGEKEY.gadgetDataFilterError + " : " + elem.id);
     }
 }
 
 /**htmlのonclickとパワーテーブルの絞り込み処理を繋ぐ関数
  * onclickからfilterPowerTableを呼び出す際に例外処理のために使用
- * ＜使用箇所＞
- * ・itemAndPower.html - button-listのonclickイベント
  * @param {*} elem - 変更対象の要素(押されたボタンやアイコン)
  */
 function filterPowerOnclickHandler(elem){
     try {
         filterPowerTable(elem);
     } catch (error) {
-        error.message += ERRORMESSAGEKEY.powerFilterClick;
+        error.message += SUBERRORMESSAGEKEY.powerFilterClick;
         console.error(error.message,error.stack);
     }
 }
 
 /** 絞り込み条件を更新する関数（パワー）
- * ＜使用箇所＞
- * ・changeTabPower() - D.VAアイコンOFF用
- * ・filterPowerOnclickHandler()
- * ・power_searchWords()
  * @param {HTMLElement} elem - 対象の要素(押されたヒーローアイコン)
  * @return {void}
  */
@@ -1590,16 +1554,13 @@ function filterPowerTable(elem){
             }
         });
     } catch (error) {
-        throw new Error(ERRORMESSAGEKEY.powerDataFilterError + " : " + elem.id);
+        throw new Error(FILTERERRORMESSAGEKEY.powerDataFilterError + " : " + elem.id);
     }
 }
 // #endregion 絞り込み
 
 // #region キーワード検索
 /** 検索ボックスで絞り込み（アイテム）
- * ＜使用箇所＞
- * ・itemAndPower.html - search-input横の検索ボタンクリックイベント
- * ・loadAndInitData() エンターキー紐づけ（searches.forEach内）
  * @return {void}
  */
 function item_searchWords() {
@@ -1646,19 +1607,15 @@ function item_searchWords() {
         });
     } catch (error) {
         if(error.message != ""){
-            error.message += ERRORMESSAGEKEY.itemKeywordSearch;
-            console.error(error.message,error.stack);
+            error.message += SUBERRORMESSAGEKEY.itemKeywordSearch;
+        }else{
+            error.message = KEYWORDSEARCHERRORMESSAGEKEY.itemKeywordSearchError;
         }
-        else{
-            console.error(ERRORMESSAGEKEY.itemKeywordSearchError);
-        }
+        console.error(error.message,error.stack);
     }
 }
 
 /** 検索ボックスで絞り込み（ガジェット）
- * ＜使用箇所＞
- * ・itemAndPower.html - search-input横の検索ボタンクリックイベント
- * ・loadAndInitData() エンターキー紐づけ（searches.forEach内）
  * @return {void}
  */
 function gadget_searchWords() {
@@ -1704,19 +1661,15 @@ function gadget_searchWords() {
         });
     } catch (error) {
         if(error.message != ""){
-            error.message += ERRORMESSAGEKEY.gadgetKeywordSearch;
-            console.error(error.message,error.stack);
+            error.message += SUBERRORMESSAGEKEY.gadgetKeywordSearch;
+        }else{
+            error.message = KEYWORDSEARCHERRORMESSAGEKEY.gadgetKeywordSearchError;
         }
-        else{
-        console.error(ERRORMESSAGEKEY.gadgetKeywordSearchError);
-        }
+        console.error(error.message,error.stack);
     }
 }
 
 /** 検索ボックスで絞り込み（パワー）
- * ＜使用箇所＞
- * ・itemAndPower.html - search-input横の検索ボタンクリックイベント
- * ・loadAndInitData() エンターキー紐づけ（searches.forEach内）
  * @return {void}
  */
 function power_searchWords() {
@@ -1763,20 +1716,17 @@ function power_searchWords() {
         });
     } catch (error) {
         if(error.message != ""){
-            error.message += ERRORMESSAGEKEY.powerKeywordSearch;
-            console.error(error.message,error.stack);
+            error.message += SUBERRORMESSAGEKEY.powerKeywordSearch;
+        }else{
+            error.message = KEYWORDSEARCHERRORMESSAGEKEY.powerKeywordSearchError;
         }
-        else{
-            console.error(ERRORMESSAGEKEY.powerKeywordSearchError);
-        }
+        console.error(error.message,error.stack);
     }
 }
 // #endregion キーワード検索
 
 // #region ソート
 /**アイテムテーブルソートの前提準備
- * ＜使用箇所＞
- * ・itemAndPower.html - thのonclickイベント
  * @param {string} id - ソート対象の列ID
  * @return {void}
  */
@@ -1823,18 +1773,15 @@ function itemSortClick(id){
         }
     } catch (error) {
         if(error.message != ""){
-            error.message += ERRORMESSAGEKEY.itemDataSortSetting;
-            console.error(error.message,error.stack);
+            error.message += SUBERRORMESSAGEKEY.itemDataSortSetting;
+        }else{
+            error.message = SORTERRORMESSAGEKEY.itemDataSortSettingError + id;
         }
-        else{
-            console.error(ERRORMESSAGEKEY.itemDataSortSettingError + id);
-        }
+        console.error(error.message, error.stack);
     }
 }
 
 /** アイテムテーブルをソートする関数
- * ＜使用箇所＞
- * ・itemSortClick()
  * @param {object} headers - テーブルヘッダー要素
  * @param {object} tbody - テーブルボディ要素
  * @param {Object} sortingCriteria - ソート基準
@@ -1902,13 +1849,11 @@ function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
         // ソートされた順序で行を追加
         rows.forEach(row => tbody.appendChild(row));
     } catch (error) {
-        throw new Error(ERRORMESSAGEKEY.itemDataSortError + " : " + sortingCriteria.column);
+        throw new Error(SORTERRORMESSAGEKEY.itemDataSortError + " : " + sortingCriteria.column);
     }
 }
 
 /**ガジェットテーブルソートの前提準備
- * ＜使用箇所＞
- * ・itemAndPower.html - thのonclickイベント
  * @param {string} id - ソート対象の列ID
  * @return {void}
  */
@@ -1955,18 +1900,15 @@ function gadgetSortClick(id){
         }
     } catch (error) {
         if(error.message != ""){
-            error.message += ERRORMESSAGEKEY.gadgetDataSortSetting;
-            console.error(error.message,error.stack);
+            error.message += SUBERRORMESSAGEKEY.gadgetDataSortSetting;
+        }else{
+            error.message = SORTERRORMESSAGEKEY.gadgetDataSortSettingError + id;
         }
-        else{
-        console.error(ERRORMESSAGEKEY.gadgetDataSortSettingError + id);
-        }
+        console.error(error.message, error.stack);
     }
 }
 
 /** ガジェットテーブルをソートする関数
- * ＜使用箇所＞
- * ・gadgetSortClick()
  * @param {object} headers - テーブルヘッダー要素
  * @param {object} tbody - テーブルボディ要素
  * @param {Object} sortingCriteria - ソート基準
@@ -2034,13 +1976,11 @@ function gadgetTableSort(headers, tbody, sortingCriteria,index,sorting) {
         // ソートされた順序で行を追加
         rows.forEach(row => tbody.appendChild(row));
     } catch (error) {
-        throw new Error(ERRORMESSAGEKEY.gadgetDataSortError + " : " + sortingCriteria.column);
+        throw new Error(SORTERRORMESSAGEKEY.gadgetDataSortError + " : " + sortingCriteria.column);
     }
 }
 
 /** パワーテーブルソートの前提準備
- * ＜使用箇所＞
- * ・itemAndPower.html - thのonclickイベント
  * @param {string} id - ソート対象の列ID
  * @return {void}
  */
@@ -2078,18 +2018,15 @@ function powerSortClick(id){
         document.getElementById(id).innerText = labelMap[id] + arrows;
     } catch (error) {
         if(error.message != ""){
-            error.message += ERRORMESSAGEKEY.powerDataSortSetting;
-            console.error(error.message,error.stack);
+            error.message += SUBERRORMESSAGEKEY.powerDataSortSetting;
+        }else{
+            error.message = SORTERRORMESSAGEKEY.powerDataSortSettingError + id;
         }
-        else{
-            console.error(ERRORMESSAGEKEY.powerDataSortSettingError + id);
-        }
+        console.error(error.message, error.stack);
     }
 }
 
 /** パワーテーブルをソートする関数
- * ＜使用箇所＞
- * ・powerSortClick()
  * @param {object} headers - テーブルヘッダー要素の配列
  * @param {object} tbody - テーブルボディ要素
  * @param {object} sortingCriteria - ソート基準
@@ -2157,58 +2094,55 @@ function powerTableSort(headers, tbody, sortingCriteria,index,sorting) {
         // ソートされた順序で行を追加
         rows.forEach(row => tbody.appendChild(row));
     } catch (error) {
-        throw new Error(ERRORMESSAGEKEY.powerDataSortError + " : " + sortingCriteria.column);
+        throw new Error(SORTERRORMESSAGEKEY.powerDataSortError + " : " + sortingCriteria.column);
     }
 }
 //#endregion ソート
 
 //#region キャッシュ画像追加
 /**コスト列のth内に、キャッシュアイコンとspan要素を追加する関数
- * ＜使用箇所＞
- * ・itemSortClick()
- * ・gadgetSortClick()
- * ・loadAndInitData() - キャッシュアイコン初期表示
  * @param {HTMLElement} cost_Th - コスト列の<th>要素
  * @return {void}
  */
 function addCostDivAndSpan(cost_Th) {
+try {
+        //costのth内innerTextはいらないので消去
+        cost_Th.innerText = "";
 
-    //costのth内innerTextはいらないので消去
-    cost_Th.innerText = "";
+        // div を作成
+        const cost_div = document.createElement("div");
+        cost_div.id = "div-cost";
 
-    // div を作成
-    const cost_div = document.createElement("div");
-    cost_div.id = "div-cost";
+        // img要素を作成
+        let img = document.createElement("img");
+        img.src = "assets/images/icons/status/キャッシュアイコン.png";
+        img.classList.add("itemandpower-statusicon");
 
-    // img要素を作成
-    let img = document.createElement("img");
-    img.src = "assets/images/icons/status/キャッシュアイコン.png";
-    img.classList.add("itemandpower-statusicon");
+        // divの中に追加
+        cost_div.appendChild(img);
 
-    // divの中に追加
-    cost_div.appendChild(img);
+        // th の子要素として追加
+        cost_Th.appendChild(cost_div);
 
-    // th の子要素として追加
-    cost_Th.appendChild(cost_div);
+        //span を作成
+        const cost_span = document.createElement("span");
+        cost_span.innerText = "コスト";
+        cost_span.id = "span-cost";
 
-    //span を作成
-    const cost_span = document.createElement("span");
-    cost_span.innerText = "コスト";
-    cost_span.id = "span-cost";
+        const costArrow_span = document.createElement("span");
+        costArrow_span.id = "span-costArrow";
 
-    const costArrow_span = document.createElement("span");
-    costArrow_span.id = "span-costArrow";
-
-    // div の子要素として追加
-    cost_div.appendChild(cost_span);
-    cost_div.appendChild(costArrow_span);
+        // div の子要素として追加
+        cost_div.appendChild(cost_span);
+        cost_div.appendChild(costArrow_span);
+    } catch (error) {
+        throw new Error(OTHERERRORMESSAGEKEY.costHeaderAddError);
+    }
 }
 //#endregion キャッシュ画像追加
 
 // #region パッチノート関係
 /** パッチノートが適用可能か確認し、適用する関数
- * ＜使用箇所＞
- * ・loadAndInitData()
  * @return {void}
  */
 function applyPatchNotesIfReady() {
@@ -2228,17 +2162,15 @@ function applyPatchNotesIfReady() {
         }
     } catch (error) {
         if(error.message != ""){
-            error.message += ERRORMESSAGEKEY.patchNoteApply;
-            console.error(error.message, error.stack);
+            error.message += SUBERRORMESSAGEKEY.patchNoteApply;
         }else{
-            console.error(ERRORMESSAGEKEY.patchNoteApplyJudgeError);
+            error.message = PATCHNOTEERRORMESSAGEKEY.patchNoteApplyJudgeError;
         }
+        console.error(error.message, error.stack);
     }
 }
 
 /** パッチノートを処理し、変更点をマップに整理する関数
- * ＜使用箇所＞
- * ・applyPatchNotesToTables()
  * @return {Map} - アイテム名をキーとした変更点のマップ
  */
 function processPatchNotes() {
@@ -2272,13 +2204,11 @@ function processPatchNotes() {
 
         return changesMap;
     } catch (error) {
-        throw new Error(ERRORMESSAGEKEY.patchNoteChangeDataProcessError);
+        throw new Error(PATCHNOTEERRORMESSAGEKEY.patchNoteChangeDataProcessError);
     }
 }
 
 /** 変更履歴のHTMLを生成する関数
- * ＜使用箇所＞
- * ・applyChangesToTable()
  * @param {object} changes - 変更点の配列
  * @return {string} - 生成したHTML文字列
  */
@@ -2293,13 +2223,11 @@ function createHistoryHtml(changes) {
 
         return `<div class="history-content-wrapper">${html}</div>`;
     } catch (error) {
-        throw new Error(ERRORMESSAGEKEY.patchNoteChangeHtmlError);
+        throw new Error(PATCHNOTEERRORMESSAGEKEY.patchNoteChangeHtmlError);
     }
 }
 
 /** パッチノートをアイテム・パワーテーブルに適用する関数
- * ＜使用箇所＞
- * ・applyPatchNotesIfReady()
  * @return {void}
  */
 function applyPatchNotesToTables() {
@@ -2318,16 +2246,14 @@ function applyPatchNotesToTables() {
         patchNotesApplied = true;
     } catch (error) {
         if(error.message != ""){
-            throw Error;
+            throw error;
         }else{
-        console.error(ERRORMESSAGEKEY.patchNoteChangeSettingError);
+            throw new Error(PATCHNOTEERRORMESSAGEKEY.patchNoteChangeSettingError);
         }
     }
 }
 
 /** テーブルにパッチノートの変更を適用する関数
- * ＜使用箇所＞
- * ・applyPatchNotesToTables()
  * @param {string} tableId - テーブルのID
  * @param {number} nameColIndex - 名前列のインデックス
  * @param {Map} changesMap - 変更点のマップ
@@ -2343,7 +2269,7 @@ function applyChangesToTable(tableId, nameColIndex, changesMap) {
         const HISTORY_COLUMN_INDEX = rows.length > 0 ? rows[0].cells.length - 1 : -1;
 
         if (HISTORY_COLUMN_INDEX == -1) {
-            console.warn(ERRORMESSAGEKEY.dataRoadError + " : " + tableId);
+            console.warn(OTHERERRORMESSAGEKEY.dataRoadError + " : " + tableId);
             return;
         }
 
@@ -2386,9 +2312,9 @@ function applyChangesToTable(tableId, nameColIndex, changesMap) {
         });
     } catch (error) {
         if(error.message != ""){
-            throw Error;
+            throw error;
         }else{
-            console.error(ERRORMESSAGEKEY.patchNoteChangeApplyError + " : " + tableId);
+            throw new Error(PATCHNOTEERRORMESSAGEKEY.patchNoteChangeApplyError + " : " + tableId);
         }
     }
 }
