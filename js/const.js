@@ -387,3 +387,11 @@ window.ITEMORPOWER = {
     power: "パワー",
     gadget: "ガジェット"
 };
+
+/**
+ * 真偽値
+ */
+window.BooleanValue = {
+    true: "1",
+    false: "0"
+};
