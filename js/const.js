@@ -258,12 +258,15 @@ window.MAXNUMBER = {
  * テーブル見出しテキスト
  */
 window.THTEXT = {
+    itemInformation: "アイテム情報",
+    gadgetInformation: "ガジェット情報",
     itemName: "アイテム名",
     gadgetName: "ガジェット名",
     powerName: "パワー名",
     category: "カテゴリー",
     rarity: "レアリティ",
     cost: "コスト",
+    ct: "クールタイム",
     uniqueHero: "固有ヒーロー",
     status: "ステータス"
 };
@@ -290,10 +293,10 @@ window.GADGETTHINDEX = {
     gadgetName: "0",
     rarity: "1",
     cost: "2",
-    uniqueHero: "3",
-    coolTime: "4",
-    status: "5",
-    text: "6",
+    coolTime: "3",
+    status: "4",
+    text: "5",
+    uniqueHero: "6",
     id: "7",
     ChangeHistory: "8"
 };

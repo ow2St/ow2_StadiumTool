@@ -720,6 +720,7 @@ main-IAP{
 .tabs {
     padding-top: 20px;
     margin-left: 30px;
+    display: flex;
 }
 .tabItem-on {
     padding-left: 20px;
@@ -732,7 +733,7 @@ main-IAP{
 .tabItem-off {
     padding-left: 20px;
     padding-right: 20px;
-    border: 1px dashed black;
+    border: 1px solid black;
     border-bottom: none;
     cursor: pointer;
     background-color: white;
@@ -742,14 +743,16 @@ main-IAP{
     padding-right: 20px;
     border: 1px solid black;
     border-bottom: none;
+    border-left: none;
     cursor: pointer;
     background-color: lightgray;
 }
 .tabGadget-off {
     padding-left: 20px;
     padding-right: 20px;
-    border: 1px dashed black;
+    border: 1px solid black;
     border-bottom: none;
+    border-left: none;
     cursor: pointer;
     background-color: white;
 }
@@ -758,14 +761,16 @@ main-IAP{
     padding-right: 20px;
     border: 1px solid black;
     border-bottom: none;
+    border-left: none;
     cursor: pointer;
     background-color: lightgray;
 }
 .tabPower-off {
     padding-left: 20px;
     padding-right: 20px;
-    border: 1px dashed black;
+    border: 1px solid black;
     border-bottom: none;
+    border-left: none;
     cursor: pointer;
     background-color: white;
 }
