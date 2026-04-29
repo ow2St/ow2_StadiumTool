@@ -171,7 +171,19 @@ window.STATUSLISTKEY = {
     sub2ReloadKey: "サブ2リロード速度",
     sub2AmmoKey: "サブ2弾薬数",
     sub2HSRateKey: "サブ2HS倍率",
-    sub2LifeStealRateKey: "サブ2ライフ吸収"
+    sub2LifeStealRateKey: "サブ2ライフ吸収",
+    passive1NameKey: "パッシブ1名",
+    passive1DamageKey: "パッシブ1",
+    passive1DurationKey: "パッシブ1持続時間",
+    passive1CTKey: "パッシブ1CT",
+    passive1LifeStealRateKey: "パッシブ1ライフ吸収",
+    passive1DamageFlg: "パッシブ1上昇フラグ",
+    passive2NameKey: "パッシブ2名",
+    passive2DamageKey: "パッシブ2",
+    passive2DurationKey: "パッシブ2持続時間",
+    passive2CTKey: "パッシブ2CT",
+    passive2LifeStealRateKey: "パッシブ2ライフ吸収",
+    passive2DamageFlg: "パッシブ2上昇フラグ"
 };
 
 /**
