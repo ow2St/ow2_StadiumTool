@@ -24,6 +24,7 @@ var ability3AddDamageAbility = 0;  // アビリティ３追加ダメージ用変
 var zariaFlg = UNIQUEHEROWORD.zaria;  // ザリア計算用フラグ
 var junoFlg = UNIQUEHEROWORD.damage;  // ジュノ計算用フラグ
 var moiraFlg = UNIQUEHEROWORD.damage;  // モイラ計算用フラグ
+var vendettaFlg = UNIQUEHEROWORD.chargeLevel1;  // ヴェンデッタ計算用フラグ
 
 var queenScratch = 0;  // 傷ダメージ
 var itemSelectMaxNumber = 0;   // アイテム選択上限数
@@ -757,6 +758,7 @@ function initStatus(selectedHero){
             document.getElementById("zaria-button").style.display = "none";
             document.getElementById("juno-button").style.display = "none";
             document.getElementById("moira-button").style.display = "none";
+            document.getElementById("vendetta-button").style.display = "none";
             switch(selectedHero){
 
                 // DVAの場合 メック人切り替えボタンを表示
@@ -764,12 +766,12 @@ function initStatus(selectedHero){
                 case HERONAME.dvaHuman:
                     document.getElementById("dva-button").style.display = "flex";
                     break;
-                
+
                 // ザリアの場合 エネルギーボタンを表示
                 case HERONAME.zaria:
                     document.getElementById("zaria-button").style.display = "flex";
                     break;
-                
+
                 // ジュノの場合 ダメージボタンを表示
                 case HERONAME.juno:
                     document.getElementById("juno-button").style.display = "flex";
@@ -778,6 +780,11 @@ function initStatus(selectedHero){
                 // モイラの場合 エネルギーボタンを表示
                 case HERONAME.moira:
                     document.getElementById("moira-button").style.display = "flex";
+                    break;
+
+                // ヴェンデッタの場合　チャージボタンを表示
+                case HERONAME.vendetta:
+                    document.getElementById("vendetta-button").style.display = "flex";
                     break;
 
                 default:
@@ -1263,6 +1270,46 @@ function moiraButtonClick(){
         moiraButton.innerText = moiraFlg;
     }
     // ステータスボックス初期化
+    initStatusValue(showStatusList,"-","-","-","-");
+
+        // ビルドを反映
+    if(selectedItemRowsData.length > 0) updateStatus_Item(selectedItemRowsData);
+    if(selectedPowerRowsData.length > 0) updateStatus_Power(selectedPowerRowsData);
+}
+
+/**
+ * ヴェンデッタダメージ/ヒール切り替え
+ * @return {void}
+ */
+function vendettaButtonClick(){//TODO:中身を改変する
+    const vendettaButton = document.getElementById("vendetta-button");
+
+    // チャージレベル表示を入れ替える（レベル1/2/3）
+    switch(vendettaButton.innerText){
+        case UNIQUEHEROWORD.chargeLevel1:
+            vendettaFlg = UNIQUEHEROWORD.chargeLevel2;
+            vendettaButton.innerText = vendettaFlg;
+            break;
+
+        case UNIQUEHEROWORD.chargeLevel2:
+            vendettaFlg = UNIQUEHEROWORD.chargeLevel3;
+            vendettaButton.innerText = vendettaFlg;
+            break;
+
+        case UNIQUEHEROWORD.chargeLevel3:
+            vendettaFlg = UNIQUEHEROWORD.chargeLevel1;
+            vendettaButton.innerText = vendettaFlg;
+            break;
+    }
+
+/*     if(vendettaButton.innerText == UNIQUEHEROWORD.chargeLevel1){
+        moiraFlg = UNIQUEHEROWORD.heal;
+        vendettaButton.innerText = moiraFlg;
+    }else if(vendettaButton.innerText == UNIQUEHEROWORD.heal){
+        moiraFlg = UNIQUEHEROWORD.damage;
+        vendettaButton.innerText = moiraFlg;
+    }
+ */    // ステータスボックス初期化
     initStatusValue(showStatusList,"-","-","-","-");
 
         // ビルドを反映
@@ -2500,7 +2547,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                                 {
                                     // 武器アビリティ上昇フラグから上昇する対象を決定 計算順序②
                                     // アビリティ１の場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][4] == BooleanValue.true){
+                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][6] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
                                         if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
                                             showStatusList[STATUSLISTKEY.ability1DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability1DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
@@ -2518,7 +2565,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                                         }
                                     }
                                     // アビリティ３の場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][6] == BooleanValue.true){
+                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][4] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
                                         if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
                                             showStatusList[STATUSLISTKEY.ability3DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability3DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
@@ -2527,7 +2574,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                                         }
                                     }
                                     // ULTの場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][6] == BooleanValue.true){
+                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][3] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
                                         if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
                                             showStatusList[STATUSLISTKEY.ultDamageKey] = Math.round(showStatusList[STATUSLISTKEY.ultDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
@@ -2536,7 +2583,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                                         }
                                     }
                                     // メイン１の場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][0] == BooleanValue.true){
+                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][10] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
                                         if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
                                             showStatusList[STATUSLISTKEY.mainDamageKey] = Math.round(showStatusList[STATUSLISTKEY.mainDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
@@ -2545,7 +2592,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                                         }
                                     }
                                     // メイン２の場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][1] == BooleanValue.true){
+                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][9] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
                                         if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
                                             showStatusList[STATUSLISTKEY.main2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.main2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
@@ -2554,7 +2601,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                                         }
                                     }
                                     // サブ１の場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][2] == BooleanValue.true){
+                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][8] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
                                         if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
                                             showStatusList[STATUSLISTKEY.subDamageKey] = Math.round(showStatusList[STATUSLISTKEY.subDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
@@ -2563,7 +2610,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                                         }
                                     }
                                     // サブ２の場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][3] == BooleanValue.true){
+                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][7] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
                                         if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
                                             showStatusList[STATUSLISTKEY.sub2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.sub2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
@@ -2572,7 +2619,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
                                         }
                                     }
                                     // 近接の場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][8] == BooleanValue.true){
+                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][2] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
                                         if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
                                             showStatusList[STATUSLISTKEY.meleeDamageKey] = Math.round(showStatusList[STATUSLISTKEY.meleeDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;

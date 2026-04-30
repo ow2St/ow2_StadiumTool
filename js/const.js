@@ -233,7 +233,8 @@ window.HERONAME = {
     sigma: "シグマ",
     kiriko: "キリコ",
     freya: "フレイヤ",
-    tracer: "トレーサー"
+    tracer: "トレーサー",
+    vendetta: "ヴェンデッタ"
 };
 
 /**
@@ -243,7 +244,10 @@ window.UNIQUEHEROWORD = {
     zaria: "エネルギー0%",
     zaria100: "エネルギー100%",
     damage: "ダメージ",
-    heal: "ヒール"
+    heal: "ヒール",
+    chargeLevel1: "チャージレベル1",
+    chargeLevel1: "チャージレベル2",
+    chargeLevel1: "チャージレベル3"
 };
 
 /**

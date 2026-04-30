@@ -376,6 +376,20 @@ main-buildsimulator {
     background-color: lightgray;
 }
 
+.vendetta-button {
+    display: none;
+    border: 1px solid black;
+    margin: 0 0 0 10px;
+    font-weight: 550;
+    color: #555555;
+    padding: 0 5px 0 5px;
+    cursor: pointer;
+}
+.vendetta-button:hover{
+    background-color: lightgray;
+}
+
+
 .theoreticalvalue-button {
     display: none;
     border: 1px solid black;

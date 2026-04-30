@@ -2317,7 +2317,7 @@ function applyChangesToTable(tableId, nameColIndex, changesMap) {
 
                     //最下層のdivからヒーロー名を取得
                     const heroNameDiv = Array.from(nameCell.querySelectorAll("div"))
-                    .find(div =>//TODO:ここのコードを理解するところから
+                    .find(div =>
                         div.children.length === 0 &&
                         div.textContent.trim().startsWith("ヒーロー：")
                     );
