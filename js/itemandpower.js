@@ -98,13 +98,15 @@ const sortingCriteria = [
     { column: "itemName", type: "string" },
     { column: "gadgetName", type: "string" },
     { column: "powerName", type: "string" },
+    { column: "category", type: "string" },
     { column: "rarity", type: "string" },
-    { column: "cost", type: "number" }
+    { column: "cost", type: "number" },
+    { column: "CT", type: "number" }
 ]
 
 let sortDirection = new Array(8).fill(null);
 
-    loadAndInitData();
+loadAndInitData();
 
 // ------------------------------
 // 関数部
@@ -137,26 +139,6 @@ async function loadAndInitData() {
         powerAllData = powerData;
         patchNoteAllData = patchNoteData;
         parameterAllData = parameterData;
-        //初期データをカテゴリー順に並び替え
-        try {
-            // 並び替え優先順位を定義
-            const categoryOrder = [CATEGORYELEMENTS.weapon, CATEGORYELEMENTS.ability, CATEGORYELEMENTS.survival];
-
-            itemAllData.sort((a, b) => {
-            // categoryOrder内でのインデックスを取得
-            const indexA = categoryOrder.indexOf(a.category);
-            const indexB = categoryOrder.indexOf(b.category);
-
-            // indexが見つからない（＝該当しないカテゴリ）場合は末尾へ
-            const orderA = indexA === -1 ? categoryOrder.length : indexA;
-            const orderB = indexB === -1 ? categoryOrder.length : indexB;
-
-            // 比較して順序を返す
-            return orderA - orderB;
-            });
-        } catch (error) {
-            console.warn(OTHERERRORMESSAGEKEY.startDataSortError);
-        }
 
         //リスト初期化
         let itemList = [];
@@ -181,15 +163,17 @@ async function loadAndInitData() {
         // パッチノート適用
         applyPatchNotesIfReady();
 
-        //アイテム・ガジェットリスト、コストのキャッシュアイコン初期表示
-        const cost_itemTh = document.querySelector("th#cost.item-th");
-        const cost_gadgetTh = document.querySelector("th#cost.IGP_gadget-th");
-        addCostDivAndSpan(cost_itemTh);
-        addCostDivAndSpan(cost_gadgetTh);
-
         //ヒーロー専用アイテム　初期状態OFF
         const heroButtonDva = document.getElementById("D.VA-item");
         heroButtonDva.onclick();
+
+        //初期ソート
+        itemSortClick("cost");
+        itemSortClick("rarity");
+        itemSortClick("category");
+        gadgetSortClick("CT");
+        gadgetSortClick("cost");
+        gadgetSortClick("rarity");
 
         //キーワード検索にて、エンターキーと検索ボタンのクリックを紐づける
         const searches = document.querySelectorAll('input[type="search"]');
@@ -696,19 +680,39 @@ function linkItemList(itemList) {
  */
 function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityText, costText, uniqueHeroText, textText, idText, statusLists, statusIcons){
     try {
-        // アイテム名列
+        // アイテム情報列
         var td = document.createElement("td");
         var div = document.createElement("div");
         // 中のアイコン
         var iconImg = document.createElement("img");
         iconImg.src = "assets/images/icons/item/" + iconText;
         iconImg.classList.add("itemandpower-itemicon");
-        // 中のアイテム名とヒーロー名
-        var text = document.createElement("span");
-        var textTmp = itemNameText + "\n\n" + "ヒーロー：" + uniqueHeroText;
-        text.innerHTML = textTmp.replace(/\n/g, "<br>");
+
+        // アイテム名と説明文をまとめるdiv
+        var textDiv = document.createElement("div");
+        // 中のアイテム名
+        var itemNameDiv = document.createElement("div");
+        itemNameDiv.innerHTML = "アイテム名：" + itemNameText;
+        // 中のヒーロー名
+        var uniqueHeroDiv = document.createElement("div");
+        uniqueHeroDiv.innerHTML = "ヒーロー：" + uniqueHeroText;
+        // 中のカテゴリー
+        var categoryDiv = document.createElement("div");
+        categoryDiv.innerHTML = "カテゴリー：" + categoryText;
+        // 中のレアリティ
+        var rarityDiv = document.createElement("div");
+        rarityDiv.innerHTML = "レアリティ：" + rarityText;
+        // 中のコスト
+        var costDiv = document.createElement("div");
+        costDiv.innerHTML = "コスト：" + costText;
+
         div.appendChild(iconImg);
-        div.appendChild(text);
+        textDiv.appendChild(itemNameDiv);
+        textDiv.appendChild(uniqueHeroDiv);
+        textDiv.appendChild(categoryDiv);
+        textDiv.appendChild(rarityDiv);
+        textDiv.appendChild(costDiv);
+        div.appendChild(textDiv);
         div.classList.add("name-table");
         td.appendChild(div);
         td.classList.add("item-td");
@@ -717,19 +721,19 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
         // カテゴリー列
         var td = document.createElement("td");
         td.textContent = categoryText;
-        td.classList.add("item-td");
+        td.classList.add("hidden-column");
         tr.appendChild(td);
 
         // レアリティ列
         var td = document.createElement("td");
         td.textContent = rarityText;
-        td.classList.add("item-td");
+        td.classList.add("hidden-column");
         tr.appendChild(td);
 
         // コスト列
         var td = document.createElement("td");
         td.textContent = costText;
-        td.classList.add("item-td");
+        td.classList.add("hidden-column");
         tr.appendChild(td);
 
         // 固有ヒーロー列（非表示）
@@ -1004,52 +1008,63 @@ function linkGadgetList(gadgetList) {
  */
 function appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costText, uniqueHeroText, coolTimeText, textText, idText, statusLists, statusIcons){
     try {
-        // ガジェット名列
+        // ガジェット情報列
         var td = document.createElement("td");
         var div = document.createElement("div");
         // 中のアイコン
         var iconImg = document.createElement("img");
         iconImg.src = "assets/images/icons/gadget/" + iconText;
         iconImg.classList.add("itemandpower-itemicon");
-        // 中のガジェット名とヒーロー名
-        var text = document.createElement("span");
-        var textTmp = gadgetNameText + "\n\n" + "ヒーロー：" + uniqueHeroText;
-        text.innerHTML = textTmp.replace(/\n/g, "<br>");;
+
+        // ガジェット名と説明文をまとめるdiv
+        var textDiv = document.createElement("div");
+        // 中のガジェット名
+        var gadgetNameDiv = document.createElement("div");
+        gadgetNameDiv.innerHTML = "ガジェット名：" + gadgetNameText;
+        // 中のレアリティ
+        var rarityDiv = document.createElement("div");
+        rarityDiv.innerHTML = "レアリティ：" + rarityText;
+        // 中のコスト
+        var costDiv = document.createElement("div");
+        costDiv.innerHTML = "コスト：" + costText;
+        // 中のクールタイム
+        var coolTimeDiv = document.createElement("div");
+        coolTimeDiv.innerHTML = "クールタイム：" + coolTimeText + "秒";
+
         div.appendChild(iconImg);
-        div.appendChild(text);
+        textDiv.appendChild(gadgetNameDiv);
+        textDiv.appendChild(rarityDiv);
+        textDiv.appendChild(costDiv);
+        textDiv.appendChild(coolTimeDiv);
+        div.appendChild(textDiv);
         div.classList.add("name-table");
         td.appendChild(div);
         td.classList.add("IGP_gadget-td");
         tr.appendChild(td);
 
         div.appendChild(iconImg);
-        div.appendChild(text);
+        div.appendChild(textDiv);
         div.classList.add("name-table");
         td.appendChild(div);
         td.classList.add("IGP_gadget-td");
         tr.appendChild(td);
 
-        // レアリティ列
+        // レアリティ列（非表示）
         var td = document.createElement("td");
         td.textContent = rarityText;
-        td.classList.add("IGP_gadget-td");
-        tr.appendChild(td);
-
-        // コスト列
-        var td = document.createElement("td");
-        td.textContent = costText;
-        td.classList.add("IGP_gadget-td");
-        tr.appendChild(td);
-
-        // 固有ヒーロー列（非表示）
-        var td = document.createElement("td");
         td.classList.add("hidden-column");
         tr.appendChild(td);
 
-        // クールタイム列
+        // コスト列(非表示)
+        var td = document.createElement("td");
+        td.textContent = costText;
+        td.classList.add("hidden-column");
+        tr.appendChild(td);
+
+        // クールタイム列(非表示)
         var td = document.createElement("td");
         td.textContent = coolTimeText + "秒";
-        td.classList.add("IGP_gadget-td");
+        td.classList.add("hidden-column");
         tr.appendChild(td);
 
 
@@ -1085,6 +1100,11 @@ function appendChildGadgetList(tr, gadgetNameText, iconText, rarityText, costTex
         var td = document.createElement("td");
         td.textContent = textText;
         td.classList.add("IGP_gadget-td");
+        tr.appendChild(td);
+
+        // 固有ヒーロー列（非表示）
+        var td = document.createElement("td");
+        td.classList.add("hidden-column");
         tr.appendChild(td);
 
         // アイテムID列（非表示）
@@ -1744,15 +1764,13 @@ function itemSortClick(id){
 
         // 表示テキスト更新
         const labelMap = {
+            itemInformation: THTEXT.itemInformation,
             itemName: THTEXT.itemName,
+            category: THTEXT.category,
             rarity: THTEXT.rarity,
-            cost: THTEXT.cost
+            cost: THTEXT.cost,
+            CT: THTEXT.ct
         };
-
-        // テーブル列名初期化
-        sortingCriteria.forEach(row => {
-            document.getElementById(row.column).innerText = labelMap[row.column];
-        });
 
         let arrows = "";
 
@@ -1767,6 +1785,8 @@ function itemSortClick(id){
             addCostDivAndSpan(cost_itemTh);
             document.getElementById("span-cost").innerText = labelMap[id];
             document.getElementById("span-costArrow").innerText = arrows;
+        }else if(id == "itemName"){
+            document.getElementById(id).innerText = labelMap["itemInformation"] + arrows;
         }else{
             // ソート結果に応じた列名に更新
             document.getElementById(id).innerText = labelMap[id] + arrows;
@@ -1793,6 +1813,8 @@ function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
     try {
         //レア度の並び替えの基準を設定
         const rarityOrder = [RARITYELEMENTS.common, RARITYELEMENTS.rare, RARITYELEMENTS.epic]
+        //カテゴリーの並び替えの基準を設定
+        const categoryOrder = [CATEGORYELEMENTS.weapon, CATEGORYELEMENTS.ability, CATEGORYELEMENTS.survival]
 
         const rows = Array.from(tbody.querySelectorAll("tr"));
 
@@ -1820,6 +1842,12 @@ function itemTableSort(headers, tbody, sortingCriteria,index,sorting) {
             if (column == "rarity") {
                 valA = rarityOrder.indexOf(valA);
                 valB = rarityOrder.indexOf(valB);
+            }
+
+            // カテゴリーを比較用に数値変換
+            if (column == "category") {
+                valA = categoryOrder.indexOf(valA);
+                valB = categoryOrder.indexOf(valB);
             }
 
             let comparison = 0;
@@ -1871,15 +1899,12 @@ function gadgetSortClick(id){
 
         // 表示テキスト更新
         const labelMap = {
+            gadgetInformation: THTEXT.gadgetInformation,
             gadgetName: THTEXT.gadgetName,
             rarity: THTEXT.rarity,
-            cost: THTEXT.cost
+            cost: THTEXT.cost,
+            CT: THTEXT.ct
         };
-
-        // テーブル列名初期化
-        sortingCriteria.forEach(row => {
-            document.getElementById(row.column).innerText = labelMap[row.column];
-        });
 
         let arrows = "";
 
@@ -1894,6 +1919,8 @@ function gadgetSortClick(id){
             addCostDivAndSpan(cost_gadgetTh);
             document.getElementById("span-cost").innerText = labelMap[id];
             document.getElementById("span-costArrow").innerText = arrows;
+        }else if(id == "gadgetName"){
+            document.getElementById(id).innerText = labelMap["gadgetInformation"] + arrows;
         }else{
             // ソート結果に応じた列名に更新
             document.getElementById(id).innerText = labelMap[id] + arrows;
@@ -2275,13 +2302,53 @@ function applyChangesToTable(tableId, nameColIndex, changesMap) {
 
         rows.forEach(tr => {
             const nameCell = tr.cells[nameColIndex];
+            var nameText = "";
+            var heroName = "";
 
-            // テーブルのアイテム/パワー名を取得
-            const itemNameText = nameCell.textContent.trim().split('\n')[0].trim().replace("ヒーロー：", "/");
-            const itemName = itemNameText.substring(0,itemNameText.indexOf("/"));
-            const heroName = itemNameText.substring(itemNameText.indexOf("/") + 1,itemNameText.length);
+            switch(tableId){
+                case "item-table":
+                    //最下層のdivからアイテム名を取得
+                    const itemNameDiv = Array.from(nameCell.querySelectorAll("div"))
+                    .find(div =>
+                        div.children.length === 0 &&
+                        div.textContent.trim().startsWith("アイテム名：")
+                    );
+                    nameText = itemNameDiv ? itemNameDiv.textContent.trim().replace("アイテム名：", "") : nameCell.textContent.trim();
 
-            const changes = changesMap.get(itemName);
+                    //最下層のdivからヒーロー名を取得
+                    const heroNameDiv = Array.from(nameCell.querySelectorAll("div"))
+                    .find(div =>
+                        div.children.length === 0 &&
+                        div.textContent.trim().startsWith("ヒーロー：")
+                    );
+                    heroName = heroNameDiv ? heroNameDiv.textContent.trim().replace("ヒーロー：", "") : "";
+                    break;
+
+                case "gadget-table":
+                    //最下層のdivからガジェット名を取得
+                    const gadgetNameDiv = Array.from(nameCell.querySelectorAll("div"))
+                    .find(div =>
+                        div.children.length === 0 &&
+                        div.textContent.trim().startsWith("ガジェット名：")
+                    );
+                    nameText = gadgetNameDiv ? gadgetNameDiv.textContent.trim().replace("ガジェット名：", "") : nameCell.textContent.trim();
+
+                    heroName = "-"; //ガジェットはヒーロー共通のため、heroNameは-で扱う
+                    break;
+
+                //パワーはnameCellから直接パワー名とヒーロー名を取得(Divの多階層構造がないため)
+                case "power-table":
+                    //パワー名を取得
+                    nameText = nameCell.textContent.trim().split("ヒーロー：")[0];
+
+                    //ヒーロー名を取得
+                    heroName = nameCell.textContent.trim().split("ヒーロー：")[1];
+                    break;
+                default:
+                    console.warn(OTHERERRORMESSAGEKEY.unexpectedStatus + " : " + tableId);
+            }
+
+            const changes = changesMap.get(nameText);
             let filteredChanges = changes;
 
             if (changes) {

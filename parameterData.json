@@ -25,6 +25,11 @@
         "value": 1.5
     },
     {
+        "id": "b6f0d71e-efea-4b83-bdd9-52e9b1f40962",
+        "name": "LifeMinVal",
+        "value": 1
+    },
+    {
         "id": "ce50c767-6399-4e0e-8f84-fb63f8ac41d7",
         "name": "coalescenceheal",
         "value": 1.647

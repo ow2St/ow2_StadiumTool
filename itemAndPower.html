@@ -10,13 +10,15 @@
     <!--ヘッダー-->
     <header>
         <div class="header-top">
-            <p class="header-title">アイテム/ガジェット/パワー一覧</p>
+            <p class="header-title">アイテム/ガジェット/<br>
+                    パワー一覧</p>
             <img src="assets/images/icons/ow.png" class="ow-icon">
             <img src="assets/images/icons/stadium.png" class="stadium-icon">
         </div>
         <div class="header-bottom">
             <!--ボタン後ろに空白が入るため改行しない-->
-            <a href="index.html" class="header-button">トップページ</a><a href="itemAndPower.html" class="header-button-selected" >アイテム/パワー一覧</a><a href="buildSimulator.html" class="header-button">ビルドシミュレーター</a><a href="patchNote.html" class="header-button">パッチノート</a>
+            <a href="index.html" class="header-button">トップページ</a><a href="itemAndPower.html" style="vertical-align: bottom; font-size: 17px; align-items: center;" class="header-button-selected" >アイテム/ガジェット/<br>
+                パワー一覧</a><a href="buildSimulator.html" class="header-button">ビルドシミュレーター</a><a href="patchNote.html" class="header-button">パッチノート</a>
         </div>
     </header>
     <body>
@@ -112,14 +114,14 @@
                     <table class="item-table" id="item-table">
                         <thead class="item-thead">
                             <tr class="item-tr" style="font-size:12px";>
-                                <th class="item-th" style="width: 260px; cursor: pointer;" data-column="itemName" onclick="itemSortClick(this.id)" id="itemName">アイテム情報</th>
-                                <th class="item-th" style="width: 80px;">カテゴリー</th>
-                                <th class="item-th" style="width: 80px; cursor: pointer;" data-column="rarity" onclick="itemSortClick(this.id)" id="rarity">レアリティ</th>
-                                <th class="item-th" style="width: 60px; cursor: pointer;" data-column="cost" onclick="itemSortClick(this.id)" id="cost">コスト</th>
+                                <th class="item-th" style="width: 380px; cursor: pointer;" data-column="itemName" id="itemName" onclick="itemSortClick(this.id)">アイテム情報</th>
+                                <th class="item-th" style="display: none;" data-column="category" id="category">カテゴリー</th>
+                                <th class="item-th" style="display: none;" data-column="rarity" id="rarity">レアリティ</th>
+                                <th class="item-th" style="display: none;" data-column="cost" id="cost">コスト</th>
                                 <th class="item-th" style="display: none;">固有ヒーロー</th>
-                                <th class="item-th" style="width: 160px;">ステータス</th>
-                                <th class="item-th" style="width: 300px;">テキスト</th>
-                                <th class="item-th" style="width: 300px;">変更履歴</th>
+                                <th class="item-th" style="width: 250px;">ステータス</th>
+                                <th class="item-th" style="width: 250px;">テキスト</th>
+                                <th class="item-th" style="width: 250px;">変更履歴</th>
                             </tr>
                         </thead>
                         <tbody style="font-size:12px";>
@@ -163,13 +165,13 @@
                     <table class="IGP_gadget-table" id="gadget-table">
                         <thead class="IGP_gadget-thead">
                             <tr class="IGP_gadget-tr" style="font-size:12px";>
-                                <th class="IGP_gadget-th" style="width: 260px; cursor: pointer;" data-column="gadgetName" onclick="gadgetSortClick(this.id)" id="gadgetName">ガジェット名</th>
-                                <th class="IGP_gadget-th" style="width: 80px; cursor: pointer;" data-column="rarity" onclick="gadgetSortClick(this.id)" id="rarity">レアリティ</th>
-                                <th class="IGP_gadget-th" style="width: 60px; cursor: pointer;" data-column="cost" onclick="gadgetSortClick(this.id)" id="cost">コスト</th>
-                                <th class="IGP_gadget-th" style="width: 80px;">クールタイム</th>
-                                <th class="IGP_gadget-th" style="width: 160px;">ステータス</th>
-                                <th class="IGP_gadget-th" style="width: 300px;">テキスト</th>
-                                <th class="IGP_gadget-th" style="width: 300px;">変更履歴</th>
+                                <th class="IGP_gadget-th" style="width: 380px; cursor: pointer;" data-column="gadgetName" id="gadgetName" onclick="gadgetSortClick(this.id)">ガジェット情報</th>
+                                <th class="IGP_gadget-th" style="display: none;" data-column="rarity" id="rarity">レアリティ</th>
+                                <th class="IGP_gadget-th" style="display: none;" data-column="cost" id="cost">コスト</th>
+                                <th class="IGP_gadget-th" style="display: none;" data-column="CT" id="CT">クールタイム</th>
+                                <th class="IGP_gadget-th" style="width: 250px;">ステータス</th>
+                                <th class="IGP_gadget-th" style="width: 250px;">テキスト</th>
+                                <th class="IGP_gadget-th" style="width: 250px;">変更履歴</th>
                             </tr>
                         </thead>
                         <tbody style="font-size:12px";>
