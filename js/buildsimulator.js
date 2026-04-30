@@ -189,7 +189,19 @@ const statusKeyMap = {
     sub2reload: STATUSLISTKEY.sub2ReloadKey,
     sub2ammo: STATUSLISTKEY.sub2AmmoKey,
     sub2hsrate: STATUSLISTKEY.sub2HSRateKey,
-    sub2lifesteal: STATUSLISTKEY.sub2LifeStealRateKey
+    sub2lifesteal: STATUSLISTKEY.sub2LifeStealRateKey,
+    passive1name: STATUSLISTKEY.passive1NameKey,
+    passive1damage: STATUSLISTKEY.passive1DamageKey,
+    passive1duration: STATUSLISTKEY.passive1DurationKey,
+    passive1ct: STATUSLISTKEY.passive1CTKey,
+    passive1lifesteal: STATUSLISTKEY.passive1LifeStealRateKey,
+    passive1damageflg: STATUSLISTKEY.passive1DamageFlg,
+    passive2name: STATUSLISTKEY.passive2NameKey,
+    passive2damage: STATUSLISTKEY.passive2DamageKey,
+    passive2duration: STATUSLISTKEY.passive2DurationKey,
+    passive2ct: STATUSLISTKEY.passive2CTKey,
+    passive2lifesteal: STATUSLISTKEY.passive2LifeStealRateKey,
+    passive2damageflg: STATUSLISTKEY.passive2DamageFlg
 };
 
 // パラメータキー対応マッピング（英語 → 日本語）
@@ -619,7 +631,19 @@ function organizeStatusData(statusAllData) {
             sub2reload: Slist.sub2reload,
             sub2ammo: Slist.sub2ammo,
             sub2hsrate: Slist.sub2hsrate,
-            sub2lifesteal: Slist.sub2lifesteal
+            sub2lifesteal: Slist.sub2lifesteal,
+            passive1name: Slist.passive1name,
+            passive1damage: Slist.passive1damage,
+            passive1duration: Slist.passive1duration,
+            passive1ct: Slist.passive1ct,
+            passive1lifesteal: Slist.passive1lifesteal,
+            passive1damageflg: Slist.passive1damageflg,
+            passive2name: Slist.passive2name,
+            passive2damage: Slist.passive2damage,
+            passive2duration: Slist.passive2duration,
+            passive2ct: Slist.passive2ct,
+            passive2lifesteal: Slist.passive2lifesteal,
+            passive2damageflg: Slist.passive2damageflg
         };
     })
     return selectedData;
@@ -871,8 +895,24 @@ function initStatusValue(statuslist, addItemText, addItemOthers, gadgetName, gad
         }
     ];
 
-    // アビリティ、ウルトキーをまとめておく配列
+    // パッシブ、アビリティ、ウルトキーをまとめておく配列
     const anothers = [
+        // パッシブ1
+        {
+            nameKey: STATUSLISTKEY.passive1NameKey,
+            attackPointKey: STATUSLISTKEY.passive1DamageKey,
+            CTKey: STATUSLISTKEY.passive1CTKey,
+            durationKey: STATUSLISTKEY.passive1DurationKey,
+            lifeStealRateKey: STATUSLISTKEY.passive1LifeStealRateKey
+        },
+        // パッシブ2
+        {
+            nameKey: STATUSLISTKEY.passive2NameKey,
+            attackPointKey: STATUSLISTKEY.passive2DamageKey,
+            CTKey: STATUSLISTKEY.passive2CTKey,
+            durationKey: STATUSLISTKEY.passive2DurationKey,
+            lifeStealRateKey: STATUSLISTKEY.passive2LifeStealRateKey
+        },
         // アビリティ１
         {
             nameKey: STATUSLISTKEY.ability1NameKey,
@@ -2804,6 +2844,14 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         showStatusList[STATUSLISTKEY.sub2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.sub2DamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         showStatusList[STATUSLISTKEY.status_meleeDamageKey] = Math.round(showStatusList[STATUSLISTKEY.status_meleeDamageKey] * (weaponPowerTmp / 100 + 1) * 10 ** 2) / 10 ** 2;
 
+        // パッシブに反映
+        if(showStatusList[STATUSLISTKEY.passive1DamageFlg] == 1){
+            showStatusList[STATUSLISTKEY.passive1DamageKey] = Math.round(showStatusList[STATUSLISTKEY.passive1DamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+        }
+        if(showStatusList[STATUSLISTKEY.passive2DamageFlg] == 1){
+            showStatusList[STATUSLISTKEY.passive2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.passive2DamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+        }
+
         // ゲンジ・ソルジャー・マーシーの場合はULTにも武器パワーが乗るので対応
         if(showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.genji || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.soldier76 || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.mercy){
             showStatusList[STATUSLISTKEY.ultDamageKey] = Math.round(showStatusList[STATUSLISTKEY.ultDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
@@ -2819,6 +2867,14 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         // 表示用ステータスリストに反映
         showStatusList[STATUSLISTKEY.ability1DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability1DamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         showStatusList[STATUSLISTKEY.ability2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability2DamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+
+        // パッシブに反映
+        if(showStatusList[STATUSLISTKEY.passive1DamageFlg] == 2){
+            showStatusList[STATUSLISTKEY.passive1DamageKey] = Math.round(showStatusList[STATUSLISTKEY.passive1DamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+        }
+        if(showStatusList[STATUSLISTKEY.passive2DamageFlg] == 2){
+            showStatusList[STATUSLISTKEY.passive2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.passive2DamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
+        }
 
         // ラインハルトとシグマの盾は除外
         if(showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.reinhardt && showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.sigma){
@@ -2894,6 +2950,15 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         if(showStatusList[STATUSLISTKEY.sub2DamageKey] != 0){
             showStatusList[STATUSLISTKEY.sub2LifeStealRateKey] = showStatusList[STATUSLISTKEY.sub2LifeStealRateKey] + weapon_LifeStealTmp / 100;
         }
+
+        // パッシブに反映
+        if(showStatusList[STATUSLISTKEY.passive1DamageFlg] == 1 && showStatusList[STATUSLISTKEY.passive1DamageKey] != 0){
+            showStatusList[STATUSLISTKEY.passive1LifeStealRateKey] = showStatusList[STATUSLISTKEY.passive1LifeStealRateKey] + weapon_LifeStealTmp / 100;
+        }
+        if(showStatusList[STATUSLISTKEY.passive2DamageFlg] == 1 && showStatusList[STATUSLISTKEY.passive2DamageKey] != 0){
+            showStatusList[STATUSLISTKEY.passive2LifeStealRateKey] = showStatusList[STATUSLISTKEY.passive2LifeStealRateKey] + weapon_LifeStealTmp / 100;
+        }
+
         // ゲンジ・ソルジャーの場合はULTにも武器パワーが乗るので対応
         if(showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.genji || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.soldier76){
             showStatusList[STATUSLISTKEY.ultLifeStealRateKey] = showStatusList[STATUSLISTKEY.ultLifeStealRateKey] + weapon_LifeStealTmp / 100;
@@ -2909,6 +2974,14 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         }
         if(showStatusList[STATUSLISTKEY.ability2DamageKey] != 0){
             showStatusList[STATUSLISTKEY.ability2LifeStealRateKey] = showStatusList[STATUSLISTKEY.ability2LifeStealRateKey] + ability_LifeStealTmp / 100;
+        }
+
+        // パッシブに反映
+        if(showStatusList[STATUSLISTKEY.passive1DamageFlg] == 2 && showStatusList[STATUSLISTKEY.passive1DamageKey] != 0){
+            showStatusList[STATUSLISTKEY.passive1LifeStealRateKey] = showStatusList[STATUSLISTKEY.passive1LifeStealRateKey] + ability_LifeStealTmp / 100;
+        }
+        if(showStatusList[STATUSLISTKEY.passive2DamageFlg] == 2 && showStatusList[STATUSLISTKEY.passive2DamageKey] != 0){
+            showStatusList[STATUSLISTKEY.passive2LifeStealRateKey] = showStatusList[STATUSLISTKEY.passive2LifeStealRateKey] + ability_LifeStealTmp / 100;
         }
 
         // ラインハルトとシグマの盾は除外
