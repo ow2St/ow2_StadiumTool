@@ -1164,6 +1164,19 @@ function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,life
         if(selectedHero == HERONAME.moira && moiraFlg == UNIQUEHEROWORD.heal){
             attackValue = Math.round((statuslist[STATUSLISTKEY.ultDamageKey] * coalescenceHealingRate * 10 ** 2) / 10 ** 2);
         }
+        else if(selectedHero == HERONAME.vendetta){
+            switch(vendettaFlg){
+                case UNIQUEHEROWORD.chargeLevel1:
+
+                    break;
+                case UNIQUEHEROWORD.chargeLevel2:
+                    attackValue = Number(statuslist[attackPointKey]) * 2;
+                    break;
+                case UNIQUEHEROWORD.chargeLevel3:
+                    attackValue = Number(statuslist[attackPointKey]) * 4;
+                    break;
+            }
+        }
     }
 
     // 持続時間
@@ -1318,10 +1331,10 @@ function moiraButtonClick(){
 }
 
 /**
- * ヴェンデッタダメージ/ヒール切り替え
+ * ヴェンデッタチャージレベル1/2/3切り替え
  * @return {void}
  */
-function vendettaButtonClick(){//TODO:中身を改変する
+function vendettaButtonClick(){
     const vendettaButton = document.getElementById("vendetta-button");
 
     // チャージレベル表示を入れ替える（レベル1/2/3）
@@ -1342,14 +1355,7 @@ function vendettaButtonClick(){//TODO:中身を改変する
             break;
     }
 
-/*     if(vendettaButton.innerText == UNIQUEHEROWORD.chargeLevel1){
-        moiraFlg = UNIQUEHEROWORD.heal;
-        vendettaButton.innerText = moiraFlg;
-    }else if(vendettaButton.innerText == UNIQUEHEROWORD.heal){
-        moiraFlg = UNIQUEHEROWORD.damage;
-        vendettaButton.innerText = moiraFlg;
-    }
- */    // ステータスボックス初期化
+    // ステータスボックス初期化
     initStatusValue(showStatusList,"-","-","-","-");
 
         // ビルドを反映
