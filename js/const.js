@@ -276,6 +276,7 @@ window.MAXNUMBER = {
 window.THTEXT = {
     itemInformation: "アイテム情報",
     gadgetInformation: "ガジェット情報",
+    powerInformation: "パワー情報",
     itemName: "アイテム名",
     gadgetName: "ガジェット名",
     powerName: "パワー名",

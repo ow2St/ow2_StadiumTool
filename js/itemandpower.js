@@ -1781,6 +1781,7 @@ function itemSortClick(id){
             arrows = "▼"
         }
 
+        // ソート結果に応じた列名に更新
         if(id == "cost"){
             let cost_itemTh = document.querySelector("th#cost.item-th");
             addCostDivAndSpan(cost_itemTh);
@@ -1789,7 +1790,6 @@ function itemSortClick(id){
         }else if(id == "itemName"){
             document.getElementById(id).innerText = labelMap["itemInformation"] + arrows;
         }else{
-            // ソート結果に応じた列名に更新
             document.getElementById(id).innerText = labelMap[id] + arrows;
         }
     } catch (error) {
@@ -1915,6 +1915,7 @@ function gadgetSortClick(id){
             arrows = "▼"
         }
 
+        // ソート結果に応じた列名に更新
         if(id == "cost"){
             let cost_gadgetTh = document.querySelector("th#cost.IGP_gadget-th");
             addCostDivAndSpan(cost_gadgetTh);
@@ -1923,7 +1924,6 @@ function gadgetSortClick(id){
         }else if(id == "gadgetName"){
             document.getElementById(id).innerText = labelMap["gadgetInformation"] + arrows;
         }else{
-            // ソート結果に応じた列名に更新
             document.getElementById(id).innerText = labelMap[id] + arrows;
         }
     } catch (error) {
@@ -2027,12 +2027,8 @@ function powerSortClick(id){
         // 表示テキスト更新
         const labelMap = {
             powerName: THTEXT.powerName,
+            powerInformation: THTEXT.powerInformation
         };
-
-        // テーブル列名初期化
-        sortingCriteria.forEach(row => {
-            document.getElementById(row.column).innerText = labelMap[row.column];
-        });
 
         let arrows = "";
 
@@ -2043,7 +2039,12 @@ function powerSortClick(id){
         }
 
         // ソート結果に応じた列名に更新
-        document.getElementById(id).innerText = labelMap[id] + arrows;
+        if(id == "powerName"){
+            document.getElementById(id).innerText = labelMap["powerInformation"] + arrows;
+        }else{
+            document.getElementById(id).innerText = labelMap[id] + arrows;
+        }
+
     } catch (error) {
         if(error.message != ""){
             error.message += SUBERRORMESSAGEKEY.powerDataSortSetting;
