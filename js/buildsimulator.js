@@ -24,7 +24,7 @@ var ability3AddDamageAbility = 0;  // アビリティ３追加ダメージ用変
 var zariaFlg = UNIQUEHEROWORD.zaria;  // ザリア計算用フラグ
 var junoFlg = UNIQUEHEROWORD.damage;  // ジュノ計算用フラグ
 var moiraFlg = UNIQUEHEROWORD.damage;  // モイラ計算用フラグ
-var vendettaFlg = UNIQUEHEROWORD.chargeLevel1;  // ヴェンデッタ計算用フラグ
+var vendettaFlg = UNIQUEHEROWORD.chargeLevel3;  // ヴェンデッタ計算用フラグ
 
 var queenScratch = 0;  // 傷ダメージ
 var itemSelectMaxNumber = 0;   // アイテム選択上限数
@@ -334,7 +334,8 @@ async function loadAndInitBuildData() {
                 const beforeSelectedGadgetCount = selectedItemRowsData.filter(item => item[GADGETLISTKEY.gadget_categoryKey] == "ガジェット").length;
 
                 // チェックボックスの状態が変わる毎に選択リストを更新
-                selectedItemRowsData = updateSelectedList(itemAndGadgetList, true, selectedItemRowsData, e.target.parentElement.parentElement.cells[1].innerText, e.target.checked);
+                targetInnerText = e.target.parentElement.parentElement.cells[1].innerText.split("\n")[0].split("：")[1].trim();
+                selectedItemRowsData = updateSelectedList(itemAndGadgetList, true, selectedItemRowsData, targetInnerText, e.target.checked);
 
                 // ビルド欄の表示を更新
                 updateBuild_Item(selectedItemRowsData);
@@ -1164,18 +1165,8 @@ function processAnother(statuslist,nameKey,attackPointKey,CTKey,durationKey,life
         if(selectedHero == HERONAME.moira && moiraFlg == UNIQUEHEROWORD.heal){
             attackValue = Math.round((statuslist[STATUSLISTKEY.ultDamageKey] * coalescenceHealingRate * 10 ** 2) / 10 ** 2);
         }
-        else if(selectedHero == HERONAME.vendetta){
-            switch(vendettaFlg){
-                case UNIQUEHEROWORD.chargeLevel1:
-
-                    break;
-                case UNIQUEHEROWORD.chargeLevel2:
-                    attackValue = Number(statuslist[attackPointKey]) * 2;
-                    break;
-                case UNIQUEHEROWORD.chargeLevel3:
-                    attackValue = Number(statuslist[attackPointKey]) * 4;
-                    break;
-            }
+        else if(selectedHero == HERONAME.vendetta && vendettaFlg == UNIQUEHEROWORD.chargeLevel1){
+            attackValue = Number(statuslist[attackPointKey]) / 4;
         }
     }
 
@@ -1337,22 +1328,13 @@ function moiraButtonClick(){
 function vendettaButtonClick(){
     const vendettaButton = document.getElementById("vendetta-button");
 
-    // チャージレベル表示を入れ替える（レベル1/2/3）
-    switch(vendettaButton.innerText){
-        case UNIQUEHEROWORD.chargeLevel1:
-            vendettaFlg = UNIQUEHEROWORD.chargeLevel2;
-            vendettaButton.innerText = vendettaFlg;
-            break;
-
-        case UNIQUEHEROWORD.chargeLevel2:
-            vendettaFlg = UNIQUEHEROWORD.chargeLevel3;
-            vendettaButton.innerText = vendettaFlg;
-            break;
-
-        case UNIQUEHEROWORD.chargeLevel3:
-            vendettaFlg = UNIQUEHEROWORD.chargeLevel1;
-            vendettaButton.innerText = vendettaFlg;
-            break;
+    // チャージレベル3↔1を入れ替える
+    if(vendettaButton.innerText == UNIQUEHEROWORD.chargeLevel3){
+        vendettaFlg = UNIQUEHEROWORD.chargeLevel1;
+        vendettaButton.innerText = vendettaFlg;
+    }else if(vendettaButton.innerText == UNIQUEHEROWORD.chargeLevel1){
+        vendettaFlg = UNIQUEHEROWORD.chargeLevel3;
+        vendettaButton.innerText = vendettaFlg;
     }
 
     // ステータスボックス初期化
@@ -1720,7 +1702,7 @@ function linkItemList(itemList, id) {
  * @param {text} id 選択ヒーロー名
  * @param {array} statusLists ステータスリスト配列
  * @param {array} statusIcons ステータスアイコン配列
- * @return {object} tr テーブル行要素返却    
+ * @return {object} tr テーブル行要素返却
  */
 function appendChildItemList(tr, isCheck, itemNameText, iconText, textText, rarityText, costText, uniqueHeroText, id, statusLists, statusIcons){
     // 選択列
@@ -1733,20 +1715,33 @@ function appendChildItemList(tr, isCheck, itemNameText, iconText, textText, rari
     td.appendChild(input);
     tr.appendChild(td);
 
-    // アイテム名列
-    var td = document.createElement("td");
-    td.textContent = itemNameText;
-    td.classList.add("item-td");
-    tr.appendChild(td);
 
-    // アイコン列
+    // アイテム情報列
     var td = document.createElement("td");
-    td.classList.add("item-td");
+    var div = document.createElement("div");
+    // 中のアイコン
     var iconImg = document.createElement("img");
     iconImg.src = "assets/images/icons/item/" + iconText;
     iconImg.classList.add("buildsimulator-itemicon");
-    td.appendChild(iconImg);
+
+    // アイテム名と説明文をまとめるdiv
+    var textDiv = document.createElement("div");
+    // 中のアイテム名
+    var itemNameDiv = document.createElement("div");
+    itemNameDiv.innerHTML = "アイテム名：" + itemNameText;
+    // 中のコスト
+    var costDiv = document.createElement("div");
+    costDiv.innerHTML = "コスト：" + costText;
+
+    div.appendChild(iconImg);
+    textDiv.appendChild(itemNameDiv);
+    textDiv.appendChild(costDiv);
+    div.appendChild(textDiv);
+    div.classList.add("name-table");
+    td.appendChild(div);
+    td.classList.add("item-td");
     tr.appendChild(td);
+
 
     // ステータス列
     var td = document.createElement("td");
@@ -1784,7 +1779,7 @@ function appendChildItemList(tr, isCheck, itemNameText, iconText, textText, rari
     td.textContent = rarityText;
     td.classList.add("hidden-column");
     tr.appendChild(td);
-    
+
     // コスト列（非表示）
     var td = document.createElement("td");
     td.textContent = costText;
@@ -2342,6 +2337,16 @@ function updateBuild_Item(selectedItemRows){
  * @return {void}
  */
 function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
+
+    // 合計キャッシュを計算して表示
+    let totalCash = 0;
+
+    selectedItemRows.forEach(item => {
+        totalCash += item[ITEMLISTKEY.item_costKey] || 0;
+        totalCash += item[GADGETLISTKEY.gadget_costKey] || 0;
+    });
+
+    document.getElementById("total-cash").innerText = "合計キャッシュ: " + totalCash;
 
     // 選択中のヒーローのステータスを初期化
     const showStatusListTmp = initStatusList.filter(heroStatus => heroStatus[STATUSLISTKEY.heroNameKey] === selectedHero);

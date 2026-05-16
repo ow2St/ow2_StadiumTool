@@ -718,6 +718,7 @@ function appendChildItemList(tr, itemNameText, iconText, categoryText, rarityTex
         td.classList.add("item-td");
         tr.appendChild(td);
 
+
         // カテゴリー列
         var td = document.createElement("td");
         td.textContent = categoryText;
