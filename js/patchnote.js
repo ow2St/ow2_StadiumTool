@@ -51,7 +51,7 @@ function organizeData(data) {
         }
 
         // 日付を分割
-        const [year, month, day] = item.date.split("/");
+        const [year, month, day] = item.date.split("-");
         const character = item.hero || "システム";
 
         if (!organized[year]) {
@@ -75,7 +75,7 @@ function organizeData(data) {
     // 最新日付のデータを退避
     let latestData = null;
     if (latestDateString) {
-        const [latestYear, latestMonth, latestDay] = latestDateString.split('/');
+        const [latestYear, latestMonth, latestDay] = latestDateString.split('-');
         // 最新日付のデータを取り出す
         latestData = organized[latestYear][latestMonth][latestDay];
     }
@@ -83,7 +83,7 @@ function organizeData(data) {
     return {
         organizedData: organized,
         latestData: latestData,
-        latestDateString: latestDateString // YYYY/MM/DD形式の最新日付も退避
+        latestDateString: latestDateString // YYYY-MM-DD形式の最新日付も退避
     };
 }
 
@@ -310,11 +310,11 @@ function buildAccordion(organizedData) {
 
 /**
  * 日付を日本語形式に変換する関数
- * @param {string} dateString スラッシュ区切りの日付文字列 (例: "2024/01/01")
+ * @param {string} dateString ハイフン区切りの日付文字列 (例: "2024-01-01")
  * @return {string} 日本語形式の日付文字列 (例: "2024年1月1日")
  */
-function formatSlashDateToJapanese(dateString) {
-    const parts = dateString.split('/');
+function formatDateToJapanese(dateString) {
+    const parts = dateString.split('-');
     const year = parts[0];
     const month = parseInt(parts[1], 10);
     const day = parseInt(parts[2], 10);
@@ -324,7 +324,7 @@ function formatSlashDateToJapanese(dateString) {
 /**
  * 最新日付の全データを専用領域に表示する関数
  * @param {object} latestData 最新日付のパッチノートデータ
- * @param {string} latestDateString スラッシュ区切りの日付文字列 (例: "2024/01/01")
+ * @param {string} latestDateString ハイフン区切りの日付文字列 (例: "2024-01-01")
  * @return {void}
  */
 function displayLatestData(latestData, latestDateString) {
@@ -341,7 +341,7 @@ function displayLatestData(latestData, latestDateString) {
     displayContainer.innerHTML = '';
     
     // 見出しを追加
-    const formattedDate = formatSlashDateToJapanese(latestDateString);
+    const formattedDate = formatDateToJapanese(latestDateString);
     const dateTitle = document.createElement('h3');
     dateTitle.textContent = ` ${formattedDate}パッチノート（最新）`;
     displayContainer.appendChild(dateTitle);
