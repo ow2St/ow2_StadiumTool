@@ -1973,20 +1973,32 @@ function linkGadgetList(gadgetList, id) {
         td.appendChild(input);
         tr.appendChild(td);
 
-        // ガジェット名列
+        // ガジェット情報列
         var td = document.createElement("td");
-        td.textContent = gadgetNameText;
+        var div = document.createElement("div");
+        // 中のアイコン
+        var iconImg = document.createElement("img");
+        iconImg.src = "assets/images/icons/gadget/" + iconText;
+        iconImg.classList.add("buildsimulator-itemicon");
+
+        // ガジェット名と説明文をまとめるdiv
+        var textDiv = document.createElement("div");
+        // 中のガジェット名
+        var gadgetNameDiv = document.createElement("div");
+        gadgetNameDiv.innerHTML = "ガジェット名：" + gadgetNameText;
+        // 中のコスト
+        var costDiv = document.createElement("div");
+        costDiv.innerHTML = "コスト：" + costText;
+
+        div.appendChild(iconImg);
+        textDiv.appendChild(gadgetNameDiv);
+        textDiv.appendChild(costDiv);
+        div.appendChild(textDiv);
+        div.classList.add("name-table");
+        td.appendChild(div);
         td.classList.add("gadget-td");
         tr.appendChild(td);
 
-        // アイコン列
-        var td = document.createElement("td");
-        var iconImg = document.createElement("img");
-        iconImg.src = "assets/images/icons/gadget/" + iconText;
-        iconImg.classList.add("buildsimulator-gadgeticon");
-        td.appendChild(iconImg);
-        td.classList.add("gadget-td");
-        tr.appendChild(td);
 
         // ステータス列
         var td = document.createElement("td");
@@ -2123,20 +2135,28 @@ function linkPowerList(powerList, id) {
         td.appendChild(input);
         tr.appendChild(td);
 
-        // パワー名列
+        // パワー情報列
         var td = document.createElement("td");
-        td.textContent = powerNameText;
+        var div = document.createElement("div");
+        // 中のアイコン
+        var iconImg = document.createElement("img");
+        iconImg.src = "assets/images/icons/power/" + iconText;
+        iconImg.classList.add("buildsimulator-itemicon");
+
+        // パワー名と説明文をまとめるdiv
+        var textDiv = document.createElement("div");
+        // 中のパワーネーム
+        var powerNameDiv = document.createElement("div");
+        powerNameDiv.innerHTML = "パワー名：" + powerNameText;
+
+        div.appendChild(iconImg);
+        textDiv.appendChild(powerNameDiv);
+        div.appendChild(textDiv);
+        div.classList.add("name-table");
+        td.appendChild(div);
         td.classList.add("power-td");
         tr.appendChild(td);
 
-        // アイコン列
-        var td = document.createElement("td");
-        var iconImg = document.createElement("img");
-        iconImg.src = "assets/images/icons/power/" + iconText;
-        iconImg.classList.add("buildsimulator-powericon");
-        td.appendChild(iconImg);
-        td.classList.add("power-td");
-        tr.appendChild(td);
 
         // テキスト列
         var td = document.createElement("td");
