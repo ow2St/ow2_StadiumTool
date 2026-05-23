@@ -1325,7 +1325,7 @@ function moiraButtonClick(){
 }
 
 /**
- * ヴェンデッタチャージレベル1/2/3切り替え
+ * ヴェンデッタチャージレベル3↔1切り替え
  * @return {void}
  */
 function vendettaButtonClick(){
