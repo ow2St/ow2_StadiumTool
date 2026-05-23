@@ -1196,7 +1196,7 @@ function linkPowerList(powerList) {
  */
 function appendChildPowerList(tr, powerNameText, iconText, heroText, textText){
     try {
-        // パワー名列
+        // パワー情報列
         var td = document.createElement("td");
         var div = document.createElement("div");
         // 中のアイコン

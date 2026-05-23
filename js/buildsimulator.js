@@ -334,7 +334,7 @@ async function loadAndInitBuildData() {
                 const beforeSelectedGadgetCount = selectedItemRowsData.filter(item => item[GADGETLISTKEY.gadget_categoryKey] == "ガジェット").length;
 
                 // チェックボックスの状態が変わる毎に選択リストを更新
-                targetInnerText = e.target.parentElement.parentElement.cells[1].innerText.split("\n")[0].split("：")[1].trim();
+                let targetInnerText = e.target.parentElement.parentElement.cells[1].innerText.split("\n")[0].split("：")[1].trim();
                 selectedItemRowsData = updateSelectedList(itemAndGadgetList, true, selectedItemRowsData, targetInnerText, e.target.checked);
 
                 // ビルド欄の表示を更新
@@ -376,11 +376,12 @@ async function loadAndInitBuildData() {
 
         // 各パワーのチェックボックスにイベントリスナーを追加
         powerCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener("change", () => {
+            checkbox.addEventListener("change", (e) => {
                 const selectedPowerRowsDataBeforeLength = selectedPowerRowsData.length;
 
                 // チェックボックスの状態が変わる毎に選択リストを更新
-                selectedPowerRowsData = updateSelectedList(powerList, false, selectedPowerRowsData, e.target.parentElement.parentElement.cells[1].innerText, e.target.checked);
+                let targetInnerText = e.target.parentElement.parentElement.cells[1].innerText.split("\n")[0].split("：")[1].trim();
+                selectedPowerRowsData = updateSelectedList(powerList, false, selectedPowerRowsData, targetInnerText, e.target.checked);
                 // ビルド欄の表示を更新
                 updateBuild_Power(selectedPowerRowsData);
                 // ステータスに反映
@@ -751,6 +752,8 @@ function selectHero(id){
 
     // ヒーローウィンドウを消す
     document.getElementById("herowindow").style.display = "none";
+
+    totalCashCalculate(selectedItemRowsData);
 }
 
 
@@ -2348,7 +2351,25 @@ function updateBuild_Item(selectedItemRows){
         });
     });
 }
+/**
+ * 選択されたアイテム・ガジェットの合計キャッシュを計算する関数
+ * @param {Array} selectedItemRows - 選択されたアイテム情報配列
+ */
+function totalCashCalculate(selectedItemRows){
+    let totalCash = 0;
 
+    if(selectedItemRows.length == 0){
+        document.getElementById("total-cash").innerText = "合計キャッシュ: 0";
+        return;
+    }
+
+    selectedItemRows.forEach(item => {
+        totalCash += item[ITEMLISTKEY.item_costKey] || 0;
+        totalCash += item[GADGETLISTKEY.gadget_costKey] || 0;
+    });
+
+    document.getElementById("total-cash").innerText = "合計キャッシュ: " + totalCash;
+}
 
 /**
  * ステータスにアイテムの内容を反映する関数 
@@ -2358,15 +2379,7 @@ function updateBuild_Item(selectedItemRows){
  */
 function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
 
-    // 合計キャッシュを計算して表示
-    let totalCash = 0;
-
-    selectedItemRows.forEach(item => {
-        totalCash += item[ITEMLISTKEY.item_costKey] || 0;
-        totalCash += item[GADGETLISTKEY.gadget_costKey] || 0;
-    });
-
-    document.getElementById("total-cash").innerText = "合計キャッシュ: " + totalCash;
+    totalCashCalculate(selectedItemRows);
 
     // 選択中のヒーローのステータスを初期化
     const showStatusListTmp = initStatusList.filter(heroStatus => heroStatus[STATUSLISTKEY.heroNameKey] === selectedHero);
