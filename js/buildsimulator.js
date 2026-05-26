@@ -1743,6 +1743,7 @@ function appendChildItemList(tr, isCheck, itemNameText, iconText, textText, rari
     div.classList.add("name-table");
     td.appendChild(div);
     td.classList.add("item-td");
+    td.dataset.objectName = itemNameText; // アイテム名をデータ属性に保存
     tr.appendChild(td);
 
 
@@ -2000,6 +2001,7 @@ function linkGadgetList(gadgetList, id) {
         div.classList.add("name-table");
         td.appendChild(div);
         td.classList.add("gadget-td");
+        td.dataset.objectName = gadgetNameText; // ガジェット名をデータ属性に保存
         tr.appendChild(td);
 
 
@@ -2158,6 +2160,7 @@ function linkPowerList(powerList, id) {
         div.classList.add("name-table");
         td.appendChild(div);
         td.classList.add("power-td");
+        td.dataset.objectName = powerNameText; // パワー名をデータ属性に保存
         tr.appendChild(td);
 
 
@@ -3246,7 +3249,7 @@ function clickDeleteButton(spanId, selectedRows, list) {
         const changeColumnIndex = 0;   // 変更する列のインデックス
         rows.forEach(row => {
             const cells = row.querySelectorAll("td");
-            const cellText = cells[targetColumnIndex].textContent;
+            const cellText = cells[targetColumnIndex].dataset.objectName;
             if(cellText == itemOrGadgetName){
                 // 削除対象の名称を退避
                 targetName = cellText;
@@ -3285,7 +3288,7 @@ function clickDeleteButton(spanId, selectedRows, list) {
         const changeColumnIndex = 0;   // 変更する列のインデックス
         rows.forEach(row => {
             const cells = row.querySelectorAll("td");
-            const cellText = cells[targetColumnIndex].textContent;
+            const cellText = cells[targetColumnIndex].dataset.objectName;
             if(cellText == powerName){
                 // 削除対象の名称を退避
                 targetName = cellText;
