@@ -21,6 +21,7 @@
         "shield": 0,
         "speed": 0,
         "text": "周囲8メートル以内の敵を全員ノックバックする",
+        "unconfirmedflg": true,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -47,6 +48,7 @@
         "shield": 25,
         "speed": 0,
         "text": "50の追加ライフと25%の移動速度のボーナスを5秒間得る。デバフを受けている場合、100の追加ライフをさらに得られる\n\n",
+        "unconfirmedflg": true,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -73,6 +75,7 @@
         "shield": 0,
         "speed": 0,
         "text": "5秒間、移動速度が25%上がる。ダメージを与えると即座に効果が失われる。\n\n",
+        "unconfirmedflg": true,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -99,6 +102,7 @@
         "shield": 0,
         "speed": 5,
         "text": "短い距離をダッシュする",
+        "unconfirmedflg": true,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -125,6 +129,7 @@
         "shield": 0,
         "speed": 0,
         "text": "範囲内の自身と味方のライフが毎秒50回復する（バイオティック・フィールド）をその場に展開する。持続時間5秒\n\n",
+        "unconfirmedflg": true,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 5
@@ -151,6 +156,7 @@
         "shield": 0,
         "speed": 0,
         "text": "短い距離をダッシュする",
+        "unconfirmedflg": true,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 10
@@ -177,6 +183,7 @@
         "shield": 0,
         "speed": 0,
         "text": "全アビリティのクールダウンが8秒短くなる",
+        "unconfirmedflg": true,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -203,6 +210,7 @@
         "shield": 0,
         "speed": 0,
         "text": "ライフが毎秒20回復する。ダメージを受けると即座に効果が失われる。持続時間10秒",
+        "unconfirmedflg": true,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -229,6 +237,7 @@
         "shield": 0,
         "speed": 0,
         "text": "5秒間、合計攻撃速度が50%上がると同時に、武器のダメージと回復量が15%減る。また、弾薬が全回復する",
+        "unconfirmedflg": true,
         "uniquehero": "-",
         "weaponlifesteal": 10,
         "weaponpower": 0
@@ -255,6 +264,7 @@
         "shield": 50,
         "speed": 0,
         "text": "自身にかかっている状態異常が浄化され、ライフが75回復する。また、無敵状態と75%の移動速度上昇のボーナスが0.65秒間付く",
+        "unconfirmedflg": true,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -281,6 +291,7 @@
         "shield": 0,
         "speed": 0,
         "text": "しゃがみを0.75秒間長押しすると、次に繰り出すジャンプの高さが最大250%まで上がる",
+        "unconfirmedflg": true,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -307,6 +318,7 @@
         "shield": 0,
         "speed": 0,
         "text": "50の追加ライフを3秒間得る",
+        "unconfirmedflg": true,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -333,6 +345,7 @@
         "shield": 0,
         "speed": 0,
         "text": "5秒間、巨大化する この間、妨害不可の状態になって受けるダメージが25%減るうえに、ライフ最大値が25%増えるが、与えるダメージと回復量が25%減る",
+        "unconfirmedflg": true,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0
@@ -359,6 +372,7 @@
         "shield": 0,
         "speed": 0,
         "text": "周囲4メートル以内の敵全員を、移動阻害したうえでノックバックし、その敵の移動速度を1秒間下げる",
+        "unconfirmedflg": true,
         "uniquehero": "-",
         "weaponlifesteal": 0,
         "weaponpower": 0

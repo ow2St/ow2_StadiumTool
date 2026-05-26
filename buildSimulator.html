@@ -94,7 +94,10 @@
         </div>
     </div>
     <div style="display: block;">
-        <p class="selectedbuild-title">ビルド</p>
+        <div class="selectedbuild-title">
+            <p style="margin-right: 70px;">ビルド</p>
+            <p id="total-cash">合計キャッシュ</p>
+        </div>
         <div class="selectedbuild-content">
             <div class="selectedbuild-item">
                 <div class="selectedbuild-text">アイテム
@@ -149,7 +152,7 @@
                 <p class="zaria-button" id="zaria-button" onclick="zariaButtonClick()">エネルギー0%</p>
                 <p class="juno-button" id="juno-button" onclick="junoButtonClick()">ダメージ</p>
                 <p class="moira-button" id="moira-button" onclick="moiraButtonClick()">ダメージ</p>
-                <p class="vendetta-button" id="vendetta-button" onclick="vendettaButtonClick()">チャージレベル1</p>
+                <p class="vendetta-button" id="vendetta-button" onclick="vendettaButtonClick()">チャージレベル3</p>
                 <p class="theoreticalvalue-button" id="theoreticalvalue-button" onclick="theoreticalValueClick()">理論値OFF</p>
             </div>
             <p class="status" id="life"></p>
@@ -173,8 +176,7 @@
                     <thead class="item-thead">
                         <tr class="item-tr">
                             <th class="item-th" style="width: 40px;">選択</th>
-                            <th class="item-th" style="width: 180px;">アイテム名</th>
-                            <th class="item-th" style="width: 60px;">アイコン</th>
+                            <th class="item-th" style="width: 180px;">アイテム情報</th>
                             <th class="item-th" style="width: 140px;">ステータス</th>
                             <th class="item-th" style="width: 300px;">テキスト</th>
                             <th class="item-th" style="display: none;" data-column="rarity">レア度</th>
@@ -194,8 +196,7 @@
                     <thead class="item-thead">
                         <tr class="item-tr">
                             <th class="item-th" style="width: 40px;">選択</th>
-                            <th class="item-th" style="width: 180px;">アイテム名</th>
-                            <th class="item-th" style="width: 60px;">アイコン</th>
+                            <th class="item-th" style="width: 180px;">アイテム情報</th>
                             <th class="item-th" style="width: 140px;">ステータス</th>
                             <th class="item-th" style="width: 300px;">テキスト</th>
                             <th class="item-th" style="display: none;" data-column="rarity">レア度</th>
@@ -215,8 +216,7 @@
                     <thead class="item-thead">
                         <tr class="item-tr">
                             <th class="item-th" style="width: 40px;">選択</th>
-                            <th class="item-th" style="width: 180px;">アイテム名</th>
-                            <th class="item-th" style="width: 60px;">アイコン</th>
+                            <th class="item-th" style="width: 180px;">アイテム情報</th>
                             <th class="item-th" style="width: 140px;">ステータス</th>
                             <th class="item-th" style="width: 300px;">テキスト</th>
                             <th class="item-th" style="display: none;" data-column="rarity">レア度</th>
@@ -237,8 +237,7 @@
                 <thead class="power-thead">
                     <tr class="power-tr">
                         <th class="power-th" style="width: 40px;">選択</th>
-                        <th class="power-th" style="width: 180px;">パワー名</th>
-                        <th class="power-th" style="width: 60px;">アイコン</th>
+                        <th class="power-th" style="width: 180px;">パワー情報</th>
                         <th class="power-th" style="width: 440px;">テキスト</th>
                         <th class="power-th" style="display: none;" data-column="uniqueHero">固有ヒーロー</th>
                     </tr>
@@ -255,8 +254,7 @@
                 <thead class="gadget-thead">
                     <tr class="gadget-tr">
                         <th class="gadget-th" style="width: 40px;">選択</th>
-                        <th class="gadget-th" style="width: 180px;">ガジェット名</th>
-                        <th class="gadget-th" style="width: 60px;">アイコン</th>
+                        <th class="gadget-th" style="width: 180px;">ガジェット情報</th>
                         <th class="gadget-th" style="width: 140px;">ステータス</th>
                         <th class="gadget-th" style="width: 300px;">テキスト</th>
                         <th class="gadget-th" style="display: none;" data-column="rarity">レア度</th>

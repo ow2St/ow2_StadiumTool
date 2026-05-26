@@ -258,8 +258,8 @@ window.UNIQUEHEROWORD = {
     damage: "ダメージ",
     heal: "ヒール",
     chargeLevel1: "チャージレベル1",
-    chargeLevel1: "チャージレベル2",
-    chargeLevel1: "チャージレベル3"
+    chargeLevel2: "チャージレベル2",
+    chargeLevel3: "チャージレベル3"
 };
 
 /**
@@ -276,6 +276,7 @@ window.MAXNUMBER = {
 window.THTEXT = {
     itemInformation: "アイテム情報",
     gadgetInformation: "ガジェット情報",
+    powerInformation: "パワー情報",
     itemName: "アイテム名",
     gadgetName: "ガジェット名",
     powerName: "パワー名",

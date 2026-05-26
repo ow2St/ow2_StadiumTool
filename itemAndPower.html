@@ -150,8 +150,13 @@
                             <button class="button-on" id="abilityPower" onclick="filterGadgetOnclickHandler(this)">アビリティパワー</button>
                             <button class="button-on" id="attackSpeed" onclick="filterGadgetOnclickHandler(this)">攻撃速度</button>
                             <button class="button-on" id="ctReducation" onclick="filterGadgetOnclickHandler(this)">CT短縮</button>
+                            <button class="button-on" id="ammo" onclick="filterGadgetOnclickHandler(this)">弾薬</button>
                             <button class="button-on" id="weapon_LifeSteal" onclick="filterGadgetOnclickHandler(this)">ライフ吸収（武器）</button>
+                            <button class="button-on" id="ability_LifeSteal" onclick="filterGadgetOnclickHandler(this)">ライフ吸収（アビリティ）</button>
                             <button class="button-on" id="speed" onclick="filterGadgetOnclickHandler(this)">移動速度</button>
+                            <button class="button-on" id="reloadSpeed" onclick="filterGadgetOnclickHandler(this)">リロード速度</button>
+                            <button class="button-on" id="meleeDamage" onclick="filterGadgetOnclickHandler(this)">近接ダメージ</button>
+                            <button class="button-on" id="critical" onclick="filterGadgetOnclickHandler(this)">クリティカル</button>
                             <button class="button-on" id="others" onclick="filterGadgetOnclickHandler(this)">その他</button>
                         </div>
                     </div>
@@ -238,10 +243,10 @@
                     <table class="power-table" id="power-table">
                         <thead class="power-thead">
                             <tr class="power-tr">
-                                <th class="power-th" style="width: 180px; cursor: pointer;" data-column="powerName" onclick="powerSortClick(this.id)" id="powerName">パワー名</th>
+                                <th class="power-th" style="width: 280px; cursor: pointer;" data-column="powerName" onclick="powerSortClick(this.id)" id="powerName">パワー情報</th>
                                 <th class="power-th" style="display: none;">ヒーロー</th>
                                 <th class="power-th" style="width: 400px;">テキスト</th>
-                                <th class="power-th" style="width: 200px;">変更履歴</th>
+                                <th class="power-th" style="width: 250px;">変更履歴</th>
                             </tr>
                         </thead>
                         <tbody style="font-size:12px";>
