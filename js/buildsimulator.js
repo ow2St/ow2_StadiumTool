@@ -340,7 +340,7 @@ async function loadAndInitBuildData() {
                 // ビルド欄の表示を更新
                 updateBuild_Item(selectedItemRowsData);
                 // ステータスに反映
-                updateStatus_Item(selectedItemRowsData);
+                updateStatus(selectedItemRowsData, false, selectedPowerRowsData, false);
 
                 const selectedItemRowsDataAfterLength = selectedItemRowsData.length;
                 const afterSelectedGadgetCount = selectedItemRowsData.filter(item => item[GADGETLISTKEY.gadget_categoryKey] == "ガジェット").length;
@@ -385,7 +385,7 @@ async function loadAndInitBuildData() {
                 // ビルド欄の表示を更新
                 updateBuild_Power(selectedPowerRowsData);
                 // ステータスに反映
-                updateStatus_Power(selectedPowerRowsData);
+                updateStatus(selectedItemRowsData, false, selectedPowerRowsData, false);
 
                 const selectedPowerRowsDataAfterLength = selectedPowerRowsData.length;
 
@@ -409,7 +409,7 @@ async function loadAndInitBuildData() {
                 // アイコンを削除する
                 selectedItemRowsData = clickDeleteButton(event.target.id,selectedItemRowsData,itemAndGadgetList);
                 // ステータスに反映
-                updateStatus_Item(selectedItemRowsData);
+                updateStatus(selectedItemRowsData, false, selectedPowerRowsData, false);
             }
         });
 
@@ -420,7 +420,7 @@ async function loadAndInitBuildData() {
                 // アイコンを削除する
                 selectedPowerRowsData = clickDeleteButton(event.target.id,selectedPowerRowsData,powerList);
                 // ステータスに反映
-                updateStatus_Power(selectedPowerRowsData);
+                updateStatus(selectedItemRowsData, false, selectedPowerRowsData, false);
             }
         });
         // #endregion
@@ -820,7 +820,7 @@ function initStatus(selectedHero){
             }
 
             // 選択中のヒーローのステータスを設定
-            initStatusValue(initStatusList[i],"init","-","-","-");
+            initStatusValue(initStatusList[i],"init","-","init","-","-");
             
             // 表示用のステータスリストを初期化
             showStatusList = JSON.parse(JSON.stringify(initStatusList[i]));
@@ -834,11 +834,12 @@ function initStatus(selectedHero){
  * @param {Object} statuslist ステータスリスト
  * @param {text} addItemText 追加効果(アイテム)テキスト
  * @param {text} addItemOthers 追加効果(その他)テキスト
+ * @param {text} addPowerText 追加効果(パワー)テキスト
  * @param {text} gadgetName 選択ガジェット名
  * @param {text} gadgetText 選択ガジェットの効果テキスト
  * @return {void}
  */
-function initStatusValue(statuslist, addItemText, addItemOthers, gadgetName, gadgetText){
+function initStatusValue(statuslist, addItemText, addItemOthers, addPowerText, gadgetName, gadgetText){
     // 選択中のヒーローのステータスを設定
     document.getElementById("life").innerText = STATUSLISTKEY.status_lifeKey + " :" + statuslist[STATUSLISTKEY.status_lifeKey];
     document.getElementById("armor").innerText = STATUSLISTKEY.status_armorKey + " :" + statuslist[STATUSLISTKEY.status_armorKey];
@@ -984,8 +985,6 @@ function initStatusValue(statuslist, addItemText, addItemOthers, gadgetName, gad
         );
     });
     //#endregion
-
-    document.getElementById("addpower").innerText = "追加効果(パワー):";
     
     // 羅列するため初期設定時のみ走るようinit判定をする
     if(addItemText == "init"){
@@ -997,6 +996,17 @@ function initStatusValue(statuslist, addItemText, addItemOthers, gadgetName, gad
         // 追加効果欄に羅列
         document.getElementById("additem").innerText = document.getElementById("additem").innerText + addItemText;
         document.getElementById("additem").innerText = document.getElementById("additem").innerText + addItemOthers;
+    }
+
+    // 羅列するため初期設定時のみ走るようinit判定をする
+    if(addPowerText == "init"){
+        document.getElementById("addpower").innerText = "追加効果(パワー):";
+    }
+    // その他・テキストに記載がある場合
+    else if(addPowerText != "-"){
+
+        // 追加効果欄に羅列
+        document.getElementById("addpower").innerText = document.getElementById("addpower").innerText + addPowerText;
     }
 
     // ガジェットが選択されている場合
@@ -1248,8 +1258,7 @@ function dvaButtonClick(){
     initStatus(selectedHero);
 
     // ビルドを反映
-    if(selectedItemRowsData.length > 0) updateStatus_Item(selectedItemRowsData);
-    if(selectedPowerRowsData.length > 0) updateStatus_Power(selectedPowerRowsData);
+    updateStatus(selectedItemRowsData, false, selectedPowerRowsData, false);
 }
 
 
@@ -1269,11 +1278,10 @@ function zariaButtonClick(){
         zariaButton.innerText = zariaFlg;
     }
     // ステータスボックス初期化
-    initStatusValue(showStatusList,"-","-","-","-");
+    initStatusValue(showStatusList,"-","-","-","-","-");
 
     // ビルドを反映
-    if(selectedItemRowsData.length > 0) updateStatus_Item(selectedItemRowsData);
-    if(selectedPowerRowsData.length > 0) updateStatus_Power(selectedPowerRowsData);
+    updateStatus(selectedItemRowsData, false, selectedPowerRowsData, false);
 }
 
 
@@ -1293,11 +1301,10 @@ function junoButtonClick(){
         junoButton.innerText = junoFlg;
     }
     // ステータスボックス初期化
-    initStatusValue(showStatusList,"-","-","-","-");
+    initStatusValue(showStatusList,"-","-","-","-","-");
 
     // ビルドを反映
-    if(selectedItemRowsData.length > 0) updateStatus_Item(selectedItemRowsData);
-    if(selectedPowerRowsData.length > 0) updateStatus_Power(selectedPowerRowsData);
+    updateStatus(selectedItemRowsData, false, selectedPowerRowsData, false);
 }
 
 
@@ -1317,11 +1324,10 @@ function moiraButtonClick(){
         moiraButton.innerText = moiraFlg;
     }
     // ステータスボックス初期化
-    initStatusValue(showStatusList,"-","-","-","-");
+    initStatusValue(showStatusList,"-","-","-","-","-");
 
         // ビルドを反映
-    if(selectedItemRowsData.length > 0) updateStatus_Item(selectedItemRowsData);
-    if(selectedPowerRowsData.length > 0) updateStatus_Power(selectedPowerRowsData);
+    updateStatus(selectedItemRowsData, false, selectedPowerRowsData, false);
 }
 
 /**
@@ -1341,11 +1347,10 @@ function vendettaButtonClick(){
     }
 
     // ステータスボックス初期化
-    initStatusValue(showStatusList,"-","-","-","-");
+    initStatusValue(showStatusList,"-","-","-","-","-");
 
         // ビルドを反映
-    if(selectedItemRowsData.length > 0) updateStatus_Item(selectedItemRowsData);
-    if(selectedPowerRowsData.length > 0) updateStatus_Power(selectedPowerRowsData);
+    updateStatus(selectedItemRowsData, false, selectedPowerRowsData, false);
 }
 
 
@@ -2350,7 +2355,7 @@ function updateBuild_Item(selectedItemRows){
         checkbox.addEventListener("change", () => {
             
             // ステータスを更新
-            updateStatus_Item(selectedItemRowsData, true);
+            updateStatus(selectedItemRowsData, true, selectedPowerRowsData, false);
         });
     });
 }
@@ -2375,13 +2380,16 @@ function totalCashCalculate(selectedItemRows){
 }
 
 /**
- * ステータスにアイテムの内容を反映する関数 
+ * ステータスにアイテム・パワーの内容を反映する関数 
  * @param {Object} selectedItemRows - 選択中アイテム（連想配列）
- * @param {boolean} theoreticalFlag - 理論値フラグ
+ * @param {boolean} theoreticalItemFlag - アイテム理論値フラグ
+ * @param {Object} selectedPowerRows - 選択中パワー（連想配列）
+ * @param {boolean} theoreticalPowerFlag - パワー理論値フラグ
  * @return {void}
  */
-function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
+function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPowerRows, theoreticalPowerFlag = false){
 
+    //キャッシュ計算
     totalCashCalculate(selectedItemRows);
 
     // 選択中のヒーローのステータスを初期化
@@ -2394,13 +2402,14 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     ability2AddDamageAbility = 0;
     ability3AddDamageAbility = 0;
     takeAimBombDamageCalc = takeAimBombDamage;
-    initStatusValue(showStatusList,"init","-","-","-");
+    initStatusValue(showStatusList,"init","-","init","-","-");
 
     // 最後に計算する倍率変数
     let lifeRate = 1;
     let armorRate = 1;
     let shieldRate = 1;
     let text = "";
+    let powerText = "";
     let others = "";
     let nameTmp = "";
     let lifeTmp = 0;
@@ -2424,7 +2433,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     let gadgetNameTmp = "-";
     let gadgetTextTmp = "-";
 
-    // #region ステータス反映
+    // #region アイテム・ガジェット計算
     for(let i=0; i<selectedItemRows.length; i++) {
 
         // 各パラメータを抽出
@@ -2555,7 +2564,7 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         // #endregion
 
         // #region 理論値計算
-        if(theoreticalFlag && (selectedItemRows[i][ITEMLISTKEY.theoreticalFlgKey] == 1 || selectedItemRows[i][GADGETLISTKEY.theoreticalFlgKey] == 1)){
+        if(theoreticalItemFlag && (selectedItemRows[i][ITEMLISTKEY.theoreticalFlgKey] == 1 || selectedItemRows[i][GADGETLISTKEY.theoreticalFlgKey] == 1)){
             theoreticalItemCheckboxes.forEach(checkbox => {
                 const div = checkbox.closest('div');
             
@@ -2844,6 +2853,13 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
         }
         // #endregion
     }
+    // #endregion
+
+    // #region パワー計算
+    for(let i=0; i<selectedPowerRows.length; i++) {
+        powerText += selectedPowerRows[i][POWERLISTKEY.power_textKey] + "\n";
+    }
+    // #endregion
 
     // #region 通常計算 計算順序③
     // ライフに記載がある場合
@@ -3150,10 +3166,8 @@ function updateStatus_Item(selectedItemRows, theoreticalFlag = false){
     
     // #endregion
 
-    // #endregion
-
     // ステータス表に反映
-    initStatusValue(showStatusList, text, others, gadgetNameTmp, gadgetTextTmp);
+    initStatusValue(showStatusList, text, others, powerText, gadgetNameTmp, gadgetTextTmp);
 }
 
 
@@ -3192,26 +3206,6 @@ function updateBuild_Power(selectedPowerRows){
             span.id = "delete-power" + String(i + 1);
             targetDiv.appendChild(span);
         }
-    }
-}
-
-
-/**
- * ステータスにパワーの内容を反映する関数
- * @param {Array} selectedPowerRows 選択されているパワーの行データ配列
- * @return {void}
- */
-function updateStatus_Power(selectedPowerRows){
-
-    // 追加効果欄を初期化
-    document.getElementById("addpower").innerText = "追加効果(パワー):";
-    for(let i=0; i<4; i++) {
-
-        // テキストを抽出
-        const textTmp = selectedPowerRows[i][POWERLISTKEY.power_textKey];
-
-        // 追加効果欄に羅列(パワーは必ずテキストがあるため空チェックはしない)
-        document.getElementById("addpower").innerText = document.getElementById("addpower").innerText + textTmp + "\n";
     }
 }
 
