@@ -100,10 +100,28 @@ const gadgetKeyMap = {
 
 // パワーキー対応マッピング（英語 → 日本語）
 const powerKeyMap = {
+    id: POWERLISTKEY.powerIdKey,
     powername: POWERLISTKEY.power_nameKey,
     hero: POWERLISTKEY.heroKey,
     icon: POWERLISTKEY.power_iconKey,
     text: POWERLISTKEY.power_textKey,
+    life: POWERLISTKEY.power_lifeKey,
+    armor: POWERLISTKEY.power_armorKey,
+    shield: POWERLISTKEY.power_shieldKey,
+    weaponpower: POWERLISTKEY.power_weaponPowerKey,
+    abilitypower: POWERLISTKEY.power_abilityPowerKey,
+    attackspeed: POWERLISTKEY.power_attackSpeedKey,
+    ctreducation: POWERLISTKEY.power_ctReducationKey,
+    ammo: POWERLISTKEY.power_ammoKey,
+    weaponlifesteal: POWERLISTKEY.power_weapon_LifeStealKey,
+    abilitylifesteal: POWERLISTKEY.power_ability_LifeStealKey,
+    speed: POWERLISTKEY.power_speedKey,
+    reloadspeed: POWERLISTKEY.power_reloadSpeedKey,
+    meleedamage: POWERLISTKEY.power_meleeDamageKey,
+    critical: POWERLISTKEY.power_criticalKey,
+    durationflg: POWERLISTKEY.power_durationFlgKey,
+    duration: POWERLISTKEY.power_durationKey,
+    theoreticalflag: POWERLISTKEY.power_theoreticalFlgKey
 };
 
 // 理論値アイテムキー対応マッピング（英語 → 日本語）
@@ -522,10 +540,28 @@ function organizePowerData(powerAllData) {
     const selectedData = powerAllData
     .map(Plist => {
         return {
+            id: Plist.id,
             powername: Plist.powername,
             hero: Plist.hero,
             icon: Plist.icon,
             text: Plist.text,
+            life: Plist.life,
+            armor: Plist.armor,
+            shield: Plist.shield,
+            weaponpower: Plist.weaponpower,
+            abilitypower: Plist.abilitypower,
+            attackspeed: Plist.attackspeed,
+            ctreducation: Plist.ctreducation,
+            ammo: Plist.ammo,
+            weaponlifesteal: Plist.weaponlifesteal,
+            abilitylifesteal: Plist.abilitylifesteal,
+            speed: Plist.speed,
+            reloadspeed: Plist.reloadspeed,
+            meleedamage: Plist.meleedamage,
+            critical: Plist.critical,
+            durationflg: Plist.durationflg,
+            duration: Plist.duration,
+            theoreticalflag: Plist.theoreticalflag
         };
     })
     return selectedData;
@@ -2433,7 +2469,7 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
     let gadgetNameTmp = "-";
     let gadgetTextTmp = "-";
 
-    // #region アイテム・ガジェット計算
+    // #region アイテム・ガジェット一時計算
     for(let i=0; i<selectedItemRows.length; i++) {
 
         // 各パラメータを抽出
@@ -2489,7 +2525,7 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
         shieldTmp = Math.round(shieldTmp * tracerHPUPscalefactor);
         }
 
-        // #region 特殊計算・持続時間計算　計算順序①
+        // #region 特殊計算・持続時間計算（先に計算する）
         // ライフ割合上昇アイテムの場合は倍率変数に保管後、追加効果に乗らないようハイフンにする
         if(nameTmp == mekaZName){
             lifeRate = lifeRate * 1.08;
@@ -2855,9 +2891,85 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
     }
     // #endregion
 
-    // #region パワー計算
+    // #region パワー一時計算
     for(let i=0; i<selectedPowerRows.length; i++) {
-        powerText += selectedPowerRows[i][POWERLISTKEY.power_textKey] + "\n";
+
+        // 各パラメータを抽出
+        nameTmp = selectedPowerRows[i][POWERLISTKEY.power_nameKey];
+        lifeTmp += selectedPowerRows[i][POWERLISTKEY.power_lifeKey];
+        armorTmp += selectedPowerRows[i][POWERLISTKEY.power_armorKey];
+        shieldTmp += selectedPowerRows[i][POWERLISTKEY.power_shieldKey];
+        weaponPowerTmp += selectedPowerRows[i][POWERLISTKEY.power_weaponPowerKey];
+        abilityPowerTmp += selectedPowerRows[i][POWERLISTKEY.power_abilityPowerKey];
+        attackSpeedTmp += selectedPowerRows[i][POWERLISTKEY.power_attackSpeedKey];
+        ctReducationTmp += selectedPowerRows[i][POWERLISTKEY.power_ctReducationKey];
+        ammoTmp += selectedPowerRows[i][POWERLISTKEY.power_ammoKey];
+        weapon_LifeStealTmp += selectedPowerRows[i][POWERLISTKEY.power_weapon_LifeStealKey];
+        ability_LifeStealTmp += selectedPowerRows[i][POWERLISTKEY.power_ability_LifeStealKey];
+        speedTmp += selectedPowerRows[i][POWERLISTKEY.power_speedKey];
+        reloadSpeedTmp += selectedPowerRows[i][POWERLISTKEY.power_reloadSpeedKey];
+        meleeDamageTmp += selectedPowerRows[i][POWERLISTKEY.power_meleeDamageKey];
+        criticalTmp += selectedPowerRows[i][POWERLISTKEY.power_criticalKey];
+        textTmp = selectedPowerRows[i][POWERLISTKEY.power_textKey];
+        durationFlgTmp = selectedPowerRows[i][POWERLISTKEY.power_durationFlgKey];
+        durationTmp = selectedPowerRows[i][POWERLISTKEY.power_durationKey];
+
+        //トレーサーが選択されている場合、体力系を減算処理
+        if(selectedHero == HERONAME.tracer && i == selectedPowerRows.length - 1){
+            lifeTmp = Math.round(lifeTmp * tracerHPUPscalefactor);
+            armorTmp = Math.round(armorTmp * tracerHPUPscalefactor);
+            shieldTmp = Math.round(shieldTmp * tracerHPUPscalefactor);
+        }
+
+        // #region 特殊計算・持続時間計算（先に計算する）
+        // ライフ割合上昇アイテムの場合は倍率変数に保管後、追加効果に乗らないようハイフンにする　※対象なしだがコメントを置いておく
+
+        // 固定値計算アイテムを先に表示用ステータスリストに反映し、追加効果に乗らないようハイフンにする　※対象なしだがコメントを置いておく
+
+        // 持続時間に記載がある場合
+        if(durationFlgTmp != 0){
+        
+            // アビリティ１の場合
+            if(durationFlgTmp == 1){
+                if(durationTmp.charAt(0) == "+"){
+                    showStatusList[STATUSLISTKEY.ability1DurationKey] = showStatusList[STATUSLISTKEY.ability1DurationKey] + durationTmp.slice(1);
+                }else{
+                    showStatusList[STATUSLISTKEY.ability1DurationKey] = (showStatusList[STATUSLISTKEY.ability1DurationKey] * durationTmp.slice(1) * 10 ** 2) / 10 ** 2;
+                }
+            }
+            
+            // アビリティ２の場合
+            if(durationFlgTmp == 2){
+                if(durationTmp.charAt(0) == "+"){
+                    showStatusList[STATUSLISTKEY.ability2DurationKey] = showStatusList[STATUSLISTKEY.ability2DurationKey] + durationTmp.slice(1);
+                }else{
+                    showStatusList[STATUSLISTKEY.ability2DurationKey] = (showStatusList[STATUSLISTKEY.ability2DurationKey] * durationTmp.slice(1)* 10 ** 2) / 10 ** 2;
+                }
+            }
+
+            // アビリティ３の場合
+            if(durationFlgTmp == 3){
+                if(durationTmp.charAt(0) == "+"){
+                    showStatusList[STATUSLISTKEY.ability3DurationKey] = showStatusList[STATUSLISTKEY.ability3DurationKey] + durationTmp.slice(1);
+                }else{
+                    showStatusList[STATUSLISTKEY.ability3DurationKey] = (showStatusList[STATUSLISTKEY.ability3DurationKey] * durationTmp.slice(1)* 10 ** 2) / 10 ** 2;
+                }
+            }
+
+            // ULTの場合
+            if(durationFlgTmp == 4){
+                if(durationTmp.charAt(0) == "+"){
+                    showStatusList[STATUSLISTKEY.ultDurationKey] = showStatusList[STATUSLISTKEY.ultDurationKey] + durationTmp.slice(1);
+                }else{
+                    showStatusList[STATUSLISTKEY.ultDurationKey] = (showStatusList[STATUSLISTKEY.ultDurationKey] * durationTmp.slice(1)* 10 ** 2) / 10 ** 2;
+                }
+            }
+        }
+        // テキストとその他をまとめる
+        if(textTmp != "-"){
+            powerText = powerText + textTmp + "\n";
+        }
+        // #endregion
     }
     // #endregion
 
