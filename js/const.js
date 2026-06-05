@@ -71,10 +71,32 @@ window.GADGETLISTKEY = {
  * パワーリストのキー
  */
 window.POWERLISTKEY = {
+    powerIdKey: "パワーID",
     power_nameKey: "パワー名",
     heroKey: "ヒーロー",
     power_iconKey: "アイコン",
-    power_textKey: "テキスト"
+    power_textKey: "テキスト",
+    power_lifeKey: "ライフ",
+    power_armorKey: "アーマー",
+    power_shieldKey: "シールド",
+    power_weaponPowerKey: "武器パワー",
+    power_abilityPowerKey: "アビリティパワー",
+    power_attackSpeedKey: "攻撃速度",
+    power_ctReducationKey: "CT短縮",
+    power_ammoKey: "弾薬",
+    power_weapon_LifeStealKey: "ライフ吸収（武器）",
+    power_ability_LifeStealKey: "ライフ吸収（アビリティ）",
+    power_speedKey: "移動速度",
+    power_reloadSpeedKey: "リロード速度",
+    power_meleeDamageKey: "近接ダメージ",
+    power_criticalKey: "クリティカル",
+    power_durationFlgKey: "持続時間フラグ",
+    power_durationKey: "持続時間",
+    power_theoreticalFlgKey: "理論値フラグ",
+    power_changeFlgKey: "変換フラグ",
+    power_change_lifeKey: "ライフ変換量",
+    power_change_armorKey: "アーマー変換量",
+    power_change_shieldKey: "シールド変換量"
 };
 
 /**
