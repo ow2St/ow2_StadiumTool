@@ -258,7 +258,6 @@ window.UNIQUEHEROWORD = {
     damage: "ダメージ",
     heal: "ヒール",
     chargeLevel1: "チャージレベル1",
-    chargeLevel2: "チャージレベル2",
     chargeLevel3: "チャージレベル3"
 };
 
