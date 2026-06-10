@@ -138,14 +138,15 @@ const theoreticalItemKeyMap = {
     reloadspeed: THEORETICALITEMLISTKEY.theoreticalItem_ReloadSpeedKey,
     meleedamage: THEORETICALITEMLISTKEY.theoreticalItem_MeleeDamageKey,
     critical: THEORETICALITEMLISTKEY.theoreticalItem_CriticalKey,
+    attackspeed: THEORETICALITEMLISTKEY.theoreticalItem_AttackSpeedKey,
+    speed: THEORETICALITEMLISTKEY.theoreticalItem_SpeedKey,
     itemid: THEORETICALITEMLISTKEY.theoreticalItem_IDKey,
     specialflg: THEORETICALITEMLISTKEY.theoreticalItem_SpecialFlgKey,
     additiondamageflg: THEORETICALITEMLISTKEY.theoreticalItem_AdditionDamageFlgKey,
     healdamageupflg: THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpFlgKey,
     weaponabilityupflg: THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey,
     healdamageup: THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey,
-    attackspeed: THEORETICALITEMLISTKEY.theoreticalItem_AttackSpeedKey,
-    speed: THEORETICALITEMLISTKEY.theoreticalItem_SpeedKey
+    statusupflg: THEORETICALITEMLISTKEY.theoreticalItem_StatusUpFlgKey
 };
 
 // ステータスキー対応マッピング（英語 → 日本語）
@@ -589,14 +590,15 @@ function organizeTheoreticalItemData(theoreticalItemAllData) {
             reloadspeed: TIlist.reloadspeed,
             meleedamage: TIlist.meleedamage,
             critical: TIlist.critical,
+            attackspeed: TIlist.attackspeed,
+            speed: TIlist.speed,
             itemid: TIlist.itemid,
             specialflg: TIlist.specialflg,
             additiondamageflg: TIlist.additiondamageflg,
             healdamageupflg: TIlist.healdamageupflg,
             weaponabilityupflg: TIlist.weaponabilityupflg,
             healdamageup: TIlist.healdamageup,
-            attackspeed: TIlist.attackspeed,
-            speed: TIlist.speed
+            statusupflg: TIlist.statusupflg
         };
     })
     return selectedData;
@@ -2618,8 +2620,8 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
                         const thItemID = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_IDKey];
                         if(thItemID == itemID){
                             
-                            // 特別フラグがOFFの場合そのままステータスに反映
-                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_SpecialFlgKey] == 0){
+                            // ステータスアップフラグがONの場合対応するステータスに反映
+                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_StatusUpFlgKey] == 1){
                                 // 各パラメータを抽出
                                 const thLifeTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_LifeKey];
                                 const thArmorTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_ArmorKey];
@@ -2652,8 +2654,9 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
                                 attackSpeedTmp += thAttackSpeedTmp;
                                 speedTmp += thSpeedTmp;
                             }
-                            else
-                            {
+                            
+                            // 特別フラグがONの場合、通常のステータスアップとは別に計算
+                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_SpecialFlgKey] == 1){
                                 // 追加ダメージ系か判別
                                 if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_AdditionDamageFlgKey] != 0){
                                     
