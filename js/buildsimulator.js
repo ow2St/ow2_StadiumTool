@@ -3247,6 +3247,8 @@ function allDamageOrHealUp(target, calc, showStatusList){
             if(showStatusList[STATUSLISTKEY.ultHealDamageUpFlg] == 2){
                 showStatusList[STATUSLISTKEY.ultDamageKey] = Math.round(showStatusList[STATUSLISTKEY.ultDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
             }
+            // 近接
+            showStatusList[STATUSLISTKEY.meleeDamageKey] = Math.round(showStatusList[STATUSLISTKEY.meleeDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
         }
     } else if(calc == "+"){
         // TODO:加算は現状無いので未実装（考慮漏れがあるかもしれないため）
