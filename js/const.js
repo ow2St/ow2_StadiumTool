@@ -116,13 +116,41 @@ window.THEORETICALITEMLISTKEY = {
     theoreticalItem_ReloadSpeedKey: "リロード速度",
     theoreticalItem_MeleeDamageKey: "近接ダメージ",
     theoreticalItem_CriticalKey: "クリティカル",
+    theoreticalItem_AttackSpeedKey: "攻撃速度",
+    theoreticalItem_SpeedKey: "移動速度",
     theoreticalItem_SpecialFlgKey: "特別フラグ",
     theoreticalItem_AdditionDamageFlgKey: "追加ダメージフラグ",
     theoreticalItem_HealDamageUpFlgKey: "ヒールダメージ上昇フラグ",
     theoreticalItem_WeaponAbilityUpFlgKey: "武器アビリティ上昇フラグ",
     theoreticalItem_HealDamageUpKey: "ヒールダメージ上昇量",
-    theoreticalItem_AttackSpeedKey: "攻撃速度",
-    theoreticalItem_SpeedKey: "移動速度"
+    theoreticalItem_StatusUpFlgKey: "ステータスアップフラグ"
+};
+
+/**
+ * 理論値パワーリストのキー
+ */
+window.THEORETICALPOWERLISTKEY = {
+    theoreticalPower_IDKey: "パワーID",
+    theoreticalPower_LifeKey: "ライフ",
+    theoreticalPower_ArmorKey: "アーマー",
+    theoreticalPower_ShieldKey: "シールド",
+    theoreticalPower_WeaponPowerKey: "武器パワー",
+    theoreticalPower_AbilityPowerKey: "アビリティパワー",
+    theoreticalPower_CTReducationKey: "CT短縮",
+    theoreticalPower_AmmoKey: "弾薬",
+    theoreticalPower_WeaponLifeStealKey: "武器（ライフ吸収）",
+    theoreticalPower_AbilityLifeStealKey: "アビリティ（ライフ吸収）",
+    theoreticalPower_ReloadSpeedKey: "リロード速度",
+    theoreticalPower_MeleeDamageKey: "近接ダメージ",
+    theoreticalPower_CriticalKey: "クリティカル",
+    theoreticalPower_AttackSpeedKey: "攻撃速度",
+    theoreticalPower_SpeedKey: "移動速度",
+    theoreticalPower_SpecialFlgKey: "特別フラグ",
+    theoreticalPower_AdditionDamageFlgKey: "追加ダメージフラグ",
+    theoreticalPower_HealDamageUpFlgKey: "ヒールダメージ上昇フラグ",
+    theoreticalPower_WeaponAbilityUpFlgKey: "武器アビリティ上昇フラグ",
+    theoreticalPower_HealDamageUpKey: "ヒールダメージ上昇量",
+    theoreticalPower_StatusUpFlgKey: "ステータスアップフラグ"
 };
 
 /**
@@ -174,7 +202,9 @@ window.STATUSLISTKEY = {
     attackSpeedKey: "攻撃速度",
     moveSpeedKey: "移動速度",
     mainHealDamageUpFlg: "メイン上昇フラグ",
+    main2HealDamageUpFlg: "メイン2上昇フラグ",
     subHealDamageUpFlg: "サブ上昇フラグ",
+    sub2HealDamageUpFlg: "サブ2上昇フラグ",
     ability1HealDamageUpFlg: "アビリティ１上昇フラグ",
     ability2HealDamageUpFlg: "アビリティ２上昇フラグ",
     ability3HealDamageUpFlg: "アビリティ３上昇フラグ",

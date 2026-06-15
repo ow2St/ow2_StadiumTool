@@ -138,14 +138,15 @@ const theoreticalItemKeyMap = {
     reloadspeed: THEORETICALITEMLISTKEY.theoreticalItem_ReloadSpeedKey,
     meleedamage: THEORETICALITEMLISTKEY.theoreticalItem_MeleeDamageKey,
     critical: THEORETICALITEMLISTKEY.theoreticalItem_CriticalKey,
+    attackspeed: THEORETICALITEMLISTKEY.theoreticalItem_AttackSpeedKey,
+    speed: THEORETICALITEMLISTKEY.theoreticalItem_SpeedKey,
     itemid: THEORETICALITEMLISTKEY.theoreticalItem_IDKey,
     specialflg: THEORETICALITEMLISTKEY.theoreticalItem_SpecialFlgKey,
     additiondamageflg: THEORETICALITEMLISTKEY.theoreticalItem_AdditionDamageFlgKey,
     healdamageupflg: THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpFlgKey,
     weaponabilityupflg: THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey,
     healdamageup: THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey,
-    attackspeed: THEORETICALITEMLISTKEY.theoreticalItem_AttackSpeedKey,
-    speed: THEORETICALITEMLISTKEY.theoreticalItem_SpeedKey
+    statusupflg: THEORETICALITEMLISTKEY.theoreticalItem_StatusUpFlgKey
 };
 
 // ステータスキー対応マッピング（英語 → 日本語）
@@ -189,7 +190,9 @@ const statusKeyMap = {
     attackspeed: STATUSLISTKEY.attackSpeedKey,
     movespeed: STATUSLISTKEY.moveSpeedKey,
     mainhealdamageupflg: STATUSLISTKEY.mainHealDamageUpFlg,
+    main2healdamageupflg: STATUSLISTKEY.main2HealDamageUpFlg,
     subhealdamageupflg: STATUSLISTKEY.subHealDamageUpFlg,
+    sub2healdamageupflg: STATUSLISTKEY.sub2HealDamageUpFlg,
     ability1healdamageupflg: STATUSLISTKEY.ability1HealDamageUpFlg,
     ability2healdamageupflg: STATUSLISTKEY.ability2HealDamageUpFlg,
     ability3healdamageupflg: STATUSLISTKEY.ability3HealDamageUpFlg,
@@ -589,14 +592,15 @@ function organizeTheoreticalItemData(theoreticalItemAllData) {
             reloadspeed: TIlist.reloadspeed,
             meleedamage: TIlist.meleedamage,
             critical: TIlist.critical,
+            attackspeed: TIlist.attackspeed,
+            speed: TIlist.speed,
             itemid: TIlist.itemid,
             specialflg: TIlist.specialflg,
             additiondamageflg: TIlist.additiondamageflg,
             healdamageupflg: TIlist.healdamageupflg,
             weaponabilityupflg: TIlist.weaponabilityupflg,
             healdamageup: TIlist.healdamageup,
-            attackspeed: TIlist.attackspeed,
-            speed: TIlist.speed
+            statusupflg: TIlist.statusupflg
         };
     })
     return selectedData;
@@ -651,7 +655,9 @@ function organizeStatusData(statusAllData) {
             attackspeed: Slist.attackspeed,
             movespeed: Slist.movespeed,
             mainhealdamageupflg: Slist.mainhealdamageupflg,
+            main2healdamageupflg: Slist.main2healdamageupflg,
             subhealdamageupflg: Slist.subhealdamageupflg,
+            sub2healdamageupflg: Slist.sub2healdamageupflg,
             ability1healdamageupflg: Slist.ability1healdamageupflg,
             ability2healdamageupflg: Slist.ability2healdamageupflg,
             ability3healdamageupflg: Slist.ability3healdamageupflg,
@@ -2618,8 +2624,8 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
                         const thItemID = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_IDKey];
                         if(thItemID == itemID){
                             
-                            // 特別フラグがOFFの場合そのままステータスに反映
-                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_SpecialFlgKey] == 0){
+                            // ステータスアップフラグがONの場合対応するステータスに反映
+                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_StatusUpFlgKey] == 1){
                                 // 各パラメータを抽出
                                 const thLifeTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_LifeKey];
                                 const thArmorTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_ArmorKey];
@@ -2652,8 +2658,9 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
                                 attackSpeedTmp += thAttackSpeedTmp;
                                 speedTmp += thSpeedTmp;
                             }
-                            else
-                            {
+                            
+                            // 特別フラグがONの場合、通常のステータスアップとは別に計算
+                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_SpecialFlgKey] == 1){
                                 // 追加ダメージ系か判別
                                 if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_AdditionDamageFlgKey] != 0){
                                     
@@ -2760,125 +2767,9 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
                                         }
                                     }
                                     // #region 全てのダメージ・回復系計算処理
-                                    // 上昇種別フラグが１なら全ての回復量を上昇
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpFlgKey] == 1){
-                                        if(showStatusList[STATUSLISTKEY.mainHealDamageUpFlg] == 1){
-                                    
-                                            // 掛け算の場合
-                                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-
-                                                // 表示用ステータスリストに反映
-                                                showStatusList[STATUSLISTKEY.mainDamageKey] = Math.round(showStatusList[STATUSLISTKEY.mainDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                                showStatusList[STATUSLISTKEY.main2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.main2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                            }
-                                        }
-                                        if(showStatusList[STATUSLISTKEY.subHealDamageUpFlg] == 1){
-                                    
-                                            // 掛け算の場合
-                                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-
-                                                // 表示用ステータスリストに反映
-                                                showStatusList[STATUSLISTKEY.subDamageKey] = Math.round(showStatusList[STATUSLISTKEY.subDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                                showStatusList[STATUSLISTKEY.sub2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.sub2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                            }
-                                        }
-                                        if(showStatusList[STATUSLISTKEY.ability1HealDamageUpFlg] == 1){
-                                    
-                                            // 掛け算の場合
-                                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-
-                                                // 表示用ステータスリストに反映
-                                                showStatusList[STATUSLISTKEY.ability1DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability1DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                            }
-                                        }
-                                        if(showStatusList[STATUSLISTKEY.ability2HealDamageUpFlg] == 1){
-                                    
-                                            // 掛け算の場合
-                                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-
-                                                // 表示用ステータスリストに反映
-                                                showStatusList[STATUSLISTKEY.ability2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                            }
-                                        }
-                                        if(showStatusList[STATUSLISTKEY.ability3HealDamageUpFlg] == 1){
-                                    
-                                            // 掛け算の場合
-                                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-
-                                                // 表示用ステータスリストに反映
-                                                showStatusList[STATUSLISTKEY.ability3DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability3DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                            }
-                                        }
-                                        if(showStatusList[STATUSLISTKEY.ultHealDamageUpFlg] == 1){
-                                    
-                                            // 掛け算の場合
-                                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-
-                                                // 表示用ステータスリストに反映
-                                                showStatusList[STATUSLISTKEY.ultDamageKey] = Math.round(showStatusList[STATUSLISTKEY.ultDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                            }
-                                        }
-                                    }
-                                    else if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpFlgKey] == 2)
-                                    {
-                                        // 上昇種別フラグが2なら全てのダメージを上昇
-                                        if(showStatusList[STATUSLISTKEY.mainHealDamageUpFlg] == 2){
-                                    
-                                            // 掛け算の場合
-                                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-
-                                                // 表示用ステータスリストに反映
-                                                showStatusList[STATUSLISTKEY.mainDamageKey] = Math.round(showStatusList[STATUSLISTKEY.mainDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                                showStatusList[STATUSLISTKEY.main2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.main2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                            }
-                                        }
-                                        if(showStatusList[STATUSLISTKEY.subHealDamageUpFlg] == 2){
-                                    
-                                            // 掛け算の場合
-                                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-
-                                                // 表示用ステータスリストに反映
-                                                showStatusList[STATUSLISTKEY.subDamageKey] = Math.round(showStatusList[STATUSLISTKEY.subDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                                showStatusList[STATUSLISTKEY.sub2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.sub2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                            }
-                                        }
-                                        if(showStatusList[STATUSLISTKEY.ability1HealDamageUpFlg] == 2){
-                                    
-                                            // 掛け算の場合
-                                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-
-                                                // 表示用ステータスリストに反映
-                                                showStatusList[STATUSLISTKEY.ability1DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability1DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                            }
-                                        }
-                                        if(showStatusList[STATUSLISTKEY.ability2HealDamageUpFlg] == 2){
-                                    
-                                            // 掛け算の場合
-                                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-
-                                                // 表示用ステータスリストに反映
-                                                showStatusList[STATUSLISTKEY.ability2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                            }
-                                        }
-                                        if(showStatusList[STATUSLISTKEY.ability3HealDamageUpFlg] == 2){
-                                    
-                                            // 掛け算の場合
-                                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-
-                                                // 表示用ステータスリストに反映
-                                                showStatusList[STATUSLISTKEY.ability3DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability3DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                            }
-                                        }
-                                        if(showStatusList[STATUSLISTKEY.ultHealDamageUpFlg] == 2){
-                                    
-                                            // 掛け算の場合
-                                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-
-                                                // 表示用ステータスリストに反映
-                                                showStatusList[STATUSLISTKEY.ultDamageKey] = Math.round(showStatusList[STATUSLISTKEY.ultDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
-                                            }
-                                        }
-                                    }
+                                    allDamageOrHealUp(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpFlgKey],
+                                        theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0],
+                                        showStatusList);
                                     // #endregion
                                 }
                             }
@@ -3280,6 +3171,86 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
 
     // ステータス表に反映
     initStatusValue(showStatusList, text, others, powerText, gadgetNameTmp, gadgetTextTmp);
+}
+
+
+/**
+ * 全てのダメージ・回復を上昇する関数
+ * @param {String} target ダメージか回復か
+ * @param {String} calc 加算か乗算か
+ * @param {Array} showStatusList 表示用ステータスリスト
+ */
+function allDamageOrHealUp(target, calc, showStatusList){
+    // 乗算の場合
+    if(calc == "*"){
+        // 上昇種別フラグが１なら回復量を上昇させ表示用ステータスリストに反映
+        if(target == 1){
+            // メイン１
+            if(showStatusList[STATUSLISTKEY.mainHealDamageUpFlg] == 1){
+                showStatusList[STATUSLISTKEY.mainDamageKey] = Math.round(showStatusList[STATUSLISTKEY.mainDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+            }
+            // メイン2
+            if(showStatusList[STATUSLISTKEY.main2HealDamageUpFlg] == 1){
+                showStatusList[STATUSLISTKEY.main2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.main2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+            }
+            // サブ１
+            if(showStatusList[STATUSLISTKEY.subHealDamageUpFlg] == 1){
+                showStatusList[STATUSLISTKEY.subDamageKey] = Math.round(showStatusList[STATUSLISTKEY.subDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+            }
+            // サブ2
+             if(showStatusList[STATUSLISTKEY.sub2HealDamageUpFlg] == 1){
+                showStatusList[STATUSLISTKEY.sub2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.sub2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+            }
+            // アビリティ１
+            if(showStatusList[STATUSLISTKEY.ability1HealDamageUpFlg] == 1){
+                showStatusList[STATUSLISTKEY.ability1DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability1DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+            }
+            // アビリティ２
+            if(showStatusList[STATUSLISTKEY.ability2HealDamageUpFlg] == 1){
+                showStatusList[STATUSLISTKEY.ability2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+            }
+            // アビリティ３
+            if(showStatusList[STATUSLISTKEY.ability3HealDamageUpFlg] == 1){
+                showStatusList[STATUSLISTKEY.ability3DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability3DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+            }
+            // アルティメット
+            if(showStatusList[STATUSLISTKEY.ultHealDamageUpFlg] == 1){
+                showStatusList[STATUSLISTKEY.ultDamageKey] = Math.round(showStatusList[STATUSLISTKEY.ultDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+            }
+        }
+        // 上昇種別フラグが2なら全てのダメージを上昇させ表示用ステータスリストに反映
+        else if(target == 2)
+        {
+            // メイン１
+            if(showStatusList[STATUSLISTKEY.mainHealDamageUpFlg] == 2){
+                showStatusList[STATUSLISTKEY.mainDamageKey] = Math.round(showStatusList[STATUSLISTKEY.mainDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                showStatusList[STATUSLISTKEY.main2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.main2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+            }
+            // サブ１
+            if(showStatusList[STATUSLISTKEY.subHealDamageUpFlg] == 2){
+                showStatusList[STATUSLISTKEY.subDamageKey] = Math.round(showStatusList[STATUSLISTKEY.subDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                showStatusList[STATUSLISTKEY.sub2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.sub2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+            }
+            // アビリティ１
+            if(showStatusList[STATUSLISTKEY.ability1HealDamageUpFlg] == 2){
+                showStatusList[STATUSLISTKEY.ability1DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability1DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+            }
+            // アビリティ２
+            if(showStatusList[STATUSLISTKEY.ability2HealDamageUpFlg] == 2){
+                showStatusList[STATUSLISTKEY.ability2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+            }
+            // アビリティ３
+            if(showStatusList[STATUSLISTKEY.ability3HealDamageUpFlg] == 2){
+                showStatusList[STATUSLISTKEY.ability3DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability3DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+            }
+            // アルティメット
+            if(showStatusList[STATUSLISTKEY.ultHealDamageUpFlg] == 2){
+                showStatusList[STATUSLISTKEY.ultDamageKey] = Math.round(showStatusList[STATUSLISTKEY.ultDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+            }
+        }
+    } else if(calc == "+"){
+        // TODO:加算は現状無いので未実装（考慮漏れがあるかもしれないため）
+    }
 }
 
 
