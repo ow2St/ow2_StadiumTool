@@ -3330,13 +3330,16 @@ function updateBuild_Power(selectedPowerRows){
     for(let i=0; i<4; i++) {
         // 親要素を指定
         let targetDiv = document.getElementById("power" + String(i + 1));
+        let checkDiv = document.getElementById("theoreticalpower" + String(i + 1));
 
         // 指定した要素内に子要素がある場合は削除する
         if(targetDiv.children.length != 0){
             const image = document.getElementById("power-image" + String(i + 1));
             const span = document.getElementById("delete-power" + String(i + 1));
+            const check = document.getElementById("power-check" + String(i + 1));
             targetDiv.removeChild(image);
             targetDiv.removeChild(span);
+            checkDiv.removeChild(check);
         }
         
         // 選択されたパワーのアイコンと✖ボタンと理論値チェックボックスを追加する
@@ -3361,7 +3364,7 @@ function updateBuild_Power(selectedPowerRows){
             input.checked = false;
             input.classList.add("theoretical-power-checkbox");
             // 理論値フラグがfalseなら表示はするが非活性にする
-            if(selectedPowerRows[i][POWERLISTKEY.theoreticalFlgKey] == 0){
+            if(selectedPowerRows[i][POWERLISTKEY.power_theoreticalFlgKey] == 0){
                 input.disabled = true;
             }
             input.classList.add("selectedbuild-theoretical-checkbox");
