@@ -2885,6 +2885,14 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
             shieldTmp = Math.round(shieldTmp * tracerHPUPscalefactor);
         }
 
+        //ジェットパック・キャットが選択されている場合、体力アイテムを減算処理
+        //最後のループ一回のみ実行
+        if(selectedHero == HERONAME.jetpackcat && i == selectedPowerRows.length - 1){
+        lifeTmp = Math.round(lifeTmp * jetpackCatHPUPscalefactor);
+        armorTmp = Math.round(armorTmp * jetpackCatHPUPscalefactor);
+        shieldTmp = Math.round(shieldTmp * jetpackCatHPUPscalefactor);
+        }
+
         // #region 特殊計算・持続時間計算（先に計算する）
         // ライフ割合上昇アイテムの場合は倍率変数に保管後、追加効果に乗らないようハイフンにする　※対象なしだがコメントを置いておく
 
