@@ -149,6 +149,31 @@ const theoreticalItemKeyMap = {
     statusupflg: THEORETICALITEMLISTKEY.theoreticalItem_StatusUpFlgKey
 };
 
+// 理論値パワーキー対応マッピング（英語 → 日本語）
+const theoreticalPowerKeyMap = {
+    life: THEORETICALPOWERLISTKEY.theoreticalPower_LifeKey,
+    armor: THEORETICALPOWERLISTKEY.theoreticalPower_ArmorKey,
+    shield: THEORETICALPOWERLISTKEY.theoreticalPower_ShieldKey,
+    weaponpower: THEORETICALPOWERLISTKEY.theoreticalPower_WeaponPowerKey,
+    abilitypower: THEORETICALPOWERLISTKEY.theoreticalPower_AbilityPowerKey,
+    ctreducation: THEORETICALPOWERLISTKEY.theoreticalPower_CTReducationKey,
+    ammo: THEORETICALPOWERLISTKEY.theoreticalPower_AmmoKey,
+    weaponlifesteal: THEORETICALPOWERLISTKEY.theoreticalPower_WeaponLifeStealKey,
+    abilitylifesteal: THEORETICALPOWERLISTKEY.theoreticalPower_AbilityLifeStealKey,
+    reloadspeed: THEORETICALPOWERLISTKEY.theoreticalPower_ReloadSpeedKey,
+    meleedamage: THEORETICALPOWERLISTKEY.theoreticalPower_MeleeDamageKey,
+    critical: THEORETICALPOWERLISTKEY.theoreticalPower_CriticalKey,
+    attackspeed: THEORETICALPOWERLISTKEY.theoreticalPower_AttackSpeedKey,
+    speed: THEORETICALPOWERLISTKEY.theoreticalPower_SpeedKey,
+    itemid: THEORETICALPOWERLISTKEY.theoreticalPower_IDKey,
+    specialflg: THEORETICALPOWERLISTKEY.theoreticalPower_SpecialFlgKey,
+    additiondamageflg: THEORETICALPOWERLISTKEY.theoreticalPower_AdditionDamageFlgKey,
+    healdamageupflg: THEORETICALPOWERLISTKEY.theoreticalPower_HealDamageUpFlgKey,
+    weaponabilityupflg: THEORETICALPOWERLISTKEY.theoreticalPower_WeaponAbilityUpFlgKey,
+    healdamageup: THEORETICALPOWERLISTKEY.theoreticalPower_HealDamageUpKey,
+    statusupflg: THEORETICALPOWERLISTKEY.theoreticalPower_StatusUpFlgKey
+};
+
 // ステータスキー対応マッピング（英語 → 日本語）
 const statusKeyMap = {
     heroname: STATUSLISTKEY.heroNameKey,
@@ -243,6 +268,8 @@ var powerList = {};  // 整形後
 
 let theoreticalItem = []; // 全ての理論値アイテムデータを保持
 var theoreticalItemList = {}; // 整形後
+let theoreticalPower = []; // 全ての理論値パワーデータを保持
+var theoreticalPowerList = {}; // 整形後
 
 let parameterAllData = []; // 全てのパラメータデータを保持
 
@@ -256,6 +283,7 @@ var itemCheckboxes = [];
 var gadgetCheckboxes = [];
 var powerCheckboxes = [];
 var theoreticalItemCheckboxes = [];
+var theoreticalPowerCheckboxes = [];
 
 // ガジェットの選択有無フラグ
 var gadgetSelectedFlg = false;
@@ -601,6 +629,42 @@ function organizeTheoreticalItemData(theoreticalItemAllData) {
             weaponabilityupflg: TIlist.weaponabilityupflg,
             healdamageup: TIlist.healdamageup,
             statusupflg: TIlist.statusupflg
+        };
+    })
+    return selectedData;
+}
+
+
+/**
+ * theoreticalPowerList に　theoreticalPowerData.json　から貰うデータの形を決める
+ * @param {object} theoreticalPowerAllData 読み込んだ全ての理論値パワーデータ
+ * @return {object}　selectedData　整形後の理論値パワーデータ
+ */
+function organizeTheoreticalPowerData(theoreticalPowerAllData) {
+    const selectedData = theoreticalPowerAllData
+    .map(TPlist => {
+        return {
+            life: TPlist.life,
+            armor: TPlist.armor,
+            shield: TPlist.shield,
+            weaponpower: TPlist.weaponpower,
+            abilitypower: TPlist.abilitypower,
+            ctreducation: TPlist.ctreducation,
+            ammo: TPlist.ammo,
+            weaponlifesteal: TPlist.weaponlifesteal,
+            abilitylifesteal: TPlist.abilitylifesteal,
+            reloadspeed: TPlist.reloadspeed,
+            meleedamage: TPlist.meleedamage,
+            critical: TPlist.critical,
+            attackspeed: TPlist.attackspeed,
+            speed: TPlist.speed,
+            itemid: TPlist.itemid,
+            specialflg: TPlist.specialflg,
+            additiondamageflg: TPlist.additiondamageflg,
+            healdamageupflg: TPlist.healdamageupflg,
+            weaponabilityupflg: TPlist.weaponabilityupflg,
+            healdamageup: TPlist.healdamageup,
+            statusupflg: TPlist.statusupflg
         };
     })
     return selectedData;
@@ -3247,6 +3311,8 @@ function allDamageOrHealUp(target, calc, showStatusList){
             if(showStatusList[STATUSLISTKEY.ultHealDamageUpFlg] == 2){
                 showStatusList[STATUSLISTKEY.ultDamageKey] = Math.round(showStatusList[STATUSLISTKEY.ultDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
             }
+            // 近接
+            showStatusList[STATUSLISTKEY.meleeDamageKey] = Math.round(showStatusList[STATUSLISTKEY.meleeDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
         }
     } else if(calc == "+"){
         // TODO:加算は現状無いので未実装（考慮漏れがあるかもしれないため）
@@ -3264,13 +3330,16 @@ function updateBuild_Power(selectedPowerRows){
     for(let i=0; i<4; i++) {
         // 親要素を指定
         let targetDiv = document.getElementById("power" + String(i + 1));
+        let checkDiv = document.getElementById("theoreticalpower" + String(i + 1));
 
         // 指定した要素内に子要素がある場合は削除する
         if(targetDiv.children.length != 0){
             const image = document.getElementById("power-image" + String(i + 1));
             const span = document.getElementById("delete-power" + String(i + 1));
+            const check = document.getElementById("power-check" + String(i + 1));
             targetDiv.removeChild(image);
             targetDiv.removeChild(span);
+            checkDiv.removeChild(check);
         }
         
         // 選択されたパワーのアイコンと✖ボタンと理論値チェックボックスを追加する
@@ -3288,8 +3357,33 @@ function updateBuild_Power(selectedPowerRows){
             span.classList.add("selectedbuild-delete-button");
             span.id = "delete-power" + String(i + 1);
             targetDiv.appendChild(span);
+
+            // 理論値チェックボックス追加部分
+            var input = document.createElement("input");
+            input.type = "checkbox";
+            input.checked = false;
+            input.classList.add("theoretical-power-checkbox");
+            // 理論値フラグがfalseなら表示はするが非活性にする
+            if(selectedPowerRows[i][POWERLISTKEY.power_theoreticalFlgKey] == 0){
+                input.disabled = true;
+            }
+            input.classList.add("selectedbuild-theoretical-checkbox");
+            input.id = "power-check" + String(i + 1);
+            checkDiv.appendChild(input);
         }
     }
+    
+    // 理論値チェックボックス
+    theoreticalPowerCheckboxes = document.querySelectorAll(".theoretical-power-checkbox");
+
+    // 各アイテムの理論値チェックボックスにイベントリスナーを追加
+    theoreticalPowerCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", () => {
+            
+            // ステータスを更新
+            updateStatus(selectedItemRowsData, true, selectedPowerRowsData, false);
+        });
+    });
 }
 
 
