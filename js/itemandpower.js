@@ -549,6 +549,12 @@ function linkItemList(itemList) {
 
                 //アイコン付与
                 switch(true) {
+                    case status.includes(STATUSELEMENTS.others_sign):
+                        statusIcons.push(STATUSICON.others);
+                        //テキストから※を削除
+                        statusLists[i] = status.replace(STATUSELEMENTS.others_sign,"");
+                        break;
+
                     case status.includes(STATUSELEMENTS.life_includes):
                         statusIcons.push(STATUSICON.life);
                         break;
@@ -603,12 +609,6 @@ function linkItemList(itemList) {
 
                     case status.includes(STATUSELEMENTS.critical):
                         statusIcons.push(STATUSICON.critical);
-                        break;
-
-                    case status.includes(STATUSELEMENTS.others_sign):
-                        statusIcons.push(STATUSICON.others);
-                        //テキストから※を削除
-                        statusLists[i] = status.replace(STATUSELEMENTS.others_sign,"");
                         break;
 
                     default:
