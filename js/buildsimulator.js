@@ -149,6 +149,31 @@ const theoreticalItemKeyMap = {
     statusupflg: THEORETICALITEMLISTKEY.theoreticalItem_StatusUpFlgKey
 };
 
+// 理論値ガジェットキー対応マッピング（英語 → 日本語）
+const theoreticalGadgetKeyMap = {
+    life: THEORETICALGADGETLISTKEY.theoreticalGadget_LifeKey,
+    armor: THEORETICALGADGETLISTKEY.theoreticalGadget_ArmorKey,
+    shield: THEORETICALGADGETLISTKEY.theoreticalGadget_ShieldKey,
+    weaponpower: THEORETICALGADGETLISTKEY.theoreticalGadget_WeaponPowerKey,
+    abilitypower: THEORETICALGADGETLISTKEY.theoreticalGadget_AbilityPowerKey,
+    ctreducation: THEORETICALGADGETLISTKEY.theoreticalGadget_CTReducationKey,
+    ammo: THEORETICALGADGETLISTKEY.theoreticalGadget_AmmoKey,
+    weaponlifesteal: THEORETICALGADGETLISTKEY.theoreticalGadget_WeaponLifeStealKey,
+    abilitylifesteal: THEORETICALGADGETLISTKEY.theoreticalGadget_AbilityLifeStealKey,
+    reloadspeed: THEORETICALGADGETLISTKEY.theoreticalGadget_ReloadSpeedKey,
+    meleedamage: THEORETICALGADGETLISTKEY.theoreticalGadget_MeleeDamageKey,
+    critical: THEORETICALGADGETLISTKEY.theoreticalGadget_CriticalKey,
+    attackspeed: THEORETICALGADGETLISTKEY.theoreticalGadget_AttackSpeedKey,
+    speed: THEORETICALGADGETLISTKEY.theoreticalGadget_SpeedKey,
+    itemid: THEORETICALGADGETLISTKEY.theoreticalGadget_IDKey,
+    specialflg: THEORETICALGADGETLISTKEY.theoreticalGadget_SpecialFlgKey,
+    additiondamageflg: THEORETICALGADGETLISTKEY.theoreticalGadget_AdditionDamageFlgKey,
+    healdamageupflg: THEORETICALGADGETLISTKEY.theoreticalGadget_HealDamageUpFlgKey,
+    weaponabilityupflg: THEORETICALGADGETLISTKEY.theoreticalGadget_WeaponAbilityUpFlgKey,
+    healdamageup: THEORETICALGADGETLISTKEY.theoreticalGadget_HealDamageUpKey,
+    statusupflg: THEORETICALGADGETLISTKEY.theoreticalGadget_StatusUpFlgKey
+};
+
 // 理論値パワーキー対応マッピング（英語 → 日本語）
 const theoreticalPowerKeyMap = {
     life: THEORETICALPOWERLISTKEY.theoreticalPower_LifeKey,
@@ -262,12 +287,15 @@ const accordionContainer = document.getElementById("accordion-container");
 
 let itemAllData = []; // 全てのアイテムデータを保持
 var itemList = {};  // 整形後
-
-let powerAllData = []; // 全てのアイテムデータを保持
+let gadgetAllData = []; // 全てのガジェットデータを保持
+var gadgetList = {};  // 整形後
+let powerAllData = []; // 全てのパワーデータを保持
 var powerList = {};  // 整形後
 
 let theoreticalItem = []; // 全ての理論値アイテムデータを保持
 var theoreticalItemList = {}; // 整形後
+let theoreticalGadget = []; // 全ての理論値ガジェットデータを保持
+var theoreticalGadgetList = {}; // 整形後
 let theoreticalPower = []; // 全ての理論値パワーデータを保持
 var theoreticalPowerList = {}; // 整形後
 
@@ -305,7 +333,7 @@ async function loadAndInitBuildData() {
     try
     {
         // #region データの読み込み
-        const [itemData, gadgetData, powerData, statusData, theoreticalItemData, parameterData] = await Promise.all([
+        const [itemData, gadgetData, powerData, statusData, theoreticalItemData, theoreticalGadgetData, parameterData] = await Promise.all([
             // データの読み込み(itemList)
             fetch("itemListData.json").then(response => response.json()),
 
@@ -321,6 +349,9 @@ async function loadAndInitBuildData() {
             // データの読み込み(theoreticalItem)
             fetch("theoreticalItemData.json").then(response => response.json()),
 
+            // データの読み込み(theoreticalGadget)
+            fetch("theoreticalGadgetData.json").then(response => response.json()),
+
             // データの読み込み(parameter)
             fetch("parameterData.json").then(response => response.json())
         ]);
@@ -329,6 +360,7 @@ async function loadAndInitBuildData() {
         gadgetAllData = gadgetData;
         powerAllData = powerData;
         theoreticalItem = theoreticalItemData;
+        theoreticalGadget = theoreticalGadgetData;
         statusAllData = statusData;
         parameterAllData = parameterData;
 
@@ -337,6 +369,7 @@ async function loadAndInitBuildData() {
         gadgetList = convertKeys(organizeGadgetData(gadgetAllData), gadgetKeyMap);
         powerList = convertKeys(organizePowerData(powerAllData), powerKeyMap);
         theoreticalItemList = convertKeys(organizeTheoreticalItemData(theoreticalItem), theoreticalItemKeyMap);
+        theoreticalGadgetList = convertKeys(organizeTheoreticalGadgetData(theoreticalGadget), theoreticalGadgetKeyMap);
         initStatusList = convertKeys(organizeStatusData(statusAllData), statusKeyMap);
         parameterList = convertKeys(organizeParameterData(parameterAllData), parameterKeyMap);
         // #endregion
@@ -634,6 +667,40 @@ function organizeTheoreticalItemData(theoreticalItemAllData) {
     return selectedData;
 }
 
+/**
+ * theoreticalGadgetList に　theoreticalGadgetData.json　から貰うデータの形を決める
+ * @param {object} theoreticalGadgetAllData 読み込んだ全ての理論値ガジェットデータ
+ * @return {object}　selectedData　整形後の理論値ガジェットデータ
+ */
+function organizeTheoreticalGadgetData(theoreticalGadgetAllData) {
+    const selectedData = theoreticalGadgetAllData
+    .map(TGlist => {
+        return {
+            life: TGlist.life,
+            armor: TGlist.armor,
+            shield: TGlist.shield,
+            weaponpower: TGlist.weaponpower,
+            abilitypower: TGlist.abilitypower,
+            ctreducation: TGlist.ctreducation,
+            ammo: TGlist.ammo,
+            weaponlifesteal: TGlist.weaponlifesteal,
+            abilitylifesteal: TGlist.abilitylifesteal,
+            reloadspeed: TGlist.reloadspeed,
+            meleedamage: TGlist.meleedamage,
+            critical: TGlist.critical,
+            attackspeed: TGlist.attackspeed,
+            speed: TGlist.speed,
+            itemid: TGlist.id,
+            specialflg: TGlist.specialflg,
+            additiondamageflg: TGlist.additiondamageflg,
+            healdamageupflg: TGlist.healdamageupflg,
+            weaponabilityupflg: TGlist.weaponabilityupflg,
+            healdamageup: TGlist.healdamageup,
+            statusupflg: TGlist.statusupflg
+        };
+    })
+    return selectedData;
+}
 
 /**
  * theoreticalPowerList に　theoreticalPowerData.json　から貰うデータの形を決める
@@ -2680,31 +2747,33 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
                 const imgSRC = decodeURIComponent(img.src.split('/').pop());
 
                 // アイテム名またはガジェット名が一致かつチェックがONの時はアイテムIDを抜き出す
-                if((selectedItemRows[i][ITEMLISTKEY.item_iconKey] == imgSRC || selectedItemRows[i][GADGETLISTKEY.gadgetnameKey] == imgSRC) && checkbox.checked){
+                if((selectedItemRows[i][ITEMLISTKEY.item_iconKey] == imgSRC || selectedItemRows[i][GADGETLISTKEY.gadget_iconKey] == imgSRC) && checkbox.checked){
                     const itemID = (selectedItemRows[i][ITEMLISTKEY.itemIdKey] || selectedItemRows[i][GADGETLISTKEY.gadget_idKey]);
+                    const targetList = selectedItemRows[i][GADGETLISTKEY.gadget_categoryKey] == "ガジェット" ? theoreticalGadgetList : theoreticalItemList;
+                    const theoreticalKeyMap = selectedItemRows[i][GADGETLISTKEY.gadget_categoryKey] == "ガジェット" ? theoreticalGadgetKeyMap : theoreticalItemKeyMap;
 
                     // アイテムIDから理論値リストのデータを検索
-                    for(let j=0; j<theoreticalItemList.length; j++){
-                        const thItemID = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_IDKey];
+                    for(let j=0; j<targetList.length; j++){
+                        const thItemID = targetList[j][theoreticalKeyMap.itemid];
                         if(thItemID == itemID){
                             
                             // ステータスアップフラグがONの場合対応するステータスに反映
-                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_StatusUpFlgKey] == 1){
+                            if(targetList[j][theoreticalKeyMap.statusupflg] == 1){
                                 // 各パラメータを抽出
-                                const thLifeTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_LifeKey];
-                                const thArmorTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_ArmorKey];
-                                const thShieldTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_ShieldKey];
-                                const thWeaponPowerTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponPowerKey];
-                                const thAbilityPowerTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_AbilityPowerKey];
-                                const thCtReducationTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_CTReducationKey];
-                                const thAmmoTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_AmmoKey];
-                                const thWeapon_LifeStealTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponLifeStealKey];
-                                const thAbility_LifeStealTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_AbilityLifeStealKey];
-                                const thReloadSpeedTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_ReloadSpeedKey];
-                                const thMeleeDamageTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_MeleeDamageKey];
-                                const thCriticalTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_CriticalKey];
-                                const thAttackSpeedTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_AttackSpeedKey];
-                                const thSpeedTmp = theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_SpeedKey];
+                                const thLifeTmp = targetList[j][theoreticalKeyMap.life];
+                                const thArmorTmp = targetList[j][theoreticalKeyMap.armor];
+                                const thShieldTmp = targetList[j][theoreticalKeyMap.shield];
+                                const thWeaponPowerTmp = targetList[j][theoreticalKeyMap.weaponpower];
+                                const thAbilityPowerTmp = targetList[j][theoreticalKeyMap.abilitypower];
+                                const thCtReducationTmp = targetList[j][theoreticalKeyMap.ctreducation];
+                                const thAmmoTmp = targetList[j][theoreticalKeyMap.ammo];
+                                const thWeapon_LifeStealTmp = targetList[j][theoreticalKeyMap.weaponlifesteal];
+                                const thAbility_LifeStealTmp = targetList[j][theoreticalKeyMap.abilitylifesteal];
+                                const thReloadSpeedTmp = targetList[j][theoreticalKeyMap.reloadspeed];
+                                const thMeleeDamageTmp = targetList[j][theoreticalKeyMap.meleedamage];
+                                const thCriticalTmp = targetList[j][theoreticalKeyMap.critical];
+                                const thAttackSpeedTmp = targetList[j][theoreticalKeyMap.attackspeed];
+                                const thSpeedTmp = targetList[j][theoreticalKeyMap.speed];
 
                                 // 通常の計算変数に加算
                                 lifeTmp += thLifeTmp;
@@ -2724,25 +2793,25 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
                             }
                             
                             // 特別フラグがONの場合、通常のステータスアップとは別に計算
-                            if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_SpecialFlgKey] == 1){
+                            if(targetList[j][theoreticalKeyMap.specialflg] == 1){
                                 // 追加ダメージ系か判別
-                                if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_AdditionDamageFlgKey] != 0){
+                                if(targetList[j][theoreticalKeyMap.additiondamageflg] != 0){
                                     
                                     // 1なら武器依存の追加ダメージ（現状はない）
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_AdditionDamageFlgKey] == 1){
+                                    if(targetList[j][theoreticalKeyMap.additiondamageflg] == 1){
                                     
                                     }
                                     else
                                     {
                                         // 武器アビリティ上昇フラグで判断（アビリティのみ）
-                                        if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][4] == BooleanValue.true){
-                                            ability1AddDamageAbility += theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey];
+                                        if(targetList[j][theoreticalKeyMap.weaponabilityupflg][4] == BooleanValue.true){
+                                            ability1AddDamageAbility += targetList[j][theoreticalKeyMap.healdamageup];
                                         }
-                                        if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][5] == BooleanValue.true){
-                                            ability2AddDamageAbility += theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey];
+                                        if(targetList[j][theoreticalKeyMap.weaponabilityupflg][5] == BooleanValue.true){
+                                            ability2AddDamageAbility += targetList[j][theoreticalKeyMap.healdamageup];
                                         }
-                                        if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][5] == BooleanValue.true){
-                                            ability3AddDamageAbility += theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey];
+                                        if(targetList[j][theoreticalKeyMap.weaponabilityupflg][5] == BooleanValue.true){
+                                            ability3AddDamageAbility += targetList[j][theoreticalKeyMap.healdamageup];
                                         }
                                     }
                                 }
@@ -2750,89 +2819,89 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
                                 {
                                     // 武器アビリティ上昇フラグから上昇する対象を決定 計算順序②
                                     // アビリティ１の場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][6] == BooleanValue.true){
+                                    if(targetList[j][theoreticalKeyMap.weaponabilityupflg][6] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
-                                        if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-                                            showStatusList[STATUSLISTKEY.ability1DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability1DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                        if(targetList[j][theoreticalKeyMap.healdamageup][0] == "*"){
+                                            showStatusList[STATUSLISTKEY.ability1DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability1DamageKey] * targetList[j][theoreticalKeyMap.healdamageup].slice(1) * 10 ** 2) / 10 ** 2;
                                         }else{
-                                            showStatusList[STATUSLISTKEY.ability1DamageKey] += theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey];
+                                            showStatusList[STATUSLISTKEY.ability1DamageKey] += targetList[j][theoreticalKeyMap.healdamageup];
                                         }
                                     }
                                     // アビリティ２の場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][5] == BooleanValue.true){
+                                    if(targetList[j][theoreticalKeyMap.weaponabilityupflg][5] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
-                                        if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-                                            showStatusList[STATUSLISTKEY.ability2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                        if(targetList[j][theoreticalKeyMap.healdamageup][0] == "*"){
+                                            showStatusList[STATUSLISTKEY.ability2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability2DamageKey] * targetList[j][theoreticalKeyMap.healdamageup].slice(1) * 10 ** 2) / 10 ** 2;
                                         }else{
-                                            showStatusList[STATUSLISTKEY.ability2DamageKey] += theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey];
+                                            showStatusList[STATUSLISTKEY.ability2DamageKey] += targetList[j][theoreticalKeyMap.healdamageup];
                                         }
                                     }
                                     // アビリティ３の場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][4] == BooleanValue.true){
+                                    if(targetList[j][theoreticalKeyMap.weaponabilityupflg][4] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
-                                        if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-                                            showStatusList[STATUSLISTKEY.ability3DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability3DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                        if(targetList[j][theoreticalKeyMap.healdamageup][0] == "*"){
+                                            showStatusList[STATUSLISTKEY.ability3DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability3DamageKey] * targetList[j][theoreticalKeyMap.healdamageup].slice(1) * 10 ** 2) / 10 ** 2;
                                         }else{
-                                            showStatusList[STATUSLISTKEY.ability3DamageKey] += theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey];
+                                            showStatusList[STATUSLISTKEY.ability3DamageKey] += targetList[j][theoreticalKeyMap.healdamageup];
                                         }
                                     }
                                     // ULTの場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][3] == BooleanValue.true){
+                                    if(targetList[j][theoreticalKeyMap.weaponabilityupflg][3] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
-                                        if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-                                            showStatusList[STATUSLISTKEY.ultDamageKey] = Math.round(showStatusList[STATUSLISTKEY.ultDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                        if(targetList[j][theoreticalKeyMap.healdamageup][0] == "*"){
+                                            showStatusList[STATUSLISTKEY.ultDamageKey] = Math.round(showStatusList[STATUSLISTKEY.ultDamageKey] * targetList[j][theoreticalKeyMap.healdamageup].slice(1) * 10 ** 2) / 10 ** 2;
                                         }else{
-                                            showStatusList[STATUSLISTKEY.ultDamageKey] += theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey];
+                                            showStatusList[STATUSLISTKEY.ultDamageKey] += targetList[j][theoreticalKeyMap.healdamageup];
                                         }
                                     }
                                     // メイン１の場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][10] == BooleanValue.true){
+                                    if(targetList[j][theoreticalKeyMap.weaponabilityupflg][10] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
-                                        if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-                                            showStatusList[STATUSLISTKEY.mainDamageKey] = Math.round(showStatusList[STATUSLISTKEY.mainDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                        if(targetList[j][theoreticalKeyMap.healdamageup][0] == "*"){
+                                            showStatusList[STATUSLISTKEY.mainDamageKey] = Math.round(showStatusList[STATUSLISTKEY.mainDamageKey] * targetList[j][theoreticalKeyMap.healdamageup].slice(1) * 10 ** 2) / 10 ** 2;
                                         }else{
-                                            showStatusList[STATUSLISTKEY.mainDamageKey] += theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey];
+                                            showStatusList[STATUSLISTKEY.mainDamageKey] += targetList[j][theoreticalKeyMap.healdamageup];
                                         }
                                     }
                                     // メイン２の場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][9] == BooleanValue.true){
+                                    if(targetList[j][theoreticalKeyMap.weaponabilityupflg][9] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
-                                        if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-                                            showStatusList[STATUSLISTKEY.main2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.main2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                        if(targetList[j][theoreticalKeyMap.healdamageup][0] == "*"){
+                                            showStatusList[STATUSLISTKEY.main2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.main2DamageKey] * targetList[j][theoreticalKeyMap.healdamageup].slice(1) * 10 ** 2) / 10 ** 2;
                                         }else{
-                                            showStatusList[STATUSLISTKEY.mainDamageKey] += theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey];
+                                            showStatusList[STATUSLISTKEY.main2DamageKey] += targetList[j][theoreticalKeyMap.healdamageup];
                                         }
                                     }
                                     // サブ１の場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][8] == BooleanValue.true){
+                                    if(targetList[j][theoreticalKeyMap.weaponabilityupflg][8] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
-                                        if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-                                            showStatusList[STATUSLISTKEY.subDamageKey] = Math.round(showStatusList[STATUSLISTKEY.subDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                        if(targetList[j][theoreticalKeyMap.healdamageup][0] == "*"){
+                                            showStatusList[STATUSLISTKEY.subDamageKey] = Math.round(showStatusList[STATUSLISTKEY.subDamageKey] * targetList[j][theoreticalKeyMap.healdamageup].slice(1) * 10 ** 2) / 10 ** 2;
                                         }else{
-                                            showStatusList[STATUSLISTKEY.subDamageKey] += theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey];
+                                            showStatusList[STATUSLISTKEY.subDamageKey] += targetList[j][theoreticalKeyMap.healdamageup];
                                         }
                                     }
                                     // サブ２の場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][7] == BooleanValue.true){
+                                    if(targetList[j][theoreticalKeyMap.weaponabilityupflg][7] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
-                                        if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-                                            showStatusList[STATUSLISTKEY.sub2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.sub2DamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                        if(targetList[j][theoreticalKeyMap.healdamageup][0] == "*"){
+                                            showStatusList[STATUSLISTKEY.sub2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.sub2DamageKey] * targetList[j][theoreticalKeyMap.healdamageup].slice(1) * 10 ** 2) / 10 ** 2;
                                         }else{
-                                            showStatusList[STATUSLISTKEY.sub2DamageKey] += theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey];
+                                            showStatusList[STATUSLISTKEY.sub2DamageKey] += targetList[j][theoreticalKeyMap.healdamageup];
                                         }
                                     }
                                     // 近接の場合
-                                    if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_WeaponAbilityUpFlgKey][2] == BooleanValue.true){
+                                    if(targetList[j][theoreticalKeyMap.weaponabilityupflg][2] == BooleanValue.true){
                                         // ＊の場合は掛け算、そうでない場合は加算で計算
-                                        if(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0] == "*"){
-                                            showStatusList[STATUSLISTKEY.meleeDamageKey] = Math.round(showStatusList[STATUSLISTKEY.meleeDamageKey] * theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey].slice(1) * 10 ** 2) / 10 ** 2;
+                                        if(targetList[j][theoreticalKeyMap.healdamageup][0] == "*"){
+                                            showStatusList[STATUSLISTKEY.status_meleeDamageKey] = Math.round(showStatusList[STATUSLISTKEY.status_meleeDamageKey] * targetList[j][theoreticalKeyMap.healdamageup].slice(1) * 10 ** 2) / 10 ** 2;
                                         }else{
-                                            showStatusList[STATUSLISTKEY.meleeDamageKey] += theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey];
+                                            showStatusList[STATUSLISTKEY.status_meleeDamageKey] += targetList[j][theoreticalKeyMap.healdamageup];
                                         }
                                     }
                                     // #region 全てのダメージ・回復系計算処理
-                                    allDamageOrHealUp(theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpFlgKey],
-                                        theoreticalItemList[j][THEORETICALITEMLISTKEY.theoreticalItem_HealDamageUpKey][0],
+                                    allDamageOrHealUp(targetList[j][theoreticalKeyMap.healdamageupflg],
+                                        targetList[j][theoreticalKeyMap.healdamageup][0],
                                         showStatusList);
                                     // #endregion
                                 }
