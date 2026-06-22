@@ -154,6 +154,7 @@ async function loadAndInitData() {
 
         //パラメータ設定
         tracerHPUPscalefactor = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.TracerHPUPscalefactorID)?.[PARAMETERKEY.valueKey]);
+        JetpackCatHPUPscalefactor = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.JetpackCatHPUPscalefactorID)?.[PARAMETERKEY.valueKey]);
 
         // 各リストをテーブルに紐づけ
         linkItemList(itemList);
@@ -548,6 +549,12 @@ function linkItemList(itemList) {
 
                 //アイコン付与
                 switch(true) {
+                    case status.includes(STATUSELEMENTS.others_sign):
+                        statusIcons.push(STATUSICON.others);
+                        //テキストから※を削除
+                        statusLists[i] = status.replace(STATUSELEMENTS.others_sign,"");
+                        break;
+
                     case status.includes(STATUSELEMENTS.life_includes):
                         statusIcons.push(STATUSICON.life);
                         break;
@@ -604,26 +611,21 @@ function linkItemList(itemList) {
                         statusIcons.push(STATUSICON.critical);
                         break;
 
-                    case status.includes(STATUSELEMENTS.others_sign):
-                        statusIcons.push(STATUSICON.others);
-                        //テキストから※を削除
-                        statusLists[i] = status.replace(STATUSELEMENTS.others_sign,"");
-                        break;
-
                     default:
                         throw new Error(OTHERERRORMESSAGEKEY.unexpectedStatus + ": " + status);
                 }
             });
 
             //体力アップ系トレーサー専用アイテムの数値減算処理
-            if(uniqueHeroText == HERONAME.tracer){
+            if(uniqueHeroText == HERONAME.tracer || uniqueHeroText == HERONAME.jetpackcat) {
+                const scalefactor = uniqueHeroText == HERONAME.tracer ? tracerHPUPscalefactor : JetpackCatHPUPscalefactor;
                 statusLists.forEach((status, i) => {
                     switch(true){
 
                         //ライフ+の場合
                         case status.includes(STATUSELEMENTS.life_includes):
                             //文字列→数値変換＆減算
-                            status = Number(status.replace(STATUSELEMENTS.life_includes, "")) * tracerHPUPscalefactor;
+                            status = Number(status.replace(STATUSELEMENTS.life_includes, "")) * scalefactor;
                             //四捨五入
                             status = String(Math.round(status));
                             //文字列へ再結合
@@ -632,7 +634,7 @@ function linkItemList(itemList) {
                         //アーマー
                         case status.includes(STATUSELEMENTS.armor):
                             //文字列→数値変換＆減算
-                            status = Number(status.replace(STATUSELEMENTS.armor,"+", "")) * tracerHPUPscalefactor;
+                            status = Number(status.replace(STATUSELEMENTS.armor, "").replace("+", "")) * scalefactor;
                             //四捨五入
                             status = String(Math.round(status));
                             //文字列へ再結合
@@ -641,7 +643,7 @@ function linkItemList(itemList) {
                         //シールド
                         case status.includes(STATUSELEMENTS.shield):
                             //文字列→数値変換＆減算
-                            status = Number(status.replace(STATUSELEMENTS.shield,"+", "")) * tracerHPUPscalefactor;
+                            status = Number(status.replace(STATUSELEMENTS.shield, "").replace("+", "")) * scalefactor;
                             //四捨五入
                             status = String(Math.round(status));
                             //文字列へ再結合

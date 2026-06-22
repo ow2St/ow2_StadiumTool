@@ -258,6 +258,7 @@ window.PARAMETERID = {
     coalescencehealID: 'ce50c767-6399-4e0e-8f84-fb63f8ac41d7',
     takeaimID: 'd58b6aa7-2f05-495a-8c60-e7b18ee7217c',
     TracerHPUPscalefactorID: 'f377ad17-3528-4f25-a822-f77df93aef76',
+    JetpackCatHPUPscalefactorID: 'dd50780f-1641-4290-9c30-f99e781b5867'
 };
 
 /**
@@ -298,7 +299,8 @@ window.HERONAME = {
     kiriko: "キリコ",
     freya: "フレイヤ",
     tracer: "トレーサー",
-    vendetta: "ヴェンデッタ"
+    vendetta: "ヴェンデッタ",
+    jetpackcat: "ジェットパック・キャット"
 };
 
 /**
@@ -310,7 +312,6 @@ window.UNIQUEHEROWORD = {
     damage: "ダメージ",
     heal: "ヒール",
     chargeLevel1: "チャージレベル1",
-    chargeLevel2: "チャージレベル2",
     chargeLevel3: "チャージレベル3"
 };
 
