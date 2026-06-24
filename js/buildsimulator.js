@@ -381,6 +381,7 @@ async function loadAndInitBuildData() {
         takeAimBombDamage = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.takeaimID)?.[PARAMETERKEY.valueKey]);
         takeAimBombDamageCalc = takeAimBombDamage; // テイクエイム爆風ダメージ計算用変数に初期値を設定
         tracerHPUPscalefactor = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.TracerHPUPscalefactorID)?.[PARAMETERKEY.valueKey]);
+        jetpackCatHPUPscalefactor = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.JetpackCatHPUPscalefactorID)?.[PARAMETERKEY.valueKey]);
         bioticorbHealingRate = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.bioticorbhealID)?.[PARAMETERKEY.valueKey]);
         coalescenceHealingRate = Number(parameterList.find(param => param[PARAMETERKEY.idKey] === PARAMETERID.coalescencehealID)?.[PARAMETERKEY.valueKey]);
         // #endregion
@@ -2662,6 +2663,14 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
         shieldTmp = Math.round(shieldTmp * tracerHPUPscalefactor);
         }
 
+        //ジェットパック・キャットが選択されている場合、体力アイテムを減算処理
+        //最後のループ一回のみ実行
+        if(selectedHero == HERONAME.jetpackcat && i == selectedItemRows.length - 1){
+        lifeTmp = Math.round(lifeTmp * jetpackCatHPUPscalefactor);
+        armorTmp = Math.round(armorTmp * jetpackCatHPUPscalefactor);
+        shieldTmp = Math.round(shieldTmp * jetpackCatHPUPscalefactor);
+        }
+
         // #region 特殊計算・持続時間計算（先に計算する）
         // ライフ割合上昇アイテムの場合は倍率変数に保管後、追加効果に乗らないようハイフンにする
         if(nameTmp == mekaZName){
@@ -2856,6 +2865,14 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
             lifeTmp = Math.round(lifeTmp * tracerHPUPscalefactor);
             armorTmp = Math.round(armorTmp * tracerHPUPscalefactor);
             shieldTmp = Math.round(shieldTmp * tracerHPUPscalefactor);
+        }
+
+        //ジェットパック・キャットが選択されている場合、体力アイテムを減算処理
+        //最後のループ一回のみ実行
+        if(selectedHero == HERONAME.jetpackcat && i == selectedPowerRows.length - 1){
+        lifeTmp = Math.round(lifeTmp * jetpackCatHPUPscalefactor);
+        armorTmp = Math.round(armorTmp * jetpackCatHPUPscalefactor);
+        shieldTmp = Math.round(shieldTmp * jetpackCatHPUPscalefactor);
         }
 
         // #region 特殊計算・持続時間計算（先に計算する）
