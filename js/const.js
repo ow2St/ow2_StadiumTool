@@ -127,6 +127,33 @@ window.THEORETICALITEMLISTKEY = {
 };
 
 /**
+ * 理論値ガジェットリストのキー
+ */
+window.THEORETICALGADGETLISTKEY = {
+    theoreticalGadget_IDKey: "ガジェットID",
+    theoreticalGadget_LifeKey: "ライフ",
+    theoreticalGadget_ArmorKey: "アーマー",
+    theoreticalGadget_ShieldKey: "シールド",
+    theoreticalGadget_WeaponPowerKey: "武器パワー",
+    theoreticalGadget_AbilityPowerKey: "アビリティパワー",
+    theoreticalGadget_CTReducationKey: "CT短縮",
+    theoreticalGadget_AmmoKey: "弾薬",
+    theoreticalGadget_WeaponLifeStealKey: "武器（ライフ吸収）",
+    theoreticalGadget_AbilityLifeStealKey: "アビリティ（ライフ吸収）",
+    theoreticalGadget_ReloadSpeedKey: "リロード速度",
+    theoreticalGadget_MeleeDamageKey: "近接ダメージ",
+    theoreticalGadget_CriticalKey: "クリティカル",
+    theoreticalGadget_AttackSpeedKey: "攻撃速度",
+    theoreticalGadget_SpeedKey: "移動速度",
+    theoreticalGadget_SpecialFlgKey: "特別フラグ",
+    theoreticalGadget_AdditionDamageFlgKey: "追加ダメージフラグ",
+    theoreticalGadget_HealDamageUpFlgKey: "ヒールダメージ上昇フラグ",
+    theoreticalGadget_WeaponAbilityUpFlgKey: "武器アビリティ上昇フラグ",
+    theoreticalGadget_HealDamageUpKey: "ヒールダメージ上昇量",
+    theoreticalGadget_StatusUpFlgKey: "ステータスアップフラグ"
+};
+
+/**
  * 理論値パワーリストのキー
  */
 window.THEORETICALPOWERLISTKEY = {
