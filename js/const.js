@@ -127,6 +127,33 @@ window.THEORETICALITEMLISTKEY = {
 };
 
 /**
+ * 理論値ガジェットリストのキー
+ */
+window.THEORETICALGADGETLISTKEY = {
+    theoreticalGadget_IDKey: "ガジェットID",
+    theoreticalGadget_LifeKey: "ライフ",
+    theoreticalGadget_ArmorKey: "アーマー",
+    theoreticalGadget_ShieldKey: "シールド",
+    theoreticalGadget_WeaponPowerKey: "武器パワー",
+    theoreticalGadget_AbilityPowerKey: "アビリティパワー",
+    theoreticalGadget_CTReducationKey: "CT短縮",
+    theoreticalGadget_AmmoKey: "弾薬",
+    theoreticalGadget_WeaponLifeStealKey: "武器（ライフ吸収）",
+    theoreticalGadget_AbilityLifeStealKey: "アビリティ（ライフ吸収）",
+    theoreticalGadget_ReloadSpeedKey: "リロード速度",
+    theoreticalGadget_MeleeDamageKey: "近接ダメージ",
+    theoreticalGadget_CriticalKey: "クリティカル",
+    theoreticalGadget_AttackSpeedKey: "攻撃速度",
+    theoreticalGadget_SpeedKey: "移動速度",
+    theoreticalGadget_SpecialFlgKey: "特別フラグ",
+    theoreticalGadget_AdditionDamageFlgKey: "追加ダメージフラグ",
+    theoreticalGadget_HealDamageUpFlgKey: "ヒールダメージ上昇フラグ",
+    theoreticalGadget_WeaponAbilityUpFlgKey: "武器アビリティ上昇フラグ",
+    theoreticalGadget_HealDamageUpKey: "ヒールダメージ上昇量",
+    theoreticalGadget_StatusUpFlgKey: "ステータスアップフラグ"
+};
+
+/**
  * 理論値パワーリストのキー
  */
 window.THEORETICALPOWERLISTKEY = {
@@ -258,6 +285,7 @@ window.PARAMETERID = {
     coalescencehealID: 'ce50c767-6399-4e0e-8f84-fb63f8ac41d7',
     takeaimID: 'd58b6aa7-2f05-495a-8c60-e7b18ee7217c',
     TracerHPUPscalefactorID: 'f377ad17-3528-4f25-a822-f77df93aef76',
+    JetpackCatHPUPscalefactorID: 'dd50780f-1641-4290-9c30-f99e781b5867'
 };
 
 /**
@@ -298,7 +326,8 @@ window.HERONAME = {
     kiriko: "キリコ",
     freya: "フレイヤ",
     tracer: "トレーサー",
-    vendetta: "ヴェンデッタ"
+    vendetta: "ヴェンデッタ",
+    jetpackcat: "ジェットパック・キャット"
 };
 
 /**
@@ -310,7 +339,6 @@ window.UNIQUEHEROWORD = {
     damage: "ダメージ",
     heal: "ヒール",
     chargeLevel1: "チャージレベル1",
-    chargeLevel2: "チャージレベル2",
     chargeLevel3: "チャージレベル3"
 };
 

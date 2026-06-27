@@ -40,6 +40,11 @@
         "value": 80
     },
     {
+        "id": "dd50780f-1641-4290-9c30-f99e781b5867",
+        "name": "JetpackCatHPUPscalefactor",
+        "value": 0.8
+    },
+    {
         "id": "f377ad17-3528-4f25-a822-f77df93aef76",
         "name": "TracerHPUPscalefactor",
         "value": 0.65
