@@ -41,29 +41,61 @@
                     <div class="button-list">
                         <span class="button-category">レアリティ</span>
                         <div class="button-only" id="item_button-rarity">
-                            <button class="button-on" id="common" onclick="filterItemOnclickHandler(this)">コモン</button>
-                            <button class="button-on" id="rare" onclick="filterItemOnclickHandler(this)">レア</button>
-                            <button class="button-on" id="epic" onclick="filterItemOnclickHandler(this)">エピック</button>
+                            <button class="button-on" style="background-color: var(--button-common-color, #43C94D);" id="common" onclick="filterItemOnclickHandler(this)">コモン</button>
+                            <button class="button-on" style="background-color: var(--button-rare-color, #39afff);" id="rare" onclick="filterItemOnclickHandler(this)">レア</button>
+                            <button class="button-on" style="background-color: var(--button-epic-color, #C449FF);" id="epic" onclick="filterItemOnclickHandler(this)">エピック</button>
                         </div>
                     </div>
                     <div class="button-list">
                         <span class="button-category">ステータス</span>
                         <div class="button-only" id="item_button-status">
-                            <button class="button-on" id="life" onclick="filterItemOnclickHandler(this)">ライフ</button>
-                            <button class="button-on" id="armor" onclick="filterItemOnclickHandler(this)">アーマー</button>
-                            <button class="button-on" id="shield" onclick="filterItemOnclickHandler(this)">シールド</button>
-                            <button class="button-on" id="weaponPower" onclick="filterItemOnclickHandler(this)">武器パワー</button>
-                            <button class="button-on" id="abilityPower" onclick="filterItemOnclickHandler(this)">アビリティパワー</button>
-                            <button class="button-on" id="attackSpeed" onclick="filterItemOnclickHandler(this)">攻撃速度</button>
-                            <button class="button-on" id="ctReducation" onclick="filterItemOnclickHandler(this)">CT短縮</button>
-                            <button class="button-on" id="ammo" onclick="filterItemOnclickHandler(this)">弾薬</button>
-                            <button class="button-on" id="weapon_LifeSteal" onclick="filterItemOnclickHandler(this)">ライフ吸収（武器）</button>
-                            <button class="button-on" id="ability_LifeSteal" onclick="filterItemOnclickHandler(this)">ライフ吸収（アビリティ）</button>
-                            <button class="button-on" id="speed" onclick="filterItemOnclickHandler(this)">移動速度</button>
-                            <button class="button-on" id="reloadSpeed" onclick="filterItemOnclickHandler(this)">リロード速度</button>
-                            <button class="button-on" id="meleeDamage" onclick="filterItemOnclickHandler(this)">近接ダメージ</button>
-                            <button class="button-on" id="critical" onclick="filterItemOnclickHandler(this)">クリティカル</button>
-                            <button class="button-on" id="others" onclick="filterItemOnclickHandler(this)">その他</button>
+                            <button class="button-on" id="life" onclick="filterItemOnclickHandler(this)">
+                                <img src="assets/images/icons/status/ライフアイコン.png" class="IGP-buttonicon">
+                                <span>ライフ</span>
+                            </button>
+                            <button class="button-on" id="armor" onclick="filterItemOnclickHandler(this)">
+                                <img src="assets/images/icons/status/アーマーアイコン.png" class="IGP-buttonicon">アーマー
+                            </button>
+                            <button class="button-on" id="shield" onclick="filterItemOnclickHandler(this)">
+                                <img src="assets/images/icons/status/シールドアイコン.png" class="IGP-buttonicon">シールド
+                            </button>
+                            <button class="button-on" id="weaponPower" onclick="filterItemOnclickHandler(this)">
+                                <img src="assets/images/icons/status/武器パワーアイコン.png" class="IGP-buttonicon">武器パワー
+                            </button>
+                            <button class="button-on" id="abilityPower" onclick="filterItemOnclickHandler(this)">
+                                <img src="assets/images/icons/status/アビリティパワーアイコン.png" class="IGP-buttonicon">アビリティパワー
+                            </button>
+                            <button class="button-on" id="attackSpeed" onclick="filterItemOnclickHandler(this)">
+                                <img src="assets/images/icons/status/攻撃速度アイコン.png" class="IGP-buttonicon">攻撃速度
+                            </button>
+                            <button class="button-on" id="ctReducation" onclick="filterItemOnclickHandler(this)">
+                                <img src="assets/images/icons/status/クールダウンアイコン.png" class="IGP-buttonicon">CT短縮
+                            </button>
+                            <button class="button-on" id="ammo" onclick="filterItemOnclickHandler(this)">
+                                <img src="assets/images/icons/status/最大弾薬数アイコン.png" class="IGP-buttonicon">弾薬
+                            </button>
+                            <button class="button-on" id="weapon_LifeSteal" onclick="filterItemOnclickHandler(this)">
+                                <img src="assets/images/icons/status/ライフ吸収(武器)アイコン.png" class="IGP-buttonicon">
+                                <span>ライフ吸収（武器）</span>
+                            </button>
+                            <button class="button-on" id="ability_LifeSteal" onclick="filterItemOnclickHandler(this)">
+                                <img src="assets/images/icons/status/ライフ吸収(アビリティ)アイコン.png" class="IGP-buttonicon">ライフ吸収（アビリティ）
+                            </button>
+                            <button class="button-on" id="speed" onclick="filterItemOnclickHandler(this)">
+                                <img src="assets/images/icons/status/移動速度アイコン.png" class="IGP-buttonicon">移動速度
+                            </button>
+                            <button class="button-on" id="reloadSpeed" onclick="filterItemOnclickHandler(this)">
+                                <img src="assets/images/icons/status/リロード速度アイコン.png" class="IGP-buttonicon">リロード速度
+                            </button>
+                            <button class="button-on" id="meleeDamage" onclick="filterItemOnclickHandler(this)">
+                                <img src="assets/images/icons/status/近接攻撃ダメージアイコン.png" class="IGP-buttonicon">近接ダメージ
+                            </button>
+                            <button class="button-on" id="critical" onclick="filterItemOnclickHandler(this)">
+                                <img src="assets/images/icons/status/クリティカル・ダメージアイコン.png" class="IGP-buttonicon">クリティカル
+                            </button>
+                            <button class="button-on" id="others" onclick="filterItemOnclickHandler(this)">
+                                <img src="assets/images/icons/status/特殊効果アイコン.png" class="IGP-buttonicon">その他
+                            </button>
                         </div>
                     </div>
                     <div class="button-list">
