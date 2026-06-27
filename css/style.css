@@ -828,29 +828,53 @@ main-IAP{
     height: 45px;
     display: block;
     width: 105px;
-    border: 2px solid black; /* TODO:線を太く、実線にしてみる */
     margin-left: 5px;
     margin-bottom: 5px;
     background-color: var(--button-on-color, lightgray);
     cursor: pointer;
     color: black;
 
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+
+    transition: all 0.15s ease;
+
     word-wrap: break-word;
+}
+.button-on:hover{
+    filter: brightness(1.08);
+}
+.button-on:active{
+    transform: translateY(2px);
 }
 
 .button-off{
     height: 45px;
     display: block;
     width: 105px;
-    border: 1px solid black; /* TODO:線を2→1pxに*/
     margin-left: 5px;
     margin-bottom: 5px;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.75) !important;
     cursor: pointer;
     color: black;
-    filter: saturate(25%); /*彩度を下げる*/
+
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.25),
+        inset 0 -2px 0 rgba(0,0,0,0.25),
+        0 3px 6px rgba(0,0,0,0.35);
+
+    transition: all 0.15s ease;
 
     word-wrap: break-word;
+}
+.button-off:hover{
+    filter: brightness(0.92);
+}
+.button-off:active{
+    transform: translateY(2px);
 }
 
 .button-list{
