@@ -813,7 +813,7 @@ main-IAP{
 }
 
 .button-category{
-    width: 75px;
+    width: 100px;
     display: flex;
     margin-right: 5px;
 }
@@ -831,7 +831,7 @@ main-IAP{
     border: 2px solid black; /* TODO:線を太く、実線にしてみる */
     margin-left: 5px;
     margin-bottom: 5px;
-    background-color: lightgray;
+    background-color: var(--button-on-color, lightgray);
     cursor: pointer;
     color: black;
 
@@ -848,14 +848,13 @@ main-IAP{
     background-color: white;
     cursor: pointer;
     color: black;
+    filter: saturate(25%); /*彩度を下げる*/
 
     word-wrap: break-word;
 }
 
 .button-list{
     display:flex;
-    flex-wrap: wrap;
-    word-break: keep-all;
     margin: 10px 0px 0px 25px;
 }
 
@@ -1006,6 +1005,13 @@ main-IAP{
 .itemandpower-statusicon{
     width: 10px;
     height: 10px;
+}
+
+.IGP-buttonicon{
+    width: 16px;
+    height: 16px;
+    margin-bottom: -3px;
+    margin-right: 3px;
 }
 
 .patch-history-content {
