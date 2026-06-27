@@ -190,7 +190,7 @@ const theoreticalPowerKeyMap = {
     critical: THEORETICALPOWERLISTKEY.theoreticalPower_CriticalKey,
     attackspeed: THEORETICALPOWERLISTKEY.theoreticalPower_AttackSpeedKey,
     speed: THEORETICALPOWERLISTKEY.theoreticalPower_SpeedKey,
-    itemid: THEORETICALPOWERLISTKEY.theoreticalPower_IDKey,
+    powerid: THEORETICALPOWERLISTKEY.theoreticalPower_IDKey,
     specialflg: THEORETICALPOWERLISTKEY.theoreticalPower_SpecialFlgKey,
     additiondamageflg: THEORETICALPOWERLISTKEY.theoreticalPower_AdditionDamageFlgKey,
     healdamageupflg: THEORETICALPOWERLISTKEY.theoreticalPower_HealDamageUpFlgKey,
@@ -333,26 +333,14 @@ async function loadAndInitBuildData() {
     try
     {
         // #region データの読み込み
-        const [itemData, gadgetData, powerData, statusData, theoreticalItemData, theoreticalGadgetData, parameterData] = await Promise.all([
-            // データの読み込み(itemList)
+        const [itemData, gadgetData, powerData, statusData, theoreticalItemData, theoreticalGadgetData, theoreticalPowerData, parameterData] = await Promise.all([
             fetch("itemListData.json").then(response => response.json()),
-
-            // データの読み込み(gadgetList)
             fetch("gadgetListData.json").then(response => response.json()),
-
-            // データの読み込み(powerList)
             fetch("powerListData.json").then(response => response.json()),
-
-            // データの読み込み(statusList)
             fetch("statusListData.json").then(response => response.json()),
-
-            // データの読み込み(theoreticalItem)
             fetch("theoreticalItemData.json").then(response => response.json()),
-
-            // データの読み込み(theoreticalGadget)
             fetch("theoreticalGadgetData.json").then(response => response.json()),
-
-            // データの読み込み(parameter)
+            fetch("theoreticalPowerData.json").then(response => response.json()),
             fetch("parameterData.json").then(response => response.json())
         ]);
 
@@ -361,6 +349,7 @@ async function loadAndInitBuildData() {
         powerAllData = powerData;
         theoreticalItem = theoreticalItemData;
         theoreticalGadget = theoreticalGadgetData;
+        theoreticalPower = theoreticalPowerData;
         statusAllData = statusData;
         parameterAllData = parameterData;
 
@@ -370,6 +359,7 @@ async function loadAndInitBuildData() {
         powerList = convertKeys(organizePowerData(powerAllData), powerKeyMap);
         theoreticalItemList = convertKeys(organizeTheoreticalItemData(theoreticalItem), theoreticalItemKeyMap);
         theoreticalGadgetList = convertKeys(organizeTheoreticalGadgetData(theoreticalGadget), theoreticalGadgetKeyMap);
+        theoreticalPowerList = convertKeys(organizeTheoreticalPowerData(theoreticalPower), theoreticalPowerKeyMap);
         initStatusList = convertKeys(organizeStatusData(statusAllData), statusKeyMap);
         parameterList = convertKeys(organizeParameterData(parameterAllData), parameterKeyMap);
         // #endregion
@@ -726,7 +716,7 @@ function organizeTheoreticalPowerData(theoreticalPowerAllData) {
             critical: TPlist.critical,
             attackspeed: TPlist.attackspeed,
             speed: TPlist.speed,
-            itemid: TPlist.itemid,
+            powerid: TPlist.id,
             specialflg: TPlist.specialflg,
             additiondamageflg: TPlist.additiondamageflg,
             healdamageupflg: TPlist.healdamageupflg,
@@ -2924,6 +2914,96 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
             powerText = powerText + textTmp + "\n";
         }
         // #endregion
+
+        // #region 理論値計算
+        if(theoreticalPowerFlag && selectedPowerRows[i][POWERLISTKEY.power_theoreticalFlgKey] == 1){
+            theoreticalPowerCheckboxes.forEach(checkbox => {
+                const div = checkbox.closest('div');
+            
+                //パワーの番号からパワー名を抜き出す
+                const powerNumber = div.id.slice(-1);
+                const img = document.getElementById("power-image" + powerNumber);
+                const imgSRC = decodeURIComponent(img.src.split('/').pop());
+
+                // パワー名が一致かつチェックがONの時はパワーIDを抜き出す
+                if((selectedPowerRows[i][POWERLISTKEY.power_iconKey] == imgSRC) && checkbox.checked){
+                    const powerID = selectedPowerRows[i][POWERLISTKEY.powerIdKey];
+                    const targetList = theoreticalPowerList;
+                    const theoreticalKeyMap = theoreticalPowerKeyMap;
+
+                    // パワーIDから理論値リストのデータを検索
+                    for(let j=0; j<targetList.length; j++){
+                        const thPowerID = targetList[j][theoreticalKeyMap.powerid];
+                        if(thPowerID == powerID){
+
+                            // ステータスアップフラグがONの場合対応するステータスに反映
+                            if(targetList[j][theoreticalKeyMap.statusupflg] == 1){
+                                // 各パラメータを抽出
+                                const thLifeTmp = targetList[j][theoreticalKeyMap.life];
+                                const thArmorTmp = targetList[j][theoreticalKeyMap.armor];
+                                const thShieldTmp = targetList[j][theoreticalKeyMap.shield];
+                                const thWeaponPowerTmp = targetList[j][theoreticalKeyMap.weaponpower];
+                                const thAbilityPowerTmp = targetList[j][theoreticalKeyMap.abilitypower];
+                                const thCtReducationTmp = targetList[j][theoreticalKeyMap.ctreducation];
+                                const thAmmoTmp = targetList[j][theoreticalKeyMap.ammo];
+                                const thWeapon_LifeStealTmp = targetList[j][theoreticalKeyMap.weaponlifesteal];
+                                const thAbility_LifeStealTmp = targetList[j][theoreticalKeyMap.abilitylifesteal];
+                                const thReloadSpeedTmp = targetList[j][theoreticalKeyMap.reloadspeed];
+                                const thMeleeDamageTmp = targetList[j][theoreticalKeyMap.meleedamage];
+                                const thCriticalTmp = targetList[j][theoreticalKeyMap.critical];
+                                const thAttackSpeedTmp = targetList[j][theoreticalKeyMap.attackspeed];
+                                const thSpeedTmp = targetList[j][theoreticalKeyMap.speed];
+
+                                // 通常の計算変数に加算
+                                lifeTmp += thLifeTmp;
+                                armorTmp += thArmorTmp;
+                                shieldTmp += thShieldTmp;
+                                weaponPowerTmp += thWeaponPowerTmp;
+                                abilityPowerTmp += thAbilityPowerTmp;
+                                ctReducationTmp += thCtReducationTmp;
+                                ammoTmp += thAmmoTmp;
+                                weapon_LifeStealTmp += thWeapon_LifeStealTmp;
+                                ability_LifeStealTmp += thAbility_LifeStealTmp;
+                                reloadSpeedTmp += thReloadSpeedTmp;
+                                meleeDamageTmp += thMeleeDamageTmp;
+                                criticalTmp += thCriticalTmp;
+                                attackSpeedTmp += thAttackSpeedTmp;
+                                speedTmp += thSpeedTmp;
+                            }
+
+                            // #region 特別計算 計算順序②
+                            if(targetList[j][theoreticalKeyMap.specialflg] == 1){
+                                // 追加ダメージ系か判別
+                                if(targetList[j][theoreticalKeyMap.additiondamageflg] != 0){
+                                    // 追加ダメージ系計算処理（追加ダメージフラグ）
+                                    addDamage(targetList[j],
+                                        theoreticalKeyMap,
+                                        ability1AddDamageAbility,
+                                        ability2AddDamageAbility,
+                                        ability3AddDamageAbility);
+                                }
+                                else
+                                {
+                                    // 個別ステータス上昇処理（武器アビリティフラグ）
+                                    weaponAbilityUp(targetList[j],
+                                        targetList[j][theoreticalKeyMap.healdamageup][0],
+                                        showStatusList,
+                                        theoreticalKeyMap);
+                                    // 全てのダメージ・回復系計算処理（ヒールダメージフラグ）
+                                    allDamageOrHealUp(targetList[j][theoreticalKeyMap.healdamageupflg],
+                                        targetList[j][theoreticalKeyMap.healdamageup][0],
+                                        showStatusList,
+                                        targetList,
+                                        theoreticalKeyMap);
+                                }
+                            }
+                            // #endregion
+                        }
+                    }
+                }
+            });
+        }
+
     }
     // #endregion
 
@@ -3497,12 +3577,12 @@ function updateBuild_Power(selectedPowerRows){
     // 理論値チェックボックス
     theoreticalPowerCheckboxes = document.querySelectorAll(".theoretical-power-checkbox");
 
-    // 各アイテムの理論値チェックボックスにイベントリスナーを追加
+    // 各パワーの理論値チェックボックスにイベントリスナーを追加
     theoreticalPowerCheckboxes.forEach(checkbox => {
         checkbox.addEventListener("change", () => {
             
             // ステータスを更新
-            updateStatus(selectedItemRowsData, true, selectedPowerRowsData, false);
+            updateStatus(selectedItemRowsData, false, selectedPowerRowsData, true);
         });
     });
 }
