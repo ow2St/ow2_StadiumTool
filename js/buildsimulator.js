@@ -3166,29 +3166,29 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
 
         // 表示用ステータスリストに反映
         if(showStatusList[STATUSLISTKEY.mainDamageKey] != 0){
-            showStatusList[STATUSLISTKEY.mainLifeStealRateKey] = showStatusList[STATUSLISTKEY.mainLifeStealRateKey] + weapon_LifeStealTmp / 100;
+            showStatusList[STATUSLISTKEY.mainLifeStealRateKey] = Number(showStatusList[STATUSLISTKEY.mainLifeStealRateKey]) + Number(weapon_LifeStealTmp / 100);
         }
         if(showStatusList[STATUSLISTKEY.main2DamageKey] != 0){
-            showStatusList[STATUSLISTKEY.main2LifeStealRateKey] = showStatusList[STATUSLISTKEY.main2LifeStealRateKey] + weapon_LifeStealTmp / 100;
+            showStatusList[STATUSLISTKEY.main2LifeStealRateKey] = Number(showStatusList[STATUSLISTKEY.main2LifeStealRateKey]) + Number(weapon_LifeStealTmp / 100);
         }
         if(showStatusList[STATUSLISTKEY.subDamageKey] != 0){
-            showStatusList[STATUSLISTKEY.subLifeStealRateKey] = showStatusList[STATUSLISTKEY.subLifeStealRateKey] + weapon_LifeStealTmp / 100;
+            showStatusList[STATUSLISTKEY.subLifeStealRateKey] = Number(showStatusList[STATUSLISTKEY.subLifeStealRateKey]) + Number(weapon_LifeStealTmp / 100);
         }
         if(showStatusList[STATUSLISTKEY.sub2DamageKey] != 0){
-            showStatusList[STATUSLISTKEY.sub2LifeStealRateKey] = showStatusList[STATUSLISTKEY.sub2LifeStealRateKey] + weapon_LifeStealTmp / 100;
+            showStatusList[STATUSLISTKEY.sub2LifeStealRateKey] = Number(showStatusList[STATUSLISTKEY.sub2LifeStealRateKey]) + Number(weapon_LifeStealTmp / 100);
         }
 
         // パッシブに反映
         if(showStatusList[STATUSLISTKEY.passive1DamageFlg] == 1 && showStatusList[STATUSLISTKEY.passive1DamageKey] != 0){
-            showStatusList[STATUSLISTKEY.passive1LifeStealRateKey] = showStatusList[STATUSLISTKEY.passive1LifeStealRateKey] + weapon_LifeStealTmp / 100;
+            showStatusList[STATUSLISTKEY.passive1LifeStealRateKey] = Number(showStatusList[STATUSLISTKEY.passive1LifeStealRateKey]) + Number(weapon_LifeStealTmp / 100);
         }
         if(showStatusList[STATUSLISTKEY.passive2DamageFlg] == 1 && showStatusList[STATUSLISTKEY.passive2DamageKey] != 0){
-            showStatusList[STATUSLISTKEY.passive2LifeStealRateKey] = showStatusList[STATUSLISTKEY.passive2LifeStealRateKey] + weapon_LifeStealTmp / 100;
+            showStatusList[STATUSLISTKEY.passive2LifeStealRateKey] = Number(showStatusList[STATUSLISTKEY.passive2LifeStealRateKey]) + Number(weapon_LifeStealTmp / 100);
         }
 
         // ゲンジ・ソルジャーの場合はULTにも武器パワーが乗るので対応
         if(showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.genji || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.soldier76){
-            showStatusList[STATUSLISTKEY.ultLifeStealRateKey] = showStatusList[STATUSLISTKEY.ultLifeStealRateKey] + weapon_LifeStealTmp / 100;
+            showStatusList[STATUSLISTKEY.ultLifeStealRateKey] = Number(showStatusList[STATUSLISTKEY.ultLifeStealRateKey]) + Number(weapon_LifeStealTmp / 100);
         }
     }
 
@@ -3197,31 +3197,31 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
 
         // 表示用ステータスリストに反映
         if(showStatusList[STATUSLISTKEY.ability1DamageKey] != 0){
-            showStatusList[STATUSLISTKEY.ability1LifeStealRateKey] = showStatusList[STATUSLISTKEY.ability1LifeStealRateKey] + ability_LifeStealTmp / 100;
+            showStatusList[STATUSLISTKEY.ability1LifeStealRateKey] = Number(showStatusList[STATUSLISTKEY.ability1LifeStealRateKey]) + Number(ability_LifeStealTmp / 100);
         }
         if(showStatusList[STATUSLISTKEY.ability2DamageKey] != 0){
-            showStatusList[STATUSLISTKEY.ability2LifeStealRateKey] = showStatusList[STATUSLISTKEY.ability2LifeStealRateKey] + ability_LifeStealTmp / 100;
+            showStatusList[STATUSLISTKEY.ability2LifeStealRateKey] = Number(showStatusList[STATUSLISTKEY.ability2LifeStealRateKey]) + Number(ability_LifeStealTmp / 100);
         }
 
         // パッシブに反映
         if(showStatusList[STATUSLISTKEY.passive1DamageFlg] == 2 && showStatusList[STATUSLISTKEY.passive1DamageKey] != 0){
-            showStatusList[STATUSLISTKEY.passive1LifeStealRateKey] = showStatusList[STATUSLISTKEY.passive1LifeStealRateKey] + ability_LifeStealTmp / 100;
+            showStatusList[STATUSLISTKEY.passive1LifeStealRateKey] = Number(showStatusList[STATUSLISTKEY.passive1LifeStealRateKey]) + Number(ability_LifeStealTmp / 100);
         }
         if(showStatusList[STATUSLISTKEY.passive2DamageFlg] == 2 && showStatusList[STATUSLISTKEY.passive2DamageKey] != 0){
-            showStatusList[STATUSLISTKEY.passive2LifeStealRateKey] = showStatusList[STATUSLISTKEY.passive2LifeStealRateKey] + ability_LifeStealTmp / 100;
+            showStatusList[STATUSLISTKEY.passive2LifeStealRateKey] = Number(showStatusList[STATUSLISTKEY.passive2LifeStealRateKey]) + Number(ability_LifeStealTmp / 100);
         }
 
         // ラインハルトとシグマの盾は除外
         if(showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.reinhardt && showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.sigma){
             if(showStatusList[STATUSLISTKEY.ability3DamageKey] != 0){
-                showStatusList[STATUSLISTKEY.ability3LifeStealRateKey] = showStatusList[STATUSLISTKEY.ability3LifeStealRateKey] + ability_LifeStealTmp / 100;
+                showStatusList[STATUSLISTKEY.ability3LifeStealRateKey] = Number(showStatusList[STATUSLISTKEY.ability3LifeStealRateKey]) + Number(ability_LifeStealTmp / 100);
             }
         }
 
         // ゲンジとソルジャーのULTは除外
         if(showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.genji && showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.soldier76){
             if(showStatusList[STATUSLISTKEY.ultDamageKey] != 0){
-                showStatusList[STATUSLISTKEY.ultLifeStealRateKey] = showStatusList[STATUSLISTKEY.ultLifeStealRateKey] + ability_LifeStealTmp / 100;
+                showStatusList[STATUSLISTKEY.ultLifeStealRateKey] = Number(showStatusList[STATUSLISTKEY.ultLifeStealRateKey]) + Number(ability_LifeStealTmp / 100);
             }
         }
     }
