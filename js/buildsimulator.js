@@ -2032,6 +2032,16 @@ function linkGadgetList(gadgetList, id) {
                 }
             }
 
+            // キー名がその他キーの場合
+            if(GADGETLISTKEY.gadget_othersKey == key) {
+
+                // 値が"-"でない場合
+                if(gadgetList[i][key] != "-") {
+                    statusText = statusText + String(gadgetList[i][key]);
+                    statusText = statusText.replaceAll(",", "\n");
+                }
+            }
+
             // キー名がテキストキーの場合
             if(GADGETLISTKEY.gadget_textKey == key) {
 
@@ -3079,8 +3089,9 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
             showStatusList[STATUSLISTKEY.passive2DamageKey] = Math.round(showStatusList[STATUSLISTKEY.passive2DamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         }
 
-        // ゲンジ・ソルジャー・マーシーの場合はULTにも武器パワーが乗るので対応
-        if(showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.genji || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.soldier76 || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.mercy){
+        // ゲンジ・ソルジャー・ソジョーン・マーシーの場合はULTにも武器パワーが乗るので対応
+        if(showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.genji || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.soldier76
+        || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.sojourn || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.mercy){
             showStatusList[STATUSLISTKEY.ultDamageKey] = Math.round(showStatusList[STATUSLISTKEY.ultDamageKey] * (weaponPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         }
 
@@ -3108,8 +3119,9 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
             showStatusList[STATUSLISTKEY.ability3DamageKey] = Math.round(showStatusList[STATUSLISTKEY.ability3DamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         }
 
-        // ゲンジとソルジャーのULTは除外
-        if(showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.genji && showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.soldier76){
+        // ゲンジとソルジャーとソジョーンのULTは除外
+        if(showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.genji && showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.soldier76
+        && showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.sojourn){
             showStatusList[STATUSLISTKEY.ultDamageKey] = Math.round(showStatusList[STATUSLISTKEY.ultDamageKey] * (abilityPowerTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         }
 
@@ -3186,8 +3198,9 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
             showStatusList[STATUSLISTKEY.passive2LifeStealRateKey] = Number(showStatusList[STATUSLISTKEY.passive2LifeStealRateKey]) + Number(weapon_LifeStealTmp / 100);
         }
 
-        // ゲンジ・ソルジャーの場合はULTにも武器パワーが乗るので対応
-        if(showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.genji || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.soldier76){
+        // ゲンジ・ソルジャー・ソジョーンの場合はULTにも武器パワーが乗るので対応
+        if(showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.genji || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.soldier76
+        || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.sojourn){
             showStatusList[STATUSLISTKEY.ultLifeStealRateKey] = Number(showStatusList[STATUSLISTKEY.ultLifeStealRateKey]) + Number(weapon_LifeStealTmp / 100);
         }
     }
@@ -3218,8 +3231,9 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
             }
         }
 
-        // ゲンジとソルジャーのULTは除外
-        if(showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.genji && showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.soldier76){
+        // ゲンジとソルジャーとソジョーンのULTは除外
+        if(showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.genji && showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.soldier76
+        && showStatusList[STATUSLISTKEY.heroNameKey] != HERONAME.sojourn){
             if(showStatusList[STATUSLISTKEY.ultDamageKey] != 0){
                 showStatusList[STATUSLISTKEY.ultLifeStealRateKey] = Number(showStatusList[STATUSLISTKEY.ultLifeStealRateKey]) + Number(ability_LifeStealTmp / 100);
             }
@@ -3249,7 +3263,8 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
         showStatusList[STATUSLISTKEY.status_meleeDamageKey] = Math.round(showStatusList[STATUSLISTKEY.status_meleeDamageKey] * (meleeDamageTmp / 100 + 1) * 10 ** 2) / 10 ** 2;
 
         // ラインハルトはメイン武器にも近接ダメージが乗るので対応
-        if(showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.reinhardt){
+        if(showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.reinhardt || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.torbjorn
+        || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.brigitte || showStatusList[STATUSLISTKEY.heroNameKey] == HERONAME.vendetta){
             showStatusList[STATUSLISTKEY.mainDamageKey] = Math.round(showStatusList[STATUSLISTKEY.mainDamageKey] * (meleeDamageTmp/100 + 1) * 10 ** 2) / 10 ** 2;
         }
     }
