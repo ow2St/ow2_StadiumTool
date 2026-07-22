@@ -22,7 +22,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000001",
         "healdamageup": "0.4",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "11cd4a3f-16df-4eaf-9084-9b2cddd776d7",
@@ -47,7 +48,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "143a4c70-b55b-42ed-9fd8-10eb6ab6edb8",
@@ -72,7 +74,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000100000",
         "healdamageup": "*1.5",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "1810c1fb-5c56-4f66-b0c8-e846a3dc91be",
@@ -97,7 +100,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "198ff655-fbdd-4880-a8db-d24a5ec9e477",
@@ -122,7 +126,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00100000000",
         "healdamageup": "10",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "1b6a7213-a9b5-40a6-a4c4-e91f224d69b3",
@@ -147,7 +152,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000100000",
         "healdamageup": "*1.2",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "21cf815c-b77f-4d75-a452-6164509fc08f",
@@ -172,7 +178,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00100000000",
         "healdamageup": "20",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "2e35bc5e-8296-4a0d-8da1-32ae2f8e8f27",
@@ -197,7 +204,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "310b9a59-8a80-4f6f-8419-f3d1666f18d7",
@@ -222,7 +230,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000001",
         "healdamageup": "*1.25",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "34c9982f-90f7-4cbe-916b-6dbd215294fa",
@@ -247,7 +256,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "34caeb00-d34f-4054-a92e-75b78ce666fe",
@@ -272,7 +282,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "3ab88118-9cc3-4de9-afd6-b93eb60a09b8",
@@ -297,7 +308,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "3e57e54e-39a8-401b-85d6-0e502e19a9b0",
@@ -322,7 +334,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "3f5d4477-64bd-4527-8857-94677da4296f",
@@ -347,7 +360,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "404aaf6f-de1b-4a60-a0ff-c2dab2bd63df",
@@ -372,7 +386,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000010000",
         "healdamageup": "20",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "52e6db99-c6b9-42ed-875c-54f118264287",
@@ -397,7 +412,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "541a6296-19b3-4fcb-8299-7fcf7102b093",
@@ -422,7 +438,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "61175998-76fd-4b0e-8c48-45efb5ae08ff",
@@ -447,7 +464,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "66b5009b-3be1-4b20-b85d-6044c7c2bbeb",
@@ -472,7 +490,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000001",
         "healdamageup": "*1.2",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "685190f4-6722-4d13-8854-7abee66ecd42",
@@ -497,7 +516,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000001",
         "healdamageup": "40",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "6fe1806a-3f1b-40be-978d-a75679685316",
@@ -522,7 +542,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000001",
         "healdamageup": "*1.2",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "75ef8e18-b4f9-4b10-91ca-0c3b4bae703e",
@@ -547,7 +568,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000010000",
         "healdamageup": "*2",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "7628b111-cf09-473f-8f28-1a31f0c97549",
@@ -572,7 +594,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00001000000",
         "healdamageup": "*1.5",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "867b4a8b-728b-459b-b5ce-6e50f2b79694",
@@ -597,7 +620,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "8f6253b8-d17e-4929-b7a7-94a638d55466",
@@ -622,7 +646,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "9170fa42-520b-4091-9043-8fa103185a9f",
@@ -647,7 +672,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "9205d6e5-62c4-4a78-9475-e8ddb9b821d1",
@@ -672,7 +698,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "9443a06a-24b4-4544-9228-20c509451aa8",
@@ -697,7 +724,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000101",
         "healdamageup": "*1.15",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "945f1145-387d-4a8e-ac5c-c2180b5e5d37",
@@ -722,7 +750,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "98ffa18d-c02e-4309-b41c-5d18293721a4",
@@ -747,7 +776,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000011",
         "healdamageup": "30",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "9d7fcf48-1b32-4e23-b45b-3b9800826dd8",
@@ -772,7 +802,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "b77cb551-7c62-4065-840b-8d1448cc004c",
@@ -797,7 +828,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000001",
         "healdamageup": "*1.75",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "bd4276a3-d587-400a-99c7-d401be6ef42c",
@@ -822,7 +854,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "c2f85bfc-7bde-4f0a-8d4a-2355c705e240",
@@ -847,7 +880,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000001",
         "healdamageup": "30",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "c82f7a86-3ce5-4c72-89b4-b642b97de156",
@@ -872,7 +906,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00001000000",
         "healdamageup": "30",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "ce955d26-1645-47d0-b900-3aa167de9e51",
@@ -897,7 +932,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "d74a99f8-28e3-43a7-9f0f-23d5293bffc0",
@@ -922,7 +958,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000001000",
         "healdamageup": "150",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "ddeb8cb7-a926-4226-ac19-eb0761df2d89",
@@ -947,7 +984,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000100000",
         "healdamageup": "50",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "de1b2d39-f17d-4275-b7e0-dcbab1e7f784",
@@ -972,7 +1010,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "e562d947-a52c-4e81-a9b1-7eb2346e00fd",
@@ -997,7 +1036,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000001",
         "healdamageup": "*1.6",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "e69166a5-b74c-4c89-b55b-0d934412997a",
@@ -1022,7 +1062,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000001",
         "healdamageup": "*1.2",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "f117a5b6-a52a-4e53-aa14-625f72ea8286",
@@ -1047,7 +1088,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000010",
         "healdamageup": "40",
-        "statusupflg": 0
+        "statusupflg": 0,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "f7e44f88-ffc1-465a-96e9-7f5db0ec5843",
@@ -1072,7 +1114,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "f93d9245-33c3-432f-a94d-1f6483f8192b",
@@ -1097,7 +1140,8 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000011",
         "healdamageup": "*1.15",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     },
     {
         "id": "ffafa5c5-d967-452d-973f-b0dfbcbf85f0",
@@ -1122,6 +1166,7 @@
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
-        "statusupflg": 1
+        "statusupflg": 1,
+        "allweaponorabilityflg": 0
     }
 ]
