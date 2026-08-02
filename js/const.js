@@ -330,7 +330,10 @@ window.HERONAME = {
     freya: "フレイヤ",
     tracer: "トレーサー",
     vendetta: "ヴェンデッタ",
-    jetpackcat: "ジェットパック・キャット"
+    jetpackcat: "ジェットパック・キャット",
+    sojourn: "ソジョーン",
+    torbjorn: "トールビョーン",
+    brigitte: "ブリギッテ"
 };
 
 /**
