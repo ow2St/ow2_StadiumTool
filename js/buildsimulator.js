@@ -407,7 +407,8 @@ async function loadAndInitBuildData() {
                 const beforeSelectedGadgetCount = selectedItemRowsData.filter(item => item[GADGETLISTKEY.gadget_categoryKey] == "ガジェット").length;
 
                 // チェックボックスの状態が変わる毎に選択リストを更新
-                let targetInnerText = e.target.parentElement.parentElement.cells[1].innerText.split("\n")[0].split("：")[1].trim();
+                const targetCell = e.target.parentElement.parentElement.cells[1];
+                let targetInnerText = targetCell.dataset.objectName;
                 selectedItemRowsData = updateSelectedList(itemAndGadgetList, true, selectedItemRowsData, targetInnerText, e.target.checked);
 
                 // ビルド欄の表示を更新
@@ -453,7 +454,8 @@ async function loadAndInitBuildData() {
                 const selectedPowerRowsDataBeforeLength = selectedPowerRowsData.length;
 
                 // チェックボックスの状態が変わる毎に選択リストを更新
-                let targetInnerText = e.target.parentElement.parentElement.cells[1].innerText.split("\n")[0].split("：")[1].trim();
+                const targetCell = e.target.parentElement.parentElement.cells[1];
+                let targetInnerText = targetCell.dataset.objectName;
                 selectedPowerRowsData = updateSelectedList(powerList, false, selectedPowerRowsData, targetInnerText, e.target.checked);
                 // ビルド欄の表示を更新
                 updateBuild_Power(selectedPowerRowsData);
