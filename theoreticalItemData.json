@@ -1,16 +1,32 @@
 [
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
         "abilitypower": 0,
         "attackspeed": 0,
         "ctreducation": 0,
+<<<<<<< HEAD
         "ammo": 0,
         "weaponlifesteal": 0,
         "abilitylifesteal": 0,
         "speed": 0,
+=======
+        "healdamageup": "*1.25",
+        "healdamageupflg": 0,
+        "itemid": "087ec77d-a277-4f03-aec4-75b06142256f",
+        "life": 0,
+        "meleedamage": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "reloadspeed": 0,
         "meleedamage": 0,
         "critical": 0,
@@ -24,7 +40,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -48,7 +72,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -72,6 +104,7 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
         "armor": 0,
         "shield": 0,
@@ -83,6 +116,22 @@
         "weaponlifesteal": 0,
         "abilitylifesteal": 0,
         "speed": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+        "armor": 0,
+        "attackspeed": 0,
+        "critical": 0,
+        "ctreducation": 0,
+        "healdamageup": "0",
+        "healdamageupflg": 0,
+        "itemid": "0db02700-4c36-4c04-b8c7-382986d056bd",
+        "life": 0,
+        "meleedamage": 50,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "reloadspeed": 0,
         "meleedamage": 0,
         "critical": 0,
@@ -96,7 +145,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -120,7 +177,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -144,7 +209,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 5,
@@ -168,7 +241,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 20,
@@ -192,7 +273,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 50,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -221,6 +310,37 @@
         "shield": 0,
         "weaponpower": 0,
         "abilitypower": 0,
+<<<<<<< HEAD
+=======
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+        "armor": 0,
+        "attackspeed": 0,
+        "critical": 0,
+        "ctreducation": 0,
+        "healdamageup": "0",
+        "healdamageupflg": 0,
+        "itemid": "1cfd13ff-fff6-4596-b6ad-bfda2d102774",
+        "life": 0,
+        "meleedamage": 0,
+        "reloadspeed": 0,
+        "shield": 0,
+        "specialflg": "0",
+        "speed": 0,
+        "statusupflg": 1,
+        "weaponabilityupflg": "00000000000",
+        "weaponlifesteal": 0,
+        "weaponpower": 40
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+        "armor": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "attackspeed": 0,
         "ctreducation": 0,
         "ammo": 0,
@@ -240,7 +360,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -264,7 +392,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 25,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -288,7 +424,39 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+        "armor": 0,
+        "attackspeed": 25,
+        "critical": 0,
+        "ctreducation": 0,
+        "healdamageup": "0",
+        "healdamageupflg": 0,
+        "itemid": "223b5809-7756-4466-be6f-eb4ec25293db",
+        "life": 0,
+        "meleedamage": 0,
+        "reloadspeed": 0,
+        "shield": 0,
+        "specialflg": "0",
+        "speed": 0,
+        "statusupflg": 1,
+        "weaponabilityupflg": "00000000000",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -312,7 +480,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 20,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -336,7 +512,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -360,7 +544,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -384,7 +576,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -408,7 +608,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -432,17 +640,33 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 1,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
         "abilitypower": 0,
         "attackspeed": 0,
         "ctreducation": 0,
+<<<<<<< HEAD
         "ammo": 0,
         "weaponlifesteal": 0,
         "abilitylifesteal": 0,
         "speed": 0,
+=======
+        "healdamageup": "*1.3",
+        "healdamageupflg": 2,
+        "itemid": "39b27e9e-3502-4ebc-a3bc-b6873408d305",
+        "life": 0,
+        "meleedamage": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "reloadspeed": 0,
         "meleedamage": 0,
         "critical": 0,
@@ -453,10 +677,47 @@
         "weaponabilityupflg": "00000000000",
         "healdamageup": "*1.3",
         "statusupflg": 0,
+<<<<<<< HEAD
         "allweaponorabilityflg": 1
     },
     {
         "life": 0,
+=======
+        "weaponabilityupflg": "00000000000",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+        "armor": 0,
+        "attackspeed": 0,
+        "critical": 0,
+        "ctreducation": 0,
+        "healdamageup": "0",
+        "healdamageupflg": 0,
+        "itemid": "39ce966b-3519-484f-a7de-c773abfc5f8f",
+        "life": 0,
+        "meleedamage": 100,
+        "reloadspeed": 0,
+        "shield": 0,
+        "specialflg": "0",
+        "speed": 0,
+        "statusupflg": 1,
+        "weaponabilityupflg": "0",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 10,
@@ -480,12 +741,23 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
         "abilitypower": 0,
         "attackspeed": 10,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 20,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+        "armor": 0,
+        "attackspeed": 0,
+        "critical": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "ctreducation": 0,
         "ammo": 0,
         "weaponlifesteal": 0,
@@ -504,7 +776,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -528,7 +808,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -552,7 +840,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -576,7 +872,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 25,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -600,17 +904,33 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 1,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
         "abilitypower": 0,
         "attackspeed": 0,
         "ctreducation": 0,
+<<<<<<< HEAD
         "ammo": 0,
         "weaponlifesteal": 0,
         "abilitylifesteal": 0,
         "speed": 0,
+=======
+        "healdamageup": "*1.25",
+        "healdamageupflg": 2,
+        "itemid": "5017516a-54dc-4199-8ff5-7449d7a142bf",
+        "life": 0,
+        "meleedamage": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "reloadspeed": 0,
         "meleedamage": 0,
         "critical": 0,
@@ -621,10 +941,23 @@
         "weaponabilityupflg": "00000000000",
         "healdamageup": "*1.25",
         "statusupflg": 0,
+<<<<<<< HEAD
         "allweaponorabilityflg": 1
     },
     {
         "life": 0,
+=======
+        "weaponabilityupflg": "00000000000",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -648,7 +981,39 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+        "armor": 0,
+        "attackspeed": 0,
+        "critical": 0,
+        "ctreducation": 300,
+        "healdamageup": "0",
+        "healdamageupflg": 0,
+        "itemid": "5d456de4-59dc-40e8-af04-f287813f77ab",
+        "life": 0,
+        "meleedamage": 0,
+        "reloadspeed": 0,
+        "shield": 0,
+        "specialflg": "0",
+        "speed": 0,
+        "statusupflg": 1,
+        "weaponabilityupflg": "0",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -672,7 +1037,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -689,6 +1062,7 @@
         "itemid": "67db8a13-011b-4766-af05-34cf600b594a",
         "specialflg": "1",
         "additiondamageflg": 0,
+<<<<<<< HEAD
         "healdamageupflg": 0,
         "weaponabilityupflg": "00000100000",
         "healdamageup": "*1.15",
@@ -697,6 +1071,10 @@
     },
     {
         "life": 0,
+=======
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -720,7 +1098,39 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+        "armor": 0,
+        "attackspeed": 0,
+        "critical": 0,
+        "ctreducation": 0,
+        "healdamageup": "0",
+        "healdamageupflg": 0,
+        "itemid": "68afa595-3a6f-40c7-8149-5238b9d5b687",
+        "life": 100,
+        "meleedamage": 0,
+        "reloadspeed": 0,
+        "shield": 0,
+        "specialflg": "0",
+        "speed": 0,
+        "statusupflg": 1,
+        "weaponabilityupflg": "0",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -744,7 +1154,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 2,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -768,7 +1186,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 15,
@@ -792,7 +1218,39 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+        "armor": 0,
+        "attackspeed": 0,
+        "critical": 0,
+        "ctreducation": 0,
+        "healdamageup": "0",
+        "healdamageupflg": 0,
+        "itemid": "75414d6b-a659-4cd5-a75a-096237916a41",
+        "life": 0,
+        "meleedamage": 0,
+        "reloadspeed": 0,
+        "shield": 0,
+        "specialflg": "0",
+        "speed": 30,
+        "statusupflg": 1,
+        "weaponabilityupflg": "0",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 2,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -816,7 +1274,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 25,
@@ -840,7 +1306,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -864,7 +1338,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 20,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -888,7 +1370,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 50,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -912,7 +1402,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -936,7 +1434,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -960,7 +1466,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 100,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -984,7 +1498,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1008,7 +1530,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 2,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1032,7 +1562,39 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+        "armor": 0,
+        "attackspeed": 25,
+        "critical": 45,
+        "ctreducation": 0,
+        "healdamageup": "0",
+        "healdamageupflg": 0,
+        "itemid": "8de988f8-8bfe-4f3d-99ca-a9f279b63e68",
+        "life": 0,
+        "meleedamage": 0,
+        "reloadspeed": 0,
+        "shield": 0,
+        "specialflg": "0",
+        "speed": 0,
+        "statusupflg": 0,
+        "weaponabilityupflg": "0",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1056,7 +1618,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 100,
         "weaponpower": 0,
@@ -1080,7 +1650,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1104,7 +1682,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1128,7 +1714,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 15,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1152,7 +1746,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 2,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1176,7 +1778,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 75,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1200,17 +1810,33 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 1,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
         "abilitypower": 0,
         "attackspeed": 0,
         "ctreducation": 0,
+<<<<<<< HEAD
         "ammo": 0,
         "weaponlifesteal": 0,
         "abilitylifesteal": 0,
         "speed": 0,
+=======
+        "healdamageup": "*1.15",
+        "healdamageupflg": 1,
+        "itemid": "af464b60-dc23-4955-93a9-c02372529cb3",
+        "life": 0,
+        "meleedamage": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "reloadspeed": 0,
         "meleedamage": 0,
         "critical": 0,
@@ -1221,10 +1847,47 @@
         "weaponabilityupflg": "00000000000",
         "healdamageup": "*1.15",
         "statusupflg": 0,
+<<<<<<< HEAD
         "allweaponorabilityflg": 1
     },
     {
         "life": 75,
+=======
+        "weaponabilityupflg": "00000000000",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+        "armor": 0,
+        "attackspeed": 0,
+        "critical": 0,
+        "ctreducation": 300,
+        "healdamageup": "0",
+        "healdamageupflg": 0,
+        "itemid": "b0dea0d8-de57-4bf8-8bc8-84c2341e6d51",
+        "life": 0,
+        "meleedamage": 0,
+        "reloadspeed": 0,
+        "shield": 0,
+        "specialflg": "0",
+        "speed": 0,
+        "statusupflg": 1,
+        "weaponabilityupflg": "0",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1248,7 +1911,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 10,
@@ -1272,22 +1943,39 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
         "abilitypower": 0,
         "attackspeed": 0,
         "ctreducation": 0,
+<<<<<<< HEAD
         "ammo": 0,
         "weaponlifesteal": 0,
         "abilitylifesteal": 0,
         "speed": 0,
+=======
+        "healdamageup": "*1.25",
+        "healdamageupflg": 2,
+        "itemid": "b2075e46-218e-41c0-91e3-44865e69f515",
+        "life": 0,
+        "meleedamage": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "reloadspeed": 0,
         "meleedamage": 0,
         "critical": 0,
         "itemid": "b2075e46-218e-41c0-91e3-44865e69f515",
         "specialflg": "1",
+<<<<<<< HEAD
         "additiondamageflg": 0,
         "healdamageupflg": 2,
         "weaponabilityupflg": "00000000000",
@@ -1297,6 +1985,20 @@
     },
     {
         "life": 0,
+=======
+        "speed": 0,
+        "statusupflg": 2,
+        "weaponabilityupflg": "00000000000",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1320,7 +2022,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 15,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1344,7 +2054,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 10,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 10,
@@ -1368,7 +2086,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1392,7 +2118,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1416,7 +2150,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1440,7 +2182,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1464,7 +2214,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1488,7 +2246,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1512,7 +2278,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1536,7 +2310,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1560,7 +2342,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 50,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1584,17 +2374,33 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
         "abilitypower": 0,
         "attackspeed": 0,
         "ctreducation": 0,
+<<<<<<< HEAD
         "ammo": 0,
         "weaponlifesteal": 0,
         "abilitylifesteal": 0,
         "speed": 0,
+=======
+        "healdamageup": "10",
+        "healdamageupflg": 2,
+        "itemid": "c8c9b376-cce4-4cc9-a468-29b558b3ad21",
+        "life": 0,
+        "meleedamage": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "reloadspeed": 0,
         "meleedamage": 0,
         "critical": 0,
@@ -1605,10 +2411,23 @@
         "weaponabilityupflg": "00000000000",
         "healdamageup": "10",
         "statusupflg": 0,
+<<<<<<< HEAD
         "allweaponorabilityflg": 0
     },
     {
         "life": 0,
+=======
+        "weaponabilityupflg": "00000000000",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1632,7 +2451,39 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+        "armor": 0,
+        "attackspeed": 0,
+        "critical": 0,
+        "ctreducation": 0,
+        "healdamageup": "0",
+        "healdamageupflg": 0,
+        "itemid": "d01be908-9a4f-48c9-92a4-84660a6cc2db",
+        "life": 0,
+        "meleedamage": 25,
+        "reloadspeed": 0,
+        "shield": 0,
+        "specialflg": "0",
+        "speed": 0,
+        "statusupflg": 1,
+        "weaponabilityupflg": "00000000000",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1656,7 +2507,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1680,7 +2539,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1704,7 +2571,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1728,7 +2603,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 10,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 25,
         "shield": 0,
         "weaponpower": 0,
@@ -1752,7 +2635,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1776,7 +2667,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1800,7 +2699,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1824,7 +2731,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 15,
+        "abilitypower": 10,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1848,7 +2763,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1872,7 +2795,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 50,
         "shield": 0,
         "weaponpower": 0,
@@ -1896,6 +2827,7 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
         "armor": 0,
         "shield": 0,
@@ -1907,20 +2839,73 @@
         "weaponlifesteal": 0,
         "abilitylifesteal": 0,
         "speed": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 1,
+        "ammo": 0,
+        "armor": 0,
+        "attackspeed": 0,
+        "critical": 0,
+        "ctreducation": 0,
+        "healdamageup": "*1.2",
+        "healdamageupflg": 2,
+        "itemid": "f4024a24-111c-49ff-878e-fc97b64733bd",
+        "life": 0,
+        "meleedamage": 0,
+        "reloadspeed": 0,
+        "shield": 0,
+        "specialflg": "1",
+        "speed": 0,
+        "statusupflg": 0,
+        "weaponabilityupflg": "00000000000",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+        "armor": 0,
+        "attackspeed": 0,
+        "critical": 0,
+        "ctreducation": 0,
+        "healdamageup": "0",
+        "healdamageupflg": 0,
+        "itemid": "f8a0bd63-3e71-4538-9f09-03b7cb052116",
+        "life": 0,
+        "meleedamage": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "reloadspeed": 0,
         "meleedamage": 0,
         "critical": 0,
         "itemid": "f4024a24-111c-49ff-878e-fc97b64733bd",
         "specialflg": "0",
+<<<<<<< HEAD
         "additiondamageflg": 0,
         "healdamageupflg": 0,
+=======
+        "speed": 35,
+        "statusupflg": 1,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "weaponabilityupflg": "00000000000",
         "healdamageup": "0",
         "statusupflg": 1,
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 20,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1944,7 +2929,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1968,7 +2961,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -1992,7 +2993,15 @@
         "allweaponorabilityflg": 0
     },
     {
+<<<<<<< HEAD
         "life": 0,
+=======
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
         "armor": 0,
         "shield": 0,
         "weaponpower": 0,
@@ -2011,8 +3020,85 @@
         "additiondamageflg": 0,
         "healdamageupflg": 2,
         "weaponabilityupflg": "00000000000",
+<<<<<<< HEAD
         "healdamageup": "*1.15",
         "statusupflg": 0,
         "allweaponorabilityflg": 0
+=======
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+        "armor": 0,
+        "attackspeed": 25,
+        "critical": 0,
+        "ctreducation": 0,
+        "healdamageup": "0",
+        "healdamageupflg": 0,
+        "itemid": "fd3d2787-de35-4473-92c9-b56d7c031c58",
+        "life": 0,
+        "meleedamage": 0,
+        "reloadspeed": 0,
+        "shield": 0,
+        "specialflg": "0",
+        "speed": 0,
+        "statusupflg": 1,
+        "weaponabilityupflg": "0",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 40,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+        "armor": 0,
+        "attackspeed": 0,
+        "critical": 0,
+        "ctreducation": 0,
+        "healdamageup": "0",
+        "healdamageupflg": 0,
+        "itemid": "fe8a5f91-8e35-491f-a0bf-1f15f1a62bcc",
+        "life": 0,
+        "meleedamage": 0,
+        "reloadspeed": 0,
+        "shield": 0,
+        "specialflg": "0",
+        "speed": 0,
+        "statusupflg": 1,
+        "weaponabilityupflg": "00000000000",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+    },
+    {
+        "abilitylifesteal": 0,
+        "abilitypower": 0,
+        "additiondamageflg": 0,
+        "allweaponorabilityflg": 0,
+        "ammo": 0,
+        "armor": 0,
+        "attackspeed": 0,
+        "critical": 0,
+        "ctreducation": 0,
+        "healdamageup": "*2",
+        "healdamageupflg": 0,
+        "itemid": "fedc0289-32eb-414c-bf2d-3609b3316e28",
+        "life": 0,
+        "meleedamage": 0,
+        "reloadspeed": 0,
+        "shield": 0,
+        "specialflg": "1",
+        "speed": 0,
+        "statusupflg": 0,
+        "weaponabilityupflg": "00010000000",
+        "weaponlifesteal": 0,
+        "weaponpower": 0
+>>>>>>> f056727801a89da9226353d98ea29f96586f702d
     }
 ]
