@@ -123,7 +123,8 @@ window.THEORETICALITEMLISTKEY = {
     theoreticalItem_HealDamageUpFlgKey: "ヒールダメージ上昇フラグ",
     theoreticalItem_WeaponAbilityUpFlgKey: "武器アビリティ上昇フラグ",
     theoreticalItem_HealDamageUpKey: "ヒールダメージ上昇量",
-    theoreticalItem_StatusUpFlgKey: "ステータスアップフラグ"
+    theoreticalItem_StatusUpFlgKey: "ステータスアップフラグ",
+    theoreticalItem_AllWeaponOrAbilityFlgKey: "全ての武器・アビリティフラグ"
 };
 
 /**
@@ -150,7 +151,8 @@ window.THEORETICALGADGETLISTKEY = {
     theoreticalGadget_HealDamageUpFlgKey: "ヒールダメージ上昇フラグ",
     theoreticalGadget_WeaponAbilityUpFlgKey: "武器アビリティ上昇フラグ",
     theoreticalGadget_HealDamageUpKey: "ヒールダメージ上昇量",
-    theoreticalGadget_StatusUpFlgKey: "ステータスアップフラグ"
+    theoreticalGadget_StatusUpFlgKey: "ステータスアップフラグ",
+    theoreticalGadget_AllWeaponOrAbilityFlgKey: "全ての武器・アビリティフラグ"
 };
 
 /**
@@ -177,7 +179,8 @@ window.THEORETICALPOWERLISTKEY = {
     theoreticalPower_HealDamageUpFlgKey: "ヒールダメージ上昇フラグ",
     theoreticalPower_WeaponAbilityUpFlgKey: "武器アビリティ上昇フラグ",
     theoreticalPower_HealDamageUpKey: "ヒールダメージ上昇量",
-    theoreticalPower_StatusUpFlgKey: "ステータスアップフラグ"
+    theoreticalPower_StatusUpFlgKey: "ステータスアップフラグ",
+    theoreticalPower_AllWeaponOrAbilityFlgKey: "全ての武器・アビリティフラグ"
 };
 
 /**
