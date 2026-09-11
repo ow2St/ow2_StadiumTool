@@ -317,6 +317,33 @@ main-buildsimulator {
     overflow-y: scroll;
 }
 
+.status-content::-webkit-scrollbar {
+    display: none;
+}
+
+.status-scroll-top {
+    content: "▲";
+    display: block;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 1;
+}
+
+.status-scroll-bottom {
+    content: "▼";
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 1;
+}
+
 .heroname {
     text-indent: 1em;
     font-weight: 550;
