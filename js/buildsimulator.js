@@ -3476,7 +3476,7 @@ function allDamageOrHealUp(effect, target, calc, showStatusList, theoreticalList
     // 乗算の場合
     if(calc == "*"){
         // 上昇種別フラグが１なら回復量を上昇させ表示用ステータスリストに反映
-        if(effect == 1){
+        if(effect == 1 || effect == 3){
             if (target == 0 || target == 1) {
                 // メイン１
                 if(showStatusList[STATUSLISTKEY.mainHealDamageUpFlg] == 1){
@@ -3515,7 +3515,7 @@ function allDamageOrHealUp(effect, target, calc, showStatusList, theoreticalList
             }
         }
         // 上昇種別フラグが2なら全てのダメージを上昇させ表示用ステータスリストに反映
-        else if(effect == 2)
+        if(effect == 2 || effect == 3)
         {
             if (target == 0 || target == 1) {
                 // メイン１

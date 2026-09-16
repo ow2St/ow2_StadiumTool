@@ -22,8 +22,86 @@
     </div>
 </header>
 <main-buildsimulator>
-    <p class="selectedhero-title">D.VA（メック）</p>
-    <img src="assets/images/icons/hero/D.VA.png" onclick="openHeroWindow()" class="hero-icon" id="selected-hero-icon">
+    <div class="hero-build-area">
+        <div class="build-area">
+            <p class="selectedhero-title">D.VA（メック）</p>
+            <img src="assets/images/icons/hero/D.VA.png" onclick="openHeroWindow()" class="hero-icon" id="selected-hero-icon">
+        </div>
+        <div class="build-area">
+            <div class="selectedbuild-title">
+                <p style="margin-right: 70px;">ビルド</p>
+                <p id="total-cash">合計キャッシュ</p>
+            </div>
+            <div class="selectedbuild-content">
+                <div class="selectedbuild-column">
+                    <div class="selectedbuild-item">
+                        <div class="selectedbuild-text">アイテム
+                        </div>
+                        <div style="display: flex;" id="item1">
+                        </div>
+                        <div style="display: flex;" id="item2">
+                        </div>
+                        <div style="display: flex;" id="item3">
+                        </div>
+                        <div style="display: flex;" id="item4">
+                        </div>
+                        <div style="display: flex;" id="item5">
+                        </div>
+                        <div style="display: flex;" id="item6">
+                        </div>
+                    </div>
+                    <div class="selectedbuild-item">
+                        <div class="selectedbuild-text-theoretical">理論値
+                        </div>
+                        <div style="display: flex;" id="theoreticalitem1">
+                        </div>
+                        <div style="display: flex;" id="theoreticalitem2">
+                        </div>
+                        <div style="display: flex;" id="theoreticalitem3">
+                        </div>
+                        <div style="display: flex;" id="theoreticalitem4">
+                        </div>
+                        <div style="display: flex;" id="theoreticalitem5">
+                        </div>
+                        <div style="display: flex;" id="theoreticalitem6">
+                        </div>
+                    </div>
+                </div>
+                <div class="selectedbuild-column">
+                    <div class="selectedbuild-power">
+                        <div class="selectedbuild-text">パワー
+                        </div>
+                        <div style="display: flex;" id="power1">
+                        </div>
+                        <div style="display: flex;" id="power2">
+                        </div>
+                        <div style="display: flex;" id="power3">
+                        </div>
+                        <div style="display: flex;" id="power4">
+                        </div>
+                    </div>
+                    <div class="selectedbuild-power">
+                        <div class="selectedbuild-text-theoretical">理論値
+                        </div>
+                        <div style="display: flex;" id="theoreticalpower1">
+                        </div>
+                        <div style="display: flex;" id="theoreticalpower2">
+                        </div>
+                        <div style="display: flex;" id="theoreticalpower3">
+                        </div>
+                        <div style="display: flex;" id="theoreticalpower4">
+                        </div>
+                        <div style="display: flex;" id="theoreticalpower5">
+                        </div>
+                        <div style="display: flex;" id="theoreticalpower6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
     <div class="herowindow-overlay" id="herowindow">
         <div class="herowindow-content">
             <div class="herowindow-content-left">
@@ -98,72 +176,7 @@
         </div>
     </div>
     <div style="display: block;">
-        <div class="selectedbuild-title">
-            <p style="margin-right: 70px;">ビルド</p>
-            <p id="total-cash">合計キャッシュ</p>
-        </div>
-        <div class="selectedbuild-content">
-            <div class="selectedbuild-item">
-                <div class="selectedbuild-text">アイテム
-                </div>
-                <div style="display: flex;" id="item1">
-                </div>
-                <div style="display: flex;" id="item2">
-                </div>
-                <div style="display: flex;" id="item3">
-                </div>
-                <div style="display: flex;" id="item4">
-                </div>
-                <div style="display: flex;" id="item5">
-                </div>
-                <div style="display: flex;" id="item6">
-                </div>
-            </div>
-            <div class="selectedbuild-item">
-                <div class="selectedbuild-text-theoretical">理論値
-                </div>
-                <div style="display: flex;" id="theoreticalitem1">
-                </div>
-                <div style="display: flex;" id="theoreticalitem2">
-                </div>
-                <div style="display: flex;" id="theoreticalitem3">
-                </div>
-                <div style="display: flex;" id="theoreticalitem4">
-                </div>
-                <div style="display: flex;" id="theoreticalitem5">
-                </div>
-                <div style="display: flex;" id="theoreticalitem6">
-                </div>
-            </div>
-            <div class="selectedbuild-power">
-                <div class="selectedbuild-text">パワー
-                </div>
-                <div style="display: flex;" id="power1">
-                </div>
-                <div style="display: flex;" id="power2">
-                </div>
-                <div style="display: flex;" id="power3">
-                </div>
-                <div style="display: flex;" id="power4">
-                </div>
-            </div>
-            <div class="selectedbuild-power">
-                <div class="selectedbuild-text-theoretical">理論値
-                </div>
-                <div style="display: flex;" id="theoreticalpower1">
-                </div>
-                <div style="display: flex;" id="theoreticalpower2">
-                </div>
-                <div style="display: flex;" id="theoreticalpower3">
-                </div>
-                <div style="display: flex;" id="theoreticalpower4">
-                </div>
-                <div style="display: flex;" id="theoreticalpower5">
-                </div>
-                <div style="display: flex;" id="theoreticalpower6">
-                </div>
-            </div>
-        </div>
+        
         <p class="status-title">ステータス</p>
         <div class="status-scroll-top">∧</div>
         <div class="status-content">
