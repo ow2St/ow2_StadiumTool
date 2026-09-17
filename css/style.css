@@ -141,7 +141,7 @@ main-buildsimulator {
 .selectedhero-title {
     display: flex;
     margin-left: 20px;
-    min-width: 430px;
+    min-width: 330px;
     font-size: 25px;
     height: 30px;
     white-space: nowrap;
@@ -206,7 +206,7 @@ main-buildsimulator {
 
 .selectedbuild-title {
     display: flex;
-    margin-left: 20px;
+    margin-left: 0;
     width: 200px;
     font-size: 25px;
     height: 70px;
@@ -216,11 +216,55 @@ main-buildsimulator {
 .selectedbuild-content {
     padding-top: 15px;
     margin-left: 20px;
-    width: 850px;
+    width: calc(100% - 20px);
+    max-width: 1100px;
+    box-sizing: border-box;
     border: 2px solid gray;
     white-space: nowrap;
-    height: 330px;
-    background-color: #FAFAFA;
+    height: 180px;
+    background-color: #f2f2f2;
+    display: flex;
+    container-type: inline-size;
+    flex-wrap: nowrap;
+}
+
+@media (max-width: 1450px) {
+    .selectedbuild-content {
+        max-width: 750px;
+        height: 300px;
+        flex-wrap: wrap;
+    }
+
+    .selectedbuild-content > .selectedbuild-column:nth-child(2) {
+        flex-basis: 100%;
+    }
+}
+
+.selectedbuild-column {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-top: 20px;
+}
+
+.selectedbuild-column > .selectedbuild-item:first-child .selectedbuild-text,
+.selectedbuild-column > .selectedbuild-power:first-child .selectedbuild-text {
+    position: absolute;
+    top: -55px;
+    left: 0;
+}
+
+@media (max-width:1100px) {
+    .hero-build-area > .build-area:nth-child(2) {
+        flex: 0 0 700px;
+        width: 700px;
+        transform: scale(0.8);
+        transform-origin: top left;
+    }
+
+    .selectedbuild-content {
+        width: 700px;
+    }
 }
 
 .selectedbuild-item {
@@ -230,9 +274,98 @@ main-buildsimulator {
 }
 
 .selectedbuild-power {
-    margin-top: 15px;
+    margin-top: 10px;
     margin-left: 15px;
     display: flex;
+}
+
+#item1,
+#item2,
+#item3,
+#item4,
+#item5,
+#item6,
+#power1,
+#power2,
+#power3,
+#power4 {
+    position: relative;
+    width: 100px;
+    height: 75px;
+    flex-shrink: 0;
+}
+
+#item1::before,
+#item2::before,
+#item3::before,
+#item4::before,
+#item5::before,
+#item6::before,
+#power1::before,
+#power2::before,
+#power3::before,
+#power4::before {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#item1::before {
+    content: "1";
+}
+
+#item2::before {
+    content: "2";
+}
+
+#item3::before {
+    content: "3";
+}
+
+#item4::before {
+    content: "4";
+}
+
+#item5::before {
+    content: "5";
+}
+
+#item6::before {
+    content: "6";
+}
+
+#power1::before {
+    content: "1";
+}
+
+#power2::before {
+    content: "2";
+}
+
+#power3::before {
+    content: "3";
+}
+
+#power4::before {
+    content: "4";
+}
+
+#theoreticalitem1,
+#theoreticalitem2,
+#theoreticalitem3,
+#theoreticalitem4,
+#theoreticalitem5,
+#theoreticalitem6,
+#theoreticalpower1,
+#theoreticalpower2,
+#theoreticalpower3,
+#theoreticalpower4,
+#theoreticalpower5,
+#theoreticalpower6 {
+    width: 100px;
+    height: 35px;
+    flex-shrink: 0;
 }
 
 .selectedbuild-text {
@@ -288,12 +421,15 @@ main-buildsimulator {
 
 .selectedbuild-theoretical-checkbox {
     display: block;
-    margin-left: 8px;
-    margin-bottom: 8px;
-    margin-left: 8px;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 8px;
     width: 85px;
     border-radius: 10px;
+}
+
+.selectedbuild-text-theoretical {
+    display: none;
 }
 
 .status-title {
@@ -669,10 +805,6 @@ main-buildsimulator {
     height: 1200px;
 }
 
-.selectedbuild-content{
-    background-color: #f2f2f2;
-}
-
 .status-content{
     background-color: #f2f2f2;
 }
@@ -713,6 +845,18 @@ main-buildsimulator {
     width: 20px;
     margin: 0 auto;
     transform: scale(2.5);
+}
+
+.hero-build-area {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.hero-build-area > .build-area:nth-child(2) {
+    flex: 0 1 1270px;
+    min-width: 0;
 }
 
 /*
