@@ -450,39 +450,37 @@ main-buildsimulator {
     border: 2px solid gray;
     height: 495px;
     background-color: #FAFAFA;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .status-content::-webkit-scrollbar {
     display: none;
 }
 
-.status-scroll-top {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid gray;
-    font-size: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
-    top: 0;
-    left: 0;
-    width: 850px;
+.status-scroll {
+    position: absolute;
+    left: 425px;
+    z-index: 10;
+    width: 40px;
     height: 30px;
-    background-color: #FAFAFA;
-    opacity: 0.3;
-    z-index: 1;
+    text-align: center;
+    line-height: 30px;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    user-select: none;
+    pointer-events: none;/* クリック・マウス操作を受け付けない */
 }
 
-.status-scroll-bottom {
-    display: block;
-    text-align: center;
+.scroll-up {
+    top: 55px;
+}
+
+.scroll-down {
     bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 20px;
-    background-color: rgba(255, 255, 255, 0.8);
-    z-index: 1;
+}
+
+.status-scroll.hidden {
+    display: none;
 }
 
 .heroname {

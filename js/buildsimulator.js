@@ -323,6 +323,21 @@ var gadgetSelectedFlg = false;
 // ビルド関連データの読み込みと初期化
 loadAndInitBuildData();
 
+
+//ステータス欄スクロール用
+const container = document.querySelector('.status-content');
+const upArrow = document.querySelector('.scroll-up');
+const downArrow = document.querySelector('.scroll-down');
+
+// マウスホイールなどでスクロールしたときに関数発動
+container.addEventListener(
+    'scroll',
+    updateArrows
+);
+
+// 初期表示
+updateArrows();
+
 // ------------------------------
 // 関数部
 // ------------------------------
@@ -3340,8 +3355,36 @@ function updateStatus(selectedItemRows, theoreticalItemFlag = false, selectedPow
 
     // ステータス表に反映
     initStatusValue(showStatusList, text, others, powerText, gadgetNameTmp, gadgetTextTmp);
-}
 
+    updateArrows();// ステータス欄、スクロール矢印の更新
+}
+/**
+ * ステータス画面のスクロール表示を制御する関数
+ */
+function updateArrows() {
+
+    // 上方向にスクロール可能か
+    const canScrollUp =
+        container.scrollTop > 0;
+
+    // 下方向にスクロール可能か
+    const canScrollDown =
+        container.scrollTop + container.clientHeight <
+        container.scrollHeight - 1;
+
+
+    // ▲の表示・非表示
+    upArrow.classList.toggle(
+        'hidden',
+        !canScrollUp
+    );
+
+    // ▼の表示・非表示
+    downArrow.classList.toggle(
+        'hidden',
+        !canScrollDown
+    );
+}
 
 /**
  * 追加ダメージを付与する関数
