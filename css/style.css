@@ -231,7 +231,7 @@ main-buildsimulator {
 @media (max-width: 1450px) {
     .selectedbuild-content {
         max-width: 750px;
-        height: 300px;
+        height: 400px;
         flex-wrap: wrap;
     }
 
@@ -271,13 +271,17 @@ main-buildsimulator {
     margin-top: 10px;
     margin-left: 15px;
     display: flex;
+    align-items: flex-start;
 }
 
 .selectedbuild-power {
     margin-top: 10px;
     margin-left: 15px;
     display: flex;
+    align-items: flex-start;
 }
+
+
 
 #item1,
 #item2,
@@ -421,14 +425,23 @@ main-buildsimulator {
 
 .selectedbuild-theoretical-checkbox {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 8px;
-    width: 85px;
+    margin: 0 auto;
+    width: 65px;
     border-radius: 10px;
 }
 
-.selectedbuild-text-theoretical {
+.selectedbuild-column:first-child .selectedbuild-item:nth-child(2) {
+    position: relative;
+}
+
+.selectedbuild-column:first-child .selectedbuild-item:nth-child(2) .selectedbuild-text-theoretical {
+    display: block;
+    position: absolute;
+    top: -22px;
+    left: -15px;
+}
+
+.selectedbuild-column:nth-child(2) .selectedbuild-text-theoretical {
     display: none;
 }
 
