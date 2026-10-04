@@ -463,7 +463,37 @@ main-buildsimulator {
     border: 2px solid gray;
     height: 495px;
     background-color: #FAFAFA;
-    overflow-y: scroll;
+    overflow-y: auto;
+}
+
+.status-content::-webkit-scrollbar {
+    display: none;
+}
+
+.status-scroll {
+    position: absolute;
+    left: 425px;
+    z-index: 10;
+    width: 40px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    user-select: none;
+    pointer-events: none;/* クリック・マウス操作を受け付けない */
+}
+
+.scroll-up {
+    top: 55px;
+}
+
+.scroll-down {
+    bottom: 0;
+}
+
+.status-scroll.hidden {
+    display: none;
 }
 
 .heroname {
