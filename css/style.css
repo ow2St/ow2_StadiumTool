@@ -472,9 +472,8 @@ main-buildsimulator {
 
 .status-scroll {
     position: absolute;
-    left: 425px;
-    z-index: 10;
-    width: 40px;
+    left: 20px;
+    width: 853px;
     height: 30px;
     text-align: center;
     line-height: 30px;
