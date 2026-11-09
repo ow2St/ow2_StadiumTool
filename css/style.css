@@ -141,8 +141,7 @@ main-buildsimulator {
 .selectedhero-title {
     display: flex;
     margin-left: 20px;
-    min-width: 330px;
-    font-size: 25px;
+    font-size: 20px;
     height: 30px;
     white-space: nowrap;
 }
@@ -206,7 +205,7 @@ main-buildsimulator {
 
 .selectedbuild-title {
     display: flex;
-    margin-left: 0;
+    margin-left: 15px;
     width: 200px;
     font-size: 25px;
     height: 70px;
@@ -230,9 +229,8 @@ main-buildsimulator {
 
 @media (max-width: 1450px) {
     .selectedbuild-content {
-        max-width: 750px;
-        height: 400px;
-        flex-wrap: wrap;
+        max-width: 860px;
+        height: 220px;
     }
 
     .selectedbuild-content > .selectedbuild-column:nth-child(2) {
@@ -263,7 +261,7 @@ main-buildsimulator {
     }
 
     .selectedbuild-content {
-        width: 700px;
+        width: 860px;
     }
 }
 
@@ -294,7 +292,7 @@ main-buildsimulator {
 #power3,
 #power4 {
     position: relative;
-    width: 100px;
+    width: 80px;
     height: 75px;
     flex-shrink: 0;
 }
@@ -315,46 +313,6 @@ main-buildsimulator {
     transform: translateX(-50%);
 }
 
-#item1::before {
-    content: "1";
-}
-
-#item2::before {
-    content: "2";
-}
-
-#item3::before {
-    content: "3";
-}
-
-#item4::before {
-    content: "4";
-}
-
-#item5::before {
-    content: "5";
-}
-
-#item6::before {
-    content: "6";
-}
-
-#power1::before {
-    content: "1";
-}
-
-#power2::before {
-    content: "2";
-}
-
-#power3::before {
-    content: "3";
-}
-
-#power4::before {
-    content: "4";
-}
-
 #theoreticalitem1,
 #theoreticalitem2,
 #theoreticalitem3,
@@ -367,8 +325,8 @@ main-buildsimulator {
 #theoreticalpower4,
 #theoreticalpower5,
 #theoreticalpower6 {
-    width: 100px;
-    height: 35px;
+    width: 80px;
+    height: 65px;
     flex-shrink: 0;
 }
 
@@ -398,8 +356,8 @@ main-buildsimulator {
     display: block;
     margin-left: 8px;
     margin-bottom: 8px;
-    width: 75px;
-    height: 75px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
 }
 
@@ -407,8 +365,8 @@ main-buildsimulator {
     display: block;
     margin-left: 8px;
     margin-bottom: 8px;
-    width: 75px;
-    height: 75px;
+    width: 60px;
+    height: 60px;
     border-radius: 10px;
 }
 
@@ -424,10 +382,10 @@ main-buildsimulator {
 }
 
 .selectedbuild-theoretical-checkbox {
-    display: block;
+    display: block; 
+    width: 15px;
     margin: 0 auto;
-    width: 65px;
-    border-radius: 10px;
+    transform: scale(2.5);
 }
 
 .selectedbuild-column:first-child .selectedbuild-item:nth-child(2) {
